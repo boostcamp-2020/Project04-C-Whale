@@ -19,6 +19,7 @@ module.exports = {
       },
     ],
     'import/no-unresolved': 'off',
-    'global-require': false,
+    'global-require': 'off',
+    // 'no-console': 'off', // console 허용 유무에 따라 설정
   },
 };
