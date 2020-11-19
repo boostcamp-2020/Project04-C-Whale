@@ -17,5 +17,6 @@ module.exports = {
         endOfLine: 'auto',
       },
     ],
+    'import/no-unresolved': 'off',
   },
 };
