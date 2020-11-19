@@ -1,0 +1,14 @@
+{
+  "name": "halgoraedo",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./src/bin/www",
+    "dev": "nodemon ./src/bin/www"
+  },
+  "dependencies": {
+    "express": "~4.16.1",
+    "morgan": "~1.9.1",
+    "nodemon": "^2.0.6"
+  }
+}
