@@ -1,6 +1,6 @@
 let config = {};
 
-if (process.env.NODE_ENV === 'development') {
+if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
   config = {
     dialect: 'mysql',
     database: process.env.DB_LOCAL_NAME,
