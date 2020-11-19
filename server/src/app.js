@@ -5,7 +5,6 @@ const loader = require('@root/loaders');
 const startServer = () => {
   const app = express();
   loader(app);
-
   module.exports = app;
 };
 
