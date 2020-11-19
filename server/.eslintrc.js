@@ -4,8 +4,9 @@ module.exports = {
     node: true,
     commonjs: true,
     es2021: true,
+    'jest/globals': true,
   },
-  plugins: ['prettier'],
+  plugins: ['prettier', 'jest'],
   extends: ['airbnb-base', 'eslint-config-prettier', 'prettier'],
   parserOptions: {
     ecmaVersion: 12,
@@ -18,5 +19,6 @@ module.exports = {
       },
     ],
     'import/no-unresolved': 'off',
+    'global-require': false,
   },
 };
