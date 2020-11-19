@@ -1,10 +1,9 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.send('hello world');
+const router = express.Router();
+
+router.get('/', (req, res, next) => {
+  res.json();
 });
 
-router.get('/', controller.isAuthen, controller.isValidParms, controller.getUser)
 module.exports = router;
