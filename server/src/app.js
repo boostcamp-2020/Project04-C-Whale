@@ -1,14 +1,12 @@
+require('module-alias/register');
 const express = require('express');
-const logger = require('morgan');
+const loader = require('@root/loaders');
 
-const indexRouter = require('./routes/index');
+const startServer = () => {
+  const app = express();
+  loader(app);
 
-const app = express();
+  module.exports = app;
+};
 
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-
-app.use('/', indexRouter);
-
-module.exports = app;
+startServer();
