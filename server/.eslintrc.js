@@ -4,8 +4,9 @@ module.exports = {
     node: true,
     commonjs: true,
     es2021: true,
+    'jest/globals': true,
   },
-  plugins: ['prettier'],
+  plugins: ['prettier', 'jest'],
   extends: ['airbnb-base', 'eslint-config-prettier', 'prettier'],
   parserOptions: {
     ecmaVersion: 12,
@@ -18,6 +19,8 @@ module.exports = {
         endOfLine: 'auto',
       },
     ],
+    'global-require': 'off',
+    // 'no-console': 'off', // console 허용 유무에 따라 설정
   },
   settings: {
     'import/resolver': {
