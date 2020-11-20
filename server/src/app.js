@@ -4,11 +4,11 @@ require('dotenv').config();
 const express = require('express');
 const loader = require('@root/loaders');
 
-const startServer = async () => {
+const startServer = () => {
   const app = express();
-  await loader(app);
-  module.exports = app;
+  loader(app);
   app.listen(process.env.PORT);
+  return app;
 };
 
-startServer();
+module.exports = startServer();
