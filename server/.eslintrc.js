@@ -12,14 +12,25 @@ module.exports = {
     ecmaVersion: 12,
   },
   rules: {
+    'global-require': 0,
     'prettier/prettier': [
       'error',
       {
         endOfLine: 'auto',
       },
     ],
-    'import/no-unresolved': 'off',
     'global-require': 'off',
     // 'no-console': 'off', // console 허용 유무에 따라 설정
+  },
+  settings: {
+    'import/resolver': {
+      alias: [
+        ['@root', './src'],
+        ['@loaders', './src/loaders'],
+        ['@models', './src/models'],
+        ['@config', './src/config'],
+        ['@test', './test'],
+      ],
+    },
   },
 };

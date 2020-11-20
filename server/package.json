@@ -3,8 +3,10 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./src/bin/www",
-    "dev": "nodemon ./src/bin/www",
+    "start": "node ./src/app.js",
+    "dev": "nodemon ./src/app.js",
+    "seed": "npx sequelize-cli db:seed:all",
+    "unseed": "npx sequelize-cli db:seed:undo:all"
     "test": "jest --detectOpenHandles --forceExit"
   },
   "jest": {
@@ -14,7 +16,6 @@
       "^@config/(.*)$": "<rootDir>/src/config/$1",
       "^@models(.*)$": "<rootDir>/src/models/$1",
       "^@loaders/(.*)$": "<rootDir>/src/loaders/$1"
-    }
   },
   "dependencies": {
     "dotenv": "^8.2.0",
@@ -22,7 +23,8 @@
     "module-alias": "^2.2.2",
     "morgan": "~1.9.1",
     "mysql2": "^2.2.5",
-    "sequelize": "^6.3.5"
+    "sequelize": "^6.3.5",
+    "sequelize-cli": "^6.2.0"
   },
   "devDependencies": {
     "eslint": "^7.13.0",
