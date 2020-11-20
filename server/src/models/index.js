@@ -1,20 +1,12 @@
 const Sequelize = require('sequelize');
 const applyAssociations = require('@models/associations');
-const dbConnectionConfig = require('@config/db-config');
+const dbConnectionConfig = require('@config/db-config')[process.env.NODE_ENV];
+
 const fs = require('fs');
 const path = require('path');
 const basename = path.basename(__filename);
 
 const sequelize = new Sequelize(dbConnectionConfig);
-
-(async () => {
-  try {
-    await sequelize.authenticate();
-    console.log('Connection has been established successfully.');
-  } catch (error) {
-    console.error('Unable to connect to the database:', error);
-  }
-})();
 
 fs.readdirSync(__dirname)
   .filter(file => {

@@ -11,12 +11,23 @@ module.exports = {
     ecmaVersion: 12,
   },
   rules: {
+    'global-require': 0,
     'prettier/prettier': [
       'error',
       {
         endOfLine: 'auto',
       },
     ],
-    'import/no-unresolved': 'off',
+  },
+  settings: {
+    'import/resolver': {
+      alias: [
+        ['@root', './src'],
+        ['@loaders', './src/loaders'],
+        ['@models', './src/models'],
+        ['@config', './src/config'],
+        ['@test', './test'],
+      ],
+    },
   },
 };
