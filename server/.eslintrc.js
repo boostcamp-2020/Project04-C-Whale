@@ -24,11 +24,11 @@ module.exports = {
   settings: {
     'import/resolver': {
       alias: [
-        ['@root', './src'],
-        ['@loaders', './src/loaders'],
-        ['@models', './src/models'],
-        ['@config', './src/config'],
-        ['@test', './test'],
+        ['@root', './server/src'],
+        ['@loaders', './server/src/loaders'],
+        ['@models', './server/src/models'],
+        ['@config', './server/src/config'],
+        ['@test', './server/test'],
       ],
     },
   },

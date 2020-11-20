@@ -25,7 +25,8 @@
     "morgan": "~1.9.1",
     "mysql2": "^2.2.5",
     "sequelize": "^6.3.5",
-    "sequelize-cli": "^6.2.0"
+    "sequelize-cli": "^6.2.0",
+    "uuid": "^8.3.1"
   },
   "devDependencies": {
     "eslint": "^7.13.0",
