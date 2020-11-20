@@ -12,7 +12,6 @@ module.exports = {
     ecmaVersion: 12,
   },
   rules: {
-    'global-require': 0,
     'prettier/prettier': [
       'error',
       {

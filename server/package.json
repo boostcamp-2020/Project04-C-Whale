@@ -6,7 +6,7 @@
     "start": "node ./src/app.js",
     "dev": "nodemon ./src/app.js",
     "seed": "npx sequelize-cli db:seed:all",
-    "unseed": "npx sequelize-cli db:seed:undo:all"
+    "unseed": "npx sequelize-cli db:seed:undo:all",
     "test": "jest --detectOpenHandles --forceExit"
   },
   "jest": {
@@ -16,6 +16,7 @@
       "^@config/(.*)$": "<rootDir>/src/config/$1",
       "^@models(.*)$": "<rootDir>/src/models/$1",
       "^@loaders/(.*)$": "<rootDir>/src/loaders/$1"
+    }
   },
   "dependencies": {
     "dotenv": "^8.2.0",
