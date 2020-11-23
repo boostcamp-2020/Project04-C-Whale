@@ -1,21 +1,12 @@
-const express = require('express');
-
-const router = express.Router();
+const router = require('express').Router();
 
 const { models } = require('@models');
+const { responseHandler } = require('@utils/handler');
+const labelRouter = require('@routes/label');
+const userRouter = require('@routes/user');
 
-router.get('/', (req, res, next) => {
-  res.json();
-});
+router.use('/user', userRouter);
 
-router.get('/user', async (req, res) => {
-  const users = await models.user.findAll();
-  res.json(users);
-});
-
-router.get('/label', async (req, res) => {
-  const labels = await models.label.findAll();
-  res.json(labels);
-});
+router.use('/label', labelRouter);
 
 module.exports = router;
