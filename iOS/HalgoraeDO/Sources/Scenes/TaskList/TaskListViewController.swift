@@ -13,13 +13,13 @@ protocol TaskListDisplayLogic {
 
 class TaskListViewController: UIViewController {
     
-    // MARK: Properties
+    // MARK: - Properties
     
-    var interactor: TaskListBusinessLogic?
-    var router: (TaskListRoutingLogic & TaskListDataPassing)?
+    private var interactor: TaskListBusinessLogic?
+    private var router: (TaskListRoutingLogic & TaskListDataPassing)?
     private var dataSource: UICollectionViewDiffableDataSource<String, Task>! = nil
     
-    // MARK: View Life Cycle
+    // MARK: - View Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,6 +32,9 @@ class TaskListViewController: UIViewController {
     // MARK: - Views
     
     @IBOutlet weak private var taskListCollectionView: UICollectionView!
+    
+    // MARK: - Initialize
+    
     private func configureLogic() {
         let presenter = TaskListPresenter(viewController: self)
         let interactor = TaskListInteractor(presenter: presenter, worker: TaskListWorker())
@@ -39,9 +42,11 @@ class TaskListViewController: UIViewController {
         self.interactor = interactor
     }
     
+    // MARK: - Methods
+    
     // MARK: IBActions
     
-    @IBAction func didTapMoreButton(_ sender: UIBarButtonItem) {
+    @IBAction private func didTapMoreButton(_ sender: UIBarButtonItem) {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
         let showBoardAction = UIAlertAction(title: "보드로 보기", style: .default) { (action) in
