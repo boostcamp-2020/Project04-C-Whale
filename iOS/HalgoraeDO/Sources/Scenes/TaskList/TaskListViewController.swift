@@ -8,7 +8,7 @@
 import UIKit
 
 protocol TaskListDisplayLogic {
-    
+    func display(tasks: [Task])
 }
 
 class TaskListViewController: UIViewController {
@@ -28,7 +28,11 @@ class TaskListViewController: UIViewController {
         configureDataSource()
     }
     
-    // MARK: Initialize
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        interactor?.fetchTasks()
+    }
+    
     // MARK: - Views
     
     @IBOutlet weak private var taskListCollectionView: UICollectionView!
@@ -70,13 +74,22 @@ class TaskListViewController: UIViewController {
     }
 }
 
+// MARK: - TaskList Display Logic
+
 extension TaskListViewController: TaskListDisplayLogic {
+    func display(tasks: [Task]) {
+        let snapShot = snapshot(taskItems: tasks)
+        let sectionTitle = ""
+        dataSource.apply(snapShot, to: sectionTitle, animatingDifferences: true)
+    }
+}
+
 // MARK: - Configure CollectionView Layout
-    
+
 private extension TaskListViewController {
     private func configureCollectionView() {
         taskListCollectionView.collectionViewLayout = generateLayout()
-}
+    }
     
     private func generateLayout() -> UICollectionViewLayout {
         let listConfiguration = UICollectionLayoutListConfiguration(appearance: .sidebar)

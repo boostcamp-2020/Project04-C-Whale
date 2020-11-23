@@ -8,7 +8,7 @@
 import Foundation
 
 protocol TaskListBusinessLogic {
-    
+    func fetchTasks()
 }
 
 protocol TaskListDataStore {
@@ -26,5 +26,8 @@ class TaskListInteractor: TaskListDataStore {
 }
 
 extension TaskListInteractor: TaskListBusinessLogic {
-    
+    func fetchTasks() {
+        let tasks = worker.getTasks()
+        presenter.present(tasks: tasks)
+    }
 }
