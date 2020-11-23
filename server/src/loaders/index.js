@@ -3,7 +3,9 @@ const sequelizeLoader = require('@loaders/sequelize');
 
 const init = app => {
   expressLoader(app);
-  sequelizeLoader();
+  if (process.env.NODE_ENV !== 'test') {
+    sequelizeLoader();
+  }
 };
 
 module.exports = init;

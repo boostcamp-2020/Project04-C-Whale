@@ -11,7 +11,7 @@ const applyAssociations = sequelize => {
     bookmark,
   } = sequelize.models;
 
-  user.hasMany(project, { sourceKey: 'email', foreignKey: 'creatorId' });
+  user.hasMany(project, { sourceKey: 'id', foreignKey: 'creatorId' });
   project.belongsTo(user, { as: 'creator' });
 
   project.hasMany(section);
@@ -40,6 +40,9 @@ const applyAssociations = sequelize => {
 
   task.hasOne(alarm);
   alarm.belongsTo(task);
+
+  user.hasMany(label);
+  label.belongsTo(user);
 };
 
 module.exports = applyAssociations;
