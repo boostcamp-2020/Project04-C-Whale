@@ -40,7 +40,13 @@
                             <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gQ3-Oo-n8H">
                                 <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                                 <items>
-                                    <navigationItem title="Title" id="RFQ-Xx-6Mo"/>
+                                    <navigationItem title="Title" id="RFQ-Xx-6Mo">
+                                        <barButtonItem key="rightBarButtonItem" title="More" id="EAu-h2-Agg">
+                                            <connections>
+                                                <action selector="didTapMoreButton:" destination="BYZ-38-t0r" id="4La-cK-CUs"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
                                 </items>
                             </navigationBar>
                         </subviews>
