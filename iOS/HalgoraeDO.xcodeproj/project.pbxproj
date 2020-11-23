@@ -7,9 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4C3F5665256B8117006D7C9F /* TaskListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3F5664256B8117006D7C9F /* TaskListViewController.swift */; };
+		4C3F566A256B82F2006D7C9F /* TaskBoardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3F5669256B82F2006D7C9F /* TaskBoardViewController.swift */; };
+		4C3F566F256B8C2B006D7C9F /* TaskListInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3F566E256B8C2B006D7C9F /* TaskListInteractor.swift */; };
+		4C3F5674256B8C63006D7C9F /* TaskListWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3F5673256B8C63006D7C9F /* TaskListWorker.swift */; };
+		4C3F5679256B8C83006D7C9F /* TaskListPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3F5678256B8C83006D7C9F /* TaskListPresenter.swift */; };
+		4C3F567E256B8CB3006D7C9F /* TaskListModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3F567D256B8CB3006D7C9F /* TaskListModels.swift */; };
+		4C3F5683256B8F4B006D7C9F /* TaskListRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3F5682256B8F4B006D7C9F /* TaskListRouter.swift */; };
+		4C3F568C256B93D5006D7C9F /* TaskCollectionViewListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3F568B256B93D5006D7C9F /* TaskCollectionViewListCell.swift */; };
 		AAEE20DE2564E4A900668FAD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAEE20DD2564E4A900668FAD /* AppDelegate.swift */; };
 		AAEE20E02564E4A900668FAD /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAEE20DF2564E4A900668FAD /* SceneDelegate.swift */; };
-		AAEE20E22564E4AA00668FAD /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAEE20E12564E4AA00668FAD /* ViewController.swift */; };
 		AAEE20E52564E4AA00668FAD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AAEE20E32564E4AA00668FAD /* Main.storyboard */; };
 		AAEE20E72564E4AC00668FAD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AAEE20E62564E4AC00668FAD /* Assets.xcassets */; };
 		AAEE20EA2564E4AC00668FAD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AAEE20E82564E4AC00668FAD /* LaunchScreen.storyboard */; };
@@ -33,12 +40,19 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		4C3F55A72564EE50006D7C9F /* HalgoraeDO.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = HalgoraeDO.app; path = "/Users/os/woong/iOS/Boostcamp2020/group_final/Project04-C-Whale/iOS/build/Debug-iphoneos/HalgoraeDO.app"; sourceTree = "<absolute>"; };
-		4C3F55A82564EE50006D7C9F /* HalgoraeDOTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = HalgoraeDOTests.xctest; path = "/Users/os/woong/iOS/Boostcamp2020/group_final/Project04-C-Whale/iOS/build/Debug-iphoneos/HalgoraeDOTests.xctest"; sourceTree = "<absolute>"; };
-		4C3F55A92564EE50006D7C9F /* HalgoraeDOUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = HalgoraeDOUITests.xctest; path = "/Users/os/woong/iOS/Boostcamp2020/group_final/Project04-C-Whale/iOS/build/Debug-iphoneos/HalgoraeDOUITests.xctest"; sourceTree = "<absolute>"; };
+		4C3F5657256B80B4006D7C9F /* HalgoraeDO.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HalgoraeDO.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4C3F5658256B80B4006D7C9F /* HalgoraeDOTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = HalgoraeDOTests.xctest; path = "/Users/os/woong/iOS/Boostcamp2020/group_final/Project04-C-Whale/iOS/build/Debug-iphoneos/HalgoraeDOTests.xctest"; sourceTree = "<absolute>"; };
+		4C3F5659256B80B4006D7C9F /* HalgoraeDOUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = HalgoraeDOUITests.xctest; path = "/Users/os/woong/iOS/Boostcamp2020/group_final/Project04-C-Whale/iOS/build/Debug-iphoneos/HalgoraeDOUITests.xctest"; sourceTree = "<absolute>"; };
+		4C3F5664256B8117006D7C9F /* TaskListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListViewController.swift; sourceTree = "<group>"; };
+		4C3F5669256B82F2006D7C9F /* TaskBoardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskBoardViewController.swift; sourceTree = "<group>"; };
+		4C3F566E256B8C2B006D7C9F /* TaskListInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListInteractor.swift; sourceTree = "<group>"; };
+		4C3F5673256B8C63006D7C9F /* TaskListWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListWorker.swift; sourceTree = "<group>"; };
+		4C3F5678256B8C83006D7C9F /* TaskListPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListPresenter.swift; sourceTree = "<group>"; };
+		4C3F567D256B8CB3006D7C9F /* TaskListModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListModels.swift; sourceTree = "<group>"; };
+		4C3F5682256B8F4B006D7C9F /* TaskListRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListRouter.swift; sourceTree = "<group>"; };
+		4C3F568B256B93D5006D7C9F /* TaskCollectionViewListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCollectionViewListCell.swift; sourceTree = "<group>"; };
 		AAEE20DD2564E4A900668FAD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AAEE20DF2564E4A900668FAD /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		AAEE20E12564E4AA00668FAD /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		AAEE20E42564E4AA00668FAD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		AAEE20E62564E4AC00668FAD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AAEE20E92564E4AC00668FAD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -73,7 +87,7 @@
 		4C3F55AD2564EE74006D7C9F /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
-				AAEE20E12564E4AA00668FAD /* ViewController.swift */,
+				4C3F5660256B80C6006D7C9F /* TaskList */,
 			);
 			path = Scenes;
 			sourceTree = "<group>";
@@ -86,10 +100,34 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		4C3F5660256B80C6006D7C9F /* TaskList */ = {
+			isa = PBXGroup;
+			children = (
+				4C3F568A256B93AA006D7C9F /* Views */,
+				4C3F5669256B82F2006D7C9F /* TaskBoardViewController.swift */,
+				4C3F5664256B8117006D7C9F /* TaskListViewController.swift */,
+				4C3F566E256B8C2B006D7C9F /* TaskListInteractor.swift */,
+				4C3F5673256B8C63006D7C9F /* TaskListWorker.swift */,
+				4C3F5678256B8C83006D7C9F /* TaskListPresenter.swift */,
+				4C3F567D256B8CB3006D7C9F /* TaskListModels.swift */,
+				4C3F5682256B8F4B006D7C9F /* TaskListRouter.swift */,
+			);
+			path = TaskList;
+			sourceTree = "<group>";
+		};
+		4C3F568A256B93AA006D7C9F /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				4C3F568B256B93D5006D7C9F /* TaskCollectionViewListCell.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		AAEE20D12564E4A900668FAD = {
 			isa = PBXGroup;
 			children = (
 				AAEE20DC2564E4A900668FAD /* HalgoraeDO */,
+				4C3F5657256B80B4006D7C9F /* HalgoraeDO.app */,
 			);
 			sourceTree = "<group>";
 		};
@@ -156,7 +194,7 @@
 			);
 			name = HalgoraeDO;
 			productName = HalgoraeDO;
-			productReference = 4C3F55A72564EE50006D7C9F /* HalgoraeDO.app */;
+			productReference = 4C3F5657256B80B4006D7C9F /* HalgoraeDO.app */;
 			productType = "com.apple.product-type.application";
 		};
 		AAEE20EF2564E4AC00668FAD /* HalgoraeDOTests */ = {
@@ -174,7 +212,7 @@
 			);
 			name = HalgoraeDOTests;
 			productName = HalgoraeDOTests;
-			productReference = 4C3F55A82564EE50006D7C9F /* HalgoraeDOTests.xctest */;
+			productReference = 4C3F5658256B80B4006D7C9F /* HalgoraeDOTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		AAEE20FA2564E4AC00668FAD /* HalgoraeDOUITests */ = {
@@ -192,7 +230,7 @@
 			);
 			name = HalgoraeDOUITests;
 			productName = HalgoraeDOUITests;
-			productReference = 4C3F55A92564EE50006D7C9F /* HalgoraeDOUITests.xctest */;
+			productReference = 4C3F5659256B80B4006D7C9F /* HalgoraeDOUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -269,9 +307,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AAEE20E22564E4AA00668FAD /* ViewController.swift in Sources */,
+				4C3F568C256B93D5006D7C9F /* TaskCollectionViewListCell.swift in Sources */,
+				4C3F5679256B8C83006D7C9F /* TaskListPresenter.swift in Sources */,
 				AAEE20DE2564E4A900668FAD /* AppDelegate.swift in Sources */,
+				4C3F567E256B8CB3006D7C9F /* TaskListModels.swift in Sources */,
 				AAEE20E02564E4A900668FAD /* SceneDelegate.swift in Sources */,
+				4C3F5683256B8F4B006D7C9F /* TaskListRouter.swift in Sources */,
+				4C3F566A256B82F2006D7C9F /* TaskBoardViewController.swift in Sources */,
+				4C3F5665256B8117006D7C9F /* TaskListViewController.swift in Sources */,
+				4C3F5674256B8C63006D7C9F /* TaskListWorker.swift in Sources */,
+				4C3F566F256B8C2B006D7C9F /* TaskListInteractor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
