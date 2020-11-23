@@ -3,7 +3,9 @@ const applyAssociations = require('@models/associations');
 const dbConnectionConfig = require('@config/db-config')[process.env.NODE_ENV];
 
 const fs = require('fs');
+
 const path = require('path');
+
 const basename = path.basename(__filename);
 
 const sequelize = new Sequelize(dbConnectionConfig);
@@ -18,6 +20,7 @@ fs.readdirSync(__dirname)
     );
   })
   .forEach(file => {
+    // eslint-disable-next-line import/no-dynamic-require
     const modelDefiner = require(path.join(__dirname, file));
     modelDefiner(sequelize);
   });
