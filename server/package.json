@@ -15,7 +15,8 @@
       "^@test/(.*)$": "<rootDir>/test/$1",
       "^@config/(.*)$": "<rootDir>/src/config/$1",
       "^@models(.*)$": "<rootDir>/src/models/$1",
-      "^@loaders/(.*)$": "<rootDir>/src/loaders/$1"
+      "^@loaders/(.*)$": "<rootDir>/src/loaders/$1",
+      "^@utils/(.*)$": "<rootDir>/src/utils/$1"
     }
   },
   "dependencies": {
@@ -46,6 +47,7 @@
     "@test": "./test",
     "@config": "./src/config",
     "@models": "./src/models",
-    "@loaders": "./src/loaders"
+    "@loaders": "./src/loaders",
+    "@utils": "./src/utils"
   }
 }
