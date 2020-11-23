@@ -6,7 +6,6 @@ const errorHandler = (res, code, message = '') => {
 
 const responseHandler = (res, code, result = { message: 'ok' }) => {
   res.status(code).json({
-    message: 'ok',
     ...result,
   });
 };
