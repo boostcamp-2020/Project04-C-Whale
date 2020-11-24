@@ -28,6 +28,8 @@
     "module-alias": "^2.2.2",
     "morgan": "~1.9.1",
     "mysql2": "^2.2.5",
+    "passport": "^0.4.1",
+    "passport-naver": "^1.0.6",
     "sequelize": "^6.3.5",
     "sequelize-cli": "^6.2.0",
     "uuid": "^8.3.1"
@@ -53,6 +55,9 @@
     "@models": "./src/models",
     "@loaders": "./src/loaders",
     "@utils": "./src/utils",
-    "@routes": "./src/routes"
+    "@routes": "./src/routes",
+    "@passport": "./src/passport",
+    "@services": "./src/services",
+    "@controllers": "./src/controllers"
   }
 }
