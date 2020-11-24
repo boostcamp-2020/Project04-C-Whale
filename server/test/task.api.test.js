@@ -126,6 +126,64 @@ describe('post task', () => {
     }
   });
 
+  it('alarm 없이 생성', done => {
+    // given
+    const newTask = {
+      title: '할일',
+      projectId: expectedData.projects[0].id,
+      labelIdList: JSON.stringify([]),
+      priorityId: JSON.stringify([]),
+      dueDate: '2020-11-28',
+      parentId: null,
+      alarmId: null,
+    };
+
+    try {
+      request(app)
+        .post('/api/task')
+        .send(newTask)
+        .end((err, res) => {
+          if (err) {
+            throw err;
+          }
+          expect(res.status).toBe(201);
+          expect(res.body.message).toBe('ok');
+          done();
+        });
+    } catch (err) {
+      done(err);
+    }
+  });
+
+  it('alarm 없이 생성', done => {
+    // given
+    const newTask = {
+      title: '할일',
+      projectId: expectedData.projects[0].id,
+      labelIdList: JSON.stringify([]),
+      priorityId: JSON.stringify([]),
+      dueDate: '2020-11-28',
+      parentId: null,
+      alarmId: null,
+    };
+
+    try {
+      request(app)
+        .post('/api/task')
+        .send(newTask)
+        .end((err, res) => {
+          if (err) {
+            throw err;
+          }
+          expect(res.status).toBe(201);
+          expect(res.body.message).toBe('ok');
+          done();
+        });
+    } catch (err) {
+      done(err);
+    }
+  });
+
   it('하위 task 생성', done => {
     // given
     const newTask = {
