@@ -1,7 +1,7 @@
 require('module-alias/register');
 const request = require('supertest');
 const app = require('@root/app');
-const expectedData = require('@test/expected-data');
+const expectedData = require('@test/mock-seed');
 
 jest.mock('@models', () => {
   // 추후 global setting 으로 한번에 설정하는 방안 생각
