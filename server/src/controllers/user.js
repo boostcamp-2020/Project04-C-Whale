@@ -16,4 +16,13 @@ const naverLogin = (req, res, next) => {
   }
 };
 
-module.exports = { naverLogin };
+const getOwnInfo = (req, res, next) => {
+  try {
+    const { user } = req;
+    responseHandler(res, 200, user);
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports = { naverLogin, getOwnInfo };
