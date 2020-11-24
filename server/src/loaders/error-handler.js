@@ -10,7 +10,7 @@ const lastErrorHandler = app => {
     next(err);
   });
 
-  app.use((err, req, res) => {
+  app.use((err, req, res, next) => {
     errorHandler(res, err.status || INTERNAL_ERROR, err.message);
   });
 };
