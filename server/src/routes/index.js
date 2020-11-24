@@ -1,12 +1,10 @@
 const router = require('express').Router();
-
-const { models } = require('@models');
-const { responseHandler } = require('@utils/handler');
-const labelRouter = require('@routes/label');
 const userRouter = require('@routes/user');
+const taskRouter = require('@routes/task');
+const labelRouter = require('@routes/label');
 
 router.use('/user', userRouter);
-
+router.use('/task', taskRouter);
 router.use('/label', labelRouter);
 
 module.exports = router;
