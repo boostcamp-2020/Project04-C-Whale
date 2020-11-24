@@ -1,6 +1,7 @@
 require('module-alias/register');
 const request = require('supertest');
 const app = require('@root/app');
+const { createJWT } = require('@utils/auth');
 const seeder = require('@test/test-seed');
 
 beforeAll(async done => {
@@ -15,8 +16,50 @@ afterAll(async done => {
 
 const SUCCESS_CODE = 200;
 const SUCCESS_MSG = 'ok';
+const UNAUTHORIZED_CODE = 401;
+const UNAUTHORIZED_MSG = 'Unauthorized';
 
 describe('label api', () => {
+  it('전체 label 조회 (token O)', done => {
+    // given
+    const expectedLabels = seeder.labels;
+    try {
+      request(app)
+        .get('/api/label') // when
+        .set('Authorization', createJWT(seeder.users[0]))
+        .end((err, res) => {
+          if (err) {
+            throw err;
+          }
+          const { labels } = res.body;
+          // then
+          expect(res.status).toBe(SUCCESS_CODE);
+          expect(expectedLabels).toBe(labels);
+          done();
+        });
+    } catch (err) {
+      done(err);
+    }
+  });
+  it('전체 label 조회 (token X)', done => {
+    // given
+    try {
+      request(app)
+        .get('/api/label') // when
+        .end((err, res) => {
+          if (err) {
+            throw err;
+          }
+          console.log(res);
+          // then
+          expect(res.status).toBe(UNAUTHORIZED_CODE);
+          expect(res.body.message).toBe(UNAUTHORIZED_MSG);
+          done();
+        });
+    } catch (err) {
+      done(err);
+    }
+  });
   it('label post', done => {
     // given
     const expectedLabel = {
