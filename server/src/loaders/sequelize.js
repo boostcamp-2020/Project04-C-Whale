@@ -1,7 +1,10 @@
 const sequelize = require('@models');
 
 const sequelizeLoader = async () => {
-  // const useInit = process.env.INIT_DB === 'use';
+  if (process.env.NODE_ENV === 'test') {
+    return;
+  }
+
   try {
     await sequelize.sync({ force: true });
   } catch (e) {
