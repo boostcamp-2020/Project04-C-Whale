@@ -24,6 +24,7 @@ class TaskContentView: UIView, UIContentView {
             apply(configuration: newConfiguration)
         }
     }
+    var completeHandler: ((Bool) -> Void)?
     
     // MARK: - Views
     

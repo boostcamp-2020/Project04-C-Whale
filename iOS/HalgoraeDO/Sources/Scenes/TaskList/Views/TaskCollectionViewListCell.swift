@@ -9,7 +9,8 @@ import UIKit
 
 class TaskCollectionViewListCell: UICollectionViewListCell {
     
-    var task: Task?
+    weak var task: Task?
+    var completeHandler: ((Task?) -> Void)?
     
     override func updateConfiguration(using state: UICellConfigurationState) {
         
@@ -18,5 +19,12 @@ class TaskCollectionViewListCell: UICollectionViewListCell {
         taskContentConfiguration.isCompleted = task?.isCompleted
         
         contentConfiguration = taskContentConfiguration
+        
+        if let taskContentView = contentView as? TaskContentView {
+            taskContentView.completeHandler = { [weak self] isCompleted in
+                self?.task?.isCompleted = isCompleted
+                self?.completeHandler?(self?.task)
+            }
+        }
     }
 }

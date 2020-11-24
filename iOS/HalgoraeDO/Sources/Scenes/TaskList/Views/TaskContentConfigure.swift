@@ -23,8 +23,9 @@ struct TaskContentConfiguration: UIContentConfiguration, Hashable {
         }
         
         var updatedConfiguration = self
+        updatedConfiguration.title = title
+        updatedConfiguration.isCompleted = isCompleted
         
         return updatedConfiguration
     }
-    
 }

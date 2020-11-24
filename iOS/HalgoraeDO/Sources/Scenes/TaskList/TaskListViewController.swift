@@ -103,14 +103,26 @@ private extension TaskListViewController {
 private extension TaskListViewController {
 
     private func configureDataSource() {
-        let cellRegistration = UICollectionView.CellRegistration<TaskCollectionViewListCell, Task> { (cell, indexPath, taskItem) in
-
-            var contentConfiguration = cell.defaultContentConfiguration()
-            contentConfiguration.text = taskItem.title
+        let cellRegistration = UICollectionView.CellRegistration<TaskCollectionViewListCell, Task> { [weak self] (cell, indexPath, taskItem) in
+            
+            cell.task = taskItem
+            cell.completeHandler = { [weak self] task in
+                guard let self = self,
+                      let task = task
+                else {
+                    return
+                }
+                
+                var currentSnapshot = self.dataSource.snapshot()
+                if task.isCompleted {
+                    currentSnapshot.deleteItems([task])
+                } else {
+                }
+                self.dataSource.apply(currentSnapshot)
+            }
+            
             let disclosureOptions = UICellAccessory.OutlineDisclosureOptions(style: .header)
             cell.accessories = taskItem.subTasks.isEmpty ? [] : [.outlineDisclosure(options: disclosureOptions)]
-            cell.contentConfiguration = contentConfiguration
-            cell.backgroundConfiguration = UIBackgroundConfiguration.clear()
         }
         
         self.dataSource = UICollectionViewDiffableDataSource<String, Task>(collectionView: taskListCollectionView, cellProvider: { (collectionView, indexPath, task) -> UICollectionViewCell? in
