@@ -14,7 +14,9 @@ const jwtVerify = async (payload, done) => {
       err.status = 400;
       throw err;
     }
-    const user = await userModel.findByPk(payload.id);
+    const user = await userModel.findByPk(payload.id, {
+      attributes: { exclude: ['createdAt', 'updatedAt'] },
+    });
     if (user) {
       done(null, user.dataValues);
     } else {
