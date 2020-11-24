@@ -18,12 +18,10 @@ const AlarmMock = DBConnectionMock.define('alarm');
 applyAssociations(DBConnectionMock);
 
 UserMock.$queueResult(UserMock.build(expectedData.users[0]));
-ProjectMock.$queueResult([
-  ProjectMock.build(expectedData.projects[0]),
-  ProjectMock.build(expectedData.projects[1]),
-]);
+ProjectMock.$queueResult(expectedData.projects.forEach(project => ProjectMock.build(project)));
 LabelMock.$queueResult(expectedData.labels.forEach(label => LabelMock.build(label)));
 ProjectMock.$queueResult(expectedData.priorities.forEach(priority => ProjectMock.build(priority)));
 AlarmMock.$queueResult(expectedData.alarms.forEach(alarm => AlarmMock.build(alarm)));
+TaskMock.$queueResult(expectedData.tasks.forEach(task => TaskMock.build(task)));
 
 module.exports = DBConnectionMock;
