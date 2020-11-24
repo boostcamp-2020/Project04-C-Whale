@@ -6,7 +6,7 @@ const sequelizeLoader = async () => {
   }
 
   try {
-    await sequelize.sync({ force: true });
+    await sequelize.sync({ alter: true });
   } catch (e) {
     process.exit(1);
   }
