@@ -83,6 +83,16 @@ const tasks = [
     createdAt: new Date(),
     updatedAt: new Date(),
   },
+  {
+    id: '7d62f93c-9233-46a9-a5cf-ec18ad5a36f4',
+    projectId: projects[0].id,
+    title: '작업 3',
+    dueDate: new Date('2020-10-24T14:23:24.090Z'),
+    position: 3,
+    isDone: false,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
 ];
 
 const sections = [
