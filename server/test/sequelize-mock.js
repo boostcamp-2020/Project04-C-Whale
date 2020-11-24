@@ -22,5 +22,8 @@ ProjectMock.$queueResult([
   ProjectMock.build(expectedData.projects[0]),
   ProjectMock.build(expectedData.projects[1]),
 ]);
+LabelMock.$queueResult(expectedData.labels.forEach(label => LabelMock.build(label)));
+ProjectMock.$queueResult(expectedData.priorities.forEach(priority => ProjectMock.build(priority)));
+AlarmMock.$queueResult(expectedData.alarms.forEach(alarm => AlarmMock.build(alarm)));
 
 module.exports = DBConnectionMock;
