@@ -108,6 +108,7 @@ const labels = [
     id: '54eefed3-3652-443f-85c9-7dfe87b23f82',
     color: 'red',
     title: '라벨 1',
+    userId: 'ff4dd832-1567-4d74-b41d-bd85e96ce329',
     createdAt: new Date(),
     updatedAt: new Date(),
   },
