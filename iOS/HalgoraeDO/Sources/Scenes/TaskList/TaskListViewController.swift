@@ -72,6 +72,10 @@ class TaskListViewController: UIViewController {
         [showBoardAction, addSectionAction, selectTaskAction, cancelAction].forEach { alert.addAction($0) }
         present(alert, animated: true, completion: nil)
     }
+    
+    @IBAction func didTapAddButton(_ sender: RoundButton) {
+        
+    }
 }
 
 // MARK: - TaskList Display Logic
