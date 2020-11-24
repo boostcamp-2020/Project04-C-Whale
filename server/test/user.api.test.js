@@ -17,7 +17,10 @@ afterAll(async done => {
 describe('user api', () => {
   it('users me', done => {
     // given
-    const expectedUser = seeder.users[0];
+    const expectedUser = (() => {
+      const { createdAt: deletedKey, updatedAt: deletedKey2, ...rest } = seeder.users[0];
+      return rest;
+    })();
 
     try {
       request(app)
