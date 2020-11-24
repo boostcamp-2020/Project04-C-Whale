@@ -1,27 +1,34 @@
 require('module-alias/register');
 const request = require('supertest');
 const app = require('@root/app');
-const expectedData = require('@test/mock-seed');
+const seeder = require('@test/test-seed');
+const { createJWT } = require('@utils/auth');
 
-jest.mock('@models', () => {
-  // 추후 global setting 으로 한번에 설정하는 방안 생각
-  const connection = require('@test/sequelize-mock');
-  return connection;
+beforeAll(async done => {
+  await seeder.up();
+  done();
+});
+
+afterAll(async done => {
+  await seeder.down();
+  done();
 });
 
 describe('user api', () => {
   it('users me', done => {
     // given
-    const expectedUser = expectedData.users[0];
+    const expectedUser = seeder.users[0];
 
     try {
       request(app)
-        .get('/user/me') // when
+        .get('/api/user/me') // when
+        .set('Authorization', createJWT(seeder.users[0]))
         .end((err, res) => {
           if (err) {
             throw err;
           }
           const user = res.body;
+          // then
           expect(user).toStrictEqual(expectedUser);
           done();
         });
