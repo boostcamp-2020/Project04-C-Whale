@@ -1,17 +1,21 @@
-const { responseHandler, errorHandler } = require('@utils/handler');
-const { isValidDueDate } = require('@utils/date');
-const taskService = require('@services/task');
-const labelService = require('@services/label');
+const { responseHandler } = require('@utils/handler');
+const sequelize = require('@models');
+const { models } = require('@models');
 
-const createTask = async (req, res) => {
+const createTask = async (req, res, next) => {
+  const t = await sequelize.transaction();
+
   try {
     const { labelIdList, dueDate, ...rest } = req.body;
 
-    const newTask = await taskService.createTask(dueDate, rest);
-    await labelService.assignLabelToTask(newTask, labelIdList);
+    const newTask = await models.task.create({ dueDate, ...rest }, { transaction: t });
+    await newTask.setLabels(JSON.parse(labelIdList), { transaction: t });
+    await t.commit();
+
     responseHandler(res, 201, { message: 'ok', id: newTask.id });
   } catch (err) {
-    errorHandler(res, 400, { message: err.message });
+    await t.rollback();
+    next(err);
   }
 };
 
