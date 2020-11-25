@@ -12,6 +12,7 @@ struct TaskContentConfiguration: UIContentConfiguration, Hashable {
     var title: String?
     var image: UIImage?
     var isCompleted: Bool?
+    var isEditing = false
     
     func makeContentView() -> UIView & UIContentView {
         return TaskContentView(configuration: self)
@@ -25,7 +26,7 @@ struct TaskContentConfiguration: UIContentConfiguration, Hashable {
         var updatedConfiguration = self
         updatedConfiguration.title = title
         updatedConfiguration.isCompleted = isCompleted
-        
+        updatedConfiguration.isEditing = state.isEditing
         return updatedConfiguration
     }
 }
