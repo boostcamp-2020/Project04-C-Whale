@@ -9,6 +9,7 @@ import UIKit
 
 protocol TaskListDisplayLogic {
     func display(tasks: [Task])
+    func displayDetail(of task: Task)
 }
 
 class TaskListViewController: UIViewController {
@@ -103,6 +104,10 @@ extension TaskListViewController: TaskListDisplayLogic {
         let sectionTitle = ""
         dataSource.apply(snapShot, to: sectionTitle, animatingDifferences: true)
     }
+    
+    func displayDetail(of task: Task) {
+        
+    }
 }
 
 // MARK: - Configure CollectionView Layout
@@ -182,6 +187,9 @@ extension TaskListViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard !isEditing else { return }
         collectionView.deselectItem(at: indexPath, animated: true)
+        
+        let task = dataSource.snapshot().itemIdentifiers[indexPath.item]
+        interactor?.select(task: task)
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {

@@ -9,6 +9,7 @@ import Foundation
 
 protocol TaskListPresentLogic {
     func present(tasks: [Task])
+    func presentDetail(of task: Task)
 }
 
 class TaskListPresenter {
@@ -22,5 +23,9 @@ class TaskListPresenter {
 extension TaskListPresenter: TaskListPresentLogic {
     func present(tasks: [Task]) {
         viewController.display(tasks: tasks)
+    }
+    
+    func presentDetail(of task: Task) {
+        viewController.displayDetail(of: task)
     }
 }

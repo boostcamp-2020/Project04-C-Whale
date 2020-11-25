@@ -9,6 +9,7 @@ import Foundation
 
 protocol TaskListBusinessLogic {
     func fetchTasks()
+    func select(task: Task)
 }
 
 protocol TaskListDataStore {
@@ -29,5 +30,9 @@ extension TaskListInteractor: TaskListBusinessLogic {
     func fetchTasks() {
         let tasks = worker.getTasks()
         presenter.present(tasks: tasks)
+    }
+    
+    func select(task: Task) {
+        presenter.presentDetail(of: task)
     }
 }
