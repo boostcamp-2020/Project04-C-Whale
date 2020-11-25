@@ -2,157 +2,142 @@ const sequelize = require('@models');
 const { Op } = require('sequelize');
 
 const { models } = sequelize;
-const { responseHandler, errorHandler } = require('@utils/handler');
+const { responseHandler } = require('@utils/handler');
+const { asyncTryCatch } = require('@utils/async-try-catch');
 const getTodayStartEnd = require('@utils/today-start-end');
 
-const getProjects = async (req, res) => {
-  try {
-    const projects = await models.project.findAll({
-      attributes: ['id', 'title', [sequelize.fn('COUNT', sequelize.col('tasks.id')), 'taskCount']],
+const getProjects = asyncTryCatch(async (req, res) => {
+  const projects = await models.project.findAll({
+    attributes: ['id', 'title', [sequelize.fn('COUNT', sequelize.col('tasks.id')), 'taskCount']],
+    include: {
+      model: models.task,
+      attributes: [],
+    },
+    group: ['project.id'],
+  });
+
+  const { todayStart, todayEnd } = getTodayStartEnd();
+
+  const todayProject = {
+    title: '오늘',
+  };
+  todayProject.taskCount = await models.task.count({
+    where: {
+      dueDate: {
+        [Op.and]: {
+          [Op.gt]: todayStart,
+          [Op.lt]: todayEnd,
+        },
+      },
+    },
+  });
+  projects.push(todayProject);
+
+  responseHandler(res, 201, projects);
+});
+
+const getProjectById = asyncTryCatch(async (req, res) => {
+  const project = await models.project.findByPk(req.params.projectId, {
+    attributes: ['id', 'title', 'isList'],
+    include: {
+      model: models.section,
       include: {
         model: models.task,
-        attributes: [],
+        where: { parentId: null },
+        include: ['priority', 'labels', 'alarm', 'tasks'],
       },
-      group: ['project.id'],
+    },
+    order: [
+      [models.section, models.task, 'position', 'ASC'],
+      [models.section, models.task, models.task, 'position', 'ASC'],
+    ],
+  });
+
+  responseHandler(res, 201, project);
+});
+
+const createProject = asyncTryCatch(async (req, res) => {
+  await sequelize.transaction(async t => {
+    const project = await models.project.create(req.body, {
+      transaction: t,
     });
-
-    const { todayStart, todayEnd } = getTodayStartEnd();
-
-    const todayProject = { title: '오늘' };
-    todayProject.taskCount = await await models.task.count({
-      where: {
-        dueDate: {
-          [Op.and]: {
-            [Op.gt]: todayStart,
-            [Op.lt]: todayEnd,
-          },
-        },
+    const section = await models.section.create(
+      {},
+      {
+        transaction: t,
       },
+    );
+    await section.setProject(project, {
+      transaction: t,
     });
-    projects.push(todayProject);
+  });
 
-    responseHandler(res, 201, projects);
-  } catch (err) {
-    next(err);
-  }
-};
+  responseHandler(res, 201, {
+    message: 'ok',
+  });
+});
 
-const getProjectById = async (req, res) => {
-  try {
-    const project = await models.project.findByPk(req.params.projectId, {
-      attributes: ['id', 'title', 'isList'],
-      include: {
-        model: models.section,
-        include: {
-          model: models.task,
-          include: {
-            model: models.task,
-            attributes: { exclude: ['createdAt', 'updatedAt'] },
-          },
-        },
-      },
-    });
+const updateProject = asyncTryCatch(async (req, res) => {
+  await models.project.update(req.body, {
+    where: {
+      id: req.params.projectId,
+    },
+  });
+  responseHandler(res, 201, {
+    message: 'ok',
+  });
+});
 
-    responseHandler(res, 201, project);
-  } catch (err) {
-    next(err);
-  }
-};
+const deleteProject = asyncTryCatch(async (req, res) => {
+  await models.project.destroy({
+    where: {
+      id: req.params.projectId,
+    },
+  });
+  responseHandler(res, 201, {
+    message: 'ok',
+  });
+});
 
-const createProject = async (req, res) => {
-  try {
-    await sequelize.transaction(async t => {
-      const project = await models.project.create(req.body, { transaction: t });
-      const section = await models.section.create({}, { transaction: t });
-      await section.setProject(project, { transaction: t });
-    });
-
-    responseHandler(res, 201, {
-      message: 'ok',
-    });
-  } catch (err) {
-    next(err);
-  }
-};
-
-const updateProject = async (req, res) => {
-  try {
-    await models.project.update(req.body, {
-      where: {
-        id: req.params.projectId,
-      },
-    });
-    responseHandler(res, 201, {
-      message: 'ok',
-    });
-  } catch (err) {
-    next(err);
-  }
-};
-
-const deleteProject = async (req, res) => {
-  try {
-    await models.project.destroy({
-      where: {
-        id: req.params.projectId,
-      },
-    });
-    responseHandler(res, 201, {
-      message: 'ok',
-    });
-  } catch (err) {
-    next(err);
-  }
-};
-
-const createSection = async (req, res) => {
-  try {
+const createSection = asyncTryCatch(async (req, res) => {
+  await sequelize.transaction(async t => {
     const project = await models.project.findByPk(req.params.projectId);
-
-    await sequelize.transaction(async t => {
-      const section = await models.section.create(req.body, { transaction: t });
-      await section.setProject(project, { transaction: t });
+    const section = await models.section.create(req.body, {
+      transaction: t,
     });
-
-    responseHandler(res, 201, {
-      message: 'ok',
+    await section.setProject(project, {
+      transaction: t,
     });
-  } catch (err) {
-    next(err);
-  }
-};
+  });
 
-const updateSection = async (req, res) => {
-  try {
-    await models.section.update(req.body, {
-      where: {
-        id: req.params.sectionId,
-      },
-    });
+  responseHandler(res, 201, {
+    message: 'ok',
+  });
+});
 
-    responseHandler(res, 201, {
-      message: 'ok',
-    });
-  } catch (err) {
-    next(err);
-  }
-};
+const updateSection = asyncTryCatch(async (req, res) => {
+  await models.section.update(req.body, {
+    where: {
+      id: req.params.sectionId,
+    },
+  });
 
-const deleteSection = async (req, res) => {
-  try {
-    await models.project.destroy({
-      where: {
-        id: req.params.sectionId,
-      },
-    });
+  responseHandler(res, 201, {
+    message: 'ok',
+  });
+});
 
-    responseHandler(res, 201, {
-      message: 'ok',
-    });
-  } catch (err) {
-    next(err);
-  }
-};
+const deleteSection = asyncTryCatch(async (req, res) => {
+  await models.project.destroy({
+    where: {
+      id: req.params.sectionId,
+    },
+  });
+
+  responseHandler(res, 201, {
+    message: 'ok',
+  });
+});
 
 module.exports = {
   getProjects,
