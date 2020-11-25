@@ -19,7 +19,7 @@ const createLabel = async (req, res, next) => {
     const { title, color } = req.body;
     const result = await labelModel.create({ title, color, userId: req.user.id });
     if (result) {
-      responseHandler(res, 200);
+      responseHandler(res, 201);
     } else {
       throw Error('Internal Server Error');
     }
