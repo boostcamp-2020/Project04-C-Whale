@@ -5,9 +5,7 @@ const errorHandler = (res, code, message = '') => {
 };
 
 const responseHandler = (res, code, result = { message: 'ok' }) => {
-  res.status(code).json({
-    ...result,
-  });
+  res.status(code).json(result);
 };
 
 module.exports = { errorHandler, responseHandler };

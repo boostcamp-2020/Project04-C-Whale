@@ -67,13 +67,22 @@ const projects = [
   },
 ];
 
+const sections = [
+  {
+    id: '7abf0633-bce2-4972-9249-69f287db8a47',
+    projectId: projects[0].id,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+];
+
 const tasks = [
   {
     id: '13502adf-83dd-4e8e-9acf-5c5a0abd5b1b',
     projectId: projects[0].id,
+    sectionId: sections[0].id,
     parentId: null,
     priorityId: priorities[0].id,
-    sectionId: null,
     title: '작업 1',
     dueDate: new Date(),
     position: 1,
@@ -84,6 +93,7 @@ const tasks = [
   {
     id: 'cd62f93c-9233-46a9-a5cf-ec18ad5a36f4',
     projectId: projects[0].id,
+    sectionId: sections[0].id,
     title: '작업 2',
     dueDate: new Date(),
     position: 2,
@@ -91,12 +101,26 @@ const tasks = [
     createdAt: new Date(),
     updatedAt: new Date(),
   },
-];
-
-const sections = [
   {
-    id: '7abf0633-bce2-4972-9249-69f287db8a47',
-    title: 'section 1',
+    id: '7d62f93c-9233-46a9-a5cf-ec18ad5a36f4',
+    projectId: projects[0].id,
+    sectionId: sections[0].id,
+    title: '작업 3',
+    dueDate: new Date('2020-10-24T14:23:24.090Z'),
+    position: 3,
+    isDone: false,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    id: '8d62f93c-9233-46a9-a5cf-ec18ad5a36f4',
+    projectId: projects[0].id,
+    sectionId: sections[0].id,
+    parentId: '13502adf-83dd-4e8e-9acf-5c5a0abd5b1b',
+    title: '작업 4',
+    dueDate: new Date('2020-10-24T14:23:24.090Z'),
+    position: 1,
+    isDone: false,
     createdAt: new Date(),
     updatedAt: new Date(),
   },
@@ -162,8 +186,8 @@ module.exports = {
     await queryInterface.bulkInsert('user', users, {});
     await queryInterface.bulkInsert('priority', priorities, {});
     await queryInterface.bulkInsert('project', projects, {});
-    await queryInterface.bulkInsert('task', tasks, {});
     await queryInterface.bulkInsert('section', sections, {});
+    await queryInterface.bulkInsert('task', tasks, {});
     await queryInterface.bulkInsert('comment', comments, {});
     await queryInterface.bulkInsert('label', labels, {});
     await queryInterface.bulkInsert('bookmark', bookmarks, {});

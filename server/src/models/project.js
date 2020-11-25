@@ -18,8 +18,8 @@ module.exports = sequelize => {
         type: DataTypes.BOOLEAN,
       },
       isFavorite: {
-        allowNull: false,
         type: DataTypes.BOOLEAN,
+        defaultValue: false,
       },
     },
     { tableName: 'project' },
