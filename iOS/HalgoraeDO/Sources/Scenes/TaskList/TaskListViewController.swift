@@ -7,13 +7,6 @@
 
 import UIKit
 
-protocol TaskListDisplayLogic {
-    func display(tasks: [Task])
-    func displayDetail(of task: Task)
-    func set(editingMode: Bool)
-    func display(numberOfSelectedTasks count: Int)
-}
-
 class TaskListViewController: UIViewController {
     
     // MARK: - Properties
