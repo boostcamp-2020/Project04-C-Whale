@@ -48,9 +48,22 @@ class TaskListViewController: UIViewController {
     
     // MARK: - Methods
     
+    override func setEditing(_ editing: Bool, animated: Bool) {
+        super.setEditing(editing, animated: animated)
+        taskListCollectionView.isEditing = editing
+        moreButton.title = editing ? "취소" : "More"
+        
+    }
+    
     // MARK: IBActions
     
     @IBAction private func didTapMoreButton(_ sender: UIBarButtonItem) {
+        
+        guard !isEditing else {
+            setEditing(false, animated: true)
+            return
+        }
+        
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
         let showBoardAction = UIAlertAction(title: "보드로 보기", style: .default) { (action) in
@@ -61,8 +74,9 @@ class TaskListViewController: UIViewController {
             
         }
 
-        let selectTaskAction = UIAlertAction(title: "작업 선택", style: .default) { (action) in
+        let selectTaskAction = UIAlertAction(title: "작업 선택", style: .default) { [weak self] (action) in
             
+            self?.setEditing(true, animated: true)
         }
 
         let cancelAction = UIAlertAction(title: "취소", style: .cancel) { (action) in
@@ -93,10 +107,20 @@ extension TaskListViewController: TaskListDisplayLogic {
 private extension TaskListViewController {
     private func configureCollectionView() {
         taskListCollectionView.collectionViewLayout = generateLayout()
+        taskListCollectionView.allowsMultipleSelectionDuringEditing = true
     }
     
     private func generateLayout() -> UICollectionViewLayout {
-        let listConfiguration = UICollectionLayoutListConfiguration(appearance: .sidebar)
+        var listConfiguration = UICollectionLayoutListConfiguration(appearance: .sidebar)
+        listConfiguration.leadingSwipeActionsConfigurationProvider = { indexPath in
+            let editAction = UIContextualAction(style: .normal, title: "Edit") { [weak self] (action, view, completion) in
+                if !(self?.isEditing ?? true) {
+                    self?.setEditing(true, animated: true)
+                }
+                self?.taskListCollectionView.selectItem(at: indexPath, animated: true, scrollPosition: .init())
+            }
+            return UISwipeActionsConfiguration(actions: [editAction])
+        }
         let layout = UICollectionViewCompositionalLayout.list(using: listConfiguration)
         return layout
     }

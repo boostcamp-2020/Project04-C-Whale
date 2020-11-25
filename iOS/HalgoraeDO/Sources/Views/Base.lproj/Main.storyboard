@@ -44,7 +44,7 @@
                                     <navigationItem title="Title" id="RFQ-Xx-6Mo">
                                         <barButtonItem key="rightBarButtonItem" title="More" id="EAu-h2-Agg">
                                             <connections>
-                                                <action selector="didTapMoreButton:" destination="BYZ-38-t0r" id="4La-cK-CUs"/>
+                                                <action selector="didTapMoreButton:" destination="BYZ-38-t0r" id="Bfi-ky-gw9"/>
                                             </connections>
                                         </barButtonItem>
                                     </navigationItem>
