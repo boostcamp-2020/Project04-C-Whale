@@ -22,7 +22,7 @@ const getTaskById = asyncTryCatch(async (req, res) => {
   responseHandler(res, 201, task);
 });
 
-const createTask = asyncTryCatch(async (req, res) => {
+const createOrUpdateTask = asyncTryCatch(async (req, res) => {
   const { labelIdList, dueDate, ...rest } = req.body;
 
   if (!isValidDueDate(dueDate)) {
@@ -31,12 +31,25 @@ const createTask = asyncTryCatch(async (req, res) => {
     throw err;
   }
 
+  const { taskId } = req.params;
   await sequelize.transaction(async t => {
-    const newTask = await models.task.create({ dueDate, ...rest }, { transaction: t });
-    await newTask.setLabels(JSON.parse(labelIdList), { transaction: t });
+    let task;
+    if (taskId !== undefined) {
+      await models.task.update(
+        { dueDate, ...rest },
+        {
+          where: { id: taskId },
+        },
+        { transaction: t },
+      );
+      task = await models.task.findByPk(taskId, { transaction: t });
+    }
+
+    task = await models.task.create({ dueDate, ...rest }, { transaction: t });
+    await task.setLabels(JSON.parse(labelIdList), { transaction: t });
   });
 
   responseHandler(res, 201, { message: 'ok' });
 });
 
-module.exports = { createTask, getTaskById };
+module.exports = { createOrUpdateTask, getTaskById, deleteTask };

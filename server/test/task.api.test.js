@@ -176,3 +176,34 @@ describe('post task', () => {
     done();
   });
 });
+
+describe('post task with id (업데이트)', () => {
+  it('post task with id 일반', done => {
+    const newTask = {
+      title: '할일',
+      projectId: projects[0].id,
+      labelIdList: JSON.stringify(labels.map(label => label.id)),
+      priorityId: priorities[0].id,
+      dueDate: '2021-11-28',
+      parentId: null,
+      alarmId: alarms[0].id,
+      position: 1,
+    };
+
+    try {
+      request(app)
+        .post('/api/task/13502adf-83dd-4e8e-9acf-5c5a0abd5b1b')
+        .send(newTask)
+        .end((err, res) => {
+          if (err) {
+            throw err;
+          }
+          expect(res.status).toBe(201);
+          expect(res.body.message).toBe('ok');
+          done();
+        });
+    } catch (err) {
+      done(err);
+    }
+  });
+});
