@@ -207,3 +207,22 @@ describe('post task with id (업데이트)', () => {
     }
   });
 });
+
+describe('delete task', () => {
+  it('delete task 일반', done => {
+    try {
+      request(app)
+        .delete('/api/project/13502adf-83dd-4e8e-9acf-5c5a0abd5b1b')
+        .end((err, res) => {
+          if (err) {
+            throw err;
+          }
+          expect(res.status).toBe(201);
+          expect(res.body.message).toBe('ok');
+          done();
+        });
+    } catch (err) {
+      done(err);
+    }
+  });
+});

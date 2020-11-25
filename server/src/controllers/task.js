@@ -52,4 +52,15 @@ const createOrUpdateTask = asyncTryCatch(async (req, res) => {
   responseHandler(res, 201, { message: 'ok' });
 });
 
+const deleteTask = asyncTryCatch(async (req, res) => {
+  await models.task.destroy({
+    where: {
+      id: req.params.taskId,
+    },
+  });
+  responseHandler(res, 201, {
+    message: 'ok',
+  });
+});
+
 module.exports = { createOrUpdateTask, getTaskById, deleteTask };
