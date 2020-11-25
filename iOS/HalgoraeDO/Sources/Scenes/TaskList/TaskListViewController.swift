@@ -10,6 +10,7 @@ import UIKit
 protocol TaskListDisplayLogic {
     func display(tasks: [Task])
     func displayDetail(of task: Task)
+    func set(editingMode: Bool)
 }
 
 class TaskListViewController: UIViewController {
@@ -54,10 +55,7 @@ class TaskListViewController: UIViewController {
     
     override func setEditing(_ editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
-        taskListCollectionView.isEditing = editing
-        moreButton.title = editing ? "취소" : "More"
-        addButton.isHidden = editing
-        editToolBar.isHidden = !editing
+        interactor?.change(editingMode: editing, animated: animated)
     }
     
     // MARK: IBActions
@@ -107,6 +105,14 @@ extension TaskListViewController: TaskListDisplayLogic {
     
     func displayDetail(of task: Task) {
         
+    }
+    
+    func set(editingMode: Bool) {
+        taskListCollectionView.isEditing = editingMode
+        title = "0개 선택됨"
+        moreButton.title = editingMode ? "취소" : "More"
+        addButton.isHidden = editingMode
+        editToolBar.isHidden = !editingMode
     }
 }
 

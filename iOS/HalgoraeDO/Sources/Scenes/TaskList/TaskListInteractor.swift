@@ -9,6 +9,7 @@ import Foundation
 
 protocol TaskListBusinessLogic {
     func fetchTasks()
+    func change(editingMode: Bool, animated: Bool)
     func select(task: Task)
 }
 
@@ -30,6 +31,11 @@ extension TaskListInteractor: TaskListBusinessLogic {
     func fetchTasks() {
         let tasks = worker.getTasks()
         presenter.present(tasks: tasks)
+    }
+    
+    func change(editingMode: Bool, animated: Bool) {
+        worker.isEditingMode = editingMode
+        presenter.set(editingMode: editingMode)
     }
     
     func select(task: Task) {

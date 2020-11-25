@@ -8,6 +8,16 @@
 import Foundation
 
 class TaskListWorker {
+    private(set) var selectedTasks = Set<Task>()
+    var isEditingMode = false {
+        didSet {
+            guard isEditingMode else {
+                selectedTasks.removeAll()
+                return
+            }
+        }
+    }
+    
     func getTasks() -> [Task] {
         return [
             Task(title: "할고래두", subTasks: [
