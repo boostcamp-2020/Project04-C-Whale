@@ -19,7 +19,7 @@ const SUCCESS_MSG = 'ok';
 describe('get all projects', () => {
   it('project get all 일반', done => {
     const expectedProjects = [
-      { id: 'b7f253e5-7b6b-4ee2-b94e-369ffcdffb5f', taskCount: 4, title: '프로젝트 1' },
+      { id: 'b7f253e5-7b6b-4ee2-b94e-369ffcdffb5f', taskCount: 5, title: '프로젝트 1' },
       { id: 'f7605077-96ec-4365-88fc-a9c3af4a084e', taskCount: 0, title: '프로젝트 2' },
       { taskCount: 2, title: '오늘' },
     ];
@@ -43,19 +43,7 @@ describe('get all projects', () => {
 
 describe('get project by id', () => {
   it('project get by id 일반', done => {
-    const expectedChildTask = [
-      {
-        id: '8d62f93c-9233-46a9-a5cf-ec18ad5a36f4',
-        title: '작업 4',
-        dueDate: '2020-10-24T14:23:24.000Z',
-        position: 1,
-        isDone: false,
-        projectId: 'b7f253e5-7b6b-4ee2-b94e-369ffcdffb5f',
-        sectionId: '7abf0633-bce2-4972-9249-69f287db8a47',
-        parentId: '13502adf-83dd-4e8e-9acf-5c5a0abd5b1b',
-        priorityId: null,
-      },
-    ];
+    const expectedChildTaskId = '8d62f93c-9233-46a9-a5cf-ec18ad5a36f4';
 
     try {
       request(app)
@@ -64,8 +52,8 @@ describe('get project by id', () => {
           if (err) {
             throw err;
           }
-          const childTask = res.body.sections[0].tasks[0].tasks;
-          expect(childTask).toEqual(expectedChildTask);
+          const childTask = res.body.sections[0].tasks[0].tasks[0];
+          expect(childTask.id).toEqual(expectedChildTaskId);
           done();
         });
     } catch (err) {
