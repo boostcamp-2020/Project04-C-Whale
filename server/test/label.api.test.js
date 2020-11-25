@@ -69,7 +69,7 @@ describe('label api', () => {
       done(err);
     }
   });
-  it('label 생성 API (with Authorization)', done => {
+  it('label 생성 API (token O)', done => {
     // given
     const expectedLabel = {
       title: 'BE',
@@ -166,7 +166,7 @@ describe('label api', () => {
     }
   });
 
-  it('label 수정 API (모든 조건 충족)', done => {
+  it('label 수정 API (token O)', done => {
     // given
     const expectedLabel = {
       title: '크리스탈',
@@ -191,7 +191,7 @@ describe('label api', () => {
       done(err);
     }
   });
-  it('label 수정 API (잘못된 요청의 label ID)', done => {
+  it('label 수정 API (token X)', done => {
     // given
     const expectedLabel = {
       title: '크리스탈',
@@ -200,16 +200,15 @@ describe('label api', () => {
 
     try {
       request(app)
-        .put(`/api/label/12345678`) // when
-        .set('Authorization', createJWT(seeder.users[0]))
+        .put(`/api/label/${seeder.labels[0].id}`) // when
         .send(expectedLabel)
         .end((err, res) => {
           if (err) {
             throw err;
           }
           // then
-          expect(res.status).toBe(status.BAD_REQUEST.CODE);
-          expect(res.body.message).toBe(status.BAD_REQUEST.MSG);
+          expect(res.status).toBe(status.UNAUTHORIZED.CODE);
+          expect(res.body.message).toBe(status.UNAUTHORIZED.MSG);
           done();
         });
     } catch (err) {
