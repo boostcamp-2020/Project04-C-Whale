@@ -153,7 +153,7 @@ private extension TaskListViewController {
                 self.dataSource.apply(currentSnapshot)
             }
             
-            let disclosureOptions = UICellAccessory.OutlineDisclosureOptions(style: .header)
+            let disclosureOptions = UICellAccessory.OutlineDisclosureOptions(style: .automatic)
             cell.accessories = taskItem.subTasks.isEmpty ? [] : [.outlineDisclosure(options: disclosureOptions)]
         }
         
