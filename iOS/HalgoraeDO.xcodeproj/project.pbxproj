@@ -16,6 +16,9 @@
 		4C3F5683256B8F4B006D7C9F /* TaskListRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3F5682256B8F4B006D7C9F /* TaskListRouter.swift */; };
 		4C3F568C256B93D5006D7C9F /* TaskCollectionViewListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3F568B256B93D5006D7C9F /* TaskCollectionViewListCell.swift */; };
 		4C3F5695256BA228006D7C9F /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3F5694256BA228006D7C9F /* Task.swift */; };
+		4C3F5700256CF8A7006D7C9F /* TaskContentConfigure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3F56FF256CF8A7006D7C9F /* TaskContentConfigure.swift */; };
+		4C3F5705256CF8B9006D7C9F /* TaskContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3F5704256CF8B9006D7C9F /* TaskContentView.swift */; };
+		4C3F573F256D2263006D7C9F /* RoundButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3F573E256D2263006D7C9F /* RoundButton.swift */; };
 		AAEE20DE2564E4A900668FAD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAEE20DD2564E4A900668FAD /* AppDelegate.swift */; };
 		AAEE20E02564E4A900668FAD /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAEE20DF2564E4A900668FAD /* SceneDelegate.swift */; };
 		AAEE20E52564E4AA00668FAD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AAEE20E32564E4AA00668FAD /* Main.storyboard */; };
@@ -41,6 +44,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4C3F5657256B80B4006D7C9F /* HalgoraeDO.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HalgoraeDO.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C3F5664256B8117006D7C9F /* TaskListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListViewController.swift; sourceTree = "<group>"; };
 		4C3F5669256B82F2006D7C9F /* TaskBoardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskBoardViewController.swift; sourceTree = "<group>"; };
 		4C3F566E256B8C2B006D7C9F /* TaskListInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListInteractor.swift; sourceTree = "<group>"; };
@@ -50,6 +54,9 @@
 		4C3F5682256B8F4B006D7C9F /* TaskListRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListRouter.swift; sourceTree = "<group>"; };
 		4C3F568B256B93D5006D7C9F /* TaskCollectionViewListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCollectionViewListCell.swift; sourceTree = "<group>"; };
 		4C3F5694256BA228006D7C9F /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
+		4C3F56FF256CF8A7006D7C9F /* TaskContentConfigure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskContentConfigure.swift; sourceTree = "<group>"; };
+		4C3F5704256CF8B9006D7C9F /* TaskContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskContentView.swift; sourceTree = "<group>"; };
+		4C3F573E256D2263006D7C9F /* RoundButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundButton.swift; sourceTree = "<group>"; };
 		AAEE20DD2564E4A900668FAD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AAEE20DF2564E4A900668FAD /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		AAEE20E42564E4AA00668FAD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -94,6 +101,7 @@
 		4C3F55B12564EEC6006D7C9F /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				4C3F573E256D2263006D7C9F /* RoundButton.swift */,
 				AAEE20E32564E4AA00668FAD /* Main.storyboard */,
 			);
 			path = Views;
@@ -118,6 +126,8 @@
 			isa = PBXGroup;
 			children = (
 				4C3F568B256B93D5006D7C9F /* TaskCollectionViewListCell.swift */,
+				4C3F56FF256CF8A7006D7C9F /* TaskContentConfigure.swift */,
+				4C3F5704256CF8B9006D7C9F /* TaskContentView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -134,6 +144,7 @@
 			isa = PBXGroup;
 			children = (
 				AAEE20DC2564E4A900668FAD /* HalgoraeDO */,
+				4C3F5657256B80B4006D7C9F /* HalgoraeDO.app */,
 			);
 			sourceTree = "<group>";
 		};
@@ -219,7 +230,6 @@
 			);
 			name = HalgoraeDOTests;
 			productName = HalgoraeDOTests;
-			productReference = 4C3F5658256B80B4006D7C9F /* HalgoraeDOTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		AAEE20FA2564E4AC00668FAD /* HalgoraeDOUITests */ = {
@@ -237,7 +247,6 @@
 			);
 			name = HalgoraeDOUITests;
 			productName = HalgoraeDOUITests;
-			productReference = 4C3F5659256B80B4006D7C9F /* HalgoraeDOUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -316,13 +325,16 @@
 			files = (
 				4C3F568C256B93D5006D7C9F /* TaskCollectionViewListCell.swift in Sources */,
 				4C3F5679256B8C83006D7C9F /* TaskListPresenter.swift in Sources */,
+				4C3F573F256D2263006D7C9F /* RoundButton.swift in Sources */,
 				AAEE20DE2564E4A900668FAD /* AppDelegate.swift in Sources */,
 				4C3F567E256B8CB3006D7C9F /* TaskListModels.swift in Sources */,
 				4C3F5695256BA228006D7C9F /* Task.swift in Sources */,
+				4C3F5705256CF8B9006D7C9F /* TaskContentView.swift in Sources */,
 				AAEE20E02564E4A900668FAD /* SceneDelegate.swift in Sources */,
 				4C3F5683256B8F4B006D7C9F /* TaskListRouter.swift in Sources */,
 				4C3F566A256B82F2006D7C9F /* TaskBoardViewController.swift in Sources */,
 				4C3F5665256B8117006D7C9F /* TaskListViewController.swift in Sources */,
+				4C3F5700256CF8A7006D7C9F /* TaskContentConfigure.swift in Sources */,
 				4C3F5674256B8C63006D7C9F /* TaskListWorker.swift in Sources */,
 				4C3F566F256B8C2B006D7C9F /* TaskListInteractor.swift in Sources */,
 			);
