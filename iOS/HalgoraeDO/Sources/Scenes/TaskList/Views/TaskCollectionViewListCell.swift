@@ -14,11 +14,7 @@ class TaskCollectionViewListCell: UICollectionViewListCell {
 
     override func updateConfiguration(using state: UICellConfigurationState) {
         
-        if state.isEditing {
-            backgroundConfiguration?.backgroundColor = state.isSelected ? .lightGray : .clear
-        } else {
-            backgroundConfiguration?.backgroundColor = .clear
-        }
+        backgroundConfiguration?.backgroundColor = (state.isSelected || state.isHighlighted) ? .lightGray : .clear
         
         var taskContentConfiguration = TaskContentConfiguration().updated(for: state)
         taskContentConfiguration.title = task?.title
@@ -32,6 +28,5 @@ class TaskCollectionViewListCell: UICollectionViewListCell {
                 self?.finishHandler?(self?.task)
             }
         }
-        
     }
 }

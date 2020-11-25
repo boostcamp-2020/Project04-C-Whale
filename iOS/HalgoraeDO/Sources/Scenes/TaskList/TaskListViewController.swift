@@ -111,6 +111,7 @@ private extension TaskListViewController {
     func configureCollectionView() {
         taskListCollectionView.collectionViewLayout = generateLayout()
         taskListCollectionView.allowsMultipleSelectionDuringEditing = true
+        taskListCollectionView.delegate = self
     }
     
     func generateLayout() -> UICollectionViewLayout {
@@ -174,5 +175,16 @@ private extension TaskListViewController {
 
         addItems(taskItems, to: nil)
         return snapshot
+    }
+}
+
+extension TaskListViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard !isEditing else { return }
+        collectionView.deselectItem(at: indexPath, animated: true)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        
     }
 }
