@@ -9,6 +9,34 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>TaskListTests.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>2</integer>
+		</dict>
+	</dict>
+	<key>SuppressBuildableAutocreation</key>
+	<dict>
+		<key>4C0CA5ED256E9AF100E66045</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>4C0CA626256EABF700E66045</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>4CCD31D8256EBC0000A46D10</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>AAEE20D92564E4A900668FAD</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 	</dict>
 </dict>
 </plist>
