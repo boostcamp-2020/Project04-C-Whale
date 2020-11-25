@@ -28,15 +28,30 @@ const createLabel = async (req, res, next) => {
   }
 };
 
-const isValidPostDatas = async (req, res, next) => {
+const updateLabel = async (req, res, next) => {
+  const { labelId } = req.params;
+  const { title, color } = req.body;
+
+  try {
+    const result = await labelModel.update({ title, color }, { where: { id: labelId } });
+    if (result[0] !== 1) {
+      throw Error('Internal Server Error');
+    }
+    responseHandler(res, 200);
+  } catch (err) {
+    next(err);
+  }
+};
+
+const isValidRequestDatas = async (req, res, next) => {
   const error = new Error('Bad Request');
   error.status = 400;
+  const { title, color } = req.body;
   try {
-    const { title, color } = req.body;
-    if (!title && (typeof title !== 'string' || title === '')) {
+    if (!title || typeof title !== 'string' || title === '') {
       throw error;
     }
-    if (!color && (typeof color !== 'string' || color === '')) {
+    if (!color || typeof color !== 'string' || color === '') {
       throw error;
     }
     next();
@@ -45,4 +60,48 @@ const isValidPostDatas = async (req, res, next) => {
   }
 };
 
-module.exports = { getAllLabels, createLabel, isValidPostDatas };
+const isOwnLabel = async (req, res, next) => {
+  const { labelId } = req.params;
+  const { id } = req.user;
+  const error = new Error('Forbidden');
+  error.status = 403;
+
+  try {
+    const label = await labelModel.findByPk(labelId, { attributes: ['userId'] });
+    if (id !== label.userId) {
+      throw error;
+    }
+    next();
+  } catch (err) {
+    next(err);
+  }
+};
+
+const isValidLabelId = async (req, res, next) => {
+  const { labelId } = req.params;
+  const error = new Error('Not Found');
+  error.status = 404;
+
+  try {
+    if (!labelId || labelId === '') {
+      throw error;
+    }
+    const label = await labelModel.findByPk(labelId);
+
+    if (!label) {
+      throw error;
+    }
+    next();
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports = {
+  getAllLabels,
+  createLabel,
+  updateLabel,
+  isValidRequestDatas,
+  isOwnLabel,
+  isValidLabelId,
+};
