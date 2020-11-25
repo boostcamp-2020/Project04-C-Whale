@@ -11,6 +11,7 @@ protocol TaskListPresentLogic {
     func present(tasks: [Task])
     func set(editingMode: Bool)
     func presentDetail(of task: Task)
+    func present(numberOfSelectedTasks count: Int)
 }
 
 class TaskListPresenter {
@@ -32,5 +33,9 @@ extension TaskListPresenter: TaskListPresentLogic {
     
     func presentDetail(of task: Task) {
         viewController.displayDetail(of: task)
+    }
+    
+    func present(numberOfSelectedTasks count: Int) {
+        viewController.display(numberOfSelectedTasks: count)
     }
 }

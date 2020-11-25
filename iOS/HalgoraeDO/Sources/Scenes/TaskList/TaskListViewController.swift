@@ -11,6 +11,7 @@ protocol TaskListDisplayLogic {
     func display(tasks: [Task])
     func displayDetail(of task: Task)
     func set(editingMode: Bool)
+    func display(numberOfSelectedTasks count: Int)
 }
 
 class TaskListViewController: UIViewController {
@@ -114,6 +115,11 @@ extension TaskListViewController: TaskListDisplayLogic {
         addButton.isHidden = editingMode
         editToolBar.isHidden = !editingMode
     }
+    
+    func display(numberOfSelectedTasks count: Int) {
+        guard isEditing else { return }
+        title = "\(count) 개 선택됨"
+    }
 }
 
 // MARK: - Configure CollectionView Layout
@@ -189,16 +195,20 @@ private extension TaskListViewController {
     }
 }
 
+// MARK:  - UICollectionView Delegate
+
 extension TaskListViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard !isEditing else { return }
-        collectionView.deselectItem(at: indexPath, animated: true)
-        
         let task = dataSource.snapshot().itemIdentifiers[indexPath.item]
         interactor?.select(task: task)
+        
+        if !isEditing {
+            collectionView.deselectItem(at: indexPath, animated: true)
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        
+        let task = dataSource.snapshot().itemIdentifiers[indexPath.item]
+        interactor?.deSelect(task: task)
     }
 }

@@ -11,6 +11,7 @@ protocol TaskListBusinessLogic {
     func fetchTasks()
     func change(editingMode: Bool, animated: Bool)
     func select(task: Task)
+    func deSelect(task: Task)
 }
 
 protocol TaskListDataStore {
@@ -39,6 +40,20 @@ extension TaskListInteractor: TaskListBusinessLogic {
     }
     
     func select(task: Task) {
+        guard !worker.isEditingMode else {
+            worker.append(selected: task)
+            presenter.present(numberOfSelectedTasks: worker.selectedTasks.count)
+            return
+        }
         presenter.presentDetail(of: task)
+    }
+    
+    func deSelect(task: Task) {
+        guard worker.isEditingMode else {
+            return
+        }
+
+        worker.remove(selected: task)
+        presenter.present(numberOfSelectedTasks: worker.selectedTasks.count)
     }
 }

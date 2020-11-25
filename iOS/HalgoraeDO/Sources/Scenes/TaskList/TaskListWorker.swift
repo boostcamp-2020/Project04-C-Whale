@@ -29,4 +29,12 @@ class TaskListWorker {
             Task(title: "두 말하면 섭함"),
         ]
     }
+    
+    func append(selected task: Task) {
+        selectedTasks.insert(task)
+    }
+    
+    func remove(selected task: Task) {
+        selectedTasks.remove(task)
+    }
 }
