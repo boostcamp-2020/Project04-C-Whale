@@ -14,6 +14,9 @@ afterAll(async done => {
   done();
 });
 
+const SUCCESS_CODE = 201;
+const SUCCESS_MSG = 'ok';
+
 describe('get task by id', () => {
   it('get task by id 일반', done => {
     const expectedChildTaskId = '8d62f93c-9233-46a9-a5cf-ec18ad5a36f4';
@@ -212,13 +215,111 @@ describe('delete task', () => {
   it('delete task 일반', done => {
     try {
       request(app)
-        .delete('/api/project/13502adf-83dd-4e8e-9acf-5c5a0abd5b1b')
+        .delete('/api/task/13502adf-83dd-4e8e-9acf-5c5a0abd5b1b')
         .end((err, res) => {
           if (err) {
             throw err;
           }
           expect(res.status).toBe(201);
           expect(res.body.message).toBe('ok');
+          done();
+        });
+    } catch (err) {
+      done(err);
+    }
+  });
+});
+
+describe('get comments', () => {
+  it('get comments 일반', done => {
+    const expectedCommentId = '6200bcb9-f871-439b-9507-57abbde3d468';
+
+    try {
+      request(app)
+        .get('/api/task/cd62f93c-9233-46a9-a5cf-ec18ad5a36f4/comment')
+        .end((err, res) => {
+          if (err) {
+            throw err;
+          }
+
+          const firstCommentId = res.body[0].id;
+          expect(firstCommentId).toEqual(expectedCommentId);
+          done();
+        });
+    } catch (err) {
+      done(err);
+    }
+  });
+});
+
+describe('create comment', () => {
+  it('create comment 일반', done => {
+    const requestBody = {
+      content: '새로운 댓글',
+    };
+
+    try {
+      request(app)
+        .post('/api/task/cd62f93c-9233-46a9-a5cf-ec18ad5a36f4/comment')
+        .send(requestBody)
+        .end((err, res) => {
+          if (err) {
+            throw err;
+          }
+          expect(res.status).toBe(SUCCESS_CODE);
+          expect(res.body.message).toBe(SUCCESS_MSG);
+          done();
+        });
+    } catch (err) {
+      done(err);
+    }
+  });
+});
+
+describe('update comment', () => {
+  it('update comment 일반', done => {
+    const requestBody = {
+      content: '바뀐 댓글',
+    };
+
+    try {
+      request(app)
+        .put(
+          '/api/task/cd62f93c-9233-46a9-a5cf-ec18ad5a36f4/comment/6200bcb9-f871-439b-9507-57abbde3d468',
+        )
+        .send(requestBody)
+        .end((err, res) => {
+          if (err) {
+            throw err;
+          }
+          expect(res.status).toBe(SUCCESS_CODE);
+          expect(res.body.message).toBe(SUCCESS_MSG);
+          done();
+        });
+    } catch (err) {
+      done(err);
+    }
+  });
+});
+
+describe('delete comment', () => {
+  it('delete comment 일반', done => {
+    const requestBody = {
+      content: '바뀐 댓글',
+    };
+
+    try {
+      request(app)
+        .delete(
+          '/api/task/cd62f93c-9233-46a9-a5cf-ec18ad5a36f4/comment/6200bcb9-f871-439b-9507-57abbde3d468',
+        )
+        .send(requestBody)
+        .end((err, res) => {
+          if (err) {
+            throw err;
+          }
+          expect(res.status).toBe(SUCCESS_CODE);
+          expect(res.body.message).toBe(SUCCESS_MSG);
           done();
         });
     } catch (err) {

@@ -58,9 +58,58 @@ const deleteTask = asyncTryCatch(async (req, res) => {
       id: req.params.taskId,
     },
   });
+
   responseHandler(res, 201, {
     message: 'ok',
   });
 });
 
-module.exports = { createOrUpdateTask, getTaskById, deleteTask };
+const getComments = asyncTryCatch(async (req, res) => {
+  const task = await models.task.findByPk(req.params.taskId);
+  const comments = await task.getComments();
+
+  responseHandler(res, 201, comments);
+});
+
+const createComment = asyncTryCatch(async (req, res) => {
+  const { taskId } = req.params;
+  await models.comment.create({ ...req.body, taskId });
+
+  responseHandler(res, 201, {
+    message: 'ok',
+  });
+});
+
+const updateComment = asyncTryCatch(async (req, res) => {
+  await models.comment.update(req.body, {
+    where: {
+      id: req.params.commentId,
+    },
+  });
+
+  responseHandler(res, 201, {
+    message: 'ok',
+  });
+});
+
+const deleteComment = asyncTryCatch(async (req, res) => {
+  await models.comment.destroy({
+    where: {
+      id: req.params.commentId,
+    },
+  });
+
+  responseHandler(res, 201, {
+    message: 'ok',
+  });
+});
+
+module.exports = {
+  getTaskById,
+  createOrUpdateTask,
+  deleteTask,
+  getComments,
+  createComment,
+  updateComment,
+  deleteComment,
+};
