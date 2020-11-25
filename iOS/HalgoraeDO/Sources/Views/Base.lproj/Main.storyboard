@@ -66,29 +66,37 @@
                                     <action selector="didTapAddButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="GX3-mz-9sK"/>
                                 </connections>
                             </button>
+                            <toolbar hidden="YES" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bvh-S3-6Iw">
+                                <rect key="frame" x="0.0" y="813" width="414" height="49"/>
+                                <items>
+                                    <barButtonItem title="Item" id="d79-gZ-QP6"/>
+                                </items>
+                            </toolbar>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="bvh-S3-6Iw" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="1lj-uR-Zkk"/>
                             <constraint firstItem="gQ3-Oo-n8H" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="25O-Sb-EVv"/>
                             <constraint firstItem="gQ3-Oo-n8H" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="6yK-lS-bsP"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="6wh-Eb-4oT" secondAttribute="bottom" constant="20" id="GeQ-BU-Bg6"/>
+                            <constraint firstItem="bvh-S3-6Iw" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="H6q-Pr-697"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="yTg-6t-2Gl" secondAttribute="trailing" id="HyQ-Sy-cOl"/>
                             <constraint firstItem="yTg-6t-2Gl" firstAttribute="top" secondItem="gQ3-Oo-n8H" secondAttribute="bottom" id="MG8-WP-fAp"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="6wh-Eb-4oT" secondAttribute="trailing" constant="20" id="gwg-gb-uDi"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="yTg-6t-2Gl" secondAttribute="bottom" id="hg8-S6-77t"/>
                             <constraint firstItem="gQ3-Oo-n8H" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="irW-2q-1RI"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="bvh-S3-6Iw" secondAttribute="bottom" id="p9G-bq-2oi"/>
                             <constraint firstItem="yTg-6t-2Gl" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="xKk-kG-U9b"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="DXg-UP-EpT">
-                        <barButtonItem key="rightBarButtonItem" title="More" id="DbE-IM-Pob">
-                            <connections>
-                                <action selector="didTapMoreButton:" destination="BYZ-38-t0r" id="MCg-HU-Q3t"/>
-                            </connections>
-                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="More" id="DbE-IM-Pob"/>
                     </navigationItem>
                     <connections>
+                        <outlet property="addButton" destination="6wh-Eb-4oT" id="MXK-UA-AAx"/>
+                        <outlet property="editToolBar" destination="bvh-S3-6Iw" id="xV3-Zp-h5b"/>
+                        <outlet property="moreButton" destination="EAu-h2-Agg" id="kqR-lX-0oM"/>
                         <outlet property="taskListCollectionView" destination="yTg-6t-2Gl" id="deR-pA-6Af"/>
                     </connections>
                 </viewController>

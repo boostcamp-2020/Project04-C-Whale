@@ -36,6 +36,9 @@ class TaskListViewController: UIViewController {
     // MARK: - Views
     
     @IBOutlet weak private var taskListCollectionView: UICollectionView!
+    @IBOutlet weak var moreButton: UIBarButtonItem!
+    @IBOutlet weak var addButton: RoundButton!
+    @IBOutlet weak var editToolBar: UIToolbar!
     
     // MARK: - Initialize
     
@@ -52,7 +55,8 @@ class TaskListViewController: UIViewController {
         super.setEditing(editing, animated: animated)
         taskListCollectionView.isEditing = editing
         moreButton.title = editing ? "취소" : "More"
-        
+        addButton.isHidden = editing
+        editToolBar.isHidden = !editing
     }
     
     // MARK: IBActions
