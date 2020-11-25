@@ -120,6 +120,7 @@ private extension TaskContentView {
         
         titleLabel.text = configuration.title
         completeButton.isSelected = configuration.isCompleted ?? false
+        completeButton.isUserInteractionEnabled = !configuration.isEditing
         currentConfiguration = configuration
         
     }
