@@ -138,7 +138,7 @@ private extension TaskListViewController {
         let cellRegistration = UICollectionView.CellRegistration<TaskCollectionViewListCell, Task> { [weak self] (cell, indexPath, taskItem) in
             
             cell.task = taskItem
-            cell.completeHandler = { [weak self] task in
+            cell.finishHandler = { [weak self] task in
                 guard let self = self,
                       let task = task
                 else {
