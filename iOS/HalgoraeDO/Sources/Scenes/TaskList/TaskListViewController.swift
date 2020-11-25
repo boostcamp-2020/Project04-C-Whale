@@ -69,21 +69,20 @@ class TaskListViewController: UIViewController {
         }
         
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-
-        let showBoardAction = UIAlertAction(title: "보드로 보기", style: .default) { (action) in
+        let showBoardAction = UIAlertAction(title: "보드로 보기", style: .default) { (_: UIAlertAction) in
             
         }
 
-        let addSectionAction = UIAlertAction(title: "섹션 추가", style: .default) { (action) in
+        let addSectionAction = UIAlertAction(title: "섹션 추가", style: .default) { (_: UIAlertAction) in
             
         }
 
-        let selectTaskAction = UIAlertAction(title: "작업 선택", style: .default) { [weak self] (action) in
+        let selectTaskAction = UIAlertAction(title: "작업 선택", style: .default) { [weak self] (_: UIAlertAction) in
             
             self?.setEditing(true, animated: true)
         }
 
-        let cancelAction = UIAlertAction(title: "취소", style: .cancel) { (action) in
+        let cancelAction = UIAlertAction(title: "취소", style: .cancel) { (_: UIAlertAction) in
             
         }
 
@@ -135,7 +134,7 @@ private extension TaskListViewController {
 private extension TaskListViewController {
 
     func configureDataSource() {
-        let cellRegistration = UICollectionView.CellRegistration<TaskCollectionViewListCell, Task> { [weak self] (cell, indexPath, taskItem) in
+        let cellRegistration = UICollectionView.CellRegistration<TaskCollectionViewListCell, Task> { [weak self] (cell, _: IndexPath, taskItem) in
             
             cell.task = taskItem
             cell.finishHandler = { [weak self] task in
