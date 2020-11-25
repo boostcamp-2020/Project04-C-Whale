@@ -14,6 +14,28 @@ afterAll(async done => {
   done();
 });
 
+describe('get task by id', () => {
+  it('get task by id 일반', done => {
+    const expectedChildTaskId = '8d62f93c-9233-46a9-a5cf-ec18ad5a36f4';
+
+    try {
+      request(app)
+        .get('/api/task/13502adf-83dd-4e8e-9acf-5c5a0abd5b1b')
+        .end((err, res) => {
+          if (err) {
+            throw err;
+          }
+
+          const firstChildTaskId = res.body.tasks[0].id;
+          expect(firstChildTaskId).toEqual(expectedChildTaskId);
+          done();
+        });
+    } catch (err) {
+      done(err);
+    }
+  });
+});
+
 describe('post task', () => {
   it('일반 task 생성', async done => {
     // given
