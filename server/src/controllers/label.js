@@ -43,7 +43,18 @@ const updateLabel = async (req, res, next) => {
   }
 };
 
-const isValidRequestDatas = async (req, res, next) => {
+const removeLabel = async (req, res, next) => {
+  const { labelId } = req.params;
+  try {
+    const result = await labelModel.destroy({ where: { id: labelId } });
+    console.log(result);
+    responseHandler(res, 200);
+  } catch (err) {
+    next(err);
+  }
+};
+
+const isValidRequestDatas = (req, res, next) => {
   const error = new Error('Bad Request');
   error.status = 400;
   const { title, color } = req.body;
@@ -81,13 +92,11 @@ const isValidLabelId = async (req, res, next) => {
   const { labelId } = req.params;
   const error = new Error('Not Found');
   error.status = 404;
-
   try {
     if (!labelId || labelId === '') {
       throw error;
     }
     const label = await labelModel.findByPk(labelId);
-
     if (!label) {
       throw error;
     }
@@ -101,6 +110,7 @@ module.exports = {
   getAllLabels,
   createLabel,
   updateLabel,
+  removeLabel,
   isValidRequestDatas,
   isOwnLabel,
   isValidLabelId,

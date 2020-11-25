@@ -17,4 +17,12 @@ router.put(
   labelController.isOwnLabel,
   labelController.updateLabel,
 );
+router.delete(
+  '/:labelId',
+  authenticateUser,
+  labelController.isValidLabelId,
+  labelController.isOwnLabel,
+  labelController.removeLabel,
+);
+
 module.exports = router;
