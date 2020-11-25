@@ -4,6 +4,24 @@ const { asyncTryCatch } = require('@utils/async-try-catch');
 const { responseHandler } = require('@utils/handler');
 const { isValidDueDate } = require('@utils/date');
 
+const getTaskById = asyncTryCatch(async (req, res) => {
+  const task = await models.task.findByPk(req.params.taskId, {
+    include: [
+      'labels',
+      'priority',
+      'alarm',
+      'bookmarks',
+      {
+        model: models.task,
+        include: ['labels', 'priority', 'alarm', 'bookmarks'],
+      },
+    ],
+    order: [[models.task, 'position', 'ASC']],
+  });
+
+  responseHandler(res, 201, task);
+});
+
 const createTask = asyncTryCatch(async (req, res) => {
   const { labelIdList, dueDate, ...rest } = req.body;
 
@@ -21,4 +39,4 @@ const createTask = asyncTryCatch(async (req, res) => {
   responseHandler(res, 201, { message: 'ok' });
 });
 
-module.exports = { createTask };
+module.exports = { createTask, getTaskById };
