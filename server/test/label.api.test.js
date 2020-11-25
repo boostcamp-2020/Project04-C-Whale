@@ -290,4 +290,104 @@ describe('label api', () => {
       done(err);
     }
   });
+
+  it('label 삭제 API (자신의 label이 아닌 경우))', done => {
+    // given
+    const expectedLabel = {
+      title: '크리스탈',
+      color: '#FFE3CD',
+    };
+
+    try {
+      request(app)
+        .delete(`/api/label/${seeder.labels[1].id}`) // when
+        .set('Authorization', createJWT(seeder.users[0]))
+        .send(expectedLabel)
+        .end((err, res) => {
+          if (err) {
+            throw err;
+          }
+          // then
+          expect(res.status).toBe(status.FORBIDDEN.CODE);
+          expect(res.body.message).toBe(status.FORBIDDEN.MSG);
+          done();
+        });
+    } catch (err) {
+      done(err);
+    }
+  });
+  it('label 삭제 API (존재하지 않는 label ID)', done => {
+    // given
+    const expectedLabel = {
+      title: '크리스탈',
+      color: '#FFE3CD',
+    };
+
+    try {
+      request(app)
+        .delete(`/api/label/nothing`) // when
+        .set('Authorization', createJWT(seeder.users[1]))
+        .send(expectedLabel)
+        .end((err, res) => {
+          if (err) {
+            throw err;
+          }
+          // then
+          expect(res.status).toBe(status.NOT_FOUND.CODE);
+          expect(res.body.message).toBe(status.NOT_FOUND.MSG);
+          done();
+        });
+    } catch (err) {
+      done(err);
+    }
+  });
+  it('label 삭제 API (token O)', done => {
+    // given
+    const expectedLabel = {
+      title: '크리스탈',
+      color: '#FFE3CD',
+    };
+
+    try {
+      request(app)
+        .delete(`/api/label/${seeder.labels[1].id}`) // when
+        .set('Authorization', createJWT(seeder.users[1]))
+        .send(expectedLabel)
+        .end((err, res) => {
+          if (err) {
+            throw err;
+          }
+          // then
+          expect(res.status).toBe(status.SUCCESS.CODE);
+          expect(res.body.message).toBe(status.SUCCESS.MSG);
+          done();
+        });
+    } catch (err) {
+      done(err);
+    }
+  });
+  it('label 삭제 API (token X)', done => {
+    // given
+    const expectedLabel = {
+      title: '크리스탈',
+      color: '#FFE3CD',
+    };
+
+    try {
+      request(app)
+        .delete(`/api/label/${seeder.labels[1].id}`) // when
+        .send(expectedLabel)
+        .end((err, res) => {
+          if (err) {
+            throw err;
+          }
+          // then
+          expect(res.status).toBe(status.UNAUTHORIZED.CODE);
+          expect(res.body.message).toBe(status.UNAUTHORIZED.MSG);
+          done();
+        });
+    } catch (err) {
+      done(err);
+    }
+  });
 });
