@@ -33,7 +33,7 @@ const getProjects = async (req, res) => {
 
     responseHandler(res, 201, projects);
   } catch (err) {
-    errorHandler(res, 400, { message: err.message });
+    next(err);
   }
 };
 
@@ -55,7 +55,7 @@ const getProjectById = async (req, res) => {
 
     responseHandler(res, 201, project);
   } catch (err) {
-    errorHandler(res, 400, { message: err.message });
+    next(err);
   }
 };
 
@@ -71,7 +71,7 @@ const createProject = async (req, res) => {
       message: 'ok',
     });
   } catch (err) {
-    errorHandler(res, 400, { message: err.message });
+    next(err);
   }
 };
 
@@ -86,7 +86,7 @@ const updateProject = async (req, res) => {
       message: 'ok',
     });
   } catch (err) {
-    errorHandler(res, 400, { message: err.message });
+    next(err);
   }
 };
 
@@ -101,7 +101,7 @@ const deleteProject = async (req, res) => {
       message: 'ok',
     });
   } catch (err) {
-    errorHandler(res, 400, { message: err.message });
+    next(err);
   }
 };
 
@@ -118,7 +118,7 @@ const createSection = async (req, res) => {
       message: 'ok',
     });
   } catch (err) {
-    errorHandler(res, 400, { message: err.message });
+    next(err);
   }
 };
 
@@ -134,7 +134,7 @@ const updateSection = async (req, res) => {
       message: 'ok',
     });
   } catch (err) {
-    errorHandler(res, 400, { message: err.message });
+    next(err);
   }
 };
 
@@ -150,7 +150,7 @@ const deleteSection = async (req, res) => {
       message: 'ok',
     });
   } catch (err) {
-    errorHandler(res, 400, { message: err.message });
+    next(err);
   }
 };
 
