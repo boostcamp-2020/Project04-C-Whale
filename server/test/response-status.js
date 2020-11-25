@@ -1,5 +1,8 @@
 const SUCCESS = {
   CODE: 200,
+  POST: {
+    CODE: 201,
+  },
   MSG: 'ok',
 };
 

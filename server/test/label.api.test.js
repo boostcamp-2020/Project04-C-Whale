@@ -83,7 +83,7 @@ describe('label api', () => {
           if (err) {
             throw err;
           }
-          expect(res.status).toBe(status.SUCCESS.CODE);
+          expect(res.status).toBe(status.SUCCESS.POST.CODE);
           expect(res.body.message).toBe(status.SUCCESS.MSG);
           done();
         });
