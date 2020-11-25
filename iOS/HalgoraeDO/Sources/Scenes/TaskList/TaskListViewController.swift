@@ -36,9 +36,9 @@ class TaskListViewController: UIViewController {
     // MARK: - Views
     
     @IBOutlet weak private var taskListCollectionView: UICollectionView!
-    @IBOutlet weak var moreButton: UIBarButtonItem!
-    @IBOutlet weak var addButton: RoundButton!
-    @IBOutlet weak var editToolBar: UIToolbar!
+    @IBOutlet weak private var moreButton: UIBarButtonItem!
+    @IBOutlet weak private var addButton: RoundButton!
+    @IBOutlet weak private var editToolBar: UIToolbar!
     
     // MARK: - Initialize
     
@@ -91,7 +91,7 @@ class TaskListViewController: UIViewController {
         present(alert, animated: true, completion: nil)
     }
     
-    @IBAction func didTapAddButton(_ sender: RoundButton) {
+    @IBAction private func didTapAddButton(_ sender: RoundButton) {
         
     }
 }
@@ -109,12 +109,12 @@ extension TaskListViewController: TaskListDisplayLogic {
 // MARK: - Configure CollectionView Layout
 
 private extension TaskListViewController {
-    private func configureCollectionView() {
+    func configureCollectionView() {
         taskListCollectionView.collectionViewLayout = generateLayout()
         taskListCollectionView.allowsMultipleSelectionDuringEditing = true
     }
     
-    private func generateLayout() -> UICollectionViewLayout {
+    func generateLayout() -> UICollectionViewLayout {
         var listConfiguration = UICollectionLayoutListConfiguration(appearance: .sidebar)
         listConfiguration.leadingSwipeActionsConfigurationProvider = { indexPath in
             let editAction = UIContextualAction(style: .normal, title: "Edit") { [weak self] (action, view, completion) in
@@ -134,7 +134,7 @@ private extension TaskListViewController {
 
 private extension TaskListViewController {
 
-    private func configureDataSource() {
+    func configureDataSource() {
         let cellRegistration = UICollectionView.CellRegistration<TaskCollectionViewListCell, Task> { [weak self] (cell, indexPath, taskItem) in
             
             cell.task = taskItem
@@ -163,7 +163,7 @@ private extension TaskListViewController {
         })
     }
     
-    private func snapshot(taskItems: [Task]) -> NSDiffableDataSourceSectionSnapshot<Task> {
+    func snapshot(taskItems: [Task]) -> NSDiffableDataSourceSectionSnapshot<Task> {
         var snapshot = NSDiffableDataSourceSectionSnapshot<Task>()
 
         func addItems(_ taskItems: [Task], to parent: Task?) {
