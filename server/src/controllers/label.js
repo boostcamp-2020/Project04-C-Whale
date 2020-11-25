@@ -47,7 +47,9 @@ const removeLabel = async (req, res, next) => {
   const { labelId } = req.params;
   try {
     const result = await labelModel.destroy({ where: { id: labelId } });
-    console.log(result);
+    if (result !== 1) {
+      throw Error('Internal Server Error');
+    }
     responseHandler(res, 200);
   } catch (err) {
     next(err);
