@@ -17,6 +17,8 @@ class TaskBoardViewController: UIViewController {
     private var lineView: UIView = UIView()
     private var startIndex: IndexPath?
     private var startPoint: CGPoint?
+    private let visualEffectView = UIVisualEffectView()
+    private var taskAddViewController: TaskAddViewController = TaskAddViewController()
     
     // MARK: - Views
     
@@ -43,6 +45,46 @@ class TaskBoardViewController: UIViewController {
         let interactor = TaskListInteractor(presenter: presenter, worker: TaskListWorker())
         self.interactor = interactor
     }
+    
+    
+    
+    
+    
+    @IBAction func testAction(_ sender: UIButton) {
+        visualEffectView.frame = self.view.frame
+        self.view.addSubview(visualEffectView)
+        taskAddViewController = TaskAddViewController()
+        self.addChild(taskAddViewController)
+        self.view.addSubview(taskAddViewController.view)
+        taskAddViewController.view.backgroundColor = .white
+        taskAddViewController.view.frame = CGRect(x: 0, y: self.view.bounds.height - 130, width: self.view.bounds.width, height: 130)
+        visualEffectView.backgroundColor = .gray
+        visualEffectView.alpha = 0.4
+        visualEffectView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleViewTap(recognizer:))))
+    }
+    
+    @objc
+    func handleViewTap (recognizer: UITapGestureRecognizer) {
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        let selectTaskAction = UIAlertAction(title: "삭제", style: .destructive) { (action) in
+            self.taskAddViewController.view.removeFromSuperview()
+            self.visualEffectView.removeFromSuperview()
+        }
+        let cancelAction = UIAlertAction(title: "계속 편집", style: .default) { (action) in
+        }
+        [selectTaskAction, cancelAction].forEach { alert.addAction($0) }
+        present(alert, animated: true, completion: nil)
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }
 
 // MARK: - TaskList Display Logic
@@ -75,6 +117,7 @@ private extension TaskBoardViewController {
         taskBoardCollectionView.dropDelegate = self
         taskBoardCollectionView.dragInteractionEnabled = true
         taskBoardCollectionView.collectionViewLayout = generateLayout()
+        taskBoardCollectionView.isPagingEnabled = true
     }
     
     private func generateLayout() -> UICollectionViewLayout {
