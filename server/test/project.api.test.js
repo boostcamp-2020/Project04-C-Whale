@@ -180,6 +180,36 @@ describe('create section', () => {
   });
 });
 
+describe('update section task positions', () => {
+  it('update section task positions 일반', done => {
+    const requestBody = {
+      orderedTasks: [
+        '7d62f93c-9233-46a9-a5cf-ec18ad5a36f4',
+        'cd62f93c-9233-46a9-a5cf-ec18ad5a36f4',
+        '13502adf-83dd-4e8e-9acf-5c5a0abd5b1b',
+      ],
+    };
+
+    try {
+      request(app)
+        .post(
+          '/api/project/b7f253e5-7b6b-4ee2-b94e-369ffcdffb5f/section/7abf0633-bce2-4972-9249-69f287db8a47/task',
+        )
+        .send(requestBody)
+        .end((err, res) => {
+          if (err) {
+            throw err;
+          }
+          expect(res.status).toBe(SUCCESS_CODE);
+          expect(res.body.message).toBe(SUCCESS_MSG);
+          done();
+        });
+    } catch (err) {
+      done(err);
+    }
+  });
+});
+
 describe('update section', () => {
   it('update section 일반', done => {
     const requestBody = {

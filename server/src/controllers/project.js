@@ -115,6 +115,34 @@ const createSection = asyncTryCatch(async (req, res) => {
   });
 });
 
+const updateSectionTaskPositions = asyncTryCatch(async (req, res) => {
+  const { orderedTasks } = req.body;
+
+  const before = await models.section.findByPk(req.params.sectionId, {
+    include: { model: models.task, where: { parentId: null } },
+    order: [[models.task, 'position', 'ASC']],
+  });
+  console.log(before.tasks);
+
+  await sequelize.transaction(async t => {
+    await Promise.all(
+      orderedTasks.map(async (taskId, position) => {
+        await models.task.update({ position }, { where: { id: taskId } }, { transaction: t });
+      }),
+    );
+  });
+
+  const after = await models.section.findByPk(req.params.sectionId, {
+    include: { model: models.task, where: { parentId: null } },
+    order: [[models.task, 'position', 'ASC']],
+  });
+  console.log(after.tasks);
+
+  responseHandler(res, 201, {
+    message: 'ok',
+  });
+});
+
 const updateSection = asyncTryCatch(async (req, res) => {
   await models.section.update(req.body, {
     where: {
@@ -147,5 +175,6 @@ module.exports = {
   deleteProject,
   createSection,
   updateSection,
+  updateSectionTaskPositions,
   deleteSection,
 };
