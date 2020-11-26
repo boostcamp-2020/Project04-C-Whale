@@ -16,7 +16,6 @@ export default {
     } else {
       router.push("/login").catch(() => {});
     }
-    console.log(process.env.VUE_APP_TITLE);
   },
 };
 </script>
