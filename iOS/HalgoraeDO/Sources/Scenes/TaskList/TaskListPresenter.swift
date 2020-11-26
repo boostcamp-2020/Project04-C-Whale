@@ -9,6 +9,9 @@ import Foundation
 
 protocol TaskListPresentLogic {
     func present(tasks: [Task])
+    func set(editingMode: Bool)
+    func presentDetail(of task: Task)
+    func present(numberOfSelectedTasks count: Int)
 }
 
 class TaskListPresenter {
@@ -22,5 +25,17 @@ class TaskListPresenter {
 extension TaskListPresenter: TaskListPresentLogic {
     func present(tasks: [Task]) {
         viewController.display(tasks: tasks)
+    }
+    
+    func set(editingMode: Bool) {
+        viewController.set(editingMode: editingMode)
+    }
+    
+    func presentDetail(of task: Task) {
+        viewController.displayDetail(of: task)
+    }
+    
+    func present(numberOfSelectedTasks count: Int) {
+        viewController.display(numberOfSelectedTasks: count)
     }
 }

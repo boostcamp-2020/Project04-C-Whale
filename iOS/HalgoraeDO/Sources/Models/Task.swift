@@ -71,3 +71,11 @@ extension Task: Hashable {
         return lhs.identifier == rhs.identifier
     }
 }
+
+// MARK:  - CustomStringConvertible
+
+extension Task: CustomStringConvertible {
+    var description: String {
+        return "id: \(identifier), title: \(title), isCompleted: \(isCompleted), parent: \(parent ?? "nil" as CustomStringConvertible), subTasks: \(subTasks)"
+    }
+}

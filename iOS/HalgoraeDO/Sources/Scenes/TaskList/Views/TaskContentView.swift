@@ -46,11 +46,10 @@ class TaskContentView: UIView, UIContentView {
         button.addTarget(self, action: #selector(didTapCompleteButton(_:)), for: .touchUpInside)
         button.imageView?.contentMode = .scaleAspectFit
         button.layer.masksToBounds = false
-        
         return button
     }()
     
-    private let contentView: UIView = {
+    private let titleContentView: UIView = {
         let view = UIView()
         
         return view
@@ -89,11 +88,10 @@ class TaskContentView: UIView, UIContentView {
 private extension TaskContentView {
     
     private func setupViews() {
-        
         addSubview(stackView)
         stackView.addArrangedSubview(completeButton)
-        stackView.addArrangedSubview(contentView)
-        contentView.addSubview(titleLabel)
+        stackView.addArrangedSubview(titleContentView)
+        titleContentView.addSubview(titleLabel)
         
         let completeButtonHeight = completeButton.heightAnchor.constraint(equalToConstant: 30)
         completeButtonHeight.priority = UILayoutPriority(rawValue: 750)
@@ -104,12 +102,12 @@ private extension TaskContentView {
             stackView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
             stackView.bottomAnchor.constraint(equalTo: layoutMarginsGuide.bottomAnchor),
             completeButtonHeight,
-            completeButton.widthAnchor.constraint(equalToConstant: 30),
+             completeButton.widthAnchor.constraint(equalToConstant: 30),
 
-            titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor),
-            titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            titleLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            titleLabel.topAnchor.constraint(equalTo: titleContentView.topAnchor),
+            titleLabel.leadingAnchor.constraint(equalTo: titleContentView.leadingAnchor),
+            titleLabel.trailingAnchor.constraint(equalTo: titleContentView.trailingAnchor),
+            titleLabel.bottomAnchor.constraint(equalTo: titleContentView.bottomAnchor),
         ])
     }
     
@@ -120,6 +118,7 @@ private extension TaskContentView {
         
         titleLabel.text = configuration.title
         completeButton.isSelected = configuration.isCompleted ?? false
+        completeButton.isUserInteractionEnabled = !configuration.isEditing
         currentConfiguration = configuration
         
     }

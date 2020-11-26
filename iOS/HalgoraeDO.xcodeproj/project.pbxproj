@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4C0CA636256EAC5200E66045 /* TaskListDisplayLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0CA635256EAC5200E66045 /* TaskListDisplayLogic.swift */; };
 		4C3F5665256B8117006D7C9F /* TaskListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3F5664256B8117006D7C9F /* TaskListViewController.swift */; };
 		4C3F566A256B82F2006D7C9F /* TaskBoardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3F5669256B82F2006D7C9F /* TaskBoardViewController.swift */; };
 		4C3F566F256B8C2B006D7C9F /* TaskListInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3F566E256B8C2B006D7C9F /* TaskListInteractor.swift */; };
@@ -19,6 +20,16 @@
 		4C3F5700256CF8A7006D7C9F /* TaskContentConfigure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3F56FF256CF8A7006D7C9F /* TaskContentConfigure.swift */; };
 		4C3F5705256CF8B9006D7C9F /* TaskContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3F5704256CF8B9006D7C9F /* TaskContentView.swift */; };
 		4C3F573F256D2263006D7C9F /* RoundButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3F573E256D2263006D7C9F /* RoundButton.swift */; };
+		4CCD31E8256EBC0C00A46D10 /* TaskListWorkerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0CA5F0256E9AF100E66045 /* TaskListWorkerTests.swift */; };
+		4CCD31E9256EBC0C00A46D10 /* TaskListInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0CA60C256EAA7300E66045 /* TaskListInteractorTests.swift */; };
+		4CCD31EA256EBC0C00A46D10 /* TaskListPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0CA629256EABF700E66045 /* TaskListPresenterTests.swift */; };
+		4CCD31F9256EBC8000A46D10 /* TaskListDisplaySpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CCD31F8256EBC8000A46D10 /* TaskListDisplaySpy.swift */; };
+		4CCD31FF256EBCEF00A46D10 /* TaskListPresenterSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CCD31FE256EBCEF00A46D10 /* TaskListPresenterSpy.swift */; };
+		4CCD3202256EBD0200A46D10 /* TaskListPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3F5678256B8C83006D7C9F /* TaskListPresenter.swift */; };
+		4CCD3205256EBD3A00A46D10 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3F5694256BA228006D7C9F /* Task.swift */; };
+		4CCD3208256EBD3E00A46D10 /* TaskListWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3F5673256B8C63006D7C9F /* TaskListWorker.swift */; };
+		4CCD320B256EBD4200A46D10 /* TaskListDisplayLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0CA635256EAC5200E66045 /* TaskListDisplayLogic.swift */; };
+		4CCD320E256EBD4600A46D10 /* TaskListInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3F566E256B8C2B006D7C9F /* TaskListInteractor.swift */; };
 		AAEE20DE2564E4A900668FAD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAEE20DD2564E4A900668FAD /* AppDelegate.swift */; };
 		AAEE20E02564E4A900668FAD /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAEE20DF2564E4A900668FAD /* SceneDelegate.swift */; };
 		AAEE20E52564E4AA00668FAD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AAEE20E32564E4AA00668FAD /* Main.storyboard */; };
@@ -27,14 +38,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		AAEE20F12564E4AC00668FAD /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = AAEE20D22564E4A900668FAD /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = AAEE20D92564E4A900668FAD;
-			remoteInfo = HalgoraeDO;
-		};
-		AAEE20FC2564E4AC00668FAD /* PBXContainerItemProxy */ = {
+		4CCD31DE256EBC0000A46D10 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = AAEE20D22564E4A900668FAD /* Project object */;
 			proxyType = 1;
@@ -44,6 +48,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4C0CA5F0256E9AF100E66045 /* TaskListWorkerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListWorkerTests.swift; sourceTree = "<group>"; };
+		4C0CA60C256EAA7300E66045 /* TaskListInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListInteractorTests.swift; sourceTree = "<group>"; };
+		4C0CA629256EABF700E66045 /* TaskListPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListPresenterTests.swift; sourceTree = "<group>"; };
+		4C0CA635256EAC5200E66045 /* TaskListDisplayLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListDisplayLogic.swift; sourceTree = "<group>"; };
 		4C3F5657256B80B4006D7C9F /* HalgoraeDO.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HalgoraeDO.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C3F5664256B8117006D7C9F /* TaskListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListViewController.swift; sourceTree = "<group>"; };
 		4C3F5669256B82F2006D7C9F /* TaskBoardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskBoardViewController.swift; sourceTree = "<group>"; };
@@ -57,6 +65,10 @@
 		4C3F56FF256CF8A7006D7C9F /* TaskContentConfigure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskContentConfigure.swift; sourceTree = "<group>"; };
 		4C3F5704256CF8B9006D7C9F /* TaskContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskContentView.swift; sourceTree = "<group>"; };
 		4C3F573E256D2263006D7C9F /* RoundButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundButton.swift; sourceTree = "<group>"; };
+		4CCD31D9256EBC0000A46D10 /* TaskListTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = TaskListTests.xctest; path = "/Users/os/woong/iOS/Boostcamp2020/group_final/Project04-C-Whale/iOS/build/Debug-iphoneos/TaskListTests.xctest"; sourceTree = "<absolute>"; };
+		4CCD31DD256EBC0000A46D10 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4CCD31F8256EBC8000A46D10 /* TaskListDisplaySpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListDisplaySpy.swift; sourceTree = "<group>"; };
+		4CCD31FE256EBCEF00A46D10 /* TaskListPresenterSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListPresenterSpy.swift; sourceTree = "<group>"; };
 		AAEE20DD2564E4A900668FAD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AAEE20DF2564E4A900668FAD /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		AAEE20E42564E4AA00668FAD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -66,21 +78,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		4CCD31D6256EBC0000A46D10 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		AAEE20D72564E4A900668FAD /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		AAEE20ED2564E4AC00668FAD /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		AAEE20F82564E4AC00668FAD /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -118,6 +123,7 @@
 				4C3F5678256B8C83006D7C9F /* TaskListPresenter.swift */,
 				4C3F567D256B8CB3006D7C9F /* TaskListModels.swift */,
 				4C3F5682256B8F4B006D7C9F /* TaskListRouter.swift */,
+				4C0CA635256EAC5200E66045 /* TaskListDisplayLogic.swift */,
 			);
 			path = TaskList;
 			sourceTree = "<group>";
@@ -140,11 +146,33 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		4CCD31DA256EBC0000A46D10 /* TaskListTests */ = {
+			isa = PBXGroup;
+			children = (
+				4CCD31F7256EBC2400A46D10 /* Mocks */,
+				4C0CA5F0256E9AF100E66045 /* TaskListWorkerTests.swift */,
+				4C0CA60C256EAA7300E66045 /* TaskListInteractorTests.swift */,
+				4C0CA629256EABF700E66045 /* TaskListPresenterTests.swift */,
+				4CCD31DD256EBC0000A46D10 /* Info.plist */,
+			);
+			path = TaskListTests;
+			sourceTree = "<group>";
+		};
+		4CCD31F7256EBC2400A46D10 /* Mocks */ = {
+			isa = PBXGroup;
+			children = (
+				4CCD31F8256EBC8000A46D10 /* TaskListDisplaySpy.swift */,
+				4CCD31FE256EBCEF00A46D10 /* TaskListPresenterSpy.swift */,
+			);
+			path = Mocks;
+			sourceTree = "<group>";
+		};
 		AAEE20D12564E4A900668FAD = {
 			isa = PBXGroup;
 			children = (
 				AAEE20DC2564E4A900668FAD /* HalgoraeDO */,
 				4C3F5657256B80B4006D7C9F /* HalgoraeDO.app */,
+				4CCD31DA256EBC0000A46D10 /* TaskListTests */,
 			);
 			sourceTree = "<group>";
 		};
@@ -198,6 +226,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		4CCD31D8256EBC0000A46D10 /* TaskListTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4CCD31E0256EBC0000A46D10 /* Build configuration list for PBXNativeTarget "TaskListTests" */;
+			buildPhases = (
+				4CCD31D5256EBC0000A46D10 /* Sources */,
+				4CCD31D6256EBC0000A46D10 /* Frameworks */,
+				4CCD31D7256EBC0000A46D10 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4CCD31DF256EBC0000A46D10 /* PBXTargetDependency */,
+			);
+			name = TaskListTests;
+			productName = TaskListTests;
+			productReference = 4CCD31D9256EBC0000A46D10 /* TaskListTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		AAEE20D92564E4A900668FAD /* HalgoraeDO */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = AAEE21042564E4AC00668FAD /* Build configuration list for PBXNativeTarget "HalgoraeDO" */;
@@ -215,40 +261,6 @@
 			productReference = 4C3F5657256B80B4006D7C9F /* HalgoraeDO.app */;
 			productType = "com.apple.product-type.application";
 		};
-		AAEE20EF2564E4AC00668FAD /* HalgoraeDOTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = AAEE21072564E4AC00668FAD /* Build configuration list for PBXNativeTarget "HalgoraeDOTests" */;
-			buildPhases = (
-				AAEE20EC2564E4AC00668FAD /* Sources */,
-				AAEE20ED2564E4AC00668FAD /* Frameworks */,
-				AAEE20EE2564E4AC00668FAD /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				AAEE20F22564E4AC00668FAD /* PBXTargetDependency */,
-			);
-			name = HalgoraeDOTests;
-			productName = HalgoraeDOTests;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
-		AAEE20FA2564E4AC00668FAD /* HalgoraeDOUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = AAEE210A2564E4AC00668FAD /* Build configuration list for PBXNativeTarget "HalgoraeDOUITests" */;
-			buildPhases = (
-				AAEE20F72564E4AC00668FAD /* Sources */,
-				AAEE20F82564E4AC00668FAD /* Frameworks */,
-				AAEE20F92564E4AC00668FAD /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				AAEE20FD2564E4AC00668FAD /* PBXTargetDependency */,
-			);
-			name = HalgoraeDOUITests;
-			productName = HalgoraeDOUITests;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -258,16 +270,12 @@
 				LastSwiftUpdateCheck = 1210;
 				LastUpgradeCheck = 1210;
 				TargetAttributes = {
+					4CCD31D8256EBC0000A46D10 = {
+						CreatedOnToolsVersion = 12.1;
+						TestTargetID = AAEE20D92564E4A900668FAD;
+					};
 					AAEE20D92564E4A900668FAD = {
 						CreatedOnToolsVersion = 12.1;
-					};
-					AAEE20EF2564E4AC00668FAD = {
-						CreatedOnToolsVersion = 12.1;
-						TestTargetID = AAEE20D92564E4A900668FAD;
-					};
-					AAEE20FA2564E4AC00668FAD = {
-						CreatedOnToolsVersion = 12.1;
-						TestTargetID = AAEE20D92564E4A900668FAD;
 					};
 				};
 			};
@@ -285,13 +293,19 @@
 			projectRoot = "";
 			targets = (
 				AAEE20D92564E4A900668FAD /* HalgoraeDO */,
-				AAEE20EF2564E4AC00668FAD /* HalgoraeDOTests */,
-				AAEE20FA2564E4AC00668FAD /* HalgoraeDOUITests */,
+				4CCD31D8256EBC0000A46D10 /* TaskListTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		4CCD31D7256EBC0000A46D10 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		AAEE20D82564E4A900668FAD /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -302,23 +316,26 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		AAEE20EE2564E4AC00668FAD /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		AAEE20F92564E4AC00668FAD /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		4CCD31D5256EBC0000A46D10 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4CCD3205256EBD3A00A46D10 /* Task.swift in Sources */,
+				4CCD320E256EBD4600A46D10 /* TaskListInteractor.swift in Sources */,
+				4CCD3208256EBD3E00A46D10 /* TaskListWorker.swift in Sources */,
+				4CCD320B256EBD4200A46D10 /* TaskListDisplayLogic.swift in Sources */,
+				4CCD3202256EBD0200A46D10 /* TaskListPresenter.swift in Sources */,
+				4CCD31FF256EBCEF00A46D10 /* TaskListPresenterSpy.swift in Sources */,
+				4CCD31E9256EBC0C00A46D10 /* TaskListInteractorTests.swift in Sources */,
+				4CCD31EA256EBC0C00A46D10 /* TaskListPresenterTests.swift in Sources */,
+				4CCD31E8256EBC0C00A46D10 /* TaskListWorkerTests.swift in Sources */,
+				4CCD31F9256EBC8000A46D10 /* TaskListDisplaySpy.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		AAEE20D62564E4A900668FAD /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -330,6 +347,7 @@
 				4C3F567E256B8CB3006D7C9F /* TaskListModels.swift in Sources */,
 				4C3F5695256BA228006D7C9F /* Task.swift in Sources */,
 				4C3F5705256CF8B9006D7C9F /* TaskContentView.swift in Sources */,
+				4C0CA636256EAC5200E66045 /* TaskListDisplayLogic.swift in Sources */,
 				AAEE20E02564E4A900668FAD /* SceneDelegate.swift in Sources */,
 				4C3F5683256B8F4B006D7C9F /* TaskListRouter.swift in Sources */,
 				4C3F566A256B82F2006D7C9F /* TaskBoardViewController.swift in Sources */,
@@ -340,32 +358,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		AAEE20EC2564E4AC00668FAD /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		AAEE20F72564E4AC00668FAD /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		AAEE20F22564E4AC00668FAD /* PBXTargetDependency */ = {
+		4CCD31DF256EBC0000A46D10 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = AAEE20D92564E4A900668FAD /* HalgoraeDO */;
-			targetProxy = AAEE20F12564E4AC00668FAD /* PBXContainerItemProxy */;
-		};
-		AAEE20FD2564E4AC00668FAD /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = AAEE20D92564E4A900668FAD /* HalgoraeDO */;
-			targetProxy = AAEE20FC2564E4AC00668FAD /* PBXContainerItemProxy */;
+			targetProxy = 4CCD31DE256EBC0000A46D10 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -389,6 +388,44 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		4CCD31E1256EBC0000A46D10 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = TaskListTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.woong.TaskListTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HalgoraeDO.app/HalgoraeDO";
+			};
+			name = Debug;
+		};
+		4CCD31E2256EBC0000A46D10 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = TaskListTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.woong.TaskListTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HalgoraeDO.app/HalgoraeDO";
+			};
+			name = Release;
+		};
 		AAEE21022564E4AC00668FAD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -543,93 +580,18 @@
 			};
 			name = Release;
 		};
-		AAEE21082564E4AC00668FAD /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = B3PWYBKFUK;
-				INFOPLIST_FILE = HalgoraeDOTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = kr.boost.HalgoraeDOTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HalgoraeDO.app/HalgoraeDO";
-			};
-			name = Debug;
-		};
-		AAEE21092564E4AC00668FAD /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = B3PWYBKFUK;
-				INFOPLIST_FILE = HalgoraeDOTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = kr.boost.HalgoraeDOTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HalgoraeDO.app/HalgoraeDO";
-			};
-			name = Release;
-		};
-		AAEE210B2564E4AC00668FAD /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = B3PWYBKFUK;
-				INFOPLIST_FILE = HalgoraeDOUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = kr.boost.HalgoraeDOUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = HalgoraeDO;
-			};
-			name = Debug;
-		};
-		AAEE210C2564E4AC00668FAD /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = B3PWYBKFUK;
-				INFOPLIST_FILE = HalgoraeDOUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = kr.boost.HalgoraeDOUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = HalgoraeDO;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		4CCD31E0256EBC0000A46D10 /* Build configuration list for PBXNativeTarget "TaskListTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4CCD31E1256EBC0000A46D10 /* Debug */,
+				4CCD31E2256EBC0000A46D10 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		AAEE20D52564E4A900668FAD /* Build configuration list for PBXProject "HalgoraeDO" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -644,24 +606,6 @@
 			buildConfigurations = (
 				AAEE21052564E4AC00668FAD /* Debug */,
 				AAEE21062564E4AC00668FAD /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		AAEE21072564E4AC00668FAD /* Build configuration list for PBXNativeTarget "HalgoraeDOTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				AAEE21082564E4AC00668FAD /* Debug */,
-				AAEE21092564E4AC00668FAD /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		AAEE210A2564E4AC00668FAD /* Build configuration list for PBXNativeTarget "HalgoraeDOUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				AAEE210B2564E4AC00668FAD /* Debug */,
-				AAEE210C2564E4AC00668FAD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

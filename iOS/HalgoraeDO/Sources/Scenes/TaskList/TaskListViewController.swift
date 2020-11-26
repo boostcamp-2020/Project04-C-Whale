@@ -7,10 +7,6 @@
 
 import UIKit
 
-protocol TaskListDisplayLogic {
-    func display(tasks: [Task])
-}
-
 class TaskListViewController: UIViewController {
     
     // MARK: - Properties
@@ -36,6 +32,9 @@ class TaskListViewController: UIViewController {
     // MARK: - Views
     
     @IBOutlet weak private var taskListCollectionView: UICollectionView!
+    @IBOutlet weak private var moreButton: UIBarButtonItem!
+    @IBOutlet weak private var addButton: RoundButton!
+    @IBOutlet weak private var editToolBar: UIToolbar!
     
     // MARK: - Initialize
     
@@ -48,24 +47,35 @@ class TaskListViewController: UIViewController {
     
     // MARK: - Methods
     
+    override func setEditing(_ editing: Bool, animated: Bool) {
+        super.setEditing(editing, animated: animated)
+        interactor?.change(editingMode: editing, animated: animated)
+    }
+    
     // MARK: IBActions
     
     @IBAction private func didTapMoreButton(_ sender: UIBarButtonItem) {
+        
+        guard !isEditing else {
+            setEditing(false, animated: true)
+            return
+        }
+        
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-
-        let showBoardAction = UIAlertAction(title: "보드로 보기", style: .default) { (action) in
+        let showBoardAction = UIAlertAction(title: "보드로 보기", style: .default) { (_: UIAlertAction) in
             
         }
 
-        let addSectionAction = UIAlertAction(title: "섹션 추가", style: .default) { (action) in
+        let addSectionAction = UIAlertAction(title: "섹션 추가", style: .default) { (_: UIAlertAction) in
             
         }
 
-        let selectTaskAction = UIAlertAction(title: "작업 선택", style: .default) { (action) in
+        let selectTaskAction = UIAlertAction(title: "작업 선택", style: .default) { [weak self] (_: UIAlertAction) in
             
+            self?.setEditing(true, animated: true)
         }
 
-        let cancelAction = UIAlertAction(title: "취소", style: .cancel) { (action) in
+        let cancelAction = UIAlertAction(title: "취소", style: .cancel) { (_: UIAlertAction) in
             
         }
 
@@ -73,7 +83,7 @@ class TaskListViewController: UIViewController {
         present(alert, animated: true, completion: nil)
     }
     
-    @IBAction func didTapAddButton(_ sender: RoundButton) {
+    @IBAction private func didTapAddButton(_ sender: RoundButton) {
         
     }
 }
@@ -86,17 +96,45 @@ extension TaskListViewController: TaskListDisplayLogic {
         let sectionTitle = ""
         dataSource.apply(snapShot, to: sectionTitle, animatingDifferences: true)
     }
+    
+    func displayDetail(of task: Task) {
+        
+    }
+    
+    func set(editingMode: Bool) {
+        taskListCollectionView.isEditing = editingMode
+        title = "0개 선택됨"
+        moreButton.title = editingMode ? "취소" : "More"
+        addButton.isHidden = editingMode
+        editToolBar.isHidden = !editingMode
+    }
+    
+    func display(numberOfSelectedTasks count: Int) {
+        guard isEditing else { return }
+        title = "\(count) 개 선택됨"
+    }
 }
 
 // MARK: - Configure CollectionView Layout
 
 private extension TaskListViewController {
-    private func configureCollectionView() {
+    func configureCollectionView() {
         taskListCollectionView.collectionViewLayout = generateLayout()
+        taskListCollectionView.allowsMultipleSelectionDuringEditing = true
+        taskListCollectionView.delegate = self
     }
     
-    private func generateLayout() -> UICollectionViewLayout {
-        let listConfiguration = UICollectionLayoutListConfiguration(appearance: .sidebar)
+    func generateLayout() -> UICollectionViewLayout {
+        var listConfiguration = UICollectionLayoutListConfiguration(appearance: .sidebar)
+        listConfiguration.leadingSwipeActionsConfigurationProvider = { indexPath in
+            let editAction = UIContextualAction(style: .normal, title: "Edit") { [weak self] (action, view, completion) in
+                if !(self?.isEditing ?? true) {
+                    self?.setEditing(true, animated: true)
+                }
+                self?.taskListCollectionView.selectItem(at: indexPath, animated: true, scrollPosition: .init())
+            }
+            return UISwipeActionsConfiguration(actions: [editAction])
+        }
         let layout = UICollectionViewCompositionalLayout.list(using: listConfiguration)
         return layout
     }
@@ -106,11 +144,11 @@ private extension TaskListViewController {
 
 private extension TaskListViewController {
 
-    private func configureDataSource() {
-        let cellRegistration = UICollectionView.CellRegistration<TaskCollectionViewListCell, Task> { [weak self] (cell, indexPath, taskItem) in
+    func configureDataSource() {
+        let cellRegistration = UICollectionView.CellRegistration<TaskCollectionViewListCell, Task> { [weak self] (cell, _: IndexPath, taskItem) in
             
             cell.task = taskItem
-            cell.completeHandler = { [weak self] task in
+            cell.finishHandler = { [weak self] task in
                 guard let self = self,
                       let task = task
                 else {
@@ -125,7 +163,7 @@ private extension TaskListViewController {
                 self.dataSource.apply(currentSnapshot)
             }
             
-            let disclosureOptions = UICellAccessory.OutlineDisclosureOptions(style: .header)
+            let disclosureOptions = UICellAccessory.OutlineDisclosureOptions(style: .automatic)
             cell.accessories = taskItem.subTasks.isEmpty ? [] : [.outlineDisclosure(options: disclosureOptions)]
         }
         
@@ -135,7 +173,7 @@ private extension TaskListViewController {
         })
     }
     
-    private func snapshot(taskItems: [Task]) -> NSDiffableDataSourceSectionSnapshot<Task> {
+    func snapshot(taskItems: [Task]) -> NSDiffableDataSourceSectionSnapshot<Task> {
         var snapshot = NSDiffableDataSourceSectionSnapshot<Task>()
 
         func addItems(_ taskItems: [Task], to parent: Task?) {
@@ -147,5 +185,23 @@ private extension TaskListViewController {
 
         addItems(taskItems, to: nil)
         return snapshot
+    }
+}
+
+// MARK:  - UICollectionView Delegate
+
+extension TaskListViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let task = dataSource.snapshot().itemIdentifiers[indexPath.item]
+        interactor?.select(task: task)
+        
+        if !isEditing {
+            collectionView.deselectItem(at: indexPath, animated: true)
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        let task = dataSource.snapshot().itemIdentifiers[indexPath.item]
+        interactor?.deSelect(task: task)
     }
 }
