@@ -48,6 +48,18 @@ class TaskBoardViewController: UIViewController {
 // MARK: - TaskList Display Logic
 
 extension TaskBoardViewController: TaskListDisplayLogic {
+    func displayDetail(of task: Task) {
+        
+    }
+    
+    func set(editingMode: Bool) {
+        
+    }
+    
+    func display(numberOfSelectedTasks count: Int) {
+        
+    }
+    
     func display(tasks: [Task]) {
         let snapShot = snapshot(taskItems: tasks)
         dataSource.apply(snapShot, animatingDifferences: false)
@@ -63,6 +75,7 @@ private extension TaskBoardViewController {
         taskBoardCollectionView.dropDelegate = self
         taskBoardCollectionView.dragInteractionEnabled = true
         taskBoardCollectionView.collectionViewLayout = generateLayout()
+        taskBoardCollectionView.isPagingEnabled = true
     }
     
     private func generateLayout() -> UICollectionViewLayout {
@@ -97,7 +110,7 @@ private extension TaskBoardViewController {
         let cellRegistration = UICollectionView.CellRegistration<TaskCollectionViewListCell, Task> { [weak self] (cell, indexPath, taskItem) in
             
             cell.task = taskItem
-            cell.completeHandler = { [weak self] task in
+            cell.finishHandler = { [weak self] task in
                 guard let self = self,
                       let task = task
                 else {
