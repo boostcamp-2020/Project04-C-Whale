@@ -188,7 +188,7 @@
         <!--Popover View Controller-->
         <scene sceneID="Om4-0D-nar">
             <objects>
-                <viewController id="swV-k3-g0c" customClass="PopoverViewController" customModule="HalgoraeDO" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="popoverView" id="swV-k3-g0c" customClass="PopoverViewController" customModule="HalgoraeDO" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="NGt-m8-MBb">
                         <rect key="frame" x="0.0" y="0.0" width="200" height="200"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

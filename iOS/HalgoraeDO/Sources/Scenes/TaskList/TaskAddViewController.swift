@@ -7,7 +7,7 @@
 
 import UIKit
 
-class TaskAddViewController: UIViewController {
+class TaskAddViewController: UIViewController, UIPopoverPresentationControllerDelegate {
 
     // MARK: - Properties
     
@@ -181,15 +181,22 @@ extension TaskAddViewController {
         priorityButton.translatesAutoresizingMaskIntoConstraints = false
         priorityButton.leadingAnchor.constraint(equalTo: dateButton.trailingAnchor, constant: 15).isActive = true
         priorityButton.topAnchor.constraint(equalTo: dateButton.topAnchor).isActive = true
+        priorityButton.addTarget(self, action: #selector(priorityPopover), for: .touchUpInside)
     }
     
+    @objc func priorityPopover(_ sender: UIButton) {
+        let popoverViewController = UIStoryboard(name: "Main", bundle:nil).instantiateViewController(withIdentifier: "popoverView") as! PopoverViewController
+        popoverViewController.popoverPresentationController?.delegate = self
+        popoverViewController.viewModels = Priority.allCases.compactMap { $0.viewModel }
+        popoverViewController.modalTransitionStyle = .crossDissolve
+        popoverViewController.preferredContentSize = CGSize(width: 240.0, height: 350.0)
+        
+        self.present(popoverViewController, animated:true)
+    }
+    
+    func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
+        return .none
+    }
 }
 
 
-
-
-//TODO
-//1. textField placeholder구현 00
-//2. button 디자인 00
-//3. 우선순위 모달
-//4. datepicker delegate 00
