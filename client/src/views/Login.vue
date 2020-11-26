@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-layout class="grey lighten-3" fill-height d-flex align-center justify-center flex-column>
+    <v-layout class="whaleGreen" fill-height d-flex align-center justify-center flex-column>
       <div class="login-layout white d-flex flex-column justify-space-around align-center py-10">
         <img width="200" src="../assets/halgoraedo.png" />
         <a href="http://localhost:3000/api/user/oauth/naver">
