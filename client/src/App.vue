@@ -1,17 +1,5 @@
 <template>
-  <v-app>
-    <v-app-bar app color="primary" dark>
-      <div class="d-flex align-center">
-        <router-link to="/login">Login</router-link>
-        <router-link to="/today">Today</router-link>
-      </div>
-      <v-spacer></v-spacer>
-      <router-link to="project/1">Project</router-link>
-    </v-app-bar>
-    <v-main>
-      <router-view></router-view>
-    </v-main>
-  </v-app>
+  <router-view></router-view>
 </template>
 
 <script>
@@ -23,7 +11,12 @@ export default {
     //
   }),
   created: () => {
-    router.push("/login");
+    if (localStorage.getItem("token")) {
+      router.push("/today").catch(() => {});
+    } else {
+      router.push("/login").catch(() => {});
+    }
+    console.log(process.env.VUE_APP_TITLE);
   },
 };
 </script>

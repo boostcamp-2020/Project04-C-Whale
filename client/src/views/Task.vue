@@ -1,6 +1,6 @@
 <template>
-  <div class="mdi-login">
-    <div>작업</div>
+  <div>
+    <div>Task View</div>
   </div>
 </template>
 
