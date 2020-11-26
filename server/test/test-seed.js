@@ -9,6 +9,14 @@ const users = [
     createdAt: new Date(),
     updatedAt: new Date(),
   },
+  {
+    id: 'd0325b52-b8d2-4623-b537-79b0d01cee1d',
+    email: 'zin0@naver.com',
+    name: 'zin0',
+    provider: 'naver',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
 ];
 
 const priorities = [
@@ -132,6 +140,15 @@ const labels = [
     id: '54eefed3-3652-443f-85c9-7dfe87b23f82',
     color: 'red',
     title: '라벨 1',
+    userId: 'ff4dd832-1567-4d74-b41d-bd85e96ce329',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    id: 'f77c5c11-d753-4e76-9a73-7cf89a3fd569',
+    color: '#FFFFFF',
+    title: '라벨 2',
+    userId: 'd0325b52-b8d2-4623-b537-79b0d01cee1d',
     createdAt: new Date(),
     updatedAt: new Date(),
   },
