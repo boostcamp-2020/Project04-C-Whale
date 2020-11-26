@@ -109,7 +109,7 @@ extension TaskListViewController: TaskListDisplayLogic {
     
     func set(editingMode: Bool) {
         taskListCollectionView.isEditing = editingMode
-        title = "0개 선택됨"
+        title = editingMode ? "0개 선택됨" : "title"
         moreButton.title = editingMode ? "취소" : "More"
         addButton.isHidden = editingMode
         editToolBar.isHidden = !editingMode
@@ -137,6 +137,11 @@ private extension TaskListViewController {
                 if !(self?.isEditing ?? true) {
                     self?.setEditing(true, animated: true)
                 }
+                
+                if let task = self?.dataSource.snapshot().itemIdentifiers[indexPath.item] {
+                    self?.interactor?.select(task: task)
+                }
+                
                 self?.taskListCollectionView.selectItem(at: indexPath, animated: true, scrollPosition: .init())
             }
             return UISwipeActionsConfiguration(actions: [editAction])
