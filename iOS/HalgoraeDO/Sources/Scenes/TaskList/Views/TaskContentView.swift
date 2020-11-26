@@ -98,7 +98,7 @@ private extension TaskContentView {
         NSLayoutConstraint.activate([
             
             stackView.topAnchor.constraint(equalTo: layoutMarginsGuide.topAnchor),
-            stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            stackView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor, constant: 10),
             stackView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
             stackView.bottomAnchor.constraint(equalTo: layoutMarginsGuide.bottomAnchor),
             completeButtonHeight,
