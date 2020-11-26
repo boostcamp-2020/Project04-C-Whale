@@ -7,7 +7,7 @@ const naverLogin = (req, res, next) => {
       ? process.env.CLIENT_DOMAIN_DEVELOP
       : process.env.CLIENT_DOMAIN_PRODUCTION;
   try {
-    const user = { req };
+    const { user } = req;
     const token = createJWT(user);
     res.header('Authentication', token);
     res.status(200).redirect(`${clientURL}?token=${token}`);
