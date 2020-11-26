@@ -7,18 +7,6 @@
 
 import UIKit
 
-enum Section: Int, Hashable, CaseIterable, CustomStringConvertible {
-    case list1, list2, list3
-    
-    var description: String {
-        switch self {
-        case .list1: return "List1"
-        case .list2: return "List2"
-        case .list3: return "List3"
-        }
-    }
-}
-
 class TaskBoardViewController: UIViewController {
 
     // MARK: - Properties
@@ -41,9 +29,6 @@ class TaskBoardViewController: UIViewController {
         configureLogic()
         configureCollectionView()
         configureDataSource()
-        taskBoardCollectionView.dragDelegate = self
-        taskBoardCollectionView.dropDelegate = self
-        taskBoardCollectionView.dragInteractionEnabled = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -56,7 +41,6 @@ class TaskBoardViewController: UIViewController {
     private func configureLogic() {
         let presenter = TaskListPresenter(viewController: self)
         let interactor = TaskListInteractor(presenter: presenter, worker: TaskListWorker())
-        
         self.interactor = interactor
     }
 }
@@ -66,19 +50,19 @@ class TaskBoardViewController: UIViewController {
 extension TaskBoardViewController: TaskListDisplayLogic {
     func display(tasks: [Task]) {
         let snapShot = snapshot(taskItems: tasks)
-        let snapShot1 = snapshot(taskItems: tasks)
-        let snapShot2 = snapshot(taskItems: tasks)
-        dataSource.apply(snapShot, to: "list1", animatingDifferences: true)
-        dataSource.apply(snapShot1, to: "list2", animatingDifferences: true)
+        dataSource.apply(snapShot, animatingDifferences: false)
     }
 }
 
 // MARK: - Configure CollectionView Layout
 
 private extension TaskBoardViewController {
+    
     private func configureCollectionView() {
+        taskBoardCollectionView.dragDelegate = self
+        taskBoardCollectionView.dropDelegate = self
+        taskBoardCollectionView.dragInteractionEnabled = true
         taskBoardCollectionView.collectionViewLayout = generateLayout()
-        taskBoardCollectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
     }
     
     private func generateLayout() -> UICollectionViewLayout {
@@ -87,21 +71,19 @@ private extension TaskBoardViewController {
         config.interSectionSpacing = 10
         config.scrollDirection = .horizontal
         
-        //==== TODO
         let sectionProvider = { (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
             let section: NSCollectionLayoutSection
             let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(100))
             let item = NSCollectionLayoutItem(layoutSize: itemSize)
             let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.9), heightDimension: .estimated(100))
             let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
-            
             section = NSCollectionLayoutSection(group: group)
             section.interGroupSpacing = 15
             section.orthogonalScrollingBehavior = .continuous
             section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10)
-        
             return section
         }
+        
         return UICollectionViewCompositionalLayout(sectionProvider: sectionProvider, configuration: config)
         
     }
@@ -130,41 +112,33 @@ private extension TaskBoardViewController {
                 self.dataSource.apply(currentSnapshot)
             }
             
-            //==== TODO
+            var background = UIBackgroundConfiguration.listPlainCell()
+            background.cornerRadius = 8
+            background.strokeColor = .systemGray3
             cell.layer.shadowColor = UIColor.black.cgColor
             cell.layer.shadowOffset = CGSize(width: 0, height: 5)
             cell.layer.shadowRadius = 7.0
             cell.layer.shadowOpacity = 0.2
             cell.layer.masksToBounds = false
-    
-            var background = UIBackgroundConfiguration.listPlainCell()
-            background.cornerRadius = 8
-            background.strokeColor = .systemGray3
             cell.backgroundConfiguration = background
         }
         
-        //TODO cellProvider 안써도 될듯
         self.dataSource = UICollectionViewDiffableDataSource<String, Task>(collectionView: taskBoardCollectionView, cellProvider: { (collectionview, indexPath, task) -> UICollectionViewCell? in
-            guard let section = Section(rawValue: indexPath.section) else { fatalError("Unknown section") }
             return collectionview.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: task)
         })
         
     }
     
-    private func snapshot(taskItems: [Task]) -> NSDiffableDataSourceSectionSnapshot<Task> {
-        var snapshot = NSDiffableDataSourceSectionSnapshot<Task>()
+    private func snapshot(taskItems: [Task]) -> NSDiffableDataSourceSnapshot<String, Task> {
 
-        func addItems(_ taskItems: [Task], to parent: Task?) {
-            
-            snapshot.append(taskItems, to: parent)
+        var snapshot = NSDiffableDataSourceSnapshot<String, Task>()
+        for i in 0..<2 {
+            snapshot.appendSections(["\(i)"])
+            // TODO: 뷰 테스트를 위한 Task배열을 바로 만들어 넣어주는데 이 배열을 taskItems로 변경하기
+            snapshot.appendItems([Task(section: "123", title: "123", isCompleted: false, depth: 0, parent: nil, subTasks: []),Task(section: "123", title: "123", isCompleted: false, depth: 0, parent: nil, subTasks: []),Task(section: "123", title: "123", isCompleted: false, depth: 0, parent: nil, subTasks: []),Task(section: "123", title: "123", isCompleted: false, depth: 0, parent: nil, subTasks: []),Task(section: "123", title: "123", isCompleted: false, depth: 0, parent: nil, subTasks: [])], toSection: "\(i)")
         }
-        addItems(taskItems, to: nil)
-    
-        snapshot.append([Task(section: "123", title: "123", isCompleted: false, depth: 0, parent: nil, subTasks: [])], to: nil)
-        snapshot.append([Task(section: "123", title: "123", isCompleted: false, depth: 0, parent: nil, subTasks: [])], to: nil)
-        snapshot.append([Task(section: "1233", title: "1233", isCompleted: false, depth: 1, parent: nil, subTasks: [])], to: nil)
-        snapshot.append([Task(section: "1233", title: "12334", isCompleted: false, depth: 0, parent: nil, subTasks: [])], to: nil)
         return snapshot
+        
     }
 }
 
@@ -221,12 +195,10 @@ extension TaskBoardViewController: UICollectionViewDropDelegate {
         return UICollectionViewDropProposal(operation: isSelf ? .move : .copy, intent: .insertAtDestinationIndexPath)
     }
     
-    /* performDropWith로 들어가지 못하고 cancle되었을 때 lineView를 제거 */
     func collectionView(_ collectionView: UICollectionView, dragSessionDidEnd session: UIDragSession) {
         lineView.removeFromSuperview()
     }
     
-    /* performDropWith이 수행될 때 lineView를 제거 */
     func collectionView(
         _ collectionView: UICollectionView,
         performDropWith coordinator: UICollectionViewDropCoordinator
@@ -237,8 +209,7 @@ extension TaskBoardViewController: UICollectionViewDropDelegate {
     
 }
 
-
-extension TaskBoardViewController {
+private extension TaskBoardViewController {
     func setLocation(_ location: CGPoint, _ destination: IndexPath?) {
         lineView.removeFromSuperview()
         guard let destination = destination, let startIndex = startIndex, let startPoint = startPoint  else{
