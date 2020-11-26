@@ -48,6 +48,18 @@ class TaskBoardViewController: UIViewController {
 // MARK: - TaskList Display Logic
 
 extension TaskBoardViewController: TaskListDisplayLogic {
+    func displayDetail(of task: Task) {
+        
+    }
+    
+    func set(editingMode: Bool) {
+        
+    }
+    
+    func display(numberOfSelectedTasks count: Int) {
+        
+    }
+    
     func display(tasks: [Task]) {
         let snapShot = snapshot(taskItems: tasks)
         dataSource.apply(snapShot, animatingDifferences: false)
@@ -79,7 +91,7 @@ private extension TaskBoardViewController {
             let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
             section = NSCollectionLayoutSection(group: group)
             section.interGroupSpacing = 15
-            section.orthogonalScrollingBehavior = .continuous
+            section.orthogonalScrollingBehavior = .paging
             section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10)
             return section
         }
@@ -97,7 +109,7 @@ private extension TaskBoardViewController {
         let cellRegistration = UICollectionView.CellRegistration<TaskCollectionViewListCell, Task> { [weak self] (cell, indexPath, taskItem) in
             
             cell.task = taskItem
-            cell.completeHandler = { [weak self] task in
+            cell.finishHandler = { [weak self] task in
                 guard let self = self,
                       let task = task
                 else {
@@ -137,6 +149,7 @@ private extension TaskBoardViewController {
             // TODO: 뷰 테스트를 위한 Task배열을 바로 만들어 넣어주는데 이 배열을 taskItems로 변경하기
             snapshot.appendItems([Task(section: "123", title: "123", isCompleted: false, depth: 0, parent: nil, subTasks: []),Task(section: "123", title: "123", isCompleted: false, depth: 0, parent: nil, subTasks: []),Task(section: "123", title: "123", isCompleted: false, depth: 0, parent: nil, subTasks: []),Task(section: "123", title: "123", isCompleted: false, depth: 0, parent: nil, subTasks: []),Task(section: "123", title: "123", isCompleted: false, depth: 0, parent: nil, subTasks: [])], toSection: "\(i)")
         }
+        
         return snapshot
         
     }
@@ -165,7 +178,7 @@ extension TaskBoardViewController: UICollectionViewDragDelegate {
     
     private func dragItems(at indexPath: IndexPath) -> [UIDragItem] {
         let cell = taskBoardCollectionView.cellForItem(at: indexPath)
-        let taskObject = NSString(string: "123123")
+        let taskObject = NSString(string: "_")
         let provider = NSItemProvider(object: taskObject)
         let dragItem = UIDragItem(itemProvider: provider)
         dragItem.localObject = cell
