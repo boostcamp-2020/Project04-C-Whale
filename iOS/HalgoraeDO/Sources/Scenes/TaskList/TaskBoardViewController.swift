@@ -75,6 +75,7 @@ private extension TaskBoardViewController {
         taskBoardCollectionView.dropDelegate = self
         taskBoardCollectionView.dragInteractionEnabled = true
         taskBoardCollectionView.collectionViewLayout = generateLayout()
+        taskBoardCollectionView.isPagingEnabled = true
     }
     
     private func generateLayout() -> UICollectionViewLayout {
