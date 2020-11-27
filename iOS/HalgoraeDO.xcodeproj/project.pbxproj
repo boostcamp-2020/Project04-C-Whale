@@ -34,6 +34,7 @@
 		4CCD324E256F84BD00A46D10 /* PopoverViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CCD324D256F84BD00A46D10 /* PopoverViewModelType.swift */; };
 		4CCD3257256F8BA700A46D10 /* Priority.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CCD3256256F8BA700A46D10 /* Priority.swift */; };
 		4CCD325E256F8C1200A46D10 /* UIImage+scaled.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CCD325D256F8C1200A46D10 /* UIImage+scaled.swift */; };
+		4CCD32772570A4EF00A46D10 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CCD32762570A4EF00A46D10 /* MenuViewController.swift */; };
 		AA354C2A2570002600072657 /* TaskAddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA354C292570002600072657 /* TaskAddViewController.swift */; };
 		AAEE20DE2564E4A900668FAD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAEE20DD2564E4A900668FAD /* AppDelegate.swift */; };
 		AAEE20E02564E4A900668FAD /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAEE20DF2564E4A900668FAD /* SceneDelegate.swift */; };
@@ -78,6 +79,7 @@
 		4CCD324D256F84BD00A46D10 /* PopoverViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverViewModelType.swift; sourceTree = "<group>"; };
 		4CCD3256256F8BA700A46D10 /* Priority.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Priority.swift; sourceTree = "<group>"; };
 		4CCD325D256F8C1200A46D10 /* UIImage+scaled.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+scaled.swift"; sourceTree = "<group>"; };
+		4CCD32762570A4EF00A46D10 /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		AA354C292570002600072657 /* TaskAddViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskAddViewController.swift; sourceTree = "<group>"; };
 		AAEE20DD2564E4A900668FAD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AAEE20DF2564E4A900668FAD /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -108,6 +110,7 @@
 		4C3F55AD2564EE74006D7C9F /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				4CCD32752570A4E300A46D10 /* Menu */,
 				4C3F5660256B80C6006D7C9F /* TaskList */,
 			);
 			path = Scenes;
@@ -202,6 +205,14 @@
 				4CCD325D256F8C1200A46D10 /* UIImage+scaled.swift */,
 			);
 			path = Utils;
+			sourceTree = "<group>";
+		};
+		4CCD32752570A4E300A46D10 /* Menu */ = {
+			isa = PBXGroup;
+			children = (
+				4CCD32762570A4EF00A46D10 /* MenuViewController.swift */,
+			);
+			path = Menu;
 			sourceTree = "<group>";
 		};
 		AAEE20D12564E4A900668FAD = {
@@ -390,6 +401,7 @@
 				4C3F5695256BA228006D7C9F /* Task.swift in Sources */,
 				4C3F5705256CF8B9006D7C9F /* TaskContentView.swift in Sources */,
 				AA354C2A2570002600072657 /* TaskAddViewController.swift in Sources */,
+				4CCD32772570A4EF00A46D10 /* MenuViewController.swift in Sources */,
 				4C0CA636256EAC5200E66045 /* TaskListDisplayLogic.swift in Sources */,
 				AAEE20E02564E4A900668FAD /* SceneDelegate.swift in Sources */,
 				4C3F5683256B8F4B006D7C9F /* TaskListRouter.swift in Sources */,

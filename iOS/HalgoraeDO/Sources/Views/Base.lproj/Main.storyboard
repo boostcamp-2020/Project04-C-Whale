@@ -212,10 +212,10 @@
             </objects>
             <point key="canvasLocation" x="204" y="-607"/>
         </scene>
-        <!--View Controller-->
+        <!--Menu View Controller-->
         <scene sceneID="RZa-X0-sHu">
             <objects>
-                <viewController id="6fM-V1-Fbv" sceneMemberID="viewController">
+                <viewController id="6fM-V1-Fbv" customClass="MenuViewController" customModule="HalgoraeDO" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="4nU-wA-eog">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -225,7 +225,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Button"/>
                                 <connections>
-                                    <segue destination="BYZ-38-t0r" kind="show" id="wzC-qO-rhL"/>
+                                    <segue destination="BYZ-38-t0r" kind="show" identifier="MenuViewControllerTo TaskListViewController" id="wzC-qO-rhL"/>
                                 </connections>
                             </button>
                         </subviews>
