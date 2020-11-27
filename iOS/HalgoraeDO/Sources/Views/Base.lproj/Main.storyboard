@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="U6H-lf-q4a">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="pcJ-NH-hpV">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
@@ -38,18 +38,6 @@
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
-                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gQ3-Oo-n8H">
-                                <rect key="frame" x="0.0" y="44" width="414" height="44"/>
-                                <items>
-                                    <navigationItem title="Title" id="RFQ-Xx-6Mo">
-                                        <barButtonItem key="rightBarButtonItem" title="More" id="EAu-h2-Agg">
-                                            <connections>
-                                                <action selector="didTapMoreButton:" destination="BYZ-38-t0r" id="Bfi-ky-gw9"/>
-                                            </connections>
-                                        </barButtonItem>
-                                    </navigationItem>
-                                </items>
-                            </navigationBar>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6wh-Eb-4oT" customClass="RoundButton" customModule="HalgoraeDO" customModuleProvider="target">
                                 <rect key="frame" x="350" y="798" width="44" height="44"/>
                                 <color key="backgroundColor" red="0.70127093789999995" green="0.86466091869999995" blue="0.78671652079999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -77,26 +65,27 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="bvh-S3-6Iw" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="1lj-uR-Zkk"/>
-                            <constraint firstItem="gQ3-Oo-n8H" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="25O-Sb-EVv"/>
-                            <constraint firstItem="gQ3-Oo-n8H" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="6yK-lS-bsP"/>
+                            <constraint firstItem="yTg-6t-2Gl" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="294-1C-5Au"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="6wh-Eb-4oT" secondAttribute="bottom" constant="20" id="GeQ-BU-Bg6"/>
                             <constraint firstItem="bvh-S3-6Iw" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="H6q-Pr-697"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="yTg-6t-2Gl" secondAttribute="trailing" id="HyQ-Sy-cOl"/>
-                            <constraint firstItem="yTg-6t-2Gl" firstAttribute="top" secondItem="gQ3-Oo-n8H" secondAttribute="bottom" id="MG8-WP-fAp"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="6wh-Eb-4oT" secondAttribute="trailing" constant="20" id="gwg-gb-uDi"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="yTg-6t-2Gl" secondAttribute="bottom" id="hg8-S6-77t"/>
-                            <constraint firstItem="gQ3-Oo-n8H" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="irW-2q-1RI"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="bvh-S3-6Iw" secondAttribute="bottom" id="p9G-bq-2oi"/>
                             <constraint firstItem="yTg-6t-2Gl" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="xKk-kG-U9b"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="DXg-UP-EpT">
-                        <barButtonItem key="rightBarButtonItem" title="More" id="DbE-IM-Pob"/>
+                        <barButtonItem key="rightBarButtonItem" title="More" id="DbE-IM-Pob">
+                            <connections>
+                                <action selector="didTapMoreButton:" destination="BYZ-38-t0r" id="cMD-5R-osD"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="addButton" destination="6wh-Eb-4oT" id="MXK-UA-AAx"/>
                         <outlet property="editToolBar" destination="bvh-S3-6Iw" id="xV3-Zp-h5b"/>
-                        <outlet property="moreButton" destination="EAu-h2-Agg" id="kqR-lX-0oM"/>
+                        <outlet property="moreButton" destination="DbE-IM-Pob" id="u9k-vw-G03"/>
                         <outlet property="taskListCollectionView" destination="yTg-6t-2Gl" id="deR-pA-6Af"/>
                     </connections>
                 </viewController>
@@ -108,21 +97,13 @@
         <!--Task Board View Controller-->
         <scene sceneID="Yu7-Kn-tle">
             <objects>
-                <viewController id="U6H-lf-q4a" customClass="TaskBoardViewController" customModule="HalgoraeDO" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="TaskBoardViewController" id="U6H-lf-q4a" customClass="TaskBoardViewController" customModule="HalgoraeDO" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="2eG-th-DHf">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nH5-tz-Loo">
-                                <rect key="frame" x="0.0" y="44" width="414" height="44"/>
-                                <items>
-                                    <navigationItem title="Title" id="RCi-k5-gRr">
-                                        <barButtonItem key="rightBarButtonItem" title="More" id="sPe-zB-QS5"/>
-                                    </navigationItem>
-                                </items>
-                            </navigationBar>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="yK6-dz-zBK">
-                                <rect key="frame" x="0.0" y="88" width="414" height="774"/>
+                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Z8c-Ic-foY">
                                     <size key="itemSize" width="128" height="128"/>
@@ -145,22 +126,26 @@
                         <viewLayoutGuide key="safeArea" id="vr2-Wc-fgQ"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="yK6-dz-zBK" firstAttribute="top" secondItem="vr2-Wc-fgQ" secondAttribute="top" id="4mP-gC-4f8"/>
                             <constraint firstItem="vr2-Wc-fgQ" firstAttribute="bottom" secondItem="yK6-dz-zBK" secondAttribute="bottom" id="OeA-Q1-AC7"/>
-                            <constraint firstItem="nH5-tz-Loo" firstAttribute="top" secondItem="vr2-Wc-fgQ" secondAttribute="top" id="Qeb-G2-bXW"/>
-                            <constraint firstItem="nH5-tz-Loo" firstAttribute="leading" secondItem="vr2-Wc-fgQ" secondAttribute="leading" id="WnG-bM-RrR"/>
-                            <constraint firstItem="yK6-dz-zBK" firstAttribute="top" secondItem="nH5-tz-Loo" secondAttribute="bottom" id="ai2-i1-hAT"/>
                             <constraint firstItem="vr2-Wc-fgQ" firstAttribute="trailing" secondItem="yK6-dz-zBK" secondAttribute="trailing" id="dyX-iW-U2X"/>
                             <constraint firstItem="yK6-dz-zBK" firstAttribute="leading" secondItem="vr2-Wc-fgQ" secondAttribute="leading" id="i53-du-w3D"/>
-                            <constraint firstItem="nH5-tz-Loo" firstAttribute="trailing" secondItem="vr2-Wc-fgQ" secondAttribute="trailing" id="j5I-8O-ev7"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="98D-Jg-aJM">
+                        <barButtonItem key="rightBarButtonItem" title="More" id="Wkv-8H-Efw">
+                            <connections>
+                                <action selector="didTapMoreButton:" destination="U6H-lf-q4a" id="sCz-X7-TuZ"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="taskBoardCollectionView" destination="yK6-dz-zBK" id="DDS-of-Naq"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QHO-yv-mYy" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1048" y="762"/>
+            <point key="canvasLocation" x="1035" y="765"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="CCd-I9-pXp">
@@ -172,6 +157,9 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="6fM-V1-Fbv" kind="relationship" relationship="rootViewController" id="Hri-YX-AOr"/>
+                    </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="A2i-Ya-ch7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -236,6 +224,9 @@
                                 <rect key="frame" x="216" y="407" width="46" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Button"/>
+                                <connections>
+                                    <segue destination="BYZ-38-t0r" kind="show" id="wzC-qO-rhL"/>
+                                </connections>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="qIh-dh-kCn"/>

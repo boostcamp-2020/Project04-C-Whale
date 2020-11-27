@@ -62,8 +62,14 @@ class TaskListViewController: UIViewController {
         }
         
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        let showBoardAction = UIAlertAction(title: "보드로 보기", style: .default) { (_: UIAlertAction) in
+        let showBoardAction = UIAlertAction(title: "보드로 보기", style: .default) { [weak self] (_: UIAlertAction) in
+            guard let vc = self?.storyboard?.instantiateViewController(identifier: String(describing: TaskBoardViewController.self), creator: { coder -> TaskBoardViewController? in
+                return TaskBoardViewController(coder: coder)
+            }) else { return }
             
+            let nav = self?.navigationController
+            nav?.popViewController(animated: false)
+            nav?.pushViewController(vc, animated: false)
         }
 
         let addSectionAction = UIAlertAction(title: "섹션 추가", style: .default) { (_: UIAlertAction) in
@@ -103,7 +109,7 @@ extension TaskListViewController: TaskListDisplayLogic {
     
     func set(editingMode: Bool) {
         taskListCollectionView.isEditing = editingMode
-        title = "0개 선택됨"
+        title = editingMode ? "0개 선택됨" : "title"
         moreButton.title = editingMode ? "취소" : "More"
         addButton.isHidden = editingMode
         editToolBar.isHidden = !editingMode
@@ -131,6 +137,11 @@ private extension TaskListViewController {
                 if !(self?.isEditing ?? true) {
                     self?.setEditing(true, animated: true)
                 }
+                
+                if let task = self?.dataSource.snapshot().itemIdentifiers[indexPath.item] {
+                    self?.interactor?.select(task: task)
+                }
+                
                 self?.taskListCollectionView.selectItem(at: indexPath, animated: true, scrollPosition: .init())
             }
             return UISwipeActionsConfiguration(actions: [editAction])
