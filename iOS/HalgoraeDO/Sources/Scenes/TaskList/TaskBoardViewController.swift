@@ -8,7 +8,7 @@
 import UIKit
 
 class TaskBoardViewController: UIViewController {
-
+    
     // MARK: - Properties
     
     private var interactor: TaskListBusinessLogic?
@@ -17,6 +17,8 @@ class TaskBoardViewController: UIViewController {
     private var lineView: UIView = UIView()
     private var startIndex: IndexPath?
     private var startPoint: CGPoint?
+    private let visualEffectView = UIVisualEffectView()
+    private var taskAddViewController: TaskAddViewController = TaskAddViewController()
     
     // MARK: - Views
     
@@ -44,9 +46,69 @@ class TaskBoardViewController: UIViewController {
         self.interactor = interactor
     }
     
+    func showAddTaskView() {
+        visualEffectView.frame = self.view.frame
+        self.view.addSubview(visualEffectView)
+        taskAddViewController = TaskAddViewController()
+        self.addChild(taskAddViewController)
+        self.view.addSubview(taskAddViewController.view)
+        taskAddViewController.view.backgroundColor = .white
+        taskAddViewController.view.frame = CGRect(x: 0, y: self.view.bounds.height - 130, width: self.view.bounds.width, height: 130)
+        visualEffectView.backgroundColor = .gray
+        visualEffectView.alpha = 0.4
+        visualEffectView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleViewTap(recognizer:))))
+    }
+    
+    @objc
+    func handleViewTap (recognizer: UITapGestureRecognizer) {
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        let selectTaskAction = UIAlertAction(title: "삭제", style: .destructive) { (action) in
+            self.taskAddViewController.view.removeFromSuperview()
+            self.visualEffectView.removeFromSuperview()
+        }
+        let cancelAction = UIAlertAction(title: "계속 편집", style: .default) { (action) in
+        }
+        [selectTaskAction, cancelAction].forEach { alert.addAction($0) }
+        present(alert, animated: true, completion: nil)
+    }
+    
     // MARK:  IBActions
     @IBAction func didTapMoreButton(_ sender: UIBarButtonItem) {
         
+        guard !isEditing else {
+            setEditing(false, animated: true)
+            return
+        }
+        
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        let showBoardAction = UIAlertAction(title: "목록으로 보기", style: .default) { [weak self] (_: UIAlertAction) in
+            guard let vc = self?.storyboard?.instantiateViewController(identifier: String(describing: TaskListViewController.self), creator: { coder -> TaskListViewController? in
+                return TaskListViewController(coder: coder)
+            }) else { return }
+            
+            let nav = self?.navigationController
+            nav?.popViewController(animated: false)
+            nav?.pushViewController(vc, animated: false)
+        }
+        
+        let addSectionAction = UIAlertAction(title: "섹션 추가", style: .default) { (_: UIAlertAction) in
+            
+        }
+        
+        let addTaskAction = UIAlertAction(title: "작업 추가", style: .default) { [weak self] (_: UIAlertAction) in
+            self?.showAddTaskView()
+        }
+        
+        let selectTaskAction = UIAlertAction(title: "작업 선택", style: .default) { [weak self] (_: UIAlertAction) in
+            self?.setEditing(true, animated: true)
+        }
+        
+        let cancelAction = UIAlertAction(title: "취소", style: .cancel) { (_: UIAlertAction) in
+            
+        }
+        
+        [showBoardAction, addSectionAction, addTaskAction, selectTaskAction, cancelAction].forEach { alert.addAction($0) }
+        present(alert, animated: true, completion: nil)
     }
 }
 
@@ -97,7 +159,7 @@ private extension TaskBoardViewController {
             let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
             section = NSCollectionLayoutSection(group: group)
             section.interGroupSpacing = 15
-            section.orthogonalScrollingBehavior = .continuous
+            section.orthogonalScrollingBehavior = .paging
             section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10)
             return section
         }
@@ -110,7 +172,7 @@ private extension TaskBoardViewController {
 // MARK: - Configure CollectionView Data Source
 
 private extension TaskBoardViewController {
-
+    
     private func configureDataSource() {
         let cellRegistration = UICollectionView.CellRegistration<TaskCollectionViewListCell, Task> { [weak self] (cell, indexPath, taskItem) in
             
@@ -148,13 +210,14 @@ private extension TaskBoardViewController {
     }
     
     private func snapshot(taskItems: [Task]) -> NSDiffableDataSourceSnapshot<String, Task> {
-
+        
         var snapshot = NSDiffableDataSourceSnapshot<String, Task>()
         for i in 0..<2 {
             snapshot.appendSections(["\(i)"])
             // TODO: 뷰 테스트를 위한 Task배열을 바로 만들어 넣어주는데 이 배열을 taskItems로 변경하기
             snapshot.appendItems([Task(section: "123", title: "123", isCompleted: false, depth: 0, parent: nil, subTasks: []),Task(section: "123", title: "123", isCompleted: false, depth: 0, parent: nil, subTasks: []),Task(section: "123", title: "123", isCompleted: false, depth: 0, parent: nil, subTasks: []),Task(section: "123", title: "123", isCompleted: false, depth: 0, parent: nil, subTasks: []),Task(section: "123", title: "123", isCompleted: false, depth: 0, parent: nil, subTasks: [])], toSection: "\(i)")
         }
+        
         return snapshot
         
     }
@@ -172,7 +235,7 @@ extension TaskBoardViewController: UICollectionViewDragDelegate {
         }
         return dragItems(at: indexPath)
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, dragSessionIsRestrictedToDraggingApplication session: UIDragSession) -> Bool {
         return true
     }
@@ -183,7 +246,7 @@ extension TaskBoardViewController: UICollectionViewDragDelegate {
     
     private func dragItems(at indexPath: IndexPath) -> [UIDragItem] {
         let cell = taskBoardCollectionView.cellForItem(at: indexPath)
-        let taskObject = NSString(string: "123123")
+        let taskObject = NSString(string: "_")
         let provider = NSItemProvider(object: taskObject)
         let dragItem = UIDragItem(itemProvider: provider)
         dragItem.localObject = cell
