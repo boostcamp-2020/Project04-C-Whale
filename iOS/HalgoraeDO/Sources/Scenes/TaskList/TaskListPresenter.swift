@@ -24,7 +24,10 @@ class TaskListPresenter {
 
 extension TaskListPresenter: TaskListPresentLogic {
     func present(tasks: [Task]) {
-        viewController.display(tasks: tasks)
+        let taskViewModels = tasks.enumerated().map { (idx, task) in
+            TaskListModels.TaskViewModel(task: task, position: idx, parentPosition: nil)
+        }
+        viewController.display(tasks: taskViewModels)
     }
     
     func set(editingMode: Bool) {
@@ -32,7 +35,7 @@ extension TaskListPresenter: TaskListPresentLogic {
     }
     
     func presentDetail(of task: Task) {
-        viewController.displayDetail(of: task)
+        
     }
     
     func present(numberOfSelectedTasks count: Int) {

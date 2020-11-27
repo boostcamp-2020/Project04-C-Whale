@@ -9,11 +9,13 @@ import UIKit
 
 class TaskListViewController: UIViewController {
     
+    typealias TaskVM = TaskListModels.TaskViewModel
+    
     // MARK: - Properties
     
     private var interactor: TaskListBusinessLogic?
     private var router: (TaskListRoutingLogic & TaskListDataPassing)?
-    private var dataSource: UICollectionViewDiffableDataSource<String, Task>! = nil
+    private var dataSource: UICollectionViewDiffableDataSource<String, TaskVM>! = nil
     
     // MARK: - View Life Cycle
     
@@ -97,7 +99,8 @@ class TaskListViewController: UIViewController {
 // MARK: - TaskList Display Logic
 
 extension TaskListViewController: TaskListDisplayLogic {
-    func display(tasks: [Task]) {
+   
+    func display(tasks: [TaskVM]) {
         let snapShot = snapshot(taskItems: tasks)
         let sectionTitle = ""
         dataSource.apply(snapShot, to: sectionTitle, animatingDifferences: true)
@@ -156,9 +159,9 @@ private extension TaskListViewController {
 private extension TaskListViewController {
 
     func configureDataSource() {
-        let cellRegistration = UICollectionView.CellRegistration<TaskCollectionViewListCell, Task> { [weak self] (cell, _: IndexPath, taskItem) in
+        let cellRegistration = UICollectionView.CellRegistration<TaskCollectionViewListCell, TaskVM> { [weak self] (cell, _: IndexPath, taskItem) in
             
-            cell.task = taskItem
+            cell.taskViewModel = taskItem
             cell.finishHandler = { [weak self] task in
                 guard let self = self,
                       let task = task
@@ -175,22 +178,23 @@ private extension TaskListViewController {
             }
             
             let disclosureOptions = UICellAccessory.OutlineDisclosureOptions(style: .automatic)
-            cell.accessories = taskItem.subTasks.isEmpty ? [] : [.outlineDisclosure(options: disclosureOptions)]
+            
+            cell.accessories = taskItem.subItems.isEmpty ? [] : [.outlineDisclosure(options: disclosureOptions)]
         }
         
-        self.dataSource = UICollectionViewDiffableDataSource<String, Task>(collectionView: taskListCollectionView, cellProvider: { (collectionView, indexPath, task) -> UICollectionViewCell? in
+        self.dataSource = UICollectionViewDiffableDataSource<String, TaskVM>(collectionView: taskListCollectionView, cellProvider: { (collectionView, indexPath, task) -> UICollectionViewCell? in
             
             return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: task)
         })
     }
     
-    func snapshot(taskItems: [Task]) -> NSDiffableDataSourceSectionSnapshot<Task> {
-        var snapshot = NSDiffableDataSourceSectionSnapshot<Task>()
+    func snapshot(taskItems: [TaskVM]) -> NSDiffableDataSourceSectionSnapshot<TaskVM> {
+        var snapshot = NSDiffableDataSourceSectionSnapshot<TaskVM>()
 
-        func addItems(_ taskItems: [Task], to parent: Task?) {
+        func addItems(_ taskItems: [TaskVM], to parent: TaskVM?) {
             snapshot.append(taskItems, to: parent)
-            for taskItem in taskItems where !taskItem.subTasks.isEmpty {
-                addItems(taskItem.subTasks, to: taskItem)
+            for taskItem in taskItems where !taskItem.subItems.isEmpty {
+                addItems(taskItem.subItems, to: taskItem)
             }
         }
 

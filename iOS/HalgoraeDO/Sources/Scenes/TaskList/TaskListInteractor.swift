@@ -10,8 +10,8 @@ import Foundation
 protocol TaskListBusinessLogic {
     func fetchTasks()
     func change(editingMode: Bool, animated: Bool)
-    func select(task: Task)
-    func deSelect(task: Task)
+    func select(task: TaskListModels.TaskViewModel)
+    func deSelect(task: TaskListModels.TaskViewModel)
 }
 
 protocol TaskListDataStore {
@@ -39,16 +39,16 @@ extension TaskListInteractor: TaskListBusinessLogic {
         presenter.set(editingMode: editingMode)
     }
     
-    func select(task: Task) {
+    func select(task: TaskListModels.TaskViewModel) {
         guard !worker.isEditingMode else {
             worker.append(selected: task)
             presenter.present(numberOfSelectedTasks: worker.selectedTasks.count)
             return
         }
-        presenter.presentDetail(of: task)
+        // presenter.presentDetail(of: task)
     }
     
-    func deSelect(task: Task) {
+    func deSelect(task: TaskListModels.TaskViewModel) {
         guard worker.isEditingMode else {
             return
         }

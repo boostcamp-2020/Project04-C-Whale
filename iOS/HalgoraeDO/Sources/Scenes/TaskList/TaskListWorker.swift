@@ -8,7 +8,7 @@
 import Foundation
 
 class TaskListWorker {
-    private(set) var selectedTasks = Set<Task>()
+    private(set) var selectedTasks = Set<TaskListModels.TaskViewModel>()
     var isEditingMode = false {
         didSet {
             guard isEditingMode else {
@@ -30,11 +30,11 @@ class TaskListWorker {
         ]
     }
     
-    func append(selected task: Task) {
+    func append(selected task: TaskListModels.TaskViewModel) {
         selectedTasks.insert(task)
     }
     
-    func remove(selected task: Task) {
+    func remove(selected task: TaskListModels.TaskViewModel) {
         selectedTasks.remove(task)
     }
 }
