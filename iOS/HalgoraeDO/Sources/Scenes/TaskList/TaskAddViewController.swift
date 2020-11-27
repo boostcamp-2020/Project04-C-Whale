@@ -7,7 +7,7 @@
 
 import UIKit
 
-class TaskAddViewController: UIViewController, UIPopoverPresentationControllerDelegate, UIPopoverControllerDelegate {
+class TaskAddViewController: UIViewController {
 
     // MARK: - Properties
     
@@ -188,36 +188,36 @@ extension TaskAddViewController {
     }
     
     @objc func priorityPopover(_ sender: UIButton) {
-        let popoverViewController = UIStoryboard(name: "Main", bundle:nil).instantiateViewController(withIdentifier: "popoverView") as! PopoverViewController
+        let popoverViewController = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(identifier: String(describing: PopoverViewController.self), creator: { (coder) -> PopoverViewController? in
+            return PopoverViewController(coder: coder)
+        })
+        popoverViewController.modalPresentationStyle = .popover
         popoverViewController.popoverPresentationController?.delegate = self
+        popoverViewController.popoverPresentationController?.sourceView = sender
+        popoverViewController.popoverPresentationController?.sourceRect = .init(x: sender.frame.width / 2, y: 0, width: 0, height: 0)
         popoverViewController.viewModels = Priority.allCases.compactMap { $0.viewModel }
         popoverViewController.modalTransitionStyle = .crossDissolve
-        popoverViewController.preferredContentSize = CGSize(width: 240.0, height: 350.0)
         popoverViewController.selectHandler = { [self] indexPath in
-        popoverViewController.dismiss(animated: true, completion: nil)
+            popoverViewController.dismiss(animated: true, completion: nil)
             self.changePriority(row: indexPath.row)
         }
         self.present(popoverViewController, animated:true)
     }
     
-    func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
-        return .none
-    }
-    
     private func changePriority(row: Int) {
-        // TODO: 함수 개선하기
         let calendarImage = UIImage(systemName: "flag.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 22, weight: .light, scale: .small))
         priorityButton.setImage(calendarImage, for: .normal)
-        if row == 0 {
-            priorityButton.tintColor = .red
-        }else if row == 1 {
-            priorityButton.tintColor = .blue
-        }else if row == 2 {
-            priorityButton.tintColor = .orange
-        }else if row == 3 {
-            priorityButton.tintColor = .black
+        guard let priorityViewModel = Priority.init(rawValue: row + 1)?.viewModel else {
+            return
         }
-        priorityButton.setTitle(" 우선 순위\(row + 1)", for: .normal)
+        priorityButton.tintColor = priorityViewModel.tintColor
+        priorityButton.setTitle(" \(priorityViewModel.title)", for: .normal)
+    }
+}
+
+extension TaskAddViewController: UIPopoverPresentationControllerDelegate {
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+        return .none
     }
 }
 
