@@ -14,13 +14,13 @@ const getNaverUser = async (accessToken, refreshToken, profile, done) => {
     const { email, nickname } = profile._json;
 
     // let user = await userService.retrieveByEmail(email, NAVER);
-    const user = await userModel.findOrCreate({
+    const [user] = await userModel.findOrCreate({
       where: { email, provider: NAVER },
       attributes: ['id', 'email', 'name', 'provider'],
       defaults: { email, name: nickname, provider: NAVER },
     });
 
-    return done(null, user);
+    return done(null, user.toJSON());
   } catch (err) {
     throw Error(err);
   }
