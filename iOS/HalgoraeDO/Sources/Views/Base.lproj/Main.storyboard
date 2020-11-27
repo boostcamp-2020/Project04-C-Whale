@@ -10,7 +10,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Task List View Controller-->
+        <!--할고래DO-->
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController storyboardIdentifier="TaskListViewController" id="BYZ-38-t0r" customClass="TaskListViewController" customModule="HalgoraeDO" customModuleProvider="target" sceneMemberID="viewController">
@@ -20,7 +20,6 @@
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="yTg-6t-2Gl">
                                 <rect key="frame" x="0.0" y="88" width="414" height="774"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="nM7-5B-9zL">
                                     <size key="itemSize" width="128" height="128"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -40,7 +39,7 @@
                             </collectionView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6wh-Eb-4oT" customClass="RoundButton" customModule="HalgoraeDO" customModuleProvider="target">
                                 <rect key="frame" x="350" y="798" width="44" height="44"/>
-                                <color key="backgroundColor" red="0.70127093789999995" green="0.86466091869999995" blue="0.78671652079999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" red="0.086274509799999996" green="0.10980392160000001" blue="0.43921568630000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="44" id="h9o-zq-YRj"/>
                                     <constraint firstAttribute="height" constant="44" id="ob3-JN-kbb"/>
@@ -75,7 +74,7 @@
                             <constraint firstItem="yTg-6t-2Gl" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="xKk-kG-U9b"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="DXg-UP-EpT">
+                    <navigationItem key="navigationItem" title="할고래DO" id="DXg-UP-EpT">
                         <barButtonItem key="rightBarButtonItem" title="More" id="DbE-IM-Pob">
                             <connections>
                                 <action selector="didTapMoreButton:" destination="BYZ-38-t0r" id="cMD-5R-osD"/>
@@ -94,7 +93,7 @@
             </objects>
             <point key="canvasLocation" x="1047.8260869565217" y="86.383928571428569"/>
         </scene>
-        <!--Task Board View Controller-->
+        <!--할고래DO-->
         <scene sceneID="Yu7-Kn-tle">
             <objects>
                 <viewController storyboardIdentifier="TaskBoardViewController" id="U6H-lf-q4a" customClass="TaskBoardViewController" customModule="HalgoraeDO" customModuleProvider="target" sceneMemberID="viewController">
@@ -132,7 +131,7 @@
                             <constraint firstItem="yK6-dz-zBK" firstAttribute="leading" secondItem="vr2-Wc-fgQ" secondAttribute="leading" id="i53-du-w3D"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="98D-Jg-aJM">
+                    <navigationItem key="navigationItem" title="할고래DO" id="98D-Jg-aJM">
                         <barButtonItem key="rightBarButtonItem" title="More" id="Wkv-8H-Efw">
                             <connections>
                                 <action selector="didTapMoreButton:" destination="U6H-lf-q4a" id="sCz-X7-TuZ"/>
@@ -155,6 +154,14 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="GJv-W2-k95">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="barTintColor" red="0.71764705882352942" green="0.88235294117647056" blue="0.80392156862745101" alpha="1" colorSpace="calibratedRGB"/>
+                        <textAttributes key="titleTextAttributes">
+                            <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </textAttributes>
+                        <textAttributes key="largeTitleTextAttributes">
+                            <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </textAttributes>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
@@ -212,10 +219,10 @@
             </objects>
             <point key="canvasLocation" x="204" y="-607"/>
         </scene>
-        <!--View Controller-->
+        <!--Menu View Controller-->
         <scene sceneID="RZa-X0-sHu">
             <objects>
-                <viewController id="6fM-V1-Fbv" sceneMemberID="viewController">
+                <viewController id="6fM-V1-Fbv" customClass="MenuViewController" customModule="HalgoraeDO" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="4nU-wA-eog">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -225,7 +232,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Button"/>
                                 <connections>
-                                    <segue destination="BYZ-38-t0r" kind="show" id="wzC-qO-rhL"/>
+                                    <segue destination="BYZ-38-t0r" kind="show" identifier="MenuViewControllerTo TaskListViewController" id="wzC-qO-rhL"/>
                                 </connections>
                             </button>
                         </subviews>
