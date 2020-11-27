@@ -193,12 +193,31 @@ extension TaskAddViewController {
         popoverViewController.viewModels = Priority.allCases.compactMap { $0.viewModel }
         popoverViewController.modalTransitionStyle = .crossDissolve
         popoverViewController.preferredContentSize = CGSize(width: 240.0, height: 350.0)
-        
+        popoverViewController.selectHandler = { [self] indexPath in
+        popoverViewController.dismiss(animated: true, completion: nil)
+            self.changePriority(row: indexPath.row)
+        }
         self.present(popoverViewController, animated:true)
     }
     
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
         return .none
+    }
+    
+    private func changePriority(row: Int) {
+        // TODO: 함수 개선하기
+        let calendarImage = UIImage(systemName: "flag.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 22, weight: .light, scale: .small))
+        priorityButton.setImage(calendarImage, for: .normal)
+        if row == 0 {
+            priorityButton.tintColor = .red
+        }else if row == 1 {
+            priorityButton.tintColor = .blue
+        }else if row == 2 {
+            priorityButton.tintColor = .orange
+        }else if row == 3 {
+            priorityButton.tintColor = .black
+        }
+        priorityButton.setTitle(" 우선 순위\(row + 1)", for: .normal)
     }
 }
 
