@@ -7,7 +7,7 @@
 
 import UIKit
 
-class TaskAddViewController: UIViewController, UIPopoverPresentationControllerDelegate {
+class TaskAddViewController: UIViewController, UIPopoverPresentationControllerDelegate, UIPopoverControllerDelegate {
 
     // MARK: - Properties
     
@@ -20,6 +20,8 @@ class TaskAddViewController: UIViewController, UIPopoverPresentationControllerDe
     private let textView = UITextView()
     private let dateButton = UIButton()
     private let priorityButton = UIButton()
+    private let submitButton = UIButton()
+
     
     // MARK: - View Life Cycle
     
@@ -28,6 +30,7 @@ class TaskAddViewController: UIViewController, UIPopoverPresentationControllerDe
         configureTextView()
         configureDataPickerView()
         configurePriority()
+        configureSubmit()
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
         DispatchQueue.main.async {
@@ -198,5 +201,27 @@ extension TaskAddViewController {
         return .none
     }
 }
+
+// MARK: - Submit Button Configure & Method
+
+extension TaskAddViewController {
+    private func configureSubmit() {
+        self.view.addSubview(submitButton)
+        let submitImage = UIImage(systemName: "arrow.up.circle.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 28, weight: .bold, scale: .large))
+        submitButton.setImage(submitImage, for: .normal)
+        submitButton.alpha = 0.5
+        submitButton.tintColor = .red
+        submitButton.translatesAutoresizingMaskIntoConstraints = false
+        submitButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10).isActive = true
+        submitButton.topAnchor.constraint(equalTo: dateButton.topAnchor).isActive = true
+        submitButton.addTarget(self, action: #selector(tabSubmitButton), for: .touchUpInside)
+    }
+    
+    @objc func tabSubmitButton(_ sender: UIButton) {
+        
+    }
+    
+}
+
 
 
