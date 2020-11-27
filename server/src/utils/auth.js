@@ -2,10 +2,8 @@ const jwt = require('jsonwebtoken');
 const passport = require('passport');
 const { errorHandler } = require('@utils/handler');
 
-const TOKEN_HEADER = 'Bearer';
-
 const createJWT = user => {
-  return `${TOKEN_HEADER} ${jwt.sign(user, process.env.JWT_SECRET, {
+  return `${jwt.sign(user, process.env.JWT_SECRET, {
     expiresIn: '1h',
   })}`;
 };

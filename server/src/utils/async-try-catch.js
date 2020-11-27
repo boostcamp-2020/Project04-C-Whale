@@ -3,7 +3,6 @@ const asyncTryCatch = fn => {
     try {
       await fn(req, res, next);
     } catch (e) {
-      console.error(e);
       next(e);
     }
   };

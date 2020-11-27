@@ -118,12 +118,6 @@ const createSection = asyncTryCatch(async (req, res) => {
 const updateSectionTaskPositions = asyncTryCatch(async (req, res) => {
   const { orderedTasks } = req.body;
 
-  const before = await models.section.findByPk(req.params.sectionId, {
-    include: { model: models.task, where: { parentId: null } },
-    order: [[models.task, 'position', 'ASC']],
-  });
-  console.log(before.tasks);
-
   await sequelize.transaction(async t => {
     await Promise.all(
       orderedTasks.map(async (taskId, position) => {
@@ -131,12 +125,6 @@ const updateSectionTaskPositions = asyncTryCatch(async (req, res) => {
       }),
     );
   });
-
-  const after = await models.section.findByPk(req.params.sectionId, {
-    include: { model: models.task, where: { parentId: null } },
-    order: [[models.task, 'position', 'ASC']],
-  });
-  console.log(after.tasks);
 
   responseHandler(res, 201, {
     message: 'ok',
