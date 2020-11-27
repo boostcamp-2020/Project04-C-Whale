@@ -8,7 +8,7 @@
 import UIKit
 
 class TaskBoardViewController: UIViewController {
-
+    
     // MARK: - Properties
     
     private var interactor: TaskListBusinessLogic?
@@ -46,11 +46,7 @@ class TaskBoardViewController: UIViewController {
         self.interactor = interactor
     }
     
-    
-    
-    
-    
-    @IBAction func testAction(_ sender: UIButton) {
+    func showAddTaskView() {
         visualEffectView.frame = self.view.frame
         self.view.addSubview(visualEffectView)
         taskAddViewController = TaskAddViewController()
@@ -76,19 +72,43 @@ class TaskBoardViewController: UIViewController {
         present(alert, animated: true, completion: nil)
     }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     // MARK:  IBActions
     @IBAction func didTapMoreButton(_ sender: UIBarButtonItem) {
         
+        guard !isEditing else {
+            setEditing(false, animated: true)
+            return
+        }
+        
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        let showBoardAction = UIAlertAction(title: "목록으로 보기", style: .default) { [weak self] (_: UIAlertAction) in
+            guard let vc = self?.storyboard?.instantiateViewController(identifier: String(describing: TaskListViewController.self), creator: { coder -> TaskListViewController? in
+                return TaskListViewController(coder: coder)
+            }) else { return }
+            
+            let nav = self?.navigationController
+            nav?.popViewController(animated: false)
+            nav?.pushViewController(vc, animated: false)
+        }
+        
+        let addSectionAction = UIAlertAction(title: "섹션 추가", style: .default) { (_: UIAlertAction) in
+            
+        }
+        
+        let addTaskAction = UIAlertAction(title: "작업 추가", style: .default) { [weak self] (_: UIAlertAction) in
+            self?.showAddTaskView()
+        }
+        
+        let selectTaskAction = UIAlertAction(title: "작업 선택", style: .default) { [weak self] (_: UIAlertAction) in
+            self?.setEditing(true, animated: true)
+        }
+        
+        let cancelAction = UIAlertAction(title: "취소", style: .cancel) { (_: UIAlertAction) in
+            
+        }
+        
+        [showBoardAction, addSectionAction, addTaskAction, selectTaskAction, cancelAction].forEach { alert.addAction($0) }
+        present(alert, animated: true, completion: nil)
     }
 }
 
@@ -152,7 +172,7 @@ private extension TaskBoardViewController {
 // MARK: - Configure CollectionView Data Source
 
 private extension TaskBoardViewController {
-
+    
     private func configureDataSource() {
         let cellRegistration = UICollectionView.CellRegistration<TaskCollectionViewListCell, Task> { [weak self] (cell, indexPath, taskItem) in
             
@@ -190,7 +210,7 @@ private extension TaskBoardViewController {
     }
     
     private func snapshot(taskItems: [Task]) -> NSDiffableDataSourceSnapshot<String, Task> {
-
+        
         var snapshot = NSDiffableDataSourceSnapshot<String, Task>()
         for i in 0..<2 {
             snapshot.appendSections(["\(i)"])
@@ -215,7 +235,7 @@ extension TaskBoardViewController: UICollectionViewDragDelegate {
         }
         return dragItems(at: indexPath)
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, dragSessionIsRestrictedToDraggingApplication session: UIDragSession) -> Bool {
         return true
     }
