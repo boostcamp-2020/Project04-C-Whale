@@ -8,22 +8,82 @@
 import UIKit
 
 enum TaskListModels {
-    struct Request {
+    
+    // MARK:  - Use cases
+    
+    enum FetchTasks {
+        struct Request {
+            var showCompleted: Bool
+        }
+        
+        struct Response {
+            var tasks: [Task]
+        }
+        
+        struct ViewModel {
+            var displayedTasks: [DisplayedTask]
+        }
+    }
+    
+    enum FinishTask {
+        struct Request {
+            var displayedTasks: [DisplayedTask]
+        }
+        
+        struct Response {
+            var task: Task
+        }
+        
+        struct ViewModel {
+            var displayedTask: DisplayedTask
+        }
+    }
+    
+    enum ReorderTask {
+        struct Request {
+            var displayedTask: DisplayedTask
+        }
+        
+        struct Response {
+            var task: Task
+        }
+        
+        struct ViewModel {
+            var displayedTask: DisplayedTask
+        }
+    }
+    
+    enum CreateTask {
+        struct Request {
+            var taskFields: TaskFields
+        }
+        
+        struct Response {
+            var task: Task
+        }
+        
+        struct ViewModel {
+            var displayedTask: DisplayedTask
+        }
+    }
+}
+
+// MARK:  - Models
+
+extension TaskListModels {
+    
+    struct TaskFields {
         
     }
     
-    struct Response {
-    
-    }
-    
-    struct TaskViewModel: Hashable {
+    struct DisplayedTask: Hashable {
         var id: UUID
         var title: String
         var isCompleted: Bool
         var tintColor: UIColor
         var position: Int
         var parentPosition: Int?
-        var subItems: [TaskViewModel]
+        var subItems: [DisplayedTask]
         
         init(id: UUID,
              title: String,
@@ -31,7 +91,7 @@ enum TaskListModels {
              tintColor: UIColor,
              position: Int,
              parentPosition: Int?,
-             subItems: [TaskViewModel]) {
+             subItems: [DisplayedTask]) {
             self.id = id
             self.title = title
             self.isCompleted = isCompleted
@@ -49,7 +109,7 @@ enum TaskListModels {
             self.position = position
             self.parentPosition = parentPosition
             self.subItems = task.subTasks.enumerated().compactMap { (idx, task) in
-                TaskViewModel(task: task, position: idx, parentPosition: position)
+                DisplayedTask(task: task, position: idx, parentPosition: position)
             }
         }
         
