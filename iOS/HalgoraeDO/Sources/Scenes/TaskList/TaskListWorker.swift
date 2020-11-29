@@ -8,15 +8,7 @@
 import Foundation
 
 class TaskListWorker {
-    private(set) var selectedTasks = Set<TaskListModels.TaskViewModel>()
-    var isEditingMode = false {
-        didSet {
-            guard isEditingMode else {
-                selectedTasks.removeAll()
-                return
-            }
-        }
-    }
+    var tasks = [Task]()
     
     func getTasks() -> [Task] {
         return [
@@ -28,13 +20,5 @@ class TaskListWorker {
             Task(title: "당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지"),
             Task(title: "두 말하면 섭함"),
         ]
-    }
-    
-    func append(selected task: TaskListModels.TaskViewModel) {
-        selectedTasks.insert(task)
-    }
-    
-    func remove(selected task: TaskListModels.TaskViewModel) {
-        selectedTasks.remove(task)
     }
 }

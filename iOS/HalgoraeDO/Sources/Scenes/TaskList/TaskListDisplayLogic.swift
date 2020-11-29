@@ -8,8 +8,6 @@
 import Foundation
 
 protocol TaskListDisplayLogic {
-    func display(tasks: [TaskListModels.TaskViewModel])
+    func displayFetchTasks(viewModel: TaskListModels.FetchTasks.ViewModel)
     func displayDetail(of task: Task)
-    func set(editingMode: Bool)
-    func display(numberOfSelectedTasks count: Int)
 }
