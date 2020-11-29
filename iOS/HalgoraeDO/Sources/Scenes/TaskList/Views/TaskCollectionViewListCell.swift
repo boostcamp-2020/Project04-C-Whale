@@ -9,8 +9,8 @@ import UIKit
 
 class TaskCollectionViewListCell: UICollectionViewListCell {
     
-    var taskViewModel: TaskListModels.TaskViewModel?
-    var finishHandler: ((TaskListModels.TaskViewModel?) -> Void)?
+    var taskViewModel: TaskListModels.DisplayedTask?
+    var finishHandler: ((TaskListModels.DisplayedTask?) -> Void)?
 
     override func updateConfiguration(using state: UICellConfigurationState) {
         

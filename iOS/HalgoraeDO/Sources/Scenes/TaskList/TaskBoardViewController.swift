@@ -9,7 +9,7 @@ import UIKit
 
 class TaskBoardViewController: UIViewController {
     
-    typealias TaskVM = TaskListModels.TaskViewModel
+    typealias TaskVM = TaskListModels.DisplayedTask
     
     // MARK: - Properties
     
@@ -37,7 +37,7 @@ class TaskBoardViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        interactor?.fetchTasks()
+        interactor?.fetchTasks(request: .init(showCompleted: false))
     }
     
     // MARK: - Initialize
@@ -117,21 +117,13 @@ class TaskBoardViewController: UIViewController {
 // MARK: - TaskList Display Logic
 
 extension TaskBoardViewController: TaskListDisplayLogic {
+    func displayFetchTasks(viewModel: TaskListModels.FetchTasks.ViewModel) {
+        let snapShot = snapshot(taskItems: viewModel.displayedTasks)
+        dataSource.apply(snapShot, animatingDifferences: false)
+    }
+    
     func displayDetail(of task: Task) {
         
-    }
-    
-    func set(editingMode: Bool) {
-        
-    }
-    
-    func display(numberOfSelectedTasks count: Int) {
-        
-    }
-    
-    func display(tasks: [TaskVM]) {
-        let snapShot = snapshot(taskItems: tasks)
-        dataSource.apply(snapShot, animatingDifferences: false)
     }
 }
 
