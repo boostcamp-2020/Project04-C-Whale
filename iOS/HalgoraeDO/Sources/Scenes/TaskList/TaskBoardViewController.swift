@@ -31,8 +31,8 @@ class TaskBoardViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureLogic()
-        configureCollectionView()
-        configureDataSource()
+       // configureCollectionView()
+       // configureDataSource()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -46,6 +46,42 @@ class TaskBoardViewController: UIViewController {
         let presenter = TaskListPresenter(viewController: self)
         let interactor = TaskListInteractor(presenter: presenter, worker: TaskListWorker())
         self.interactor = interactor
+        
+        
+        
+        
+        self.taskBoardCollectionView.dataSource = self
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        self.taskBoardCollectionView.collectionViewLayout = createCompositionalLayout()
+        self.taskBoardCollectionView.register(TaskSectionViewCell.self, forCellWithReuseIdentifier: "section-reuse-identifier")
+        self.taskBoardCollectionView.register(AddSectionViewCell.self, forCellWithReuseIdentifier: "section-add-reuse-identifier")
+        self.taskBoardCollectionView.isPagingEnabled = true
+        self.taskBoardCollectionView.reloadData()
+    }
+    
+    //MARK: - Helper Method
+    private func createCompositionalLayout() -> UICollectionViewCompositionalLayout {
+        
+        let config = UICollectionViewCompositionalLayoutConfiguration()
+        config.interSectionSpacing = 0
+        config.scrollDirection = .horizontal
+
+        let sectionProvider = { (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
+            let section: NSCollectionLayoutSection
+            let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
+            let item = NSCollectionLayoutItem(layoutSize: itemSize)
+            let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
+            let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
+            section = NSCollectionLayoutSection(group: group)
+    
+            section.orthogonalScrollingBehavior = .paging
+            section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10)
+            
+            return section
+        }
+        
+        return UICollectionViewCompositionalLayout(sectionProvider: sectionProvider, configuration: config)
     }
     
     func showAddTaskView() {
@@ -114,19 +150,46 @@ class TaskBoardViewController: UIViewController {
     }
 }
 
+extension TaskBoardViewController: UICollectionViewDataSource {
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 3 //Section 갯수 + 1
+    }
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 1 //고정
+    }
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        if indexPath.section < 2 {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "section-reuse-identifier", for: indexPath) as! TaskSectionViewCell
+            cell.configure(withImageName: "name")
+            return cell
+        }else {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "section-add-reuse-identifier", for: indexPath) as! AddSectionViewCell
+            cell.configCollectionViewCell()
+            return cell
+        }
+    }
+    
+}
+
+
+
+
+
 // MARK: - TaskList Display Logic
 
 extension TaskBoardViewController: TaskListDisplayLogic {
     func displayFetchTasks(viewModel: TaskListModels.FetchTasks.ViewModel) {
-        let snapShot = snapshot(taskItems: viewModel.displayedTasks)
-        dataSource.apply(snapShot, animatingDifferences: false)
+        print(viewModel)
+       // let snapShot = snapshot(taskItems: viewModel.displayedTasks)
+       // dataSource.apply(snapShot, animatingDifferences: false)
     }
     
     func displayDetail(of task: Task) {
         
     }
 }
-
+/*
 // MARK: - Configure CollectionView Layout
 
 private extension TaskBoardViewController {
@@ -209,7 +272,8 @@ private extension TaskBoardViewController {
         for i in 0..<2 {
             snapshot.appendSections(["\(i)"])
             // TODO: 뷰 테스트를 위한 Task배열을 바로 만들어 넣어주는데 이 배열을 taskItems로 변경하기
-//            snapshot.appendItems([TaskVM(section: "123", title: "123", isCompleted: false, depth: 0, parent: nil, subTasks: []),TaskVM(section: "123", title: "123", isCompleted: false, depth: 0, parent: nil, subTasks: []),TaskVM(section: "123", title: "123", isCompleted: false, depth: 0, parent: nil, subTasks: []),TaskVM(section: "123", title: "123", isCompleted: false, depth: 0, parent: nil, subTasks: []),TaskVM(section: "123", title: "123", isCompleted: false, depth: 0, parent: nil, subTasks: [])], toSection: "\(i)")
+            snapshot.appendItems([TaskVM(id: UUID(), title: "123", isCompleted: false, tintColor: .blue, position: 0, parentPosition: nil, subItems: [])
+            ], toSection: "\(i)")
         }
         
         return snapshot
@@ -318,6 +382,6 @@ private extension TaskBoardViewController {
         }
     }
 }
-
+*/
 
 
