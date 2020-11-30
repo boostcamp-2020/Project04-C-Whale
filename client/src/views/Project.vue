@@ -1,11 +1,14 @@
 <template>
   <div>
-    <div>Project View</div>
+    <project-container />
   </div>
 </template>
 
 <script>
+import ProjectContainer from "../components/project";
+
 export default {
-  name: "Project",
+  name: "ProjectContainer",
+  components: { "project-container": ProjectContainer },
 };
 </script>

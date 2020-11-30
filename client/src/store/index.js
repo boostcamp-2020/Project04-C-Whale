@@ -1,22 +1,11 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import auth from "./auth";
+import project from "./project";
+import menu from "./menu";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  state: {
-    accessToken: null,
-  },
-  mutations: {
-    LOGIN(state, { accessToken }) {
-      state.accessToken = accessToken;
-      localStorage.setItem("token", accessToken);
-    },
-    LOGOUT(state) {
-      state.accessToken = null;
-      localStorage.removeItem("token");
-    },
-  },
-  actions: {},
-  modules: {},
+  modules: { auth, menu, project },
 });
