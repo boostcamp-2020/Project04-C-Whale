@@ -17,6 +17,7 @@ class TaskAddViewController: UIViewController {
     private let placeHolder: String = "예. 11월 27일날 데모 발표하기"
     
     // MARK: - Views
+    
     private let textView = UITextView()
     private let dateButton = UIButton()
     private let priorityButton = UIButton()

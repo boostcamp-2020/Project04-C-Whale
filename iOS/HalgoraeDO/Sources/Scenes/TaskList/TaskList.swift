@@ -8,6 +8,7 @@
 import Foundation
 
 class TaskList {
+    
     var tasks: [Task] = []
     
     func task(identifier: UUID, postion: Int, parentPosition: Int?) -> Task {

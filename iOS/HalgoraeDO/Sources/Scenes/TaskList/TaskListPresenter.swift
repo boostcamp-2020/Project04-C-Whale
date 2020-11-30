@@ -22,6 +22,7 @@ class TaskListPresenter {
 }
 
 extension TaskListPresenter: TaskListPresentLogic {
+    
     func presentFetchTasks(response: TaskListModels.FetchTasks.Response) {
         let taskViewModels = response.tasks.enumerated().map { (idx, task) in
             TaskListModels.DisplayedTask(task: task, position: idx, parentPosition: nil)
