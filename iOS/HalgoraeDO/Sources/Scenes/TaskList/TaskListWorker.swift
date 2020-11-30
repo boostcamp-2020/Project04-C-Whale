@@ -8,7 +8,15 @@
 import Foundation
 
 class TaskListWorker {
-    var tasks = [Task]()
+    private(set) var selectedTasks = Set<Task>()
+    var isEditingMode = false {
+        didSet {
+            guard isEditingMode else {
+                selectedTasks.removeAll()
+                return
+            }
+        }
+    }
     
     func getTasks() -> [Task] {
         return [
@@ -20,5 +28,13 @@ class TaskListWorker {
             Task(title: "당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지"),
             Task(title: "두 말하면 섭함"),
         ]
+    }
+    
+    func append(selected task: Task) {
+        selectedTasks.insert(task)
+    }
+    
+    func remove(selected task: Task) {
+        selectedTasks.remove(task)
     }
 }

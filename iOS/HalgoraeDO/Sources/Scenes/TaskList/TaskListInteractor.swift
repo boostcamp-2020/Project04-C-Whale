@@ -8,7 +8,10 @@
 import Foundation
 
 protocol TaskListBusinessLogic {
-    func fetchTasks(request: TaskListModels.FetchTasks.Request)
+    func fetchTasks()
+    func change(editingMode: Bool, animated: Bool)
+    func select(task: Task)
+    func deSelect(task: Task)
 }
 
 protocol TaskListDataStore {
@@ -26,8 +29,31 @@ class TaskListInteractor: TaskListDataStore {
 }
 
 extension TaskListInteractor: TaskListBusinessLogic {
-    func fetchTasks(request: TaskListModels.FetchTasks.Request) {
+    func fetchTasks() {
         let tasks = worker.getTasks()
-        presenter.presentFetchTasks(response: TaskListModels.FetchTasks.Response(tasks: tasks))
+        presenter.present(tasks: tasks)
+    }
+    
+    func change(editingMode: Bool, animated: Bool) {
+        worker.isEditingMode = editingMode
+        presenter.set(editingMode: editingMode)
+    }
+    
+    func select(task: Task) {
+        guard !worker.isEditingMode else {
+            worker.append(selected: task)
+            presenter.present(numberOfSelectedTasks: worker.selectedTasks.count)
+            return
+        }
+        presenter.presentDetail(of: task)
+    }
+    
+    func deSelect(task: Task) {
+        guard worker.isEditingMode else {
+            return
+        }
+
+        worker.remove(selected: task)
+        presenter.present(numberOfSelectedTasks: worker.selectedTasks.count)
     }
 }

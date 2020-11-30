@@ -9,21 +9,11 @@ import UIKit
 
 class TaskListViewController: UIViewController {
     
-    typealias TaskVM = TaskListModels.DisplayedTask
-    
     // MARK: - Properties
     
-    /// 임시 property
-    private var projectTitle = "할고래DO"
     private var interactor: TaskListBusinessLogic?
     private var router: (TaskListRoutingLogic & TaskListDataPassing)?
-    private var dataSource: UICollectionViewDiffableDataSource<String, TaskVM>! = nil
-    private(set) var selectedTasks = Set<TaskVM>() {
-        didSet {
-            guard isEditing else { return }
-            title = "\(selectedTasks.count) 개 선택됨"
-        }
-    }
+    private var dataSource: UICollectionViewDiffableDataSource<String, Task>! = nil
     
     // MARK: - View Life Cycle
     
@@ -36,7 +26,7 @@ class TaskListViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        interactor?.fetchTasks(request: .init(showCompleted: false))
+        interactor?.fetchTasks()
     }
     
     // MARK: - Views
@@ -50,8 +40,7 @@ class TaskListViewController: UIViewController {
     
     private func configureLogic() {
         let presenter = TaskListPresenter(viewController: self)
-        let interactor = TaskListInteractor(presenter: presenter,
-                                            worker: TaskListWorker())
+        let interactor = TaskListInteractor(presenter: presenter, worker: TaskListWorker())
         
         self.interactor = interactor
     }
@@ -60,18 +49,7 @@ class TaskListViewController: UIViewController {
     
     override func setEditing(_ editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
-        set(editingMode: editing)
-    }
-    
-    func set(editingMode: Bool) {
-        if !editingMode {
-            selectedTasks.removeAll()
-        }
-        title = editingMode ? "\(selectedTasks.count) 개 선택됨" : projectTitle
-        taskListCollectionView.isEditing = editingMode
-        moreButton.title = editingMode ? "취소" : "More"
-        addButton.isHidden = editingMode
-        editToolBar.isHidden = !editingMode
+        interactor?.change(editingMode: editing, animated: animated)
     }
     
     // MARK: IBActions
@@ -119,14 +97,27 @@ class TaskListViewController: UIViewController {
 // MARK: - TaskList Display Logic
 
 extension TaskListViewController: TaskListDisplayLogic {
-    
-    func displayFetchTasks(viewModel: TaskListModels.FetchTasks.ViewModel) {
-        let snapShot = snapshot(taskItems: viewModel.displayedTasks)
-        dataSource.apply(snapShot, to: projectTitle, animatingDifferences: true)
+    func display(tasks: [Task]) {
+        let snapShot = snapshot(taskItems: tasks)
+        let sectionTitle = ""
+        dataSource.apply(snapShot, to: sectionTitle, animatingDifferences: true)
     }
     
     func displayDetail(of task: Task) {
         
+    }
+    
+    func set(editingMode: Bool) {
+        taskListCollectionView.isEditing = editingMode
+        title = editingMode ? "0개 선택됨" : "할고래DO"
+        moreButton.title = editingMode ? "취소" : "More"
+        addButton.isHidden = editingMode
+        editToolBar.isHidden = !editingMode
+    }
+    
+    func display(numberOfSelectedTasks count: Int) {
+        guard isEditing else { return }
+        title = "\(count) 개 선택됨"
     }
 }
 
@@ -143,14 +134,15 @@ private extension TaskListViewController {
         var listConfiguration = UICollectionLayoutListConfiguration(appearance: .plain)
         listConfiguration.leadingSwipeActionsConfigurationProvider = { indexPath in
             let editAction = UIContextualAction(style: .normal, title: "Edit") { [weak self] (action, view, completion) in
-                guard let self = self else { return }
-                if !self.isEditing {
-                    self.setEditing(true, animated: true)
+                if !(self?.isEditing ?? true) {
+                    self?.setEditing(true, animated: true)
                 }
                 
-                let taskVM = self.dataSource.snapshot().itemIdentifiers[indexPath.item]
-                self.selectedTasks.insert(taskVM)
-                self.taskListCollectionView.selectItem(at: indexPath, animated: true, scrollPosition: .init())
+                if let task = self?.dataSource.snapshot().itemIdentifiers[indexPath.item] {
+                    self?.interactor?.select(task: task)
+                }
+                
+                self?.taskListCollectionView.selectItem(at: indexPath, animated: true, scrollPosition: .init())
             }
             return UISwipeActionsConfiguration(actions: [editAction])
         }
@@ -164,17 +156,15 @@ private extension TaskListViewController {
 private extension TaskListViewController {
 
     func configureDataSource() {
-        let cellRegistration = UICollectionView.CellRegistration<TaskCollectionViewListCell, TaskVM> { [weak self] (cell, _: IndexPath, taskItem) in
+        let cellRegistration = UICollectionView.CellRegistration<TaskCollectionViewListCell, Task> { [weak self] (cell, _: IndexPath, taskItem) in
             
-            cell.taskViewModel = taskItem
+            cell.task = taskItem
             cell.finishHandler = { [weak self] task in
                 guard let self = self,
                       let task = task
                 else {
                     return
                 }
-                
-                
                 
                 var currentSnapshot = self.dataSource.snapshot()
                 if task.isCompleted {
@@ -185,23 +175,22 @@ private extension TaskListViewController {
             }
             
             let disclosureOptions = UICellAccessory.OutlineDisclosureOptions(style: .automatic)
-            
-            cell.accessories = taskItem.subItems.isEmpty ? [] : [.outlineDisclosure(options: disclosureOptions)]
+            cell.accessories = taskItem.subTasks.isEmpty ? [] : [.outlineDisclosure(options: disclosureOptions)]
         }
         
-        self.dataSource = UICollectionViewDiffableDataSource<String, TaskVM>(collectionView: taskListCollectionView, cellProvider: { (collectionView, indexPath, task) -> UICollectionViewCell? in
+        self.dataSource = UICollectionViewDiffableDataSource<String, Task>(collectionView: taskListCollectionView, cellProvider: { (collectionView, indexPath, task) -> UICollectionViewCell? in
             
             return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: task)
         })
     }
     
-    func snapshot(taskItems: [TaskVM]) -> NSDiffableDataSourceSectionSnapshot<TaskVM> {
-        var snapshot = NSDiffableDataSourceSectionSnapshot<TaskVM>()
+    func snapshot(taskItems: [Task]) -> NSDiffableDataSourceSectionSnapshot<Task> {
+        var snapshot = NSDiffableDataSourceSectionSnapshot<Task>()
 
-        func addItems(_ taskItems: [TaskVM], to parent: TaskVM?) {
+        func addItems(_ taskItems: [Task], to parent: Task?) {
             snapshot.append(taskItems, to: parent)
-            for taskItem in taskItems where !taskItem.subItems.isEmpty {
-                addItems(taskItem.subItems, to: taskItem)
+            for taskItem in taskItems where !taskItem.subTasks.isEmpty {
+                addItems(taskItem.subTasks, to: taskItem)
             }
         }
 
@@ -214,21 +203,16 @@ private extension TaskListViewController {
 
 extension TaskListViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let taskVM = dataSource.snapshot().itemIdentifiers[indexPath.item]
-        guard !isEditing else {
-            selectedTasks.insert(taskVM)
-            return
-        }
+        let task = dataSource.snapshot().itemIdentifiers[indexPath.item]
+        interactor?.select(task: task)
         
-        collectionView.deselectItem(at: indexPath, animated: true)
-        // TODO: request show detail task
+        if !isEditing {
+            collectionView.deselectItem(at: indexPath, animated: true)
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        let taskVM = dataSource.snapshot().itemIdentifiers[indexPath.item]
-        guard !isEditing else {
-            selectedTasks.remove(taskVM)
-            return
-        }
+        let task = dataSource.snapshot().itemIdentifiers[indexPath.item]
+        interactor?.deSelect(task: task)
     }
 }
