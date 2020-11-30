@@ -21,4 +21,8 @@ class TaskListWorker {
             Task(title: "두 말하면 섭함"),
         ]
     }
+    
+    func changeFinish(task: Task, postion: Int, parentPosition: Int?) {
+        
+    }
 }

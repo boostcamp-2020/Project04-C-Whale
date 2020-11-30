@@ -31,11 +31,11 @@ enum TaskListModels {
         }
         
         struct Response {
-            var task: Task
+            var tasks: [Task]
         }
         
         struct ViewModel {
-            var displayedTask: DisplayedTask
+            var displayedTasks: [DisplayedTask]
         }
     }
     

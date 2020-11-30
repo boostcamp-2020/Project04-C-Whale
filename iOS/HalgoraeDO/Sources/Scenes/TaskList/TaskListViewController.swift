@@ -128,6 +128,17 @@ extension TaskListViewController: TaskListDisplayLogic {
     func displayDetail(of task: Task) {
         
     }
+    
+    func displayFinishChanged(viewModel: TaskListModels.FinishTask.ViewModel) {
+        var currentSnapshot = self.dataSource.snapshot()
+        if !viewModel.showCompleted {
+            let completedTasks = viewModel.displayedTasks.filter { $0.isCompleted }
+            currentSnapshot.deleteItems(completedTasks)
+            dataSource.apply(currentSnapshot)
+        }
+        
+        
+    }
 }
 
 // MARK: - Configure CollectionView Layout
@@ -174,14 +185,7 @@ private extension TaskListViewController {
                     return
                 }
                 
-                
-                
-                var currentSnapshot = self.dataSource.snapshot()
-                if task.isCompleted {
-                    currentSnapshot.deleteItems([task])
-                } else {
-                }
-                self.dataSource.apply(currentSnapshot)
+                self.interactor?.changeFinish(request: .init(displayedTasks: [task]))
             }
             
             let disclosureOptions = UICellAccessory.OutlineDisclosureOptions(style: .automatic)
