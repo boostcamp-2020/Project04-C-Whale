@@ -45,6 +45,7 @@ const getProjectById = asyncTryCatch(async (req, res) => {
         model: models.task,
         where: { parentId: null },
         include: ['priority', 'labels', 'alarm', 'tasks'],
+        required: false,
       },
     },
     order: [
@@ -121,7 +122,11 @@ const updateSectionTaskPositions = asyncTryCatch(async (req, res) => {
   await sequelize.transaction(async t => {
     await Promise.all(
       orderedTasks.map(async (taskId, position) => {
-        await models.task.update({ position }, { where: { id: taskId } }, { transaction: t });
+        await models.task.update(
+          { position, parentId: null },
+          { where: { id: taskId } },
+          { transaction: t },
+        );
       }),
     );
   });
@@ -157,6 +162,7 @@ const deleteSection = asyncTryCatch(async (req, res) => {
 
 module.exports = {
   getProjects,
+  // getTodayProject,
   getProjectById,
   createProject,
   updateProject,
