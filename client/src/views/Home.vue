@@ -1,7 +1,13 @@
 <template>
   <v-app>
-    <v-navigation-drawer app> menuNav </v-navigation-drawer>
-    <v-app-bar app> Header </v-app-bar>
+    <v-navigation-drawer v-model="drawer" app>
+      <!-- <Menu /> -->
+    </v-navigation-drawer>
+    <v-app-bar app>
+      <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+
+      <v-toolbar-title>할고래DO</v-toolbar-title>
+    </v-app-bar>
     <!-- Sizes your content based upon application components -->
     <v-main>
       <!-- Provides the application the proper gutter -->
@@ -14,8 +20,13 @@
 </template>
 
 <script>
-// @ is an alias to /src
+// import Menu from "../components/menu";
+
 export default {
   name: "Home",
+  components: {
+    // Menu,
+  },
+  data: () => ({ drawer: null }),
 };
 </script>
