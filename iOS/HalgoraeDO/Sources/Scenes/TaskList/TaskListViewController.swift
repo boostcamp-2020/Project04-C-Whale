@@ -18,6 +18,7 @@ class TaskListViewController: UIViewController {
     private var interactor: TaskListBusinessLogic?
     private var router: (TaskListRoutingLogic & TaskListDataPassing)?
     private var dataSource: UICollectionViewDiffableDataSource<String, TaskVM>! = nil
+    private var displayCompleted = false
     private(set) var selectedTasks = Set<TaskVM>() {
         didSet {
             guard isEditing else { return }
@@ -36,7 +37,7 @@ class TaskListViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        interactor?.fetchTasks(request: .init(showCompleted: false))
+        interactor?.fetchTasks(request: .init())
     }
     
     // MARK: - Views
@@ -102,12 +103,26 @@ class TaskListViewController: UIViewController {
             
             self?.setEditing(true, animated: true)
         }
+        
+        let changeCompletedDisplayTitle = displayCompleted ? "완료된 항목 숨기기" : "완료된 항목 보기"
+        let changeCompletedDisplayAction = UIAlertAction(title: changeCompletedDisplayTitle, style: .default) { [weak self] (_: UIAlertAction) in
+            self?.displayCompleted.toggle()
+            self?.interactor?.fetchTasks(request: .init())
+        }
 
         let cancelAction = UIAlertAction(title: "취소", style: .cancel) { (_: UIAlertAction) in
             
         }
 
-        [showBoardAction, addSectionAction, selectTaskAction, cancelAction].forEach { alert.addAction($0) }
+        [
+            showBoardAction,
+             addSectionAction,
+             selectTaskAction,
+             changeCompletedDisplayAction,
+             cancelAction
+        ].forEach {
+            alert.addAction($0)
+        }
         present(alert, animated: true, completion: nil)
     }
     
@@ -121,7 +136,8 @@ class TaskListViewController: UIViewController {
 extension TaskListViewController: TaskListDisplayLogic {
     
     func displayFetchTasks(viewModel: TaskListModels.FetchTasks.ViewModel) {
-        let snapShot = snapshot(taskItems: viewModel.displayedTasks)
+        let displayTasks = filterCompletedIfNeeded(for: viewModel.displayedTasks)
+        let snapShot = snapshot(taskItems: displayTasks)
         dataSource.apply(snapShot, to: projectTitle, animatingDifferences: true)
     }
     
@@ -131,13 +147,20 @@ extension TaskListViewController: TaskListDisplayLogic {
     
     func displayFinishChanged(viewModel: TaskListModels.FinishTask.ViewModel) {
         var currentSnapshot = self.dataSource.snapshot()
-        if !viewModel.showCompleted {
+        if !self.displayCompleted {
             let completedTasks = viewModel.displayedTasks.filter { $0.isCompleted }
             currentSnapshot.deleteItems(completedTasks)
             dataSource.apply(currentSnapshot)
         }
-        
-        
+    }
+    
+    // MARK: Helper Functions
+    
+    func filterCompletedIfNeeded(for displayedTasks: [TaskListModels.DisplayedTask]) -> [TaskListModels.DisplayedTask] {
+        guard displayCompleted else {
+            return displayedTasks.filter { !$0.isCompleted }
+        }
+        return displayedTasks
     }
 }
 

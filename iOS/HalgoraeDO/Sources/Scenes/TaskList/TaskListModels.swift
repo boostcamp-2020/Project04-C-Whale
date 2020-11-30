@@ -13,7 +13,7 @@ enum TaskListModels {
     
     enum FetchTasks {
         struct Request {
-            var showCompleted: Bool
+
         }
         
         struct Response {

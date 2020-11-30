@@ -29,8 +29,8 @@ class TaskListInteractor: TaskListDataStore {
 
 extension TaskListInteractor: TaskListBusinessLogic {
     func fetchTasks(request: TaskListModels.FetchTasks.Request) {
-        let tasks = worker.getTasks()
-        presenter.presentFetchTasks(response: TaskListModels.FetchTasks.Response(tasks: tasks))
+        taskList.tasks = worker.getTasks()
+        presenter.presentFetchTasks(response: TaskListModels.FetchTasks.Response(tasks: taskList.tasks))
     }
     
     func changeFinish(request: TaskListModels.FinishTask.Request) {
