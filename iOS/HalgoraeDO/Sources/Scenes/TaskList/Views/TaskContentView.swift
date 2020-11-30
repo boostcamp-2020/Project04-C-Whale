@@ -99,7 +99,7 @@ private extension TaskContentView {
             
             stackView.topAnchor.constraint(equalTo: layoutMarginsGuide.topAnchor),
             stackView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor, constant: 10),
-            stackView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor, constant: -10),
             stackView.bottomAnchor.constraint(equalTo: layoutMarginsGuide.bottomAnchor),
             completeButtonHeight,
              completeButton.widthAnchor.constraint(equalToConstant: 30),
