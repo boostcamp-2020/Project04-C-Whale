@@ -12,12 +12,13 @@ protocol TaskListBusinessLogic {
 }
 
 protocol TaskListDataStore {
-    
+    var taskList: TaskList { get }
 }
 
 class TaskListInteractor: TaskListDataStore {
     var worker: TaskListWorker
     var presenter: TaskListPresentLogic
+    var taskList = TaskList()
     
     init(presenter: TaskListPresentLogic, worker: TaskListWorker) {
         self.presenter = presenter
