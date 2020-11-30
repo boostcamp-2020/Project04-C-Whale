@@ -9,13 +9,11 @@ import UIKit
 
 class TaskBoardViewController: UIViewController {
     
-    typealias TaskVM = TaskListModels.DisplayedTask
-    
     // MARK: - Properties
     
     private var interactor: TaskListBusinessLogic?
     private var router: (TaskListRoutingLogic & TaskListDataPassing)?
-    private var dataSource: UICollectionViewDiffableDataSource<String, TaskVM>! = nil
+    private var dataSource: UICollectionViewDiffableDataSource<String, Task>! = nil
     private var lineView: UIView = UIView()
     private var startIndex: IndexPath?
     private var startPoint: CGPoint?
@@ -37,7 +35,7 @@ class TaskBoardViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        interactor?.fetchTasks(request: .init(showCompleted: false))
+        interactor?.fetchTasks()
     }
     
     // MARK: - Initialize
@@ -117,13 +115,21 @@ class TaskBoardViewController: UIViewController {
 // MARK: - TaskList Display Logic
 
 extension TaskBoardViewController: TaskListDisplayLogic {
-    func displayFetchTasks(viewModel: TaskListModels.FetchTasks.ViewModel) {
-        let snapShot = snapshot(taskItems: viewModel.displayedTasks)
-        dataSource.apply(snapShot, animatingDifferences: false)
-    }
-    
     func displayDetail(of task: Task) {
         
+    }
+    
+    func set(editingMode: Bool) {
+        
+    }
+    
+    func display(numberOfSelectedTasks count: Int) {
+        
+    }
+    
+    func display(tasks: [Task]) {
+        let snapShot = snapshot(taskItems: tasks)
+        dataSource.apply(snapShot, animatingDifferences: false)
     }
 }
 
@@ -168,9 +174,9 @@ private extension TaskBoardViewController {
 private extension TaskBoardViewController {
     
     private func configureDataSource() {
-        let cellRegistration = UICollectionView.CellRegistration<TaskCollectionViewListCell, TaskVM> { [weak self] (cell, indexPath, taskItem) in
+        let cellRegistration = UICollectionView.CellRegistration<TaskCollectionViewListCell, Task> { [weak self] (cell, indexPath, taskItem) in
             
-            cell.taskViewModel = taskItem
+            cell.task = taskItem
             cell.finishHandler = { [weak self] task in
                 guard let self = self,
                       let task = task
@@ -197,19 +203,19 @@ private extension TaskBoardViewController {
             cell.backgroundConfiguration = background
         }
         
-        self.dataSource = UICollectionViewDiffableDataSource<String, TaskVM>(collectionView: taskBoardCollectionView, cellProvider: { (collectionview, indexPath, task) -> UICollectionViewCell? in
+        self.dataSource = UICollectionViewDiffableDataSource<String, Task>(collectionView: taskBoardCollectionView, cellProvider: { (collectionview, indexPath, task) -> UICollectionViewCell? in
             return collectionview.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: task)
         })
         
     }
     
-    private func snapshot(taskItems: [TaskVM]) -> NSDiffableDataSourceSnapshot<String, TaskVM> {
+    private func snapshot(taskItems: [Task]) -> NSDiffableDataSourceSnapshot<String, Task> {
         
-        var snapshot = NSDiffableDataSourceSnapshot<String, TaskVM>()
+        var snapshot = NSDiffableDataSourceSnapshot<String, Task>()
         for i in 0..<2 {
             snapshot.appendSections(["\(i)"])
             // TODO: 뷰 테스트를 위한 Task배열을 바로 만들어 넣어주는데 이 배열을 taskItems로 변경하기
-//            snapshot.appendItems([TaskVM(section: "123", title: "123", isCompleted: false, depth: 0, parent: nil, subTasks: []),TaskVM(section: "123", title: "123", isCompleted: false, depth: 0, parent: nil, subTasks: []),TaskVM(section: "123", title: "123", isCompleted: false, depth: 0, parent: nil, subTasks: []),TaskVM(section: "123", title: "123", isCompleted: false, depth: 0, parent: nil, subTasks: []),TaskVM(section: "123", title: "123", isCompleted: false, depth: 0, parent: nil, subTasks: [])], toSection: "\(i)")
+            snapshot.appendItems([Task(section: "123", title: "123", isCompleted: false, depth: 0, parent: nil, subTasks: []),Task(section: "123", title: "123", isCompleted: false, depth: 0, parent: nil, subTasks: []),Task(section: "123", title: "123", isCompleted: false, depth: 0, parent: nil, subTasks: []),Task(section: "123", title: "123", isCompleted: false, depth: 0, parent: nil, subTasks: []),Task(section: "123", title: "123", isCompleted: false, depth: 0, parent: nil, subTasks: [])], toSection: "\(i)")
         }
         
         return snapshot
