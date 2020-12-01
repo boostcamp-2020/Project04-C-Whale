@@ -16,6 +16,7 @@ class TaskList {
         if let parentPosition = parentPosition  {
             superTasks = tasks[parentPosition].subTasks
         }
+        
         return superTasks[postion]
     }
 }

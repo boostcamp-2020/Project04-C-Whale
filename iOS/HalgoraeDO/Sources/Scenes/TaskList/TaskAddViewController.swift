@@ -208,9 +208,7 @@ extension TaskAddViewController {
     private func changePriority(row: Int) {
         let calendarImage = UIImage(systemName: "flag.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 22, weight: .light, scale: .small))
         priorityButton.setImage(calendarImage, for: .normal)
-        guard let priorityViewModel = Priority.init(rawValue: row + 1)?.viewModel() else {
-            return
-        }
+        guard let priorityViewModel = Priority.init(rawValue: row + 1)?.viewModel() else { return }
         priorityButton.tintColor = priorityViewModel.tintColor
         priorityButton.setTitle(" \(priorityViewModel.title)", for: .normal)
     }

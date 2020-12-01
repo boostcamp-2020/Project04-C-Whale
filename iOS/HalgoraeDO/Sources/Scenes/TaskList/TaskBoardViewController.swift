@@ -117,6 +117,7 @@ class TaskBoardViewController: UIViewController {
 // MARK: - TaskList Display Logic
 
 extension TaskBoardViewController: TaskListDisplayLogic {
+    
     func displayFinishChanged(viewModel: TaskListModels.FinishTask.ViewModel) {
         
     }
