@@ -15,14 +15,14 @@ class TaskDetailViewController: UIViewController {
     
     // MARK: - Properties
     
-    var task: Task
+    private var task: Task
     
     // MARK: Views
 
-    @IBOutlet weak var navigationView: UIView!
-    @IBOutlet weak var navigationBar: UINavigationBar!
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var subContainerView: UIView!
+    @IBOutlet weak private var navigationView: UIView!
+    @IBOutlet weak private var navigationBar: UINavigationBar!
+    @IBOutlet weak private var titleLabel: UILabel!
+    @IBOutlet weak private var subContainerView: UIView!
     
     // MARK: View Life Cycle
     
@@ -32,7 +32,8 @@ class TaskDetailViewController: UIViewController {
     }
     
     required init?(coder: NSCoder) {
-        fatalError("This ViewController must be init with useCase.")
+        self.task = Task(title: "")
+        super.init(coder: coder)
     }
     
     override func viewDidLoad() {
