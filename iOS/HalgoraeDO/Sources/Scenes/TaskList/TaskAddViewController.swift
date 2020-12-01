@@ -17,6 +17,7 @@ class TaskAddViewController: UIViewController {
     private let placeHolder: String = "예. 11월 27일날 데모 발표하기"
     
     // MARK: - Views
+    
     private let textView = UITextView()
     private let dateButton = UIButton()
     private let priorityButton = UIButton()
@@ -196,7 +197,7 @@ extension TaskAddViewController {
         popoverViewController.popoverPresentationController?.delegate = self
         popoverViewController.popoverPresentationController?.sourceView = sender
         popoverViewController.popoverPresentationController?.sourceRect = .init(x: sender.frame.width / 2, y: 0, width: 0, height: 0)
-        popoverViewController.viewModels = Priority.allCases.compactMap { $0.viewModel }
+        popoverViewController.viewModels = Priority.allCases.compactMap { $0.viewModel() }
         popoverViewController.modalTransitionStyle = .crossDissolve
         popoverViewController.selectHandler = { [self] indexPath in
             popoverViewController.dismiss(animated: true, completion: nil)
@@ -208,9 +209,7 @@ extension TaskAddViewController {
     private func changePriority(row: Int) {
         let calendarImage = UIImage(systemName: "flag.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 22, weight: .light, scale: .small))
         priorityButton.setImage(calendarImage, for: .normal)
-        guard let priorityViewModel = Priority.init(rawValue: row + 1)?.viewModel else {
-            return
-        }
+        guard let priorityViewModel = Priority.init(rawValue: row + 1)?.viewModel() else { return }
         priorityButton.tintColor = priorityViewModel.tintColor
         priorityButton.setTitle(" \(priorityViewModel.title)", for: .normal)
     }

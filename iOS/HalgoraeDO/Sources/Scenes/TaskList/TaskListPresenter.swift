@@ -10,6 +10,7 @@ import Foundation
 protocol TaskListPresentLogic {
     func presentFetchTasks(response: TaskListModels.FetchTasks.Response)
     func presentDetail(of task: Task)
+    func presentFinshChanged(response: TaskListModels.FinishTask.Response)
 }
 
 class TaskListPresenter {
@@ -21,6 +22,7 @@ class TaskListPresenter {
 }
 
 extension TaskListPresenter: TaskListPresentLogic {
+    
     func presentFetchTasks(response: TaskListModels.FetchTasks.Response) {
         let taskViewModels = response.tasks.enumerated().map { (idx, task) in
             TaskListModels.DisplayedTask(task: task, position: idx, parentPosition: nil)
@@ -30,5 +32,12 @@ extension TaskListPresenter: TaskListPresentLogic {
     
     func presentDetail(of task: Task) {
         
+    }
+    
+    func presentFinshChanged(response: TaskListModels.FinishTask.Response) {
+        let taskViewModels = response.tasks.enumerated().map { (idx, task) in
+            TaskListModels.DisplayedTask(task: task, position: idx, parentPosition: nil)
+        }
+        viewController.displayFinishChanged(viewModel: .init(displayedTasks: taskViewModels))
     }
 }

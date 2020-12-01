@@ -36,7 +36,7 @@ class TaskBoardViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        interactor?.fetchTasks(request: .init(showCompleted: false))
+        interactor?.fetchTasks(request: .init())
     }
     
     // MARK: - Initialize

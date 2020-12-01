@@ -8,16 +8,19 @@
 import Foundation
 
 class Task {
+
+    // MARK:  - Constatns
+    
+    let identifier = UUID()
     
     // MARK: - Properties
     
-    let identifier = UUID()
+    private(set) var subTasks: [Task]
+    weak var parent: Task?
     var section: String
     var title: String
     var isCompleted: Bool
     var priority: Priority
-    weak var parent: Task?
-    private(set) var subTasks: [Task]
     
     init(section: String = "",
          title: String,

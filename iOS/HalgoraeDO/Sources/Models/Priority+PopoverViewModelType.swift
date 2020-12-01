@@ -25,13 +25,7 @@ extension Priority {
         }
     }
     
-    var viewModel: ViewModel {
-        let image = UIImage(systemName: "flag.fill")?.scaled(to: .init(width: 30, height: 30))
-        switch self {
-            case .one: return ViewModel(title: title, tintColor: color, image: image)
-            case .two: return ViewModel(title: title, tintColor: color, image: image)
-            case .three: return ViewModel(title: title, tintColor: color, image: image)
-            case .four: return ViewModel(title: title, tintColor: color, image: image)
-        }
+    func viewModel(scaled size: CGSize = .init(width: 30, height: 30)) -> ViewModel {
+        return ViewModel(title: title, tintColor: color, image: UIImage(systemName: "flag.fill")?.scaled(to: size))
     }
 }
