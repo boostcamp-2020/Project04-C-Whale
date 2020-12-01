@@ -11,16 +11,16 @@ class ConfirmActionView: UIView {
     
     // MARK: - Properties
     
-    var backHandler: (() ->Void)?
+    var backHandler: (() -> Void)?
     
-    // MARK: Views
+    // MARK: - Views
 
     @IBOutlet private(set) var contentView: UIView!
     @IBOutlet private(set) weak var backButton: UIButton!
     @IBOutlet private(set) weak var titleLabel: UILabel!
     @IBOutlet private(set) weak var descriptionLabel: UILabel!
     
-    // MARK: Initialize
+    // MARK: - Initialize
     
     override init(frame: CGRect) {
         super.init(frame: frame)

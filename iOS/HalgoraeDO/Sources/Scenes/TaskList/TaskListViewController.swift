@@ -35,7 +35,7 @@ class TaskListViewController: UIViewController {
     @IBOutlet weak private var moreButton: UIBarButtonItem!
     @IBOutlet weak private var addButton: RoundButton!
     @IBOutlet weak private var editToolBar: UIToolbar!
-    @IBOutlet weak var confirmActionView: ConfirmActionView!
+    @IBOutlet weak private var confirmActionView: ConfirmActionView!
     
     // MARK: - View Life Cycle
     
