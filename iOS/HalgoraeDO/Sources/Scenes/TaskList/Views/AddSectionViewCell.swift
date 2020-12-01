@@ -18,14 +18,19 @@ class AddSectionViewCell: UICollectionViewCell {
         addSectionButton.backgroundColor = .systemGray5
         addSectionButton.layer.cornerRadius = 10
         addSectionButton.contentEdgeInsets = UIEdgeInsets(top: 10, left: 6, bottom: 10, right: 6)
+        addSectionButton.addTarget(self, action: #selector(tabAddSection), for: .touchUpInside)
         
-        self.contentView.addSubview(addSectionButton)
+        contentView.addSubview(addSectionButton)
         addSectionButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             addSectionButton.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 50),
             addSectionButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
             addSectionButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
         ])
+    }
+    
+    @objc func tabAddSection(_ sender: UIButton) {
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "addSection"), object: self)
     }
     
 }

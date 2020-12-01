@@ -25,9 +25,11 @@ class TaskSectionViewCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        collectionView = UICollectionView(frame: self.contentView.frame, collectionViewLayout: generateLayout())
-        configureCollectionView()
-        configureDataSource()
+        configureForReuse()
+    }
+    
+    override func prepareForReuse() {
+        configureForReuse()
     }
     
     required init?(coder: NSCoder) {
@@ -35,6 +37,15 @@ class TaskSectionViewCell: UICollectionViewCell {
     }
     
     // MARK: - Configure
+    
+    func configureForReuse() {
+        dataSource = nil
+        taskVM = []
+        collectionView?.removeFromSuperview()
+        collectionView = UICollectionView(frame: contentView.frame, collectionViewLayout: generateLayout())
+        configureCollectionView()
+        configureDataSource()
+    }
     
     func configure(sectionName: String, task: [TaskVM]) {
         taskVM = task
