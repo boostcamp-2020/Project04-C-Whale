@@ -205,8 +205,18 @@ private extension TaskListViewController {
 extension TaskListViewController: TaskListDisplayLogic {
     
     func displayFetchTasks(viewModel: TaskListModels.FetchTasks.ViewModel) {
+        let currentSnapshot = dataSource.snapshot(for: projectTitle)
         let displayTasks = filterCompletedIfNeeded(for: viewModel.displayedTasks)
-        let snapShot = snapshot(taskItems: displayTasks)
+        var snapShot = snapshot(taskItems: displayTasks)
+        for item in snapShot.items {
+            guard currentSnapshot.contains(item),
+                currentSnapshot.isExpanded(item)
+            else {
+                continue
+            }
+            
+            snapShot.expand([item])
+        }
         dataSource.apply(snapShot, to: projectTitle, animatingDifferences: true)
     }
     
