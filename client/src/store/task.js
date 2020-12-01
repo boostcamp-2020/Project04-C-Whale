@@ -6,7 +6,9 @@ const state = {
   tasks: [],
 };
 
-const getters = {};
+const getters = {
+  todayTasks: (state) => state.tasks.filter(new Date(task.dueDate) < new Date(Date.now()) )
+};
 
 const actions = {
   async fetchAllTasks({ commit }) {
@@ -19,7 +21,9 @@ const actions = {
   },
 };
 
-const mutations = {};
+const mutations = {
+  setTasks: (state, tasks) => state.tasks= tasks;
+};
 
 export default {
   state,
