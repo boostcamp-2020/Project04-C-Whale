@@ -21,7 +21,6 @@
             <v-list-item-action>
               <v-checkbox></v-checkbox>
             </v-list-item-action>
-
             <v-list-item-content>
               <v-list-item-title>{{ childTask.title }}</v-list-item-title>
             </v-list-item-content>
@@ -51,4 +50,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.toggle {
+  width: 50px;
+}
+</style>

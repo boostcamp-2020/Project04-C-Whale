@@ -36,7 +36,7 @@ describe('label api', () => {
     try {
       request(app)
         .get('/api/label') // when
-        .set('Authorization', createJWT(seeder.users[0]))
+        .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
         .end((err, res) => {
           if (err) {
             throw err;
@@ -79,7 +79,7 @@ describe('label api', () => {
     try {
       request(app)
         .post('/api/label') // when
-        .set('Authorization', createJWT(seeder.users[0]))
+        .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
         .send(expectedLabel)
         .end((err, res) => {
           if (err) {
@@ -126,7 +126,7 @@ describe('label api', () => {
     try {
       request(app)
         .post('/api/label') // when
-        .set('Authorization', createJWT(seeder.users[0]))
+        .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
         .send(expectedLabel)
         .end((err, res) => {
           if (err) {
@@ -150,7 +150,7 @@ describe('label api', () => {
     try {
       request(app)
         .post('/api/label') // when
-        .set('Authorization', createJWT(seeder.users[0]))
+        .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
         .send(expectedLabel)
         .end((err, res) => {
           if (err) {
@@ -176,7 +176,7 @@ describe('label api', () => {
     try {
       request(app)
         .put(`/api/label/${seeder.labels[0].id}`) // when
-        .set('Authorization', createJWT(seeder.users[0]))
+        .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
         .send(expectedLabel)
         .end((err, res) => {
           if (err) {
@@ -225,7 +225,7 @@ describe('label api', () => {
     try {
       request(app)
         .put(`/api/label/${seeder.labels[0].id}`) // when
-        .set('Authorization', createJWT(seeder.users[0]))
+        .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
         .send(expectedLabel)
         .end((err, res) => {
           if (err) {
@@ -250,7 +250,7 @@ describe('label api', () => {
     try {
       request(app)
         .put(`/api/label/${seeder.labels[0].id}`) // when
-        .set('Authorization', createJWT(seeder.users[1]))
+        .set('Authorization', `Bearer ${createJWT(seeder.users[1])}`)
         .send(expectedLabel)
         .end((err, res) => {
           if (err) {
@@ -275,7 +275,7 @@ describe('label api', () => {
     try {
       request(app)
         .put(`/api/label/nothing`) // when
-        .set('Authorization', createJWT(seeder.users[1]))
+        .set('Authorization', `Bearer ${createJWT(seeder.users[1])}`)
         .send(expectedLabel)
         .end((err, res) => {
           if (err) {
@@ -301,7 +301,7 @@ describe('label api', () => {
     try {
       request(app)
         .delete(`/api/label/${seeder.labels[1].id}`) // when
-        .set('Authorization', createJWT(seeder.users[0]))
+        .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
         .send(expectedLabel)
         .end((err, res) => {
           if (err) {
@@ -326,7 +326,7 @@ describe('label api', () => {
     try {
       request(app)
         .delete(`/api/label/nothing`) // when
-        .set('Authorization', createJWT(seeder.users[1]))
+        .set('Authorization', `Bearer ${createJWT(seeder.users[1])}`)
         .send(expectedLabel)
         .end((err, res) => {
           if (err) {
@@ -351,7 +351,7 @@ describe('label api', () => {
     try {
       request(app)
         .delete(`/api/label/${seeder.labels[1].id}`) // when
-        .set('Authorization', createJWT(seeder.users[1]))
+        .set('Authorization', `Bearer ${createJWT(seeder.users[1])}`)
         .send(expectedLabel)
         .end((err, res) => {
           if (err) {
