@@ -37,7 +37,12 @@ extension TaskListInteractor: TaskListBusinessLogic {
     func changeFinish(request: TaskListModels.FinishTask.Request) {
         let viewModels = request.displayedTasks
         viewModels.forEach { viewModel in
-            guard let task = taskList.task(identifier: viewModel.id, postion: viewModel.position, parentPosition: viewModel.parentPosition) else { return }
+            guard let task = taskList.task(identifier: viewModel.id,
+                                           postion: viewModel.position,
+                                           parentPosition: viewModel.parentPosition)
+            else {
+                return
+            }
             task.isCompleted = viewModel.isCompleted
             worker.changeFinish(task: task, postion: viewModel.position, parentPosition: viewModel.parentPosition)
         }
