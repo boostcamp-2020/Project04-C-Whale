@@ -227,11 +227,17 @@ extension TaskListViewController: TaskListDisplayLogic {
     // MARK: Helper Functions
     
     func filterCompletedIfNeeded(for displayedTasks: [TaskListModels.DisplayedTask]) -> [TaskListModels.DisplayedTask] {
-        guard displayCompleted else {
-            return displayedTasks.filter { !$0.isCompleted }
-        }
+        guard !displayCompleted else { return displayedTasks }
         
-        return displayedTasks
+        var filteredTasks = [TaskListModels.DisplayedTask]()
+        for task in displayedTasks {
+            guard !task.isCompleted else { continue }
+            var task = task
+            task.subItems = task.subItems.filter { !$0.isCompleted }
+            filteredTasks.append(task)
+        }
+
+        return filteredTasks
     }
 }
 
