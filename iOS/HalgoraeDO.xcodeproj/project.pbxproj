@@ -32,6 +32,10 @@
 		4C42370425761CB00068A252 /* TaskDetailSubTasksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C42370325761CB00068A252 /* TaskDetailSubTasksViewController.swift */; };
 		4C42370D25762FC10068A252 /* TaskDetailCommentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C42370C25762FC10068A252 /* TaskDetailCommentViewController.swift */; };
 		4C42371125762FCE0068A252 /* TaskDetailBookmarkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C42371025762FCE0068A252 /* TaskDetailBookmarkViewController.swift */; };
+		4C42371B25763B080068A252 /* TaskDetailInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C42371A25763B080068A252 /* TaskDetailInteractor.swift */; };
+		4C42371F25763B100068A252 /* TaskDetailWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C42371E25763B100068A252 /* TaskDetailWorker.swift */; };
+		4C42372325763B1C0068A252 /* TaskDetailPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C42372225763B1C0068A252 /* TaskDetailPresenter.swift */; };
+		4C423727257640470068A252 /* UIViewController+segueIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C423726257640470068A252 /* UIViewController+segueIdentifier.swift */; };
 		4CCD31E8256EBC0C00A46D10 /* TaskListWorkerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0CA5F0256E9AF100E66045 /* TaskListWorkerTests.swift */; };
 		4CCD31E9256EBC0C00A46D10 /* TaskListInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0CA60C256EAA7300E66045 /* TaskListInteractorTests.swift */; };
 		4CCD31EA256EBC0C00A46D10 /* TaskListPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0CA629256EABF700E66045 /* TaskListPresenterTests.swift */; };
@@ -87,7 +91,6 @@
 		4C3F5704256CF8B9006D7C9F /* TaskContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskContentView.swift; sourceTree = "<group>"; };
 		4C3F573E256D2263006D7C9F /* RoundButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundButton.swift; sourceTree = "<group>"; };
 		4C4236B02573B4C90068A252 /* Priority+PopoverViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Priority+PopoverViewModelType.swift"; sourceTree = "<group>"; };
-		4C4236BF2574A3E50068A252 /* TaskListTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = TaskListTests.xctest; path = "/Users/os/woong/iOS/Boostcamp2020/group_final/Project04-C-Whale/iOS/build/Debug-iphoneos/TaskListTests.xctest"; sourceTree = "<absolute>"; };
 		4C4236C22574C5F50068A252 /* TaskList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskList.swift; sourceTree = "<group>"; };
 		4C4236DB2574DF6B0068A252 /* ConfirmActionView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ConfirmActionView.xib; sourceTree = "<group>"; };
 		4C4236DF2574DF980068A252 /* ConfirmActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmActionView.swift; sourceTree = "<group>"; };
@@ -96,6 +99,11 @@
 		4C42370325761CB00068A252 /* TaskDetailSubTasksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDetailSubTasksViewController.swift; sourceTree = "<group>"; };
 		4C42370C25762FC10068A252 /* TaskDetailCommentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDetailCommentViewController.swift; sourceTree = "<group>"; };
 		4C42371025762FCE0068A252 /* TaskDetailBookmarkViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDetailBookmarkViewController.swift; sourceTree = "<group>"; };
+		4C42371A25763B080068A252 /* TaskDetailInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDetailInteractor.swift; sourceTree = "<group>"; };
+		4C42371E25763B100068A252 /* TaskDetailWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDetailWorker.swift; sourceTree = "<group>"; };
+		4C42372225763B1C0068A252 /* TaskDetailPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDetailPresenter.swift; sourceTree = "<group>"; };
+		4C423726257640470068A252 /* UIViewController+segueIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+segueIdentifier.swift"; sourceTree = "<group>"; };
+		4C423737257671F50068A252 /* TaskListTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = TaskListTests.xctest; path = "/Users/os/woong/iOS/Boostcamp2020/group_final/Project04-C-Whale/iOS/build/Debug-iphoneos/TaskListTests.xctest"; sourceTree = "<absolute>"; };
 		4CCD31DD256EBC0000A46D10 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4CCD31F8256EBC8000A46D10 /* TaskListDisplaySpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListDisplaySpy.swift; sourceTree = "<group>"; };
 		4CCD31FE256EBCEF00A46D10 /* TaskListPresenterSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListPresenterSpy.swift; sourceTree = "<group>"; };
@@ -104,7 +112,6 @@
 		4CCD3256256F8BA700A46D10 /* Priority.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Priority.swift; sourceTree = "<group>"; };
 		4CCD325D256F8C1200A46D10 /* UIImage+scaled.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+scaled.swift"; sourceTree = "<group>"; };
 		4CCD32762570A4EF00A46D10 /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
-		AA19EF132574E51300E59017 /* TaskListTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TaskListTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA19EF162575680500E59017 /* TaskSectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskSectionViewCell.swift; sourceTree = "<group>"; };
 		AA19EF1A25756C3200E59017 /* AddSectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSectionViewCell.swift; sourceTree = "<group>"; };
 		AA19EF242576488B00E59017 /* TaskBoardSupplementaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskBoardSupplementaryView.swift; sourceTree = "<group>"; };
@@ -270,6 +277,7 @@
 			isa = PBXGroup;
 			children = (
 				4CCD325D256F8C1200A46D10 /* UIImage+scaled.swift */,
+				4C423726257640470068A252 /* UIViewController+segueIdentifier.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -288,7 +296,6 @@
 				AAEE20DC2564E4A900668FAD /* HalgoraeDO */,
 				4C3F5657256B80B4006D7C9F /* HalgoraeDO.app */,
 				4CCD31DA256EBC0000A46D10 /* TaskListTests */,
-				AA19EF132574E51300E59017 /* TaskListTests.xctest */,
 			);
 			sourceTree = "<group>";
 		};
@@ -359,7 +366,7 @@
 			);
 			name = TaskListTests;
 			productName = TaskListTests;
-			productReference = 4C4236BF2574A3E50068A252 /* TaskListTests.xctest */;
+			productReference = 4C423737257671F50068A252 /* TaskListTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		AAEE20D92564E4A900668FAD /* HalgoraeDO */ = {
@@ -463,10 +470,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				4CCD3248256F847800A46D10 /* PopoverViewController.swift in Sources */,
+				4C423727257640470068A252 /* UIViewController+segueIdentifier.swift in Sources */,
 				4C3F568C256B93D5006D7C9F /* TaskCollectionViewListCell.swift in Sources */,
 				4CCD324E256F84BD00A46D10 /* PopoverViewModelType.swift in Sources */,
 				4C3F5679256B8C83006D7C9F /* TaskListPresenter.swift in Sources */,
 				AA19EF172575680600E59017 /* TaskSectionViewCell.swift in Sources */,
+				4C42371F25763B100068A252 /* TaskDetailWorker.swift in Sources */,
 				4C42370D25762FC10068A252 /* TaskDetailCommentViewController.swift in Sources */,
 				4C3F573F256D2263006D7C9F /* RoundButton.swift in Sources */,
 				4C4236F825761A8E0068A252 /* TaskDetailPageViewController.swift in Sources */,
@@ -481,6 +490,7 @@
 				AA354C2A2570002600072657 /* TaskAddViewController.swift in Sources */,
 				4CCD32772570A4EF00A46D10 /* MenuViewController.swift in Sources */,
 				4C0CA636256EAC5200E66045 /* TaskListDisplayLogic.swift in Sources */,
+				4C42372325763B1C0068A252 /* TaskDetailPresenter.swift in Sources */,
 				4C4236B12573B4C90068A252 /* Priority+PopoverViewModelType.swift in Sources */,
 				AAEE20E02564E4A900668FAD /* SceneDelegate.swift in Sources */,
 				4C3F5683256B8F4B006D7C9F /* TaskListRouter.swift in Sources */,
@@ -489,6 +499,7 @@
 				4CCD325E256F8C1200A46D10 /* UIImage+scaled.swift in Sources */,
 				4C3F5700256CF8A7006D7C9F /* TaskContentConfigure.swift in Sources */,
 				AA19EF1B25756C3200E59017 /* AddSectionViewCell.swift in Sources */,
+				4C42371B25763B080068A252 /* TaskDetailInteractor.swift in Sources */,
 				4C4236FE25761AA00068A252 /* TaskDetailViewController.swift in Sources */,
 				4C3F5674256B8C63006D7C9F /* TaskListWorker.swift in Sources */,
 				4C3F566F256B8C2B006D7C9F /* TaskListInteractor.swift in Sources */,
