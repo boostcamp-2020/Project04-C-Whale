@@ -13,7 +13,7 @@ enum TaskListModels {
     
     enum FetchTasks {
         struct Request {
-            var showCompleted: Bool
+
         }
         
         struct Response {
@@ -31,11 +31,11 @@ enum TaskListModels {
         }
         
         struct Response {
-            var task: Task
+            var tasks: [Task]
         }
         
         struct ViewModel {
-            var displayedTask: DisplayedTask
+            var displayedTasks: [DisplayedTask]
         }
     }
     

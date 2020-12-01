@@ -37,7 +37,7 @@ class TaskBoardViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        interactor?.fetchTasks(request: .init(showCompleted: false))
+        interactor?.fetchTasks(request: .init())
     }
     
     // MARK: - Initialize
@@ -117,6 +117,11 @@ class TaskBoardViewController: UIViewController {
 // MARK: - TaskList Display Logic
 
 extension TaskBoardViewController: TaskListDisplayLogic {
+    
+    func displayFinishChanged(viewModel: TaskListModels.FinishTask.ViewModel) {
+        
+    }
+    
     func displayFetchTasks(viewModel: TaskListModels.FetchTasks.ViewModel) {
         let snapShot = snapshot(taskItems: viewModel.displayedTasks)
         dataSource.apply(snapShot, animatingDifferences: false)

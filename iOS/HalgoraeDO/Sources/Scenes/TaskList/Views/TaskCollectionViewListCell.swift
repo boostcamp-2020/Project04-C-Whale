@@ -9,23 +9,26 @@ import UIKit
 
 class TaskCollectionViewListCell: UICollectionViewListCell {
     
+    // MARK:  - Properties
+    
     var taskViewModel: TaskListModels.DisplayedTask?
-    var finishHandler: ((TaskListModels.DisplayedTask?) -> Void)?
+    var finishHandler: ((TaskListModels.DisplayedTask) -> Void)?
+    
+    // MARK:  Methods
 
     override func updateConfiguration(using state: UICellConfigurationState) {
-        
         backgroundConfiguration?.backgroundColor = (state.isSelected || state.isHighlighted) ? .lightGray : .white
-        
+
         var taskContentConfiguration = TaskContentConfiguration().updated(for: state)
         taskContentConfiguration.title = taskViewModel?.title
         taskContentConfiguration.isCompleted = taskViewModel?.isCompleted
-        
         contentConfiguration = taskContentConfiguration
-
+        
         if let taskContentView = contentView as? TaskContentView {
             taskContentView.completeHandler = { [weak self] isCompleted in
                 self?.taskViewModel?.isCompleted = isCompleted
-                self?.finishHandler?(self?.taskViewModel)
+                guard let viewModel = self?.taskViewModel else { return }
+                self?.finishHandler?(viewModel)
             }
         }
     }
