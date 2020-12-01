@@ -18,16 +18,52 @@ afterAll(async done => {
 describe('get All task', () => {
   it('성공 조건', async done => {
     // given
+    const expectedUser = seeder.users[0];
+    const expectedTasks = seeder.tasks
+      .filter(task => {
+        const projects = seeder.projects.filter(project => project.creatorId === expectedUser.id);
+        return projects.some(project => project.id === task.projectId);
+      })
+      .map(task => {
+        const { id, title } = task;
+        return { id, title };
+      });
+    try {
+      // when
+      const res = await request(app)
+        .get('/api/task')
+        .set('Authorization', `Bearer ${createJWT(expectedUser)}`);
+
+      const { tasks } = res.body;
+      // then
+      expect(
+        tasks.every(task =>
+          expectedTasks.some(
+            expectedTask =>
+              Object.entries(expectedTask).toString() === Object.entries(task).toString(),
+          ),
+        ),
+      ).toBeTruthy();
+      // expect(tasks).toStrictEqual(expectedTasks);
+      done();
+    } catch (err) {
+      done(err);
+    }
+  });
+
+  it('task가 없는 유저', async done => {
+    // given
     const expectedTasks = [];
     try {
       // when
       const res = await request(app)
         .get('/api/task')
-        .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`);
+        .set('Authorization', `Bearer ${createJWT(seeder.users[2])}`);
 
       const { tasks } = res.body;
       // then
       expect(tasks).toStrictEqual(expectedTasks);
+      done();
     } catch (err) {
       done(err);
     }
