@@ -1,4 +1,7 @@
 const isValidDueDate = inputDate => {
+  if (inputDate === undefined) {
+    return true;
+  }
   const dueDate = new Date(inputDate);
   const today = new Date(Date.now());
 

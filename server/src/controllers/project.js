@@ -43,12 +43,13 @@ const getProjectById = asyncTryCatch(async (req, res) => {
       model: models.section,
       include: {
         model: models.task,
-        where: { parentId: null },
+        where: { isDone: false, parentId: null },
         include: ['priority', 'labels', 'alarm', 'tasks'],
         required: false,
       },
     },
     order: [
+      [models.section, 'position', 'ASC'],
       [models.section, models.task, 'position', 'ASC'],
       [models.section, models.task, models.task, 'position', 'ASC'],
     ],
