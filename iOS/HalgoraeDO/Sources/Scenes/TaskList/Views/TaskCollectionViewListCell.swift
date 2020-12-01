@@ -11,7 +11,11 @@ class TaskCollectionViewListCell: UICollectionViewListCell {
     
     // MARK:  - Properties
     
-    var taskViewModel: TaskListModels.DisplayedTask?
+    var taskViewModel: TaskListModels.DisplayedTask? {
+        didSet {
+            updateConfiguration(using: .init(traitCollection: .current))
+        }
+    }
     var finishHandler: ((TaskListModels.DisplayedTask) -> Void)?
     
     // MARK:  Methods

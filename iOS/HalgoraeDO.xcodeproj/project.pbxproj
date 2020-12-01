@@ -25,6 +25,8 @@
 		4C4236AD2573B4640068A252 /* PopoverViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CCD324D256F84BD00A46D10 /* PopoverViewModelType.swift */; };
 		4C4236B12573B4C90068A252 /* Priority+PopoverViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4236B02573B4C90068A252 /* Priority+PopoverViewModelType.swift */; };
 		4C4236C32574C5F50068A252 /* TaskList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4236C22574C5F50068A252 /* TaskList.swift */; };
+		4C4236DC2574DF6B0068A252 /* ConfirmActionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4C4236DB2574DF6B0068A252 /* ConfirmActionView.xib */; };
+		4C4236E02574DF980068A252 /* ConfirmActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4236DF2574DF980068A252 /* ConfirmActionView.swift */; };
 		4CCD31E8256EBC0C00A46D10 /* TaskListWorkerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0CA5F0256E9AF100E66045 /* TaskListWorkerTests.swift */; };
 		4CCD31E9256EBC0C00A46D10 /* TaskListInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0CA60C256EAA7300E66045 /* TaskListInteractorTests.swift */; };
 		4CCD31EA256EBC0C00A46D10 /* TaskListPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0CA629256EABF700E66045 /* TaskListPresenterTests.swift */; };
@@ -80,7 +82,10 @@
 		4C3F5704256CF8B9006D7C9F /* TaskContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskContentView.swift; sourceTree = "<group>"; };
 		4C3F573E256D2263006D7C9F /* RoundButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundButton.swift; sourceTree = "<group>"; };
 		4C4236B02573B4C90068A252 /* Priority+PopoverViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Priority+PopoverViewModelType.swift"; sourceTree = "<group>"; };
+		4C4236BF2574A3E50068A252 /* TaskListTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = TaskListTests.xctest; path = "/Users/os/woong/iOS/Boostcamp2020/group_final/Project04-C-Whale/iOS/build/Debug-iphoneos/TaskListTests.xctest"; sourceTree = "<absolute>"; };
 		4C4236C22574C5F50068A252 /* TaskList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskList.swift; sourceTree = "<group>"; };
+		4C4236DB2574DF6B0068A252 /* ConfirmActionView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ConfirmActionView.xib; sourceTree = "<group>"; };
+		4C4236DF2574DF980068A252 /* ConfirmActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmActionView.swift; sourceTree = "<group>"; };
 		4CCD31DD256EBC0000A46D10 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4CCD31F8256EBC8000A46D10 /* TaskListDisplaySpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListDisplaySpy.swift; sourceTree = "<group>"; };
 		4CCD31FE256EBCEF00A46D10 /* TaskListPresenterSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListPresenterSpy.swift; sourceTree = "<group>"; };
@@ -132,6 +137,7 @@
 		4C3F55B12564EEC6006D7C9F /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				4C4236DA2574DF420068A252 /* ConfirmActionView */,
 				4C3F573E256D2263006D7C9F /* RoundButton.swift */,
 				AAEE20E32564E4AA00668FAD /* Main.storyboard */,
 			);
@@ -177,6 +183,15 @@
 				4C4236B02573B4C90068A252 /* Priority+PopoverViewModelType.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		4C4236DA2574DF420068A252 /* ConfirmActionView */ = {
+			isa = PBXGroup;
+			children = (
+				4C4236DB2574DF6B0068A252 /* ConfirmActionView.xib */,
+				4C4236DF2574DF980068A252 /* ConfirmActionView.swift */,
+			);
+			path = ConfirmActionView;
 			sourceTree = "<group>";
 		};
 		4CCD31DA256EBC0000A46D10 /* TaskListTests */ = {
@@ -310,7 +325,7 @@
 			);
 			name = TaskListTests;
 			productName = TaskListTests;
-			productReference = AA19EF132574E51300E59017 /* TaskListTests.xctest */;
+			productReference = 4C4236BF2574A3E50068A252 /* TaskListTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		AAEE20D92564E4A900668FAD /* HalgoraeDO */ = {
@@ -380,6 +395,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AAEE20EA2564E4AC00668FAD /* LaunchScreen.storyboard in Resources */,
+				4C4236DC2574DF6B0068A252 /* ConfirmActionView.xib in Resources */,
 				AAEE20E72564E4AC00668FAD /* Assets.xcassets in Resources */,
 				AAEE20E52564E4AA00668FAD /* Main.storyboard in Resources */,
 			);
@@ -423,6 +439,7 @@
 				AA19EF252576488B00E59017 /* TaskBoardSupplementaryView.swift in Sources */,
 				4C3F5695256BA228006D7C9F /* Task.swift in Sources */,
 				4C4236C32574C5F50068A252 /* TaskList.swift in Sources */,
+				4C4236E02574DF980068A252 /* ConfirmActionView.swift in Sources */,
 				4C3F5705256CF8B9006D7C9F /* TaskContentView.swift in Sources */,
 				AA354C2A2570002600072657 /* TaskAddViewController.swift in Sources */,
 				4CCD32772570A4EF00A46D10 /* MenuViewController.swift in Sources */,

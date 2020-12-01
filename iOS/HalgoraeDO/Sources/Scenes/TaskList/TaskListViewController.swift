@@ -21,6 +21,7 @@ class TaskListViewController: UIViewController {
     private var router: (TaskListRoutingLogic & TaskListDataPassing)?
     private var dataSource: UICollectionViewDiffableDataSource<String, TaskVM>! = nil
     private var displayCompleted = false
+    private var presentConfirmActionWorkItem: DispatchWorkItem?
     private(set) var selectedTasks = Set<TaskVM>() {
         didSet {
             guard isEditing else { return }
@@ -34,6 +35,7 @@ class TaskListViewController: UIViewController {
     @IBOutlet weak private var moreButton: UIBarButtonItem!
     @IBOutlet weak private var addButton: RoundButton!
     @IBOutlet weak private var editToolBar: UIToolbar!
+    @IBOutlet weak var confirmActionView: ConfirmActionView!
     
     // MARK: - View Life Cycle
     
@@ -64,7 +66,7 @@ class TaskListViewController: UIViewController {
         set(editingMode: editing)
     }
     
-    func set(editingMode: Bool) {
+    private func set(editingMode: Bool) {
         if !editingMode {
             selectedTasks.removeAll()
         }
@@ -73,6 +75,26 @@ class TaskListViewController: UIViewController {
         moreButton.title = editingMode ? "취소" : "More"
         addButton.isHidden = editingMode
         editToolBar.isHidden = !editingMode
+    }
+    
+    private func slideRightConfirmActionViewWillDismiss(targetView: UIView,
+                                                withDuration duration: TimeInterval = 0.5,
+                                                delay: TimeInterval = 0,
+                                                usingSpringWithDamping dampingRatio: CGFloat = 0.7,
+                                                initialSpringVelocity velocity: CGFloat = 0.5,
+                                                options: UIView.AnimationOptions = [.curveEaseIn],
+                                                dismiss deadline: DispatchTime = .now() + 3) {
+        targetView.transform = .init(translationX: -targetView.frame.maxX, y: 0)
+        targetView.isHidden = false
+        UIView.animate(withDuration: duration, delay: delay, usingSpringWithDamping: dampingRatio, initialSpringVelocity: velocity, options: options) {
+            targetView.transform = .identity
+        }
+        
+        self.presentConfirmActionWorkItem?.cancel()
+        self.presentConfirmActionWorkItem = DispatchWorkItem { targetView.isHidden = true }
+        if let workItem = self.presentConfirmActionWorkItem {
+            DispatchQueue.main.asyncAfter(deadline: deadline, execute: workItem)
+        }
     }
     
     // MARK: IBActions
@@ -166,21 +188,28 @@ private extension TaskListViewController {
 // MARK: - Configure CollectionView Data Source
 
 private extension TaskListViewController {
-    
     func configureDataSource() {
-        let cellRegistration = UICollectionView.CellRegistration<TaskCollectionViewListCell, TaskVM> { [weak self] (cell, _: IndexPath, taskItem) in
+        let cellRegistration = UICollectionView.CellRegistration<TaskCollectionViewListCell, TaskVM> { (cell, _: IndexPath, taskItem) in
             cell.taskViewModel = taskItem
             cell.finishHandler = { [weak self] task in
-                // 완료가 됐을 때
                 guard let self = self else { return }
+                self.slideRightConfirmActionViewWillDismiss(targetView: self.confirmActionView)
+                self.confirmActionView.backHandler = { [weak self] in
+                    var cancelTask = task
+                    cancelTask.isCompleted.toggle()
+                    cell.taskViewModel = cancelTask
+                    self?.interactor?.changeFinish(request: .init(displayedTasks: [cancelTask]))
+                    self?.confirmActionView.isHidden = true
+                }
+                
                 self.interactor?.changeFinish(request: .init(displayedTasks: [task]))
+                
             }
             let disclosureOptions = UICellAccessory.OutlineDisclosureOptions(style: .automatic)
             cell.accessories = taskItem.subItems.isEmpty ? [] : [.outlineDisclosure(options: disclosureOptions)]
         }
         
-        self.dataSource = UICollectionViewDiffableDataSource<String, TaskVM>(collectionView: taskListCollectionView, cellProvider: { (collectionView, indexPath, task) -> UICollectionViewCell? in
-            
+        dataSource = UICollectionViewDiffableDataSource<String, TaskVM>(collectionView: taskListCollectionView, cellProvider: { (collectionView, indexPath, task) -> UICollectionViewCell? in
             return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: task)
         })
     }
@@ -205,8 +234,18 @@ private extension TaskListViewController {
 extension TaskListViewController: TaskListDisplayLogic {
     
     func displayFetchTasks(viewModel: TaskListModels.FetchTasks.ViewModel) {
+        let currentSnapshot = dataSource.snapshot(for: projectTitle)
         let displayTasks = filterCompletedIfNeeded(for: viewModel.displayedTasks)
-        let snapShot = snapshot(taskItems: displayTasks)
+        var snapShot = snapshot(taskItems: displayTasks)
+        for item in snapShot.items {
+            guard currentSnapshot.contains(item),
+                currentSnapshot.isExpanded(item)
+            else {
+                continue
+            }
+            
+            snapShot.expand([item])
+        }
         dataSource.apply(snapShot, to: projectTitle, animatingDifferences: true)
     }
     
@@ -215,9 +254,9 @@ extension TaskListViewController: TaskListDisplayLogic {
     }
     
     func displayFinishChanged(viewModel: TaskListModels.FinishTask.ViewModel) {
+        var currentSnapshot = dataSource.snapshot()
         
-        var currentSnapshot = self.dataSource.snapshot()
-        if !self.displayCompleted {
+        if !displayCompleted {
             let completedTasks = viewModel.displayedTasks.filter { $0.isCompleted }
             currentSnapshot.deleteItems(completedTasks)
             dataSource.apply(currentSnapshot)
@@ -227,11 +266,17 @@ extension TaskListViewController: TaskListDisplayLogic {
     // MARK: Helper Functions
     
     func filterCompletedIfNeeded(for displayedTasks: [TaskListModels.DisplayedTask]) -> [TaskListModels.DisplayedTask] {
-        guard displayCompleted else {
-            return displayedTasks.filter { !$0.isCompleted }
-        }
+        guard !displayCompleted else { return displayedTasks }
         
-        return displayedTasks
+        var filteredTasks = [TaskListModels.DisplayedTask]()
+        for task in displayedTasks {
+            guard !task.isCompleted else { continue }
+            var task = task
+            task.subItems = task.subItems.filter { !$0.isCompleted }
+            filteredTasks.append(task)
+        }
+
+        return filteredTasks
     }
 }
 
