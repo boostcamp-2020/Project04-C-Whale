@@ -22,7 +22,24 @@ const getTaskById = asyncTryCatch(async (req, res) => {
   responseHandler(res, 201, task);
 });
 
-const createOrUpdateTask = asyncTryCatch(async (req, res) => {
+const createTask = asyncTryCatch(async (req, res) => {
+  const { labelIdList, dueDate, ...rest } = req.body;
+
+  if (!isValidDueDate(dueDate)) {
+    const err = new Error('유효하지 않은 dueDate');
+    err.status = 400;
+    throw err;
+  }
+
+  await sequelize.transaction(async t => {
+    const task = await models.task.create({ dueDate, ...rest }, { transaction: t });
+    await task.setLabels(JSON.parse(labelIdList), { transaction: t });
+  });
+
+  responseHandler(res, 201, { message: 'ok' });
+});
+
+const updateTask = asyncTryCatch(async (req, res) => {
   const { labelIdList, dueDate, ...rest } = req.body;
 
   if (!isValidDueDate(dueDate)) {
@@ -33,20 +50,18 @@ const createOrUpdateTask = asyncTryCatch(async (req, res) => {
 
   const { taskId } = req.params;
   await sequelize.transaction(async t => {
-    let task;
-    if (taskId !== undefined) {
-      await models.task.update(
-        { dueDate, ...rest },
-        {
-          where: { id: taskId },
-        },
-        { transaction: t },
-      );
-      task = await models.task.findByPk(taskId, { transaction: t });
-    }
+    await models.task.update(
+      { dueDate, ...rest },
+      {
+        where: { id: taskId },
+      },
+      { transaction: t },
+    );
 
-    task = await models.task.create({ dueDate, ...rest }, { transaction: t });
-    await task.setLabels(JSON.parse(labelIdList), { transaction: t });
+    const task = await models.task.findByPk(taskId, { transaction: t });
+    if (labelIdList) {
+      await task.setLabels(JSON.parse(labelIdList), { transaction: t });
+    }
   });
 
   responseHandler(res, 201, { message: 'ok' });
@@ -106,7 +121,8 @@ const deleteComment = asyncTryCatch(async (req, res) => {
 
 module.exports = {
   getTaskById,
-  createOrUpdateTask,
+  createTask,
+  updateTask,
   deleteTask,
   getComments,
   createComment,
