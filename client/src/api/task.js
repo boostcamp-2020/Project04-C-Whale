@@ -1,11 +1,11 @@
 import myAxios from "./myAxios";
 
 const taskAPI = {
+  serachTask() {
+    return myAxios.GET("/task");
+  },
   updateTask(taskId, data) {
     return myAxios.PATCH(`/task/${taskId}`, data);
-  },
-  serachTask(keyword, data) {
-    return myAxios.PATCH(`/task/serach?keyword=${keyword}`, data);
   },
 };
 
