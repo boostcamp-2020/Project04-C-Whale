@@ -268,6 +268,35 @@ describe('patch task with id', () => {
       done(err);
     }
   });
+
+  it('patch task without labels', async done => {
+    // given
+    const newTask = {
+      title: '할일',
+      projectId: seeder.projects[0].id,
+      labelIdList: JSON.stringify([]),
+      priorityId: seeder.priorities[0].id,
+      dueDate: new Date(),
+      parentId: null,
+      alarmId: seeder.alarms[0].id,
+      position: 1,
+    };
+
+    try {
+      // when
+      const res = await request(app)
+        .patch(`/api/task/${seeder.tasks[2].id}`)
+        .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
+        .send(newTask);
+
+      // then
+      expect(res.status).toBe(status.SUCCESS.CODE);
+      expect(res.body.message).toBe(status.SUCCESS.MSG);
+      done();
+    } catch (err) {
+      done(err);
+    }
+  });
 });
 
 describe('delete task', () => {
