@@ -21,7 +21,9 @@ class TaskDetailViewController: UIViewController {
 
     @IBOutlet weak private var navigationView: UIView!
     @IBOutlet weak private var navigationBar: UINavigationBar!
+    @IBOutlet weak private var saveBarButtomItem: UIBarButtonItem!
     @IBOutlet weak private var titleLabel: UILabel!
+    @IBOutlet weak private var taskTitleTextView: UITextView!
     @IBOutlet weak private var subContainerView: UIView!
     
     // MARK: View Life Cycle
@@ -44,6 +46,18 @@ class TaskDetailViewController: UIViewController {
     // MARK: - Methods
     
     // MARK: IBActions
+    
+    @IBAction private func didTapCancelBarButtonItem(_ sender: UIBarButtonItem) {
+    }
+    
+    @IBAction private func didTapSaveBarButtonItem(_ sender: UIBarButtonItem) {
+        
+    }
+    
+    
+    @IBAction private func didTapTaskFinishButton(_ sender: UIButton) {
+        
+    }
     
     @IBAction private func didTapSubTasksTabButton(_ sender: UIButton) {
         
