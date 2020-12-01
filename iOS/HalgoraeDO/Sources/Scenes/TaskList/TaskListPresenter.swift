@@ -38,6 +38,6 @@ extension TaskListPresenter: TaskListPresentLogic {
         let taskViewModels = response.tasks.enumerated().map { (idx, task) in
             TaskListModels.DisplayedTask(task: task, position: idx, parentPosition: nil)
         }
-        viewController.displayFinishChanged(viewModel: .init(displayedTasks: taskViewModels))
+        viewController.displayFetchTasks(viewModel: .init(displayedTasks: taskViewModels))
     }
 }

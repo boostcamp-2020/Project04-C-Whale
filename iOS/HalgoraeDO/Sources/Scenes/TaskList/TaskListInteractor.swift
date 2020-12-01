@@ -36,12 +36,11 @@ extension TaskListInteractor: TaskListBusinessLogic {
     
     func changeFinish(request: TaskListModels.FinishTask.Request) {
         let viewModels = request.displayedTasks
-        let tasks = viewModels.map { (viewModel: TaskListModels.DisplayedTask) -> Task in
+        viewModels.forEach { viewModel in
             let task = taskList.task(identifier: viewModel.id, postion: viewModel.position, parentPosition: viewModel.parentPosition)
             task.isCompleted = viewModel.isCompleted
             worker.changeFinish(task: task, postion: viewModel.position, parentPosition: viewModel.parentPosition)
-            return task
         }
-        presenter.presentFinshChanged(response: .init(tasks: tasks))
+        presenter.presentFinshChanged(response: .init(tasks: taskList.tasks))
     }
 }

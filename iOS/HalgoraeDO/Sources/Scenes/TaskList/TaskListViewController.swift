@@ -215,9 +215,9 @@ extension TaskListViewController: TaskListDisplayLogic {
     }
     
     func displayFinishChanged(viewModel: TaskListModels.FinishTask.ViewModel) {
+        var currentSnapshot = dataSource.snapshot()
         
-        var currentSnapshot = self.dataSource.snapshot()
-        if !self.displayCompleted {
+        if !displayCompleted {
             let completedTasks = viewModel.displayedTasks.filter { $0.isCompleted }
             currentSnapshot.deleteItems(completedTasks)
             dataSource.apply(currentSnapshot)
