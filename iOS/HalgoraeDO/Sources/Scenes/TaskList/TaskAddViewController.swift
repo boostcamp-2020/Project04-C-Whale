@@ -128,6 +128,7 @@ extension TaskAddViewController: UITextViewDelegate {
 // MARK: - Date Picker Configure & Method
 
 extension TaskAddViewController {
+    
     private func configureDataPickerView() {
         self.view.addSubview(dateButton)
         let calendarImage = UIImage(systemName: "calendar", withConfiguration: UIImage.SymbolConfiguration(pointSize: 22, weight: .light, scale: .small))
@@ -215,14 +216,17 @@ extension TaskAddViewController {
 }
 
 extension TaskAddViewController: UIPopoverPresentationControllerDelegate {
+    
     func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
         return .none
     }
+    
 }
 
 // MARK: - Submit Button Configure & Method
 
 extension TaskAddViewController {
+    
     private func configureSubmit() {
         self.view.addSubview(submitButton)
         let submitImage = UIImage(systemName: "arrow.up.circle.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 28, weight: .bold, scale: .large))

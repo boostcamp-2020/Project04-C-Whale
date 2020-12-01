@@ -20,11 +20,13 @@ class Task {
     var section: String
     var title: String
     var isCompleted: Bool
+    var dueDate: Date
     var priority: Priority
     
     init(section: String = "",
          title: String,
          isCompleted: Bool = false,
+         dueDate: Date = Date(),
          priority: Priority = .four,
          parent: Task? = nil,
          subTasks: [Task] = []) {
@@ -32,12 +34,13 @@ class Task {
         self.section = section
         self.title = title
         self.isCompleted = isCompleted
-        self.parent = parent
+        self.dueDate = dueDate
         self.priority = priority
+        self.parent = parent
         self.subTasks = subTasks
         self.subTasks.forEach { $0.parent = self }
     }
-    
+        
     // MARK: - Methods
     
     // MARK: Mutable

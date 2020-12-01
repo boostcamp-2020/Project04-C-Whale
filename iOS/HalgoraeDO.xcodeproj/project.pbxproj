@@ -42,6 +42,8 @@
 		4CCD3257256F8BA700A46D10 /* Priority.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CCD3256256F8BA700A46D10 /* Priority.swift */; };
 		4CCD325E256F8C1200A46D10 /* UIImage+scaled.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CCD325D256F8C1200A46D10 /* UIImage+scaled.swift */; };
 		4CCD32772570A4EF00A46D10 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CCD32762570A4EF00A46D10 /* MenuViewController.swift */; };
+		AA19EF172575680600E59017 /* TaskSectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA19EF162575680500E59017 /* TaskSectionViewCell.swift */; };
+		AA19EF1B25756C3200E59017 /* AddSectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA19EF1A25756C3200E59017 /* AddSectionViewCell.swift */; };
 		AA354C2A2570002600072657 /* TaskAddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA354C292570002600072657 /* TaskAddViewController.swift */; };
 		AAEE20DE2564E4A900668FAD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAEE20DD2564E4A900668FAD /* AppDelegate.swift */; };
 		AAEE20E02564E4A900668FAD /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAEE20DF2564E4A900668FAD /* SceneDelegate.swift */; };
@@ -91,6 +93,9 @@
 		4CCD3256256F8BA700A46D10 /* Priority.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Priority.swift; sourceTree = "<group>"; };
 		4CCD325D256F8C1200A46D10 /* UIImage+scaled.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+scaled.swift"; sourceTree = "<group>"; };
 		4CCD32762570A4EF00A46D10 /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
+		AA19EF132574E51300E59017 /* TaskListTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TaskListTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		AA19EF162575680500E59017 /* TaskSectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskSectionViewCell.swift; sourceTree = "<group>"; };
+		AA19EF1A25756C3200E59017 /* AddSectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSectionViewCell.swift; sourceTree = "<group>"; };
 		AA354C292570002600072657 /* TaskAddViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskAddViewController.swift; sourceTree = "<group>"; };
 		AAEE20DD2564E4A900668FAD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AAEE20DF2564E4A900668FAD /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -161,6 +166,8 @@
 				4C3F568B256B93D5006D7C9F /* TaskCollectionViewListCell.swift */,
 				4C3F56FF256CF8A7006D7C9F /* TaskContentConfigure.swift */,
 				4C3F5704256CF8B9006D7C9F /* TaskContentView.swift */,
+				AA19EF162575680500E59017 /* TaskSectionViewCell.swift */,
+				AA19EF1A25756C3200E59017 /* AddSectionViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -244,6 +251,7 @@
 				AAEE20DC2564E4A900668FAD /* HalgoraeDO */,
 				4C3F5657256B80B4006D7C9F /* HalgoraeDO.app */,
 				4CCD31DA256EBC0000A46D10 /* TaskListTests */,
+				AA19EF132574E51300E59017 /* TaskListTests.xctest */,
 			);
 			sourceTree = "<group>";
 		};
@@ -421,6 +429,7 @@
 				4C3F568C256B93D5006D7C9F /* TaskCollectionViewListCell.swift in Sources */,
 				4CCD324E256F84BD00A46D10 /* PopoverViewModelType.swift in Sources */,
 				4C3F5679256B8C83006D7C9F /* TaskListPresenter.swift in Sources */,
+				AA19EF172575680600E59017 /* TaskSectionViewCell.swift in Sources */,
 				4C3F573F256D2263006D7C9F /* RoundButton.swift in Sources */,
 				AAEE20DE2564E4A900668FAD /* AppDelegate.swift in Sources */,
 				4C3F567E256B8CB3006D7C9F /* TaskListModels.swift in Sources */,
@@ -438,6 +447,7 @@
 				4C3F5665256B8117006D7C9F /* TaskListViewController.swift in Sources */,
 				4CCD325E256F8C1200A46D10 /* UIImage+scaled.swift in Sources */,
 				4C3F5700256CF8A7006D7C9F /* TaskContentConfigure.swift in Sources */,
+				AA19EF1B25756C3200E59017 /* AddSectionViewCell.swift in Sources */,
 				4C3F5674256B8C63006D7C9F /* TaskListWorker.swift in Sources */,
 				4C3F566F256B8C2B006D7C9F /* TaskListInteractor.swift in Sources */,
 				4CCD3257256F8BA700A46D10 /* Priority.swift in Sources */,
