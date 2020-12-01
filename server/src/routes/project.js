@@ -1,8 +1,9 @@
 const router = require('express').Router();
 const projectController = require('@controllers/project');
+const taskController = require('@controllers/task');
 
 router.get('/', projectController.getProjects);
-// to do
+// TO DO
 // router.get('/today', projectController.getTodayProject);
 router.get('/:projectId', projectController.getProjectById);
 router.post('/', projectController.createProject);
@@ -14,5 +15,7 @@ router.post('/:projectId/section', projectController.createSection);
 router.post('/:projectId/section/:sectionId/task', projectController.updateSectionTaskPositions);
 router.put('/:projectId/section/:sectionId', projectController.updateSection);
 router.delete('/:projectId/section/:sectionId', projectController.deleteSection);
+
+router.post('/:projectId/section/:sectionId/task', taskController.createTask);
 
 module.exports = router;
