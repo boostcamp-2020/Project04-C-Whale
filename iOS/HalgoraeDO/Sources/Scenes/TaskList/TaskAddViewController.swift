@@ -81,11 +81,7 @@ extension TaskAddViewController: UITextViewDelegate {
     
     func textViewDidChange(_ textView: UITextView) {
         guard let text = textView.text else { return }
-        if text != "" {
-            submitButton.alpha = 0.9
-        } else {
-            submitButton.alpha = 0.5
-        }
+        submitButton.alpha = text.isEmpty ? 0.5 : 0.9
         textView.text = textView.text.replacingOccurrences(of: placeHolder, with: "")
         textView.textColor = UIColor.black
         let size = CGSize(width: view.frame.width, height: .infinity)
@@ -207,7 +203,7 @@ private extension TaskAddViewController {
         popoverViewController.popoverPresentationController?.sourceRect = .init(x: sender.frame.width / 2, y: 0, width: 0, height: 0)
         popoverViewController.viewModels = Priority.allCases.compactMap { $0.viewModel() }
         popoverViewController.modalTransitionStyle = .crossDissolve
-        popoverViewController.selectHandler = { [self] indexPath in
+        popoverViewController.selectHandler = { indexPath in
             popoverViewController.dismiss(animated: true, completion: nil)
             self.changePriority(row: indexPath.row)
             self.priority = indexPath.row

@@ -53,9 +53,7 @@ class TaskBoardViewController: UIViewController {
     
     @objc private func displayAddTask(_ notification: Notification) {
         guard let object = notification.object as? Int
-        else {
-            return
-        }
+        else { return }
         showAddTaskView(sectionNum: object)
     }
     
@@ -74,7 +72,6 @@ class TaskBoardViewController: UIViewController {
         else {
             return
         }
-        print(taskTitle, dueDate, priority, section)
         let temp = TaskListModels.DisplayedTask(id: UUID(), title: taskTitle, isCompleted: false, tintColor: .red, position: 1, parentPosition: nil, subItems: [])
         taskVM.append(temp)
         taskBoardCollectionView.reloadData()
@@ -111,7 +108,9 @@ class TaskBoardViewController: UIViewController {
         let showBoardAction = UIAlertAction(title: "목록으로 보기", style: .default) { (_: UIAlertAction) in
             guard let vc = self.storyboard?.instantiateViewController(identifier: String(describing: TaskListViewController.self), creator: { coder -> TaskListViewController? in
                 return TaskListViewController(coder: coder)
-            }) else { return }
+            }) else {
+                return
+            }
             
             let nav = self.navigationController
             nav?.popViewController(animated: false)
