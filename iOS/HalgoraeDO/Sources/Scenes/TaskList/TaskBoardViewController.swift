@@ -29,8 +29,9 @@ class TaskBoardViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        NotificationCenter.default.addObserver(self, selector: #selector(addTask), name: NSNotification.Name(rawValue: "addTask"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(displayAddTask), name: NSNotification.Name(rawValue: "displayAddTask"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(addSection), name: NSNotification.Name(rawValue: "addSection"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(addTask), name: NSNotification.Name(rawValue: "addTask"), object: nil)
         configureLogic()
         configureCollectionView()
     }
@@ -50,12 +51,25 @@ class TaskBoardViewController: UIViewController {
     
     //MARK: - Helper Method
     
-    @objc func addTask(_ notification: Notification) {
+    @objc func displayAddTask(_ notification: Notification) {
         showAddTaskView()
     }
     
     @objc func addSection(_ notification: Notification) {
         addSectionAlert()
+    }
+    
+    @objc func addTask(_ notification: Notification) {
+        taskAddViewController.view.removeFromSuperview()
+        visualEffectView.removeFromSuperview()
+        guard let object = notification.object as? [String:Any],
+              let dueDate = object["dueDate"] as? Date,
+              let taskTitle = object["taskTitle"] as? String,
+              let priority = object["priority"] as? Int
+        else {
+            return
+        }
+        print(taskTitle, dueDate, priority)
     }
     
     func addSectionAlert() {
@@ -136,7 +150,7 @@ private extension TaskBoardViewController {
         let config = UICollectionViewCompositionalLayoutConfiguration()
         config.interSectionSpacing = 0
         config.scrollDirection = .horizontal
-
+        
         let sectionProvider = { (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
             let section: NSCollectionLayoutSection
             let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
@@ -146,13 +160,12 @@ private extension TaskBoardViewController {
             section = NSCollectionLayoutSection(group: group)
             section.orthogonalScrollingBehavior = .paging
             section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10)
-        
+            
             return section
         }
         
         return UICollectionViewCompositionalLayout(sectionProvider: sectionProvider, configuration: config)
     }
-
 }
 
 // MARK: - Add Task View Login
@@ -183,7 +196,6 @@ private extension TaskBoardViewController {
         [selectTaskAction, cancelAction].forEach { alert.addAction($0) }
         present(alert, animated: true, completion: nil)
     }
-    
 }
 
 // MARK: - UICollectionView DataSource
@@ -209,7 +221,6 @@ extension TaskBoardViewController: UICollectionViewDataSource {
             return cell
         }
     }
-    
 }
 
 // MARK: - TaskList Display Logic
@@ -227,5 +238,4 @@ extension TaskBoardViewController: TaskListDisplayLogic {
     func displayDetail(of task: Task) {
         
     }
-    
 }

@@ -15,7 +15,8 @@ class TaskAddViewController: UIViewController {
     private var keyboardHeight: CGFloat = 0
     private var textViewHeight: CGFloat = 0
     private let placeHolder: String = "예. 11월 27일날 데모 발표하기"
-    
+    private var dueDate: Date = Date()
+    private var priority: Int = 4
     // MARK: - Views
     
     private let textView = UITextView()
@@ -78,6 +79,12 @@ extension TaskAddViewController: UITextViewDelegate {
     }
     
     func textViewDidChange(_ textView: UITextView) {
+        guard let text = textView.text else { return }
+        if text != "" {
+            submitButton.alpha = 0.9
+        }else {
+            submitButton.alpha = 0.5
+        }
         textView.text = textView.text.replacingOccurrences(of: placeHolder, with: "")
         textView.textColor = UIColor.black
         let size = CGSize(width: view.frame.width, height: .infinity)
@@ -160,6 +167,7 @@ extension TaskAddViewController {
     }
     
     @objc func changeDatePicker(_ sender: UIDatePicker) {
+        dueDate = sender.date
         let dateFormatter: DateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy년MM월dd일"
         let selectedDate: String = dateFormatter.string(from: sender.date)
@@ -202,6 +210,7 @@ extension TaskAddViewController {
         popoverViewController.selectHandler = { [self] indexPath in
             popoverViewController.dismiss(animated: true, completion: nil)
             self.changePriority(row: indexPath.row)
+            self.priority = indexPath.row
         }
         self.present(popoverViewController, animated:true)
     }
@@ -220,7 +229,6 @@ extension TaskAddViewController: UIPopoverPresentationControllerDelegate {
     func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
         return .none
     }
-    
 }
 
 // MARK: - Submit Button Configure & Method
@@ -240,9 +248,17 @@ extension TaskAddViewController {
     }
     
     @objc func tabSubmitButton(_ sender: UIButton) {
-        
+        guard let text = textView.text else { return }
+        if text == "" {
+            return
+        } else {
+            var object: [String: Any] = [:]
+            object.updateValue(text, forKey: "taskTitle")
+            object.updateValue(dueDate, forKey: "dueDate")
+            object.updateValue(priority, forKey: "priority")
+            NotificationCenter.default.post(name: Notification.Name(rawValue: "addTask"), object: object)
+        }
     }
-    
 }
 
 

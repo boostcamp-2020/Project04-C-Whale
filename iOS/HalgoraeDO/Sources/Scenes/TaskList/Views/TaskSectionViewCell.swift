@@ -53,7 +53,6 @@ class TaskSectionViewCell: UICollectionViewCell {
         let snapShot = snapshot(taskItems: task)
         dataSource.apply(snapShot, to: sectionName, animatingDifferences: true)
     }
-    
 }
 
 
@@ -238,7 +237,7 @@ class TaskBoardSupplementaryView: UICollectionReusableView {
     }
     
     @objc func priorityPopover(_ sender: UIButton) {
-        NotificationCenter.default.post(name: Notification.Name(rawValue: "addTask"), object: self)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "displayAddTask"), object: self)
         #if DEBUG
         print("작업 추가 TODO")
         #endif
@@ -319,6 +318,7 @@ extension TaskSectionViewCell: UICollectionViewDropDelegate {
 }
 
 private extension TaskSectionViewCell {
+    
     func setLocation(_ location: CGPoint, _ destination: IndexPath?) {
         #if DEBUG
         print("location:", location)
