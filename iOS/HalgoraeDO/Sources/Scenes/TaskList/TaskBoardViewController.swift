@@ -29,6 +29,7 @@ class TaskBoardViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        NotificationCenter.default.addObserver(self, selector: #selector(addTask), name: NSNotification.Name(rawValue: "addTask"), object: nil)
         configureLogic()
         configureCollectionView()
     }
@@ -47,6 +48,23 @@ class TaskBoardViewController: UIViewController {
     }
     
     //MARK: - Helper Method
+    
+    @objc func addTask(_ notification: Notification) {
+        print("tset")
+        showAddTaskView()
+    //    if let contents = notification.object as? String{
+    //        showAddTaskView()
+//            let formatter = DateFormatter()
+//            formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+//            do {
+//                print("datetime:", formatter.string(from: Date()))
+//                try commentRepository.insert(issueId: issue.id, contents: contents, created: formatter.string(from: Date()))
+//            } catch (let error) {
+//                print(error)
+//            }
+    //    }
+    }
+    
 
     // MARK:  IBActions
     @IBAction func didTapMoreButton(_ sender: UIBarButtonItem) {

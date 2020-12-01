@@ -232,6 +232,7 @@ class TaskBoardSupplementaryView: UICollectionReusableView {
     }
     
     @objc func priorityPopover(_ sender: UIButton) {
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "addTask"), object: self)
         #if DEBUG
         print("작업 추가 TODO")
         print("footer!!!!!=====", section)
