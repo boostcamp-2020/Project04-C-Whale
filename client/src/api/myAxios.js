@@ -6,26 +6,24 @@ const headerConfig = {
   },
 };
 
-const BASE_URL = process.env.VUE_APP_BASE_URL;
+const BASE_URL = process.env.VUE_APP_SERVER_URL;
 
-const GET = (path) => {
-  return axios.get(BASE_URL + path, headerConfig);
+const myAxios = {
+  GET: (path) => {
+    return axios.get(BASE_URL + path, headerConfig);
+  },
+  POST: (path, body) => {
+    return axios.post(BASE_URL + path, body, headerConfig);
+  },
+  PATCH: (path, body) => {
+    return axios.patch(BASE_URL + path, body, headerConfig);
+  },
+  PUT: (path, body) => {
+    return axios.put(BASE_URL + path, body, headerConfig);
+  },
+  DELETE: (path) => {
+    return axios.delete(BASE_URL + path, headerConfig);
+  },
 };
 
-const POST = (path, body) => {
-  return axios.post(BASE_URL + path, body, headerConfig);
-};
-
-const PATCH = (path, body) => {
-  return axios.patch(BASE_URL + path, body, headerConfig);
-};
-
-const PUT = (path, body) => {
-  return axios.put(BASE_URL + path, body, headerConfig);
-};
-
-const DELETE = (path) => {
-  return axios.delete(BASE_URL + path, headerConfig);
-};
-
-export default { GET, POST, PATCH, PUT, DELETE };
+export default myAxios;
