@@ -9,6 +9,12 @@ const getTaskById = asyncTryCatch(async (req, res) => {
   responseHandler(res, 200, task);
 });
 
+const getAllTasks = asyncTryCatch(async (req, res) => {
+  const tasks = await taskService.retrieveAll(req.user.id);
+
+  responseHandler(res, 200, { tasks });
+});
+
 const createTask = asyncTryCatch(async (req, res) => {
   const { labelIdList, dueDate, ...rest } = req.body;
 
@@ -43,4 +49,4 @@ const deleteTask = asyncTryCatch(async (req, res) => {
   responseHandler(res, 200, { message: 'ok' });
 });
 
-module.exports = { getTaskById, createTask, updateTask, deleteTask };
+module.exports = { getTaskById, getAllTasks, createTask, updateTask, deleteTask };

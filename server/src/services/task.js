@@ -1,5 +1,7 @@
-const taskModel = require('@models').models.task;
 const sequelize = require('@models');
+
+const { models } = sequelize;
+const taskModel = models.task;
 
 const retrieveById = async id => {
   const task = await taskModel.findByPk(id, {
@@ -16,6 +18,20 @@ const retrieveById = async id => {
     order: [[taskModel, 'position', 'ASC']],
   });
   return task;
+};
+
+const retrieveAll = async userId => {
+  const tasks = await taskModel.findAll({
+    attributes: ['id', 'title'],
+    include: {
+      model: models.project,
+      attributes: [],
+      where: { creatorId: userId },
+    },
+    // order: [['title', 'ASC']],
+  });
+
+  return tasks;
 };
 
 const create = async (labelIdList, dueDate, taskData) => {
@@ -59,4 +75,4 @@ const remove = async id => {
   return result;
 };
 
-module.exports = { retrieveById, create, update, remove };
+module.exports = { retrieveById, retrieveAll, create, update, remove };
