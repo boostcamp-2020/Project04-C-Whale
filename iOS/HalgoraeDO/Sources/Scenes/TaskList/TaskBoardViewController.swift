@@ -16,9 +16,6 @@ class TaskBoardViewController: UIViewController {
     private var interactor: TaskListBusinessLogic?
     private var router: (TaskListRoutingLogic & TaskListDataPassing)?
     private var dataSource: UICollectionViewDiffableDataSource<String, TaskVM>! = nil
-    private var lineView: UIView = UIView()
-    private var startIndex: IndexPath?
-    private var startPoint: CGPoint?
     private let visualEffectView = UIVisualEffectView()
     private var taskAddViewController: TaskAddViewController = TaskAddViewController()
     private var taskVM: [TaskVM] = []
