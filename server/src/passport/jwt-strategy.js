@@ -3,11 +3,12 @@ const { ExtractJwt } = require('passport-jwt');
 const userModel = require('@models').models.user;
 
 const jwtConfig = {
-  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken('authorization'),
+  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
   secretOrKey: process.env.JWT_SECRET,
 };
 
 const jwtVerify = async (payload, done) => {
+  console.log(payload);
   try {
     if (!payload.id) {
       const err = new Error('Bad Request');
@@ -17,6 +18,7 @@ const jwtVerify = async (payload, done) => {
     const user = await userModel.findByPk(payload.id, {
       attributes: { exclude: ['createdAt', 'updatedAt'] },
     });
+
     if (user) {
       done(null, user.dataValues);
     } else {
