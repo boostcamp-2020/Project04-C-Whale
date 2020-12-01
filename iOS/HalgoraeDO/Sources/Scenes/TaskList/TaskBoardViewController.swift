@@ -10,6 +10,7 @@ import UIKit
 class TaskBoardViewController: UIViewController {
     
     typealias TaskVM = TaskListModels.DisplayedTask
+    let sections = ["할고래두 TODO List", "할고라니까?? Todo!!", "진짜할고래DO???"]
     
     // MARK: - Properties
     
@@ -19,7 +20,6 @@ class TaskBoardViewController: UIViewController {
     private let visualEffectView = UIVisualEffectView()
     private var taskAddViewController: TaskAddViewController = TaskAddViewController()
     private var taskVM: [TaskVM] = []
-    let sections = ["할고래두 TODO List", "할고라니까?? Todo!!", "진짜할고래DO???"]
     
     // MARK: - Views
     
@@ -50,21 +50,8 @@ class TaskBoardViewController: UIViewController {
     //MARK: - Helper Method
     
     @objc func addTask(_ notification: Notification) {
-        print("tset")
         showAddTaskView()
-    //    if let contents = notification.object as? String{
-    //        showAddTaskView()
-//            let formatter = DateFormatter()
-//            formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-//            do {
-//                print("datetime:", formatter.string(from: Date()))
-//                try commentRepository.insert(issueId: issue.id, contents: contents, created: formatter.string(from: Date()))
-//            } catch (let error) {
-//                print(error)
-//            }
-    //    }
     }
-    
 
     // MARK:  IBActions
     @IBAction func didTapMoreButton(_ sender: UIBarButtonItem) {
@@ -203,6 +190,10 @@ extension TaskBoardViewController: UICollectionViewDataSource {
 // MARK: - TaskList Display Logic
 
 extension TaskBoardViewController: TaskListDisplayLogic {
+    
+    func displayFinishChanged(viewModel: TaskListModels.FinishTask.ViewModel) {
+        
+    }
     
     func displayFetchTasks(viewModel: TaskListModels.FetchTasks.ViewModel) {
         taskVM = viewModel.displayedTasks

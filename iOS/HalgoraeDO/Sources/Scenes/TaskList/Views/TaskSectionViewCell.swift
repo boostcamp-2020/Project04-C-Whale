@@ -108,12 +108,7 @@ private extension TaskSectionViewCell {
         let cellRegistration = UICollectionView.CellRegistration<TaskCollectionViewListCell, TaskVM> { [weak self] (cell, _: IndexPath, taskItem) in
             cell.taskViewModel = taskItem
             cell.finishHandler = { [weak self] task in
-                guard let self = self,
-                      let task = task
-                else {
-                    return
-                }
-                
+                guard let self = self else { return }
                 var currentSnapshot = self.dataSource.snapshot()
                 if task.isCompleted {
                     currentSnapshot.deleteItems([task])
@@ -235,7 +230,6 @@ class TaskBoardSupplementaryView: UICollectionReusableView {
         NotificationCenter.default.post(name: Notification.Name(rawValue: "addTask"), object: self)
         #if DEBUG
         print("작업 추가 TODO")
-        print("footer!!!!!=====", section)
         #endif
     }
     
