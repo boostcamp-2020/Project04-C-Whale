@@ -3,10 +3,13 @@
     <v-navigation-drawer v-model="drawer" app>
       <!-- <Menu /> -->
     </v-navigation-drawer>
-    <v-app-bar app>
+    <v-app-bar flat app>
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
-
       <v-toolbar-title>할고래DO</v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-btn flat>
+        <span @click="logout">로그아웃</span>
+      </v-btn>
     </v-app-bar>
     <!-- Sizes your content based upon application components -->
     <v-main>
@@ -20,7 +23,7 @@
 </template>
 
 <script>
-// import Menu from "../components/menu";
+import { mapActions } from "vuex";
 
 export default {
   name: "Home",
@@ -28,5 +31,8 @@ export default {
     // Menu,
   },
   data: () => ({ drawer: null }),
+  methods: {
+    ...mapActions(["logout"]),
+  },
 };
 </script>
