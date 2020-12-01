@@ -18,7 +18,7 @@ class TaskCollectionViewListCell: UICollectionViewListCell {
     }
     var finishHandler: ((TaskListModels.DisplayedTask) -> Void)?
     
-    // MARK:  Methods
+    // MARK: - Methods
 
     override func updateConfiguration(using state: UICellConfigurationState) {
         backgroundConfiguration?.backgroundColor = (state.isSelected || state.isHighlighted) ? .lightGray : .white

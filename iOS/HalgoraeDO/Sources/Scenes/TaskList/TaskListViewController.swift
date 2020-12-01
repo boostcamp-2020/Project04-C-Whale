@@ -35,7 +35,7 @@ class TaskListViewController: UIViewController {
     @IBOutlet weak private var moreButton: UIBarButtonItem!
     @IBOutlet weak private var addButton: RoundButton!
     @IBOutlet weak private var editToolBar: UIToolbar!
-    @IBOutlet weak var confirmActionView: ConfirmActionView!
+    @IBOutlet weak private var confirmActionView: ConfirmActionView!
     
     // MARK: - View Life Cycle
     
@@ -57,6 +57,7 @@ class TaskListViewController: UIViewController {
         let presenter = TaskListPresenter(viewController: self)
         let interactor = TaskListInteractor(presenter: presenter, worker: TaskListWorker())
         self.interactor = interactor
+        router = TaskListRouter(viewController: self, dataStore: interactor)
     }
     
     // MARK: - Methods
@@ -290,9 +291,9 @@ extension TaskListViewController: UICollectionViewDelegate {
             selectedTasks.insert(taskVM)
             return
         }
-        
+
         collectionView.deselectItem(at: indexPath, animated: true)
-        // TODO: request show detail task
+        router?.routeToTaskDetail(for: taskVM)
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
