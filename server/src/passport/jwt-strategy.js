@@ -8,7 +8,6 @@ const jwtConfig = {
 };
 
 const jwtVerify = async (payload, done) => {
-  console.log(payload);
   try {
     if (!payload.id) {
       const err = new Error('Bad Request');
