@@ -10,7 +10,7 @@ import UIKit
 class TaskBoardViewController: UIViewController {
     
     typealias TaskVM = TaskListModels.DisplayedTask
-    let sections = ["할고래두 TODO List", "할고라니까?? Todo!!", "진짜할고래DO???"]
+    var sections = ["할고래두 TODO List", "할고라니까?? Todo!!", "진짜할고래DO???"]
     
     // MARK: - Properties
     
@@ -29,6 +29,8 @@ class TaskBoardViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        NotificationCenter.default.addObserver(self, selector: #selector(displayAddTask), name: NSNotification.Name(rawValue: "displayAddTask"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(addSection), name: NSNotification.Name(rawValue: "addSection"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(addTask), name: NSNotification.Name(rawValue: "addTask"), object: nil)
         configureLogic()
         configureCollectionView()
@@ -49,38 +51,82 @@ class TaskBoardViewController: UIViewController {
     
     //MARK: - Helper Method
     
-    @objc func addTask(_ notification: Notification) {
-        showAddTaskView()
+    @objc private func displayAddTask(_ notification: Notification) {
+        guard let object = notification.object as? Int
+        else { return }
+        showAddTaskView(sectionNum: object)
     }
-
-    // MARK:  IBActions
-    @IBAction func didTapMoreButton(_ sender: UIBarButtonItem) {
+    
+    @objc private func addSection(_ notification: Notification) {
+        addSectionAlert()
+    }
+    
+    @objc private func addTask(_ notification: Notification) {
+        taskAddViewController.view.removeFromSuperview()
+        visualEffectView.removeFromSuperview()
+        guard let object = notification.object as? [String:Any],
+              let dueDate = object["dueDate"] as? Date,
+              let taskTitle = object["taskTitle"] as? String,
+              let priority = object["priority"] as? Int,
+              let section = object["section"] as? Int
+        else {
+            return
+        }
+        let temp = TaskListModels.DisplayedTask(id: UUID(), title: taskTitle, isCompleted: false, tintColor: .red, position: 1, parentPosition: nil, subItems: [])
+        taskVM.append(temp)
+        taskBoardCollectionView.reloadData()
+    }
+    
+    private func addSectionAlert() {
+        let alert = UIAlertController(title: "섹션 추가", message: "예. 3주차 할일", preferredStyle: .alert)
+        let ok = UIAlertAction(title: "OK", style: .default) { (ok) in
+            guard let sectionName = alert.textFields?[0].text else { return }
+            if sectionName == "" {
+                return
+            }
+            self.sections.append(sectionName)
+            self.taskBoardCollectionView.reloadData()
+        }
+        let cancel = UIAlertAction(title: "cancel", style: .cancel)
+        alert.addTextField { (textField) in
+            textField.placeholder = "섹션 이름을 입력해주세요."
+        }
+        alert.addAction(cancel)
+        alert.addAction(ok)
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    // MARK: IBActions
+    
+    @IBAction private func didTapMoreButton(_ sender: UIBarButtonItem) {
         guard !isEditing else {
             setEditing(false, animated: true)
             return
         }
         
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        let showBoardAction = UIAlertAction(title: "목록으로 보기", style: .default) { [weak self] (_: UIAlertAction) in
-            guard let vc = self?.storyboard?.instantiateViewController(identifier: String(describing: TaskListViewController.self), creator: { coder -> TaskListViewController? in
+        let showBoardAction = UIAlertAction(title: "목록으로 보기", style: .default) { (_: UIAlertAction) in
+            guard let vc = self.storyboard?.instantiateViewController(identifier: String(describing: TaskListViewController.self), creator: { coder -> TaskListViewController? in
                 return TaskListViewController(coder: coder)
-            }) else { return }
+            }) else {
+                return
+            }
             
-            let nav = self?.navigationController
+            let nav = self.navigationController
             nav?.popViewController(animated: false)
             nav?.pushViewController(vc, animated: false)
         }
         
         let addSectionAction = UIAlertAction(title: "섹션 추가", style: .default) { (_: UIAlertAction) in
-            
+            self.addSectionAlert()
         }
         
-        let addTaskAction = UIAlertAction(title: "작업 추가", style: .default) { [weak self] (_: UIAlertAction) in
-            self?.showAddTaskView()
+        let addTaskAction = UIAlertAction(title: "작업 추가", style: .default) { (_: UIAlertAction) in
+            self.showAddTaskView(sectionNum: 0)
         }
         
-        let selectTaskAction = UIAlertAction(title: "작업 선택", style: .default) { [weak self] (_: UIAlertAction) in
-            self?.setEditing(true, animated: true)
+        let selectTaskAction = UIAlertAction(title: "작업 선택", style: .default) { (_: UIAlertAction) in
+            self.setEditing(true, animated: true)
         }
         
         let cancelAction = UIAlertAction(title: "취소", style: .cancel) { (_: UIAlertAction) in
@@ -111,7 +157,7 @@ private extension TaskBoardViewController {
         let config = UICollectionViewCompositionalLayoutConfiguration()
         config.interSectionSpacing = 0
         config.scrollDirection = .horizontal
-
+        
         let sectionProvider = { (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
             let section: NSCollectionLayoutSection
             let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
@@ -121,25 +167,25 @@ private extension TaskBoardViewController {
             section = NSCollectionLayoutSection(group: group)
             section.orthogonalScrollingBehavior = .paging
             section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10)
-        
+            
             return section
         }
         
         return UICollectionViewCompositionalLayout(sectionProvider: sectionProvider, configuration: config)
     }
-
 }
 
 // MARK: - Add Task View Login
 
 private extension TaskBoardViewController {
     
-    func showAddTaskView() {
+    func showAddTaskView(sectionNum: Int) {
         visualEffectView.frame = view.frame
         view.addSubview(visualEffectView)
         taskAddViewController = TaskAddViewController()
         addChild(taskAddViewController)
         view.addSubview(taskAddViewController.view)
+        taskAddViewController.section = sectionNum
         taskAddViewController.view.backgroundColor = .white
         taskAddViewController.view.frame = CGRect(x: 0, y: view.bounds.height - 130, width: view.bounds.width, height: 130)
         visualEffectView.backgroundColor = .gray
@@ -149,16 +195,15 @@ private extension TaskBoardViewController {
     
     @objc func handleViewTap (recognizer: UITapGestureRecognizer) {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        let selectTaskAction = UIAlertAction(title: "삭제", style: .destructive) { [weak self] (action) in
-            self?.taskAddViewController.view.removeFromSuperview()
-            self?.visualEffectView.removeFromSuperview()
+        let selectTaskAction = UIAlertAction(title: "삭제", style: .destructive) { (action) in
+            self.taskAddViewController.view.removeFromSuperview()
+            self.visualEffectView.removeFromSuperview()
         }
         let cancelAction = UIAlertAction(title: "계속 편집", style: .default) { (action) in
         }
         [selectTaskAction, cancelAction].forEach { alert.addAction($0) }
         present(alert, animated: true, completion: nil)
     }
-    
 }
 
 // MARK: - UICollectionView DataSource
@@ -176,15 +221,15 @@ extension TaskBoardViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if indexPath.section < sections.count {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "section-reuse-identifier", for: indexPath) as! TaskSectionViewCell
-            cell.configure(sectionName: sections[indexPath.section], task: taskVM)
+            cell.configure(sectionName: sections[indexPath.section], task: taskVM, sectionNum: indexPath.section)
             return cell
-        }else {
+        } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "section-add-reuse-identifier", for: indexPath) as! AddSectionViewCell
             cell.configCollectionViewCell()
+            
             return cell
         }
     }
-    
 }
 
 // MARK: - TaskList Display Logic
@@ -202,5 +247,4 @@ extension TaskBoardViewController: TaskListDisplayLogic {
     func displayDetail(of task: Task) {
         
     }
-    
 }

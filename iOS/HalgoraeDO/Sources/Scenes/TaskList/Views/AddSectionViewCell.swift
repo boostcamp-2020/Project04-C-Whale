@@ -8,6 +8,8 @@ import UIKit
 
 class AddSectionViewCell: UICollectionViewCell {
     
+    // MARK: - Initialize
+    
     func configCollectionViewCell() {
         let addSectionButton: UIButton = UIButton()
         let addSectionImage = UIImage(systemName: "rectangle.badge.plus", withConfiguration: UIImage.SymbolConfiguration(pointSize: 22, weight: .light, scale: .small))
@@ -18,8 +20,9 @@ class AddSectionViewCell: UICollectionViewCell {
         addSectionButton.backgroundColor = .systemGray5
         addSectionButton.layer.cornerRadius = 10
         addSectionButton.contentEdgeInsets = UIEdgeInsets(top: 10, left: 6, bottom: 10, right: 6)
+        addSectionButton.addTarget(self, action: #selector(tabAddSection), for: .touchUpInside)
         
-        self.contentView.addSubview(addSectionButton)
+        contentView.addSubview(addSectionButton)
         addSectionButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             addSectionButton.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 50),
@@ -28,5 +31,10 @@ class AddSectionViewCell: UICollectionViewCell {
         ])
     }
     
+    //MARK: - Helper Method
+    
+    @objc private func tabAddSection(_ sender: UIButton) {
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "addSection"), object: self)
+    }
 }
 
