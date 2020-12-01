@@ -11,18 +11,24 @@ export default {
   data: () => ({
     //
   }),
-  created: () => {
+  created() {
     // token 저장
-    const accessToken = location.search.split("token=")[1];
+    // eslint-disable-next-line no-unused-vars
+    const [_, accessToken] = location.search.split("token=");
     if (accessToken) {
-      store.dispatch("setToken", { accessToken });
+      localStorage.setItem("token", accessToken);
     }
 
-    if (!localStorage.getItem("token")) {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
       router.replace("/login").catch(() => {});
-    } else {
+      return;
+    } else if (token) {
       store.dispatch("checkUser");
+      return;
     }
   },
+  mounted() {},
 };
 </script>

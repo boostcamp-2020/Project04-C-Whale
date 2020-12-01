@@ -10,10 +10,6 @@ const state = {
 };
 
 const mutations = {
-  SET_TOKEN(state, accessToken) {
-    localStorage.setItem("token", accessToken);
-    location.replace("/");
-  },
   SET_USER(state, user) {
     state.user = {
       id: user.id,
@@ -28,19 +24,15 @@ const mutations = {
 };
 
 const actions = {
-  setToken({ commit }, { accessToken }) {
-    commit("SET_TOKEN", accessToken);
-  },
-
   async checkUser({ commit }) {
     try {
       const { data: user } = await userAPI.authorize();
       commit("SET_USER", user);
 
       if (location.pathname === "/") {
-        router.replace("/today");
+        router.replace("/today").catch(() => {});
       } else {
-        router.replace(location.pathname);
+        router.replace(location.pathname).catch(() => {});
       }
     } catch (err) {
       alert("로그인에 실패했습니다");
