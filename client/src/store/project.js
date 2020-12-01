@@ -29,7 +29,7 @@ const actions = {
       const { data } = await taskAPI.updateTask(taskId, { isDone: true });
 
       if (data.message !== "ok") {
-        return;
+        throw new Error();
       }
 
       await dispatch("fetchCurrentProject", projectId);
