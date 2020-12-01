@@ -1,16 +1,23 @@
 <template>
-  <v-app-bar app color="primary" dark>
-    <div class="d-flex align-center">
-      <router-link to="/login">Login</router-link>
-      <router-link to="/today">Today</router-link>
-    </div>
-    <v-spacer></v-spacer>
-    <router-link to="project/1">Project</router-link>
-  </v-app-bar>
+  <v-container>
+    <v-navigation-drawer v-model="drawer" app>
+      <!-- <Menu /> -->
+    </v-navigation-drawer>
+    <v-app-bar app>
+      <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-toolbar-title>할고래DO</v-toolbar-title>
+      <serach-bar />
+    </v-app-bar>
+  </v-container>
 </template>
 
 <script>
+import Search from "../task/Search";
 export default {
   name: "Header",
+  data: () => ({ drawer: null }),
+  components: {
+    "serach-bar": Search,
+  },
 };
 </script>
