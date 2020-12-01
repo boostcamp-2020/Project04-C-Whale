@@ -162,12 +162,20 @@
                                             <constraint firstItem="JxZ-Eu-R0y" firstAttribute="leading" secondItem="sZF-UA-ODh" secondAttribute="leading" id="ofK-cr-T2T"/>
                                         </constraints>
                                     </view>
-                                    <navigationBar hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hbn-2h-nDV">
+                                    <navigationBar hidden="YES" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hbn-2h-nDV">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="50"/>
                                         <items>
-                                            <navigationItem title="Title" id="ACi-rl-Ref">
-                                                <barButtonItem key="leftBarButtonItem" title="취소" id="4fm-70-39h"/>
-                                                <barButtonItem key="rightBarButtonItem" title="저장" id="OUj-YT-J5Z"/>
+                                            <navigationItem title="작업 편집" id="ACi-rl-Ref">
+                                                <barButtonItem key="leftBarButtonItem" title="취소" id="4fm-70-39h">
+                                                    <connections>
+                                                        <action selector="didTapCancelBarButtonItem:" destination="JAU-4d-7Yj" id="lMO-QI-Ib3"/>
+                                                    </connections>
+                                                </barButtonItem>
+                                                <barButtonItem key="rightBarButtonItem" title="저장" id="OUj-YT-J5Z">
+                                                    <connections>
+                                                        <action selector="didTapSaveBarButtonItem:" destination="JAU-4d-7Yj" id="R4g-zx-XaQ"/>
+                                                    </connections>
+                                                </barButtonItem>
                                             </navigationItem>
                                         </items>
                                     </navigationBar>
@@ -185,10 +193,10 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3nB-Vn-XKE" userLabel="TaskBg">
-                                <rect key="frame" x="0.0" y="94" width="414" height="97.5"/>
+                                <rect key="frame" x="0.0" y="94" width="414" height="132.5"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="755" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ovW-bp-nsn">
-                                        <rect key="frame" x="16" y="36.5" width="25" height="25"/>
+                                        <rect key="frame" x="16" y="54" width="25" height="25"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="25" id="Reu-dV-35h"/>
                                             <constraint firstAttribute="width" secondItem="ovW-bp-nsn" secondAttribute="height" multiplier="1:1" id="gX4-eT-S5j"/>
@@ -196,29 +204,33 @@
                                         <state key="normal" image="check_empty"/>
                                         <state key="selected" image="check"/>
                                         <state key="highlighted" image="check"/>
+                                        <connections>
+                                            <action selector="didTapTaskFinishButton:" destination="JAU-4d-7Yj" eventType="touchUpInside" id="o2R-3c-1G8"/>
+                                        </connections>
                                     </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="755" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0uK-LX-CGj">
-                                        <rect key="frame" x="57" y="8" width="349" height="81.5"/>
-                                        <string key="text">Label Label Label Label Label Label Label Label Label Label LabelLabel Label Label Label Label Label Label Label Label Label Label</string>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="255" verticalCompressionResistancePriority="756" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="htc-6e-bKT">
+                                        <rect key="frame" x="57" y="8" width="349" height="116.5"/>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure </string>
+                                        <color key="textColor" systemColor="labelColor"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                    </textView>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="0uK-LX-CGj" secondAttribute="trailing" constant="8" id="6v6-6B-dXO"/>
-                                    <constraint firstItem="0uK-LX-CGj" firstAttribute="top" secondItem="3nB-Vn-XKE" secondAttribute="top" constant="8" id="DSk-Bc-PYL"/>
-                                    <constraint firstAttribute="bottom" secondItem="0uK-LX-CGj" secondAttribute="bottom" constant="8" id="Ift-aj-DAb"/>
-                                    <constraint firstItem="ovW-bp-nsn" firstAttribute="centerY" secondItem="0uK-LX-CGj" secondAttribute="centerY" id="KSG-23-cqW"/>
+                                    <constraint firstAttribute="trailing" secondItem="htc-6e-bKT" secondAttribute="trailing" constant="8" id="3gE-Fe-wjJ"/>
+                                    <constraint firstItem="htc-6e-bKT" firstAttribute="centerY" secondItem="3nB-Vn-XKE" secondAttribute="centerY" id="DT1-Km-738"/>
+                                    <constraint firstItem="ovW-bp-nsn" firstAttribute="centerY" secondItem="3nB-Vn-XKE" secondAttribute="centerY" id="NH3-34-ody"/>
                                     <constraint firstItem="ovW-bp-nsn" firstAttribute="top" relation="greaterThanOrEqual" secondItem="3nB-Vn-XKE" secondAttribute="top" constant="8" id="T88-uM-wgc"/>
+                                    <constraint firstItem="htc-6e-bKT" firstAttribute="top" secondItem="3nB-Vn-XKE" secondAttribute="top" constant="8" id="YXl-Tu-i3O"/>
                                     <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="ovW-bp-nsn" secondAttribute="bottom" constant="8" id="ac1-Rb-Ybv"/>
-                                    <constraint firstItem="0uK-LX-CGj" firstAttribute="leading" secondItem="ovW-bp-nsn" secondAttribute="trailing" constant="16" id="n89-4K-Icr"/>
+                                    <constraint firstItem="htc-6e-bKT" firstAttribute="leading" secondItem="ovW-bp-nsn" secondAttribute="trailing" constant="16" id="dBe-6U-dQU"/>
                                     <constraint firstItem="ovW-bp-nsn" firstAttribute="leading" secondItem="3nB-Vn-XKE" secondAttribute="leading" constant="16" id="u93-Yh-YE7"/>
-                                    <constraint firstItem="0uK-LX-CGj" firstAttribute="centerY" secondItem="3nB-Vn-XKE" secondAttribute="centerY" id="y1P-lZ-sLw"/>
+                                    <constraint firstAttribute="bottom" secondItem="htc-6e-bKT" secondAttribute="bottom" constant="8" id="uRP-D7-E2U"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5ki-c6-MyL">
-                                <rect key="frame" x="0.0" y="191.5" width="414" height="50"/>
+                                <rect key="frame" x="0.0" y="226.5" width="414" height="50"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="MiT-lo-gCO">
                                         <rect key="frame" x="57" y="0.0" width="112" height="50"/>
@@ -242,7 +254,7 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="C4G-CN-ckF">
-                                <rect key="frame" x="0.0" y="241.5" width="414" height="50"/>
+                                <rect key="frame" x="0.0" y="276.5" width="414" height="50"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="Fl7-oy-TQZ">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="50"/>
@@ -295,7 +307,7 @@
                                 </constraints>
                             </view>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fT0-Kb-7tn">
-                                <rect key="frame" x="0.0" y="291.5" width="414" height="570.5"/>
+                                <rect key="frame" x="0.0" y="326.5" width="414" height="535.5"/>
                                 <connections>
                                     <segue destination="0ln-em-1OC" kind="embed" id="XlB-7M-ywm"/>
                                 </connections>
@@ -314,7 +326,7 @@
                             <constraint firstItem="WxG-cp-Qks" firstAttribute="trailing" secondItem="fT0-Kb-7tn" secondAttribute="trailing" id="Zn4-6Q-taG"/>
                             <constraint firstItem="fT0-Kb-7tn" firstAttribute="leading" secondItem="WxG-cp-Qks" secondAttribute="leading" id="ihb-6W-NKv"/>
                             <constraint firstItem="C4G-CN-ckF" firstAttribute="top" secondItem="5ki-c6-MyL" secondAttribute="bottom" id="ihx-e0-rD5"/>
-                            <constraint firstItem="MiT-lo-gCO" firstAttribute="leading" secondItem="0uK-LX-CGj" secondAttribute="leading" id="mCL-RP-EBU"/>
+                            <constraint firstItem="MiT-lo-gCO" firstAttribute="leading" secondItem="htc-6e-bKT" secondAttribute="leading" id="nAi-JV-F5S"/>
                             <constraint firstItem="3nB-Vn-XKE" firstAttribute="leading" secondItem="WxG-cp-Qks" secondAttribute="leading" id="nhT-VB-Euu"/>
                             <constraint firstItem="WxG-cp-Qks" firstAttribute="bottom" secondItem="fT0-Kb-7tn" secondAttribute="bottom" id="vV9-QT-OlR"/>
                             <constraint firstItem="5ki-c6-MyL" firstAttribute="leading" secondItem="WxG-cp-Qks" secondAttribute="leading" id="ySL-Lj-JQc"/>
@@ -326,12 +338,14 @@
                     <connections>
                         <outlet property="navigationBar" destination="hbn-2h-nDV" id="biM-Sq-vCa"/>
                         <outlet property="navigationView" destination="sZF-UA-ODh" id="xlH-sk-POR"/>
+                        <outlet property="saveBarButtomItem" destination="OUj-YT-J5Z" id="Kkc-XV-ox0"/>
+                        <outlet property="taskTitleTextView" destination="htc-6e-bKT" id="rRU-2L-vVc"/>
                         <outlet property="titleLabel" destination="z49-7l-AZe" id="lx9-S7-xBS"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pue-QT-grZ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1974" y="86"/>
+            <point key="canvasLocation" x="1973.913043478261" y="85.714285714285708"/>
         </scene>
         <!--Task Detail Sub Tasks View Controller-->
         <scene sceneID="Vmm-wA-1XZ">
@@ -545,6 +559,9 @@
         <image name="ellipsis" catalog="system" width="128" height="37"/>
         <image name="plus" catalog="system" width="128" height="113"/>
         <image name="xmark.circle.fill" catalog="system" width="128" height="121"/>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

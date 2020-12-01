@@ -53,9 +53,17 @@ class TaskDetailViewController: UIViewController {
     
     // MARK: - Methods
     
+    private func set(editingMode: Bool) {
+        saveBarButtomItem.isEnabled = task.title != taskTitleTextView.text
+        navigationView.isHidden = editingMode
+        navigationBar.isHidden = !editingMode
+    }
+    
     // MARK: IBActions
     
     @IBAction private func didTapCancelBarButtonItem(_ sender: UIBarButtonItem) {
+        set(editingMode: false)
+        view.endEditing(true)
     }
     
     @IBAction private func didTapSaveBarButtonItem(_ sender: UIBarButtonItem) {
@@ -80,6 +88,21 @@ class TaskDetailViewController: UIViewController {
     }
 }
 
+// MARK: - TaskDetail DisplayLogic
+
 extension TaskDetailViewController: TaskDetailDisplayLogic {
     
+}
+
+// MARK: - UITextViewDelegate
+
+extension TaskDetailViewController: UITextViewDelegate {
+    
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        set(editingMode: true)
+    }
+    
+    func textViewDidChange(_ textView: UITextView) {
+        saveBarButtomItem.isEnabled = task.title != textView.text
+    }
 }
