@@ -57,7 +57,7 @@ const priorities = [
 const projects = [
   {
     id: 'b7f253e5-7b6b-4ee2-b94e-369ffcdffb5f',
-    creatorId: 'ff4dd832-1567-4d74-b41d-bd85e96ce329',
+    creatorId: users[0].id,
     title: '프로젝트 1',
     isList: true,
     isFavorite: false,
@@ -66,8 +66,17 @@ const projects = [
   },
   {
     id: 'f7605077-96ec-4365-88fc-a9c3af4a084e',
-    creatorId: users[1].id,
+    creatorId: users[0].id,
     title: '프로젝트 2',
+    isList: false,
+    isFavorite: true,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    id: 'ed298270-fc55-45d7-bc41-bb63ffd09b4a',
+    creatorId: users[1].id,
+    title: '프로젝트 3',
     isList: false,
     isFavorite: true,
     createdAt: new Date(),
@@ -85,6 +94,12 @@ const sections = [
   {
     id: 'efd8be46-ebc7-438d-931a-036a4b28789f',
     projectId: projects[1].id,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    id: 'cd57769e-7227-44da-bf6c-60f1a49ff6e3',
+    projectId: projects[2].id,
     createdAt: new Date(),
     updatedAt: new Date(),
   },
@@ -152,8 +167,8 @@ const tasks = [
   },
   {
     id: '568d0233-0e6e-4ff2-bdae-4c492e55f111',
-    projectId: projects[1].id,
-    sectionId: sections[1].id,
+    projectId: projects[2].id,
+    sectionId: sections[2].id,
     parentId: null,
     title: '작업 6',
     dueDate: new Date(),
