@@ -8,6 +8,11 @@ import Home from "../views/Home.vue";
 
 Vue.use(VueRouter);
 
+const requireAuth = () => (from, to, next) => {
+  if (localStorage.getItem("token")) return next();
+  next("/login");
+};
+
 const routes = [
   {
     path: "/login",
@@ -23,16 +28,19 @@ const routes = [
         path: "today",
         name: "Today",
         component: Today,
+        beforeEnter: requireAuth(),
       },
       {
         path: "project/:projectId",
         name: "Project",
         component: Project,
+        beforeEnter: requireAuth(),
       },
       {
         path: "task/:taskId",
         name: "Task",
         component: Task,
+        beforeEnter: requireAuth(),
       },
     ],
   },
