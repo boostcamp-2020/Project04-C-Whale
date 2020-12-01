@@ -1,25 +1,36 @@
 <template>
   <v-container>
     <v-list v-for="section in currentProject.sections" :key="section.id">
-      {{ section.title }}
-      <v-list flat subheader three-line v-for="task in section.tasks" :key="task.id">
-        <!-- <v-subheader>{{ sction.title }}</v-subheader> -->
-
-        <v-list-item>
-          <template v-slot:default="{ active }">
+      <v-list-group :value="true">
+        <template v-slot:activator>
+          <v-list-item-title>{{ section.title }}</v-list-item-title>
+        </template>
+        <v-list-group
+          :value="true"
+          no-action
+          sub-group
+          v-for="task in section.tasks"
+          :key="task.id"
+          class=""
+        >
+          <template v-slot:activator class="toggle">
             <v-list-item-action>
               <v-checkbox :input-value="active"></v-checkbox>
             </v-list-item-action>
-
             <v-list-item-content>
               <v-list-item-title>{{ task.title }}</v-list-item-title>
-              <v-list-item-subtitle
-                >Notify me about updates to apps or games that I downloaded</v-list-item-subtitle
-              >
             </v-list-item-content>
           </template>
-        </v-list-item>
-      </v-list>
+          <v-list-item v-for="childTask in task.tasks" :key="childTask.id">
+            <v-list-item-action>
+              <v-checkbox :input-value="active"></v-checkbox>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title v-text="childTask.title"></v-list-item-title
+            ></v-list-item-content>
+          </v-list-item>
+        </v-list-group>
+      </v-list-group>
     </v-list>
   </v-container>
 </template>
@@ -38,4 +49,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.toggle {
+  width: 50px;
+}
+</style>
