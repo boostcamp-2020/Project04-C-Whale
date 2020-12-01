@@ -1,16 +1,15 @@
 const router = require('express').Router();
 const taskController = require('@controllers/task');
-const { authenticateUser } = require('@utils/auth');
+const commentController = require('@controllers/comment');
 
-// router.get('/', )
-router.get('/:taskId', authenticateUser, taskController.getTaskById);
-router.post('/', authenticateUser, taskController.createTask);
-router.patch('/:taskId', authenticateUser, taskController.updateTask);
-router.delete('/:taskId', authenticateUser, taskController.deleteTask);
+router.get('/:taskId', taskController.getTaskById);
+router.post('/', taskController.createTask);
+router.patch('/:taskId', taskController.updateTask);
+router.delete('/:taskId', taskController.deleteTask);
 
-router.get('/:taskId/comment', authenticateUser, taskController.getComments);
-router.post('/:taskId/comment', authenticateUser, taskController.createComment);
-router.put('/:taskId/comment/:commentId', authenticateUser, taskController.updateComment);
-router.delete('/:taskId/comment/:commentId', authenticateUser, taskController.deleteComment);
+router.get('/:taskId/comment', commentController.getComments);
+router.post('/:taskId/comment', commentController.createComment);
+router.put('/:taskId/comment/:commentId', commentController.updateComment);
+router.delete('/:taskId/comment/:commentId', commentController.deleteComment);
 
 module.exports = router;
