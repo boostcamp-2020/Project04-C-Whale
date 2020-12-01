@@ -13,11 +13,17 @@ const requireAuth = () => (from, to, next) => {
   next("/login");
 };
 
+const redirectHome = () => (from, to, next) => {
+  if (localStorage.getItem("token")) return next("/");
+  next();
+};
+
 const routes = [
   {
     path: "/login",
     name: "Login",
     component: Login,
+    beforeEnter: redirectHome(),
   },
   {
     path: "/",
