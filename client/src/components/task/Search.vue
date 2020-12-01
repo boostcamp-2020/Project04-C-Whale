@@ -25,13 +25,15 @@
         solo
       ></v-text-field> -->
     </v-flex>
-    <!-- <v-container v-if="show">
+    <v-container v-if="show">
       <v-list v-for="task in lastSearched" :key="task.id">{{ task.title }}</v-list>
-    </v-container> -->
+    </v-container>
   </v-input>
 </template>
 
 <script>
+import router from "@/router/index.js";
+
 export default {
   data() {
     return {
@@ -60,6 +62,7 @@ export default {
     },
     items() {
       return this.entries.map((entry) => {
+        // TODO : API 연동 후, 변수명 title로 변경, entry에서도 title로 바꿔야한다.
         const Description =
           entry.Description.length > this.descriptionLimit
             ? entry.Description.slice(0, this.descriptionLimit) + "..."
@@ -71,16 +74,21 @@ export default {
   },
 
   watch: {
+    model(obj) {
+      //TODO API 연동 후, obj.id로 바뀌어야한다.
+      router.push(`/task/${obj.Description}`).catch(() => {});
+    },
     search() {
       // Items have already been loaded
-      if (this.items.length > 0) return;
-
-      // Items have already been requested
-      if (this.isLoading) return;
+      // or Items have already been requested
+      if (this.items.length > 0 || this.isLoading) {
+        return;
+      }
 
       this.isLoading = true;
 
-      // Lazily load input items, 여기에 serach 받아와서 표현
+      // Lazily load input items,
+      // TODO 여기에 serach 받아와서 표현 & axios로 바꿔야함
       fetch("https://api.publicapis.org/entries")
         .then((res) => res.json())
         .then((res) => {
