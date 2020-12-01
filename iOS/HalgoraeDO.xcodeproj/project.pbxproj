@@ -27,6 +27,11 @@
 		4C4236C32574C5F50068A252 /* TaskList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4236C22574C5F50068A252 /* TaskList.swift */; };
 		4C4236DC2574DF6B0068A252 /* ConfirmActionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4C4236DB2574DF6B0068A252 /* ConfirmActionView.xib */; };
 		4C4236E02574DF980068A252 /* ConfirmActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4236DF2574DF980068A252 /* ConfirmActionView.swift */; };
+		4C4236F825761A8E0068A252 /* TaskDetailPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4236F725761A8D0068A252 /* TaskDetailPageViewController.swift */; };
+		4C4236FE25761AA00068A252 /* TaskDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4236FD25761AA00068A252 /* TaskDetailViewController.swift */; };
+		4C42370425761CB00068A252 /* TaskDetailSubTasksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C42370325761CB00068A252 /* TaskDetailSubTasksViewController.swift */; };
+		4C42370D25762FC10068A252 /* TaskDetailCommentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C42370C25762FC10068A252 /* TaskDetailCommentViewController.swift */; };
+		4C42371125762FCE0068A252 /* TaskDetailBookmarkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C42371025762FCE0068A252 /* TaskDetailBookmarkViewController.swift */; };
 		4CCD31E8256EBC0C00A46D10 /* TaskListWorkerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0CA5F0256E9AF100E66045 /* TaskListWorkerTests.swift */; };
 		4CCD31E9256EBC0C00A46D10 /* TaskListInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0CA60C256EAA7300E66045 /* TaskListInteractorTests.swift */; };
 		4CCD31EA256EBC0C00A46D10 /* TaskListPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0CA629256EABF700E66045 /* TaskListPresenterTests.swift */; };
@@ -86,6 +91,11 @@
 		4C4236C22574C5F50068A252 /* TaskList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskList.swift; sourceTree = "<group>"; };
 		4C4236DB2574DF6B0068A252 /* ConfirmActionView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ConfirmActionView.xib; sourceTree = "<group>"; };
 		4C4236DF2574DF980068A252 /* ConfirmActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmActionView.swift; sourceTree = "<group>"; };
+		4C4236F725761A8D0068A252 /* TaskDetailPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDetailPageViewController.swift; sourceTree = "<group>"; };
+		4C4236FD25761AA00068A252 /* TaskDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDetailViewController.swift; sourceTree = "<group>"; };
+		4C42370325761CB00068A252 /* TaskDetailSubTasksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDetailSubTasksViewController.swift; sourceTree = "<group>"; };
+		4C42370C25762FC10068A252 /* TaskDetailCommentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDetailCommentViewController.swift; sourceTree = "<group>"; };
+		4C42371025762FCE0068A252 /* TaskDetailBookmarkViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDetailBookmarkViewController.swift; sourceTree = "<group>"; };
 		4CCD31DD256EBC0000A46D10 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4CCD31F8256EBC8000A46D10 /* TaskListDisplaySpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListDisplaySpy.swift; sourceTree = "<group>"; };
 		4CCD31FE256EBCEF00A46D10 /* TaskListPresenterSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListPresenterSpy.swift; sourceTree = "<group>"; };
@@ -130,6 +140,7 @@
 			children = (
 				4CCD32752570A4E300A46D10 /* Menu */,
 				4C3F5660256B80C6006D7C9F /* TaskList */,
+				4C4236F625761A410068A252 /* TaskDetail */,
 			);
 			path = Scenes;
 			sourceTree = "<group>";
@@ -192,6 +203,29 @@
 				4C4236DF2574DF980068A252 /* ConfirmActionView.swift */,
 			);
 			path = ConfirmActionView;
+			sourceTree = "<group>";
+		};
+		4C4236F625761A410068A252 /* TaskDetail */ = {
+			isa = PBXGroup;
+			children = (
+				4C4236FD25761AA00068A252 /* TaskDetailViewController.swift */,
+				4C4237162576340D0068A252 /* Paging */,
+				4C42371A25763B080068A252 /* TaskDetailInteractor.swift */,
+				4C42371E25763B100068A252 /* TaskDetailWorker.swift */,
+				4C42372225763B1C0068A252 /* TaskDetailPresenter.swift */,
+			);
+			path = TaskDetail;
+			sourceTree = "<group>";
+		};
+		4C4237162576340D0068A252 /* Paging */ = {
+			isa = PBXGroup;
+			children = (
+				4C4236F725761A8D0068A252 /* TaskDetailPageViewController.swift */,
+				4C42370325761CB00068A252 /* TaskDetailSubTasksViewController.swift */,
+				4C42370C25762FC10068A252 /* TaskDetailCommentViewController.swift */,
+				4C42371025762FCE0068A252 /* TaskDetailBookmarkViewController.swift */,
+			);
+			path = Paging;
 			sourceTree = "<group>";
 		};
 		4CCD31DA256EBC0000A46D10 /* TaskListTests */ = {
@@ -433,7 +467,10 @@
 				4CCD324E256F84BD00A46D10 /* PopoverViewModelType.swift in Sources */,
 				4C3F5679256B8C83006D7C9F /* TaskListPresenter.swift in Sources */,
 				AA19EF172575680600E59017 /* TaskSectionViewCell.swift in Sources */,
+				4C42370D25762FC10068A252 /* TaskDetailCommentViewController.swift in Sources */,
 				4C3F573F256D2263006D7C9F /* RoundButton.swift in Sources */,
+				4C4236F825761A8E0068A252 /* TaskDetailPageViewController.swift in Sources */,
+				4C42370425761CB00068A252 /* TaskDetailSubTasksViewController.swift in Sources */,
 				AAEE20DE2564E4A900668FAD /* AppDelegate.swift in Sources */,
 				4C3F567E256B8CB3006D7C9F /* TaskListModels.swift in Sources */,
 				AA19EF252576488B00E59017 /* TaskBoardSupplementaryView.swift in Sources */,
@@ -452,9 +489,11 @@
 				4CCD325E256F8C1200A46D10 /* UIImage+scaled.swift in Sources */,
 				4C3F5700256CF8A7006D7C9F /* TaskContentConfigure.swift in Sources */,
 				AA19EF1B25756C3200E59017 /* AddSectionViewCell.swift in Sources */,
+				4C4236FE25761AA00068A252 /* TaskDetailViewController.swift in Sources */,
 				4C3F5674256B8C63006D7C9F /* TaskListWorker.swift in Sources */,
 				4C3F566F256B8C2B006D7C9F /* TaskListInteractor.swift in Sources */,
 				4CCD3257256F8BA700A46D10 /* Priority.swift in Sources */,
+				4C42371125762FCE0068A252 /* TaskDetailBookmarkViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

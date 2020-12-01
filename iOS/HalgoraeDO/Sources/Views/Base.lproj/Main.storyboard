@@ -110,6 +110,63 @@
             </objects>
             <point key="canvasLocation" x="1047.8260869565217" y="86.383928571428569"/>
         </scene>
+        <!--Task Detail View Controller-->
+        <scene sceneID="aBH-XJ-1rQ">
+            <objects>
+                <viewController storyboardIdentifier="TaskDetailViewController" id="JAU-4d-7Yj" customClass="TaskDetailViewController" customModule="HalgoraeDO" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="6JS-LO-HLC">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="pue-QT-grZ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1974" y="86"/>
+        </scene>
+        <!--Task Detail Sub Tasks View Controller-->
+        <scene sceneID="Vmm-wA-1XZ">
+            <objects>
+                <viewController storyboardIdentifier="TaskDetailSubTasksViewController" id="JZq-vt-nGQ" customClass="TaskDetailSubTasksViewController" customModule="HalgoraeDO" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="GGL-B7-pBg">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="num-GV-B5u"/>
+                        <color key="backgroundColor" systemColor="systemGray3Color"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8ia-K0-YiX" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2185" y="812"/>
+        </scene>
+        <!--Task Detail Comment View Controller-->
+        <scene sceneID="u18-NS-xXY">
+            <objects>
+                <viewController storyboardIdentifier="TaskDetailCommentViewController" id="KH3-Hp-YRP" customClass="TaskDetailCommentViewController" customModule="HalgoraeDO" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="COM-iV-iFg">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="Lqe-gv-4CI"/>
+                        <color key="backgroundColor" systemColor="systemBlueColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="cBe-8L-7sR" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3051" y="798"/>
+        </scene>
+        <!--Task Detail Bookmark View Controller-->
+        <scene sceneID="fb7-VC-gMK">
+            <objects>
+                <viewController storyboardIdentifier="TaskDetailBookmarkViewController" id="Bwa-px-JJa" customClass="TaskDetailBookmarkViewController" customModule="HalgoraeDO" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="d1x-Xh-hjD">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="Erb-Iy-Ah7"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="NV1-4G-WS4" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3830" y="798"/>
+        </scene>
         <!--할고래DO-->
         <scene sceneID="Yu7-Kn-tle">
             <objects>
@@ -262,12 +319,29 @@
             </objects>
             <point key="canvasLocation" x="125" y="86"/>
         </scene>
+        <!--Task Detail Page View Controller-->
+        <scene sceneID="Yhx-kC-3Id">
+            <objects>
+                <pageViewController autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="0ln-em-1OC" customClass="TaskDetailPageViewController" customModule="HalgoraeDO" customModuleProvider="target" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qUK-2M-LvM" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2806" y="75"/>
+        </scene>
     </scenes>
     <resources>
+        <image name="check" width="512" height="512"/>
+        <image name="check_empty" width="512" height="512"/>
         <image name="ellipsis" catalog="system" width="128" height="37"/>
         <image name="plus" catalog="system" width="128" height="113"/>
+        <image name="xmark.circle.fill" catalog="system" width="128" height="121"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemBlueColor">
+            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemGray3Color">
+            <color red="0.7803921568627451" green="0.7803921568627451" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
