@@ -8,6 +8,8 @@
 import UIKit
 
 class TaskAddViewController: UIViewController {
+    
+    var section: Int = 0
 
     // MARK: - Properties
     
@@ -256,6 +258,7 @@ extension TaskAddViewController {
             object.updateValue(text, forKey: "taskTitle")
             object.updateValue(dueDate, forKey: "dueDate")
             object.updateValue(priority, forKey: "priority")
+            object.updateValue(section, forKey: "section")
             NotificationCenter.default.post(name: Notification.Name(rawValue: "addTask"), object: object)
         }
     }

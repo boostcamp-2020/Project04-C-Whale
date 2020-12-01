@@ -13,6 +13,7 @@ class TaskSectionViewCell: UICollectionViewCell {
     
     // MARK: - Properties
     
+    private var sectionNum: Int = -1
     private var lineView: UIView = UIView()
     private var startIndex: IndexPath?
     private var startPoint: CGPoint?
@@ -47,8 +48,9 @@ class TaskSectionViewCell: UICollectionViewCell {
         configureDataSource()
     }
     
-    func configure(sectionName: String, task: [TaskVM]) {
+    func configure(sectionName: String, task: [TaskVM], sectionNum: Int) {
         taskVM = task
+        self.sectionNum = sectionNum
         self.sectionName = sectionName
         let snapShot = snapshot(taskItems: task)
         dataSource.apply(snapShot, to: sectionName, animatingDifferences: true)
@@ -149,7 +151,7 @@ private extension TaskSectionViewCell {
         let footerRegistration = UICollectionView.SupplementaryRegistration
         <TaskBoardSupplementaryView>(elementKind: "Footer") {
             (supplementaryView, string, indexPath) in
-            supplementaryView.section = indexPath.section
+            supplementaryView.section = self.sectionNum
             supplementaryView.configureFooter()
         }
         dataSource.supplementaryViewProvider = { (view, kind, index) in
@@ -237,7 +239,7 @@ class TaskBoardSupplementaryView: UICollectionReusableView {
     }
     
     @objc func priorityPopover(_ sender: UIButton) {
-        NotificationCenter.default.post(name: Notification.Name(rawValue: "displayAddTask"), object: self)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "displayAddTask"), object: section)
         #if DEBUG
         print("작업 추가 TODO")
         #endif

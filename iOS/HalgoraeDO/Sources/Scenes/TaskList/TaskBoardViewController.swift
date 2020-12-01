@@ -52,7 +52,11 @@ class TaskBoardViewController: UIViewController {
     //MARK: - Helper Method
     
     @objc func displayAddTask(_ notification: Notification) {
-        showAddTaskView()
+        guard let object = notification.object as? Int
+        else {
+            return
+        }
+        showAddTaskView(sectionNum: object)
     }
     
     @objc func addSection(_ notification: Notification) {
@@ -65,11 +69,15 @@ class TaskBoardViewController: UIViewController {
         guard let object = notification.object as? [String:Any],
               let dueDate = object["dueDate"] as? Date,
               let taskTitle = object["taskTitle"] as? String,
-              let priority = object["priority"] as? Int
+              let priority = object["priority"] as? Int,
+              let section = object["section"] as? Int
         else {
             return
         }
-        print(taskTitle, dueDate, priority)
+        print(taskTitle, dueDate, priority, section)
+        let temp = TaskListModels.DisplayedTask(id: UUID(), title: taskTitle, isCompleted: false, tintColor: .red, position: 1, parentPosition: nil, subItems: [])
+        taskVM.append(temp)
+        taskBoardCollectionView.reloadData()
     }
     
     func addSectionAlert() {
@@ -115,7 +123,7 @@ class TaskBoardViewController: UIViewController {
         }
         
         let addTaskAction = UIAlertAction(title: "작업 추가", style: .default) { (_: UIAlertAction) in
-            self.showAddTaskView()
+            self.showAddTaskView(sectionNum: 0)
         }
         
         let selectTaskAction = UIAlertAction(title: "작업 선택", style: .default) { (_: UIAlertAction) in
@@ -172,12 +180,13 @@ private extension TaskBoardViewController {
 
 private extension TaskBoardViewController {
     
-    func showAddTaskView() {
+    func showAddTaskView(sectionNum: Int) {
         visualEffectView.frame = view.frame
         view.addSubview(visualEffectView)
         taskAddViewController = TaskAddViewController()
         addChild(taskAddViewController)
         view.addSubview(taskAddViewController.view)
+        taskAddViewController.section = sectionNum
         taskAddViewController.view.backgroundColor = .white
         taskAddViewController.view.frame = CGRect(x: 0, y: view.bounds.height - 130, width: view.bounds.width, height: 130)
         visualEffectView.backgroundColor = .gray
@@ -213,7 +222,7 @@ extension TaskBoardViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if indexPath.section < sections.count {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "section-reuse-identifier", for: indexPath) as! TaskSectionViewCell
-            cell.configure(sectionName: sections[indexPath.section], task: taskVM)
+            cell.configure(sectionName: sections[indexPath.section], task: taskVM, sectionNum: indexPath.section)
             return cell
         }else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "section-add-reuse-identifier", for: indexPath) as! AddSectionViewCell
