@@ -40,7 +40,15 @@ class TaskDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setup()
+    }
+    
+    // MARK: - Initialize
+    
+    private func setup() {
+        taskTitleTextView.delegate = self
         titleLabel.text = "Project"
+        taskTitleTextView.text = task.title
     }
     
     // MARK: - Methods
