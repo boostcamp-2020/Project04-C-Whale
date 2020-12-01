@@ -1,4 +1,5 @@
 import projectAPI from "../api/project";
+import taskAPI from "../api/task";
 
 const state = {
   currentProject: {
@@ -23,14 +24,19 @@ const actions = {
       alert("프로젝트 조회 요청 실패");
     }
   },
-  // async addTodo({ commit }, title) {
-  //   const response = await axios.post("http://jsonplaceholder.typicode.com/todos", {
-  //     title,
-  //     completed: false,
-  //   });
+  async updateTaskToDone({ dispatch }, { projectId, taskId }) {
+    try {
+      const { data } = await taskAPI.updateTask(taskId, { isDone: true });
 
-  //   commit("newTodo", response.data);
-  // },
+      if (data.message !== "ok") {
+        throw new Error();
+      }
+
+      await dispatch("fetchCurrentProject", projectId);
+    } catch (err) {
+      alert("프로젝트 조회 요청 실패");
+    }
+  },
 };
 
 const mutations = {

@@ -11,7 +11,7 @@
     <!-- Sizes your content based upon application components -->
     <v-main>
       <!-- Provides the application the proper gutter -->
-      <v-container fluid fill-height>
+      <v-container class="pa-15" fill-height>
         <!-- If using vue-router -->
         <router-view></router-view>
       </v-container>

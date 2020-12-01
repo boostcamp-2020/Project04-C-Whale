@@ -2,8 +2,8 @@ const router = require('express').Router();
 const taskController = require('@controllers/task');
 
 router.get('/:taskId', taskController.getTaskById);
-router.post('/', taskController.createOrUpdateTask);
-router.post('/:taskId', taskController.createOrUpdateTask);
+router.post('/', taskController.createTask);
+router.patch('/:taskId', taskController.updateTask);
 router.delete('/:taskId', taskController.deleteTask);
 
 router.get('/:taskId/comment', taskController.getComments);

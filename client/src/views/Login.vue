@@ -14,7 +14,7 @@
 <script>
 export default {
   name: "Login",
-  data () {
+  data() {
     return {
       serverURL: process.env.VUE_APP_SERVER_URL + "/api/user/oauth/naver",
     };

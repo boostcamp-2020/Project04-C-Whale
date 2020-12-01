@@ -1,48 +1,49 @@
 <template>
   <v-container>
-    <v-list v-for="section in currentProject.sections" :key="section.id">
-      <v-list-group :value="true">
-        <template v-slot:activator>
-          <v-list-item-title>{{ section.title }}</v-list-item-title>
-        </template>
-        <v-list-group
-          :value="true"
-          no-action
-          sub-group
-          v-for="task in section.tasks"
-          :key="task.id"
-          class=""
-        >
-          <template v-slot:activator class="toggle">
-            <v-list-item-action>
-              <v-checkbox :input-value="active"></v-checkbox>
-            </v-list-item-action>
-            <v-list-item-content>
-              <v-list-item-title>{{ task.title }}</v-list-item-title>
-            </v-list-item-content>
-          </template>
+    <p class="text-h4">{{ currentProject.title }}</p>
+    <v-list v-for="section in currentProject.sections" :key="section.id" class="mb-5">
+      <v-list-item class="font-weight-black text-h5">{{ section.title }}</v-list-item>
+
+      <div v-for="task in section.tasks" :key="task.id">
+        <v-list-item>
+          <v-list-item-action>
+            <v-checkbox
+              @click="updateTaskToDone({ projectId: $route.params.projectId, taskId: task.id })"
+            ></v-checkbox>
+          </v-list-item-action>
+
+          <v-list-item-content>
+            <v-list-item-title>{{ task.title }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list class="ml-10">
           <v-list-item v-for="childTask in task.tasks" :key="childTask.id">
             <v-list-item-action>
-              <v-checkbox :input-value="active"></v-checkbox>
+              <v-checkbox></v-checkbox>
             </v-list-item-action>
             <v-list-item-content>
-              <v-list-item-title v-text="childTask.title"></v-list-item-title
-            ></v-list-item-content>
+              <v-list-item-title>{{ childTask.title }}</v-list-item-title>
+            </v-list-item-content>
           </v-list-item>
-        </v-list-group>
-      </v-list-group>
+        </v-list>
+      </div>
+
+      <add-task />
     </v-list>
   </v-container>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import AddTask from "./AddTask";
+
 export default {
   name: "Project",
   methods: {
-    ...mapActions(["fetchCurrentProject"]),
+    ...mapActions(["fetchCurrentProject", "updateTaskToDone"]),
   },
   computed: mapGetters(["currentProject"]),
+  components: { AddTask },
   created() {
     this.fetchCurrentProject(this.$route.params.projectId);
   },
