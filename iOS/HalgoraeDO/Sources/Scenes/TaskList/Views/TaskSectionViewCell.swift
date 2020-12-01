@@ -37,13 +37,12 @@ class TaskSectionViewCell: UICollectionViewCell {
         fatalError()
     }
     
-    // MARK: - Configure
+    // MARK: - Initialize
     
     func configureForReuse() {
         dataSource = nil
         taskVM = []
         collectionView?.removeFromSuperview()
-        collectionView = UICollectionView(frame: contentView.frame, collectionViewLayout: generateLayout())
         configureCollectionView()
         configureDataSource()
     }
@@ -63,6 +62,7 @@ class TaskSectionViewCell: UICollectionViewCell {
 private extension TaskSectionViewCell {
     
     private func configureCollectionView() {
+        collectionView = UICollectionView(frame: contentView.frame, collectionViewLayout: generateLayout())
         guard let collectionView = collectionView else { return }
         contentView.addSubview(collectionView)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -238,7 +238,7 @@ class TaskBoardSupplementaryView: UICollectionReusableView {
         ])
     }
     
-    @objc func priorityPopover(_ sender: UIButton) {
+    @objc private func priorityPopover(_ sender: UIButton) {
         NotificationCenter.default.post(name: Notification.Name(rawValue: "displayAddTask"), object: section)
         #if DEBUG
         print("작업 추가 TODO")
@@ -248,6 +248,7 @@ class TaskBoardSupplementaryView: UICollectionReusableView {
 }
 
 // MARK: - UICollectionViewDragDelegate
+
 extension TaskSectionViewCell: UICollectionViewDragDelegate {
     
     /* Drag가 시작되었을 때 start point 기록*/
@@ -314,7 +315,9 @@ extension TaskSectionViewCell: UICollectionViewDropDelegate {
         performDropWith coordinator: UICollectionViewDropCoordinator
     ) {
         lineView.removeFromSuperview()
+        #if DEBUG
         print("destination path:", coordinator.destinationIndexPath)
+        #endif
     }
     
 }
@@ -332,7 +335,7 @@ private extension TaskSectionViewCell {
               let startIndex = startIndex,
               let startPoint = startPoint,
               let collectionView = collectionView
-        else{
+        else {
             return
         }
         if destination.row == 0 {
@@ -345,7 +348,7 @@ private extension TaskSectionViewCell {
         var tempIndex: IndexPath
         if destination.section == startIndex.section && destination.row > startIndex.row {
             tempIndex = IndexPath(row: destination.row, section: destination.section)
-        }else {
+        } else {
             tempIndex = IndexPath(row: destination.row - 1, section: destination.section)
         }
         

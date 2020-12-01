@@ -51,7 +51,7 @@ class TaskBoardViewController: UIViewController {
     
     //MARK: - Helper Method
     
-    @objc func displayAddTask(_ notification: Notification) {
+    @objc private func displayAddTask(_ notification: Notification) {
         guard let object = notification.object as? Int
         else {
             return
@@ -59,11 +59,11 @@ class TaskBoardViewController: UIViewController {
         showAddTaskView(sectionNum: object)
     }
     
-    @objc func addSection(_ notification: Notification) {
+    @objc private func addSection(_ notification: Notification) {
         addSectionAlert()
     }
     
-    @objc func addTask(_ notification: Notification) {
+    @objc private func addTask(_ notification: Notification) {
         taskAddViewController.view.removeFromSuperview()
         visualEffectView.removeFromSuperview()
         guard let object = notification.object as? [String:Any],
@@ -80,7 +80,7 @@ class TaskBoardViewController: UIViewController {
         taskBoardCollectionView.reloadData()
     }
     
-    func addSectionAlert() {
+    private func addSectionAlert() {
         let alert = UIAlertController(title: "섹션 추가", message: "예. 3주차 할일", preferredStyle: .alert)
         let ok = UIAlertAction(title: "OK", style: .default) { (ok) in
             guard let sectionName = alert.textFields?[0].text else { return }
@@ -101,7 +101,7 @@ class TaskBoardViewController: UIViewController {
     
     // MARK: IBActions
     
-    @IBAction func didTapMoreButton(_ sender: UIBarButtonItem) {
+    @IBAction private func didTapMoreButton(_ sender: UIBarButtonItem) {
         guard !isEditing else {
             setEditing(false, animated: true)
             return
@@ -196,9 +196,9 @@ private extension TaskBoardViewController {
     
     @objc func handleViewTap (recognizer: UITapGestureRecognizer) {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        let selectTaskAction = UIAlertAction(title: "삭제", style: .destructive) { [weak self] (action) in
-            self?.taskAddViewController.view.removeFromSuperview()
-            self?.visualEffectView.removeFromSuperview()
+        let selectTaskAction = UIAlertAction(title: "삭제", style: .destructive) { (action) in
+            self.taskAddViewController.view.removeFromSuperview()
+            self.visualEffectView.removeFromSuperview()
         }
         let cancelAction = UIAlertAction(title: "계속 편집", style: .default) { (action) in
         }
@@ -224,9 +224,10 @@ extension TaskBoardViewController: UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "section-reuse-identifier", for: indexPath) as! TaskSectionViewCell
             cell.configure(sectionName: sections[indexPath.section], task: taskVM, sectionNum: indexPath.section)
             return cell
-        }else {
+        } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "section-add-reuse-identifier", for: indexPath) as! AddSectionViewCell
             cell.configCollectionViewCell()
+            
             return cell
         }
     }
