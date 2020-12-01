@@ -1,41 +1,26 @@
-const sequelize = require('@models');
 const { models } = require('@models');
+const taskService = require('@services/task');
 const { asyncTryCatch } = require('@utils/async-try-catch');
 const { responseHandler } = require('@utils/handler');
 const { isValidDueDate } = require('@utils/date');
 
 const getTaskById = asyncTryCatch(async (req, res) => {
-  const task = await models.task.findByPk(req.params.taskId, {
-    include: [
-      'labels',
-      'priority',
-      'alarm',
-      'bookmarks',
-      {
-        model: models.task,
-        include: ['labels', 'priority', 'alarm', 'bookmarks'],
-      },
-    ],
-    order: [[models.task, 'position', 'ASC']],
-  });
+  const task = await taskService.retrieveById(req.params.taskId);
 
-  responseHandler(res, 201, task);
+  responseHandler(res, 200, task);
 });
 
 const createTask = asyncTryCatch(async (req, res) => {
   const { labelIdList, dueDate, ...rest } = req.body;
 
+  // TODO middle ware로 빼내는게 좋을 것 같음
   if (!isValidDueDate(dueDate)) {
     const err = new Error('유효하지 않은 dueDate');
     err.status = 400;
     throw err;
   }
 
-  await sequelize.transaction(async t => {
-    const task = await models.task.create({ dueDate, ...rest }, { transaction: t });
-    await task.setLabels(JSON.parse(labelIdList), { transaction: t });
-  });
-
+  await taskService.create(labelIdList, dueDate, rest);
   responseHandler(res, 201, { message: 'ok' });
 });
 
@@ -49,41 +34,21 @@ const updateTask = asyncTryCatch(async (req, res) => {
   }
 
   const { taskId } = req.params;
-  await sequelize.transaction(async t => {
-    await models.task.update(
-      { dueDate, ...rest },
-      {
-        where: { id: taskId },
-      },
-      { transaction: t },
-    );
 
-    const task = await models.task.findByPk(taskId, { transaction: t });
-    if (labelIdList) {
-      await task.setLabels(JSON.parse(labelIdList), { transaction: t });
-    }
-  });
-
-  responseHandler(res, 201, { message: 'ok' });
+  await taskService.update(labelIdList, dueDate, taskId, rest);
+  responseHandler(res, 200, { message: 'ok' });
 });
 
 const deleteTask = asyncTryCatch(async (req, res) => {
-  await models.task.destroy({
-    where: {
-      id: req.params.taskId,
-    },
-  });
-
-  responseHandler(res, 201, {
-    message: 'ok',
-  });
+  await taskService.remove(req.params.taskId);
+  responseHandler(res, 200, { message: 'ok' });
 });
 
 const getComments = asyncTryCatch(async (req, res) => {
   const task = await models.task.findByPk(req.params.taskId);
   const comments = await task.getComments();
 
-  responseHandler(res, 201, comments);
+  responseHandler(res, 200, comments);
 });
 
 const createComment = asyncTryCatch(async (req, res) => {
@@ -102,7 +67,7 @@ const updateComment = asyncTryCatch(async (req, res) => {
     },
   });
 
-  responseHandler(res, 201, {
+  responseHandler(res, 200, {
     message: 'ok',
   });
 });
@@ -114,7 +79,7 @@ const deleteComment = asyncTryCatch(async (req, res) => {
     },
   });
 
-  responseHandler(res, 201, {
+  responseHandler(res, 200, {
     message: 'ok',
   });
 });
