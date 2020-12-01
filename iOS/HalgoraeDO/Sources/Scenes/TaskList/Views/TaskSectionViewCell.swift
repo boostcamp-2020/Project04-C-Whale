@@ -11,8 +11,14 @@ class TaskSectionViewCell: UICollectionViewCell {
     
     typealias TaskVM = TaskListModels.DisplayedTask
     
+    // MARK: - Properties
+    
     private var collectionView: UICollectionView?
     private var dataSource: UICollectionViewDiffableDataSource<String, TaskVM>! = nil
+    private var sectionName: String = ""
+    private var taskVM: [TaskVM] = []
+    
+    // MARK: - View Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -25,7 +31,23 @@ class TaskSectionViewCell: UICollectionViewCell {
         fatalError()
     }
     
-    func configure(withImageName name: String) {
+    // MARK: - Configure
+    
+    func configure(sectionName: String, task: [TaskVM]) {
+        taskVM = task
+        self.sectionName = sectionName
+        let snapShot = snapshot(taskItems: task)
+        dataSource.apply(snapShot, to: sectionName, animatingDifferences: true)
+    }
+    
+}
+
+
+// MARK: - Configure CollectionView Layout
+
+private extension TaskSectionViewCell {
+    
+    private func configureCollectionView() {
         guard let collectionView = collectionView else { return }
         contentView.addSubview(collectionView)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -35,26 +57,10 @@ class TaskSectionViewCell: UICollectionViewCell {
             collectionView.topAnchor.constraint(equalTo: contentView.topAnchor),
             collectionView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20),
         ])
-        
-        //  let snapShot = snapshot(taskItems: tasks)
-        let snapShot = snapshot(taskItems: [])
-        dataSource.apply(snapShot, to: "할고래", animatingDifferences: true)
-        //dataSource.apply(snapShot)
-      //  dataSource.apply(snapShot, animatingDifferences: false)
-        
-    }
-}
-
-
-// MARK: - Configure CollectionView Layout
-
-private extension TaskSectionViewCell {
-    
-    private func configureCollectionView() {
+        collectionView.dragInteractionEnabled = true
+        collectionView.backgroundColor = .clear
         //        collectionView.dragDelegate = self
         //        collectionView.dropDelegate = self
-        collectionView!.dragInteractionEnabled = true
-        collectionView!.backgroundColor = .clear
     }
     
     private func generateLayout() -> UICollectionViewLayout {
@@ -85,8 +91,8 @@ private extension TaskSectionViewCell {
         sectionFooter.zIndex = 2
         section.boundarySupplementaryItems = [sectionHeader, sectionFooter]
         let layout = UICollectionViewCompositionalLayout(section: section)
-        return layout
         
+        return layout
     }
     
 }
@@ -97,7 +103,6 @@ private extension TaskSectionViewCell {
     
     private func configureDataSource() {
         let cellRegistration = UICollectionView.CellRegistration<TaskCollectionViewListCell, TaskVM> { [weak self] (cell, _: IndexPath, taskItem) in
-            
             cell.taskViewModel = taskItem
             cell.finishHandler = { [weak self] task in
                 guard let self = self,
@@ -124,44 +129,37 @@ private extension TaskSectionViewCell {
             cell.layer.masksToBounds = false
             cell.backgroundConfiguration = background
         }
-        
         self.dataSource = UICollectionViewDiffableDataSource<String, TaskVM>(collectionView: collectionView!, cellProvider: { (collectionview, indexPath, task) -> UICollectionViewCell? in
-            
             return collectionview.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: task)
         })
         
         let headerRegistration = UICollectionView.SupplementaryRegistration
         <TaskBoardSupplementaryView>(elementKind: "Header") {
             (supplementaryView, string, indexPath) in
-            supplementaryView.configureHeader(sectionName: "할고래두 TODO List", rowNum: 10)
+            supplementaryView.configureHeader(sectionName: self.sectionName, rowNum: self.taskVM.count)
         }
-        
         let footerRegistration = UICollectionView.SupplementaryRegistration
         <TaskBoardSupplementaryView>(elementKind: "Footer") {
             (supplementaryView, string, indexPath) in
             supplementaryView.section = indexPath.section
             supplementaryView.configureFooter()
         }
-        
         dataSource.supplementaryViewProvider = { (view, kind, index) in
             return self.collectionView!.dequeueConfiguredReusableSupplementary(
                 using: kind == "section-header-element-kind" ? headerRegistration : footerRegistration, for: index)
         }
-        
     }
     
     func snapshot(taskItems: [TaskVM]) -> NSDiffableDataSourceSectionSnapshot<TaskVM> {
         var snapshot = NSDiffableDataSourceSectionSnapshot<TaskVM>()
-
         snapshot.append(taskItems)
-      //  snapshot.appendSections(["1123"])
-        // TODO: 뷰 테스트를 위한 Task배열을 바로 만들어 넣어주는데 이 배열을 taskItems로 변경하기
-      //  snapshot.appendItems([Task(section: "123", title: "1asdfasdfasdfsadfwerfweatfasdfv23", isCompleted: false, depth: 0, parent: nil, subTasks: []),Task(section: "123", title: "123", isCompleted: false, depth: 0, parent: nil, subTasks: []),Task(section: "123", title: "123", isCompleted: false, depth: 0, parent: nil, subTasks: []),Task(section: "123", title: "123", isCompleted: false, depth: 0, parent: nil, subTasks: []),Task(section: "123", title: "123", isCompleted: false, depth: 0, parent: nil, subTasks: []),Task(section: "123", title: "123", isCompleted: false, depth: 0, parent: nil, subTasks: []),Task(section: "123", title: "123", isCompleted: false, depth: 0, parent: nil, subTasks: []),Task(section: "123", title: "123", isCompleted: false, depth: 0, parent: nil, subTasks: []),Task(section: "123", title: "123", isCompleted: false, depth: 0, parent: nil, subTasks: []),Task(section: "123", title: "123", isCompleted: false, depth: 0, parent: nil, subTasks: []),Task(section: "123", title: "123", isCompleted: false, depth: 0, parent: nil, subTasks: []),Task(section: "123", title: "123", isCompleted: false, depth: 0, parent: nil, subTasks: []),Task(section: "123", title: "123", isCompleted: false, depth: 0, parent: nil, subTasks: []),Task(section: "123", title: "123", isCompleted: false, depth: 0, parent: nil, subTasks: []),Task(section: "123", title: "123", isCompleted: false, depth: 0, parent: nil, subTasks: []),Task(section: "123", title: "123", isCompleted: false, depth: 0, parent: nil, subTasks: []),Task(section: "123", title: "123", isCompleted: false, depth: 0, parent: nil, subTasks: []),Task(section: "123", title: "123", isCompleted: false, depth: 0, parent: nil, subTasks: []),Task(section: "123", title: "123", isCompleted: false, depth: 0, parent: nil, subTasks: []),Task(section: "123", title: "123", isCompleted: false, depth: 0, parent: nil, subTasks: [])], toSection: "1123")
         return snapshot
     }
 }
 
+//TODO : 따로 파일로 분할하지 않고 우선 여기에 작성하였습니다. class 파일 분할이 필요합니다.
 class TaskBoardSupplementaryView: UICollectionReusableView {
+    
     var section: Int = 0
     
     override init(frame: CGRect) {
@@ -196,6 +194,7 @@ class TaskBoardSupplementaryView: UICollectionReusableView {
         sectionLabel.text = sectionName
         sectionLabel.font = UIFont.boldSystemFont(ofSize: CGFloat(20))
         rowNumberLabel.text = "\(rowNum)"
+        
         moreButton.translatesAutoresizingMaskIntoConstraints = false
         sectionLabel.translatesAutoresizingMaskIntoConstraints = false
         rowNumberLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -230,8 +229,210 @@ class TaskBoardSupplementaryView: UICollectionReusableView {
     }
     
     @objc func priorityPopover(_ sender: UIButton) {
+        #if DEBUG
         print("작업 추가 TODO")
         print("footer!!!!!=====", section)
+        #endif
     }
     
 }
+
+
+
+
+/*
+// MARK: - Configure CollectionView Layout
+
+private extension TaskBoardViewController {
+    
+    private func configureCollectionView() {
+        taskBoardCollectionView.dragDelegate = self
+        taskBoardCollectionView.dropDelegate = self
+        taskBoardCollectionView.dragInteractionEnabled = true
+        taskBoardCollectionView.collectionViewLayout = generateLayout()
+        taskBoardCollectionView.isPagingEnabled = true
+    }
+    
+    private func generateLayout() -> UICollectionViewLayout {
+        
+        let config = UICollectionViewCompositionalLayoutConfiguration()
+        config.interSectionSpacing = 10
+        config.scrollDirection = .horizontal
+        
+        let sectionProvider = { (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
+            let section: NSCollectionLayoutSection
+            let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(100))
+            let item = NSCollectionLayoutItem(layoutSize: itemSize)
+            let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.9), heightDimension: .estimated(100))
+            let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
+            section = NSCollectionLayoutSection(group: group)
+            section.interGroupSpacing = 15
+            section.orthogonalScrollingBehavior = .paging
+            section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10)
+            return section
+        }
+        
+        return UICollectionViewCompositionalLayout(sectionProvider: sectionProvider, configuration: config)
+        
+    }
+}
+
+// MARK: - Configure CollectionView Data Source
+
+private extension TaskBoardViewController {
+    
+    private func configureDataSource() {
+        let cellRegistration = UICollectionView.CellRegistration<TaskCollectionViewListCell, TaskVM> { [weak self] (cell, indexPath, taskItem) in
+            
+            cell.taskViewModel = taskItem
+            cell.finishHandler = { [weak self] task in
+                guard let self = self,
+                      let task = task
+                else {
+                    return
+                }
+                
+                var currentSnapshot = self.dataSource.snapshot()
+                if task.isCompleted {
+                    currentSnapshot.deleteItems([task])
+                } else {
+                }
+                self.dataSource.apply(currentSnapshot)
+            }
+            
+            var background = UIBackgroundConfiguration.listPlainCell()
+            background.cornerRadius = 8
+            background.strokeColor = .systemGray3
+            cell.layer.shadowColor = UIColor.black.cgColor
+            cell.layer.shadowOffset = CGSize(width: 0, height: 5)
+            cell.layer.shadowRadius = 7.0
+            cell.layer.shadowOpacity = 0.2
+            cell.layer.masksToBounds = false
+            cell.backgroundConfiguration = background
+        }
+        
+        self.dataSource = UICollectionViewDiffableDataSource<String, TaskVM>(collectionView: taskBoardCollectionView, cellProvider: { (collectionview, indexPath, task) -> UICollectionViewCell? in
+            return collectionview.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: task)
+        })
+        
+    }
+    
+    private func snapshot(taskItems: [TaskVM]) -> NSDiffableDataSourceSnapshot<String, TaskVM> {
+        
+        var snapshot = NSDiffableDataSourceSnapshot<String, TaskVM>()
+        for i in 0..<2 {
+            snapshot.appendSections(["\(i)"])
+            // TODO: 뷰 테스트를 위한 Task배열을 바로 만들어 넣어주는데 이 배열을 taskItems로 변경하기
+            snapshot.appendItems([TaskVM(id: UUID(), title: "123", isCompleted: false, tintColor: .blue, position: 0, parentPosition: nil, subItems: [])
+            ], toSection: "\(i)")
+        }
+        
+        return snapshot
+        
+    }
+}
+
+// MARK: - UICollectionViewDragDelegate
+extension TaskBoardViewController: UICollectionViewDragDelegate {
+    
+    /* Drag가 시작되었을 때 start point 기록*/
+    func collectionView(_ collectionView: UICollectionView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
+        session.localContext = collectionView
+        startPoint = session.location(in: collectionView)
+        collectionView.performUsingPresentationValues {
+            startIndex = collectionView.indexPathForItem(at: session.location(in: collectionView))
+        }
+        return dragItems(at: indexPath)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, dragSessionIsRestrictedToDraggingApplication session: UIDragSession) -> Bool {
+        return true
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, itemsForAddingTo session: UIDragSession, at indexPath: IndexPath, point: CGPoint) -> [UIDragItem] {
+        return dragItems(at: indexPath)
+    }
+    
+    private func dragItems(at indexPath: IndexPath) -> [UIDragItem] {
+        let cell = taskBoardCollectionView.cellForItem(at: indexPath)
+        let taskObject = NSString(string: "_")
+        let provider = NSItemProvider(object: taskObject)
+        let dragItem = UIDragItem(itemProvider: provider)
+        dragItem.localObject = cell
+        return [dragItem]
+    }
+}
+
+// MARK: - UICollectionViewDropDelegate
+extension TaskBoardViewController: UICollectionViewDropDelegate {
+    func collectionView(_ collectionView: UICollectionView, canHandle session: UIDropSession) -> Bool {
+        return session.canLoadObjects(ofClass: NSAttributedString.self)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UICollectionViewDropProposal {
+        let location = session.location(in: collectionView)
+        var correctDestination: IndexPath?
+        collectionView.performUsingPresentationValues {
+            correctDestination = collectionView.indexPathForItem(at: location)
+        }
+        guard let destination = correctDestination else {
+            return UICollectionViewDropProposal(
+                operation: .cancel, intent: .unspecified
+            )
+        }
+        setLocation(session.location(in: collectionView), destination)
+        let isSelf = (session.localDragSession?.localContext as? UICollectionView) == collectionView
+        return UICollectionViewDropProposal(operation: isSelf ? .move : .copy, intent: .insertAtDestinationIndexPath)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, dragSessionDidEnd session: UIDragSession) {
+        lineView.removeFromSuperview()
+    }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        performDropWith coordinator: UICollectionViewDropCoordinator
+    ) {
+        lineView.removeFromSuperview()
+        print("destination path:", coordinator.destinationIndexPath)
+    }
+    
+}
+
+private extension TaskBoardViewController {
+    func setLocation(_ location: CGPoint, _ destination: IndexPath?) {
+        lineView.removeFromSuperview()
+        guard let destination = destination, let startIndex = startIndex, let startPoint = startPoint  else{
+            return
+        }
+        if destination.row == 0 {
+            return
+        }
+        print("location:", location)
+        print("start:", startPoint)
+        
+        /*
+         나보다 아래인지 위인지에 따라 destination index를 다르게 설정
+         */
+        var tempIndex: IndexPath
+        if destination.section == startIndex.section && destination.row > startIndex.row {
+            tempIndex = IndexPath(row: destination.row, section: destination.section)
+        }else {
+            tempIndex = IndexPath(row: destination.row - 1, section: destination.section)
+        }
+        /*
+         터치 위치에 따라 같은level 혹은 한단계 하위 level에 line 표시
+         */
+        
+        if let cell = self.taskBoardCollectionView.cellForItem(at: tempIndex) as? UICollectionViewListCell {
+            lineView = UIView(frame: CGRect(x: 10, y: cell.frame.height - 2, width: cell.frame.width - 20, height: 5))
+            lineView.backgroundColor = .blue
+            lineView.layer.cornerRadius = 5;
+            lineView.layer.masksToBounds = true;
+            cell.addSubview(lineView)
+        }
+    }
+}
+*/
+
+
