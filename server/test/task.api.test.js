@@ -23,7 +23,7 @@ describe('get All task', () => {
       // when
       const res = await request(app)
         .get('/api/task')
-        .set('Authorization', createJWT(seeder.users[0]));
+        .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`);
 
       const { tasks } = res.body;
       // then
@@ -42,7 +42,10 @@ describe('get task by id', () => {
 
     try {
       // when
-      const res = await request(app).get(`/api/task/${taskId}`);
+      const res = await request(app)
+        .get(`/api/task/${taskId}`)
+        .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`);
+
       const recievedChildren = res.body.tasks.filter(task => task.parentId === taskId);
 
       // then
@@ -74,7 +77,10 @@ describe('post task', () => {
     };
 
     // when
-    const res = await request(app).post('/api/task').send(newTask);
+    const res = await request(app)
+      .post('/api/task')
+      .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
+      .send(newTask);
 
     // then
     expect(res.status).toBe(status.SUCCESS.POST.CODE);
@@ -96,7 +102,10 @@ describe('post task', () => {
     };
 
     // when
-    const res = await request(app).post('/api/task').send(newTask);
+    const res = await request(app)
+      .post('/api/task')
+      .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
+      .send(newTask);
 
     // then
     expect(res.status).toBe(status.SUCCESS.POST.CODE);
@@ -118,7 +127,10 @@ describe('post task', () => {
     };
 
     // when
-    const res = await request(app).post('/api/task').send(newTask);
+    const res = await request(app)
+      .post('/api/task')
+      .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
+      .send(newTask);
 
     // then
     expect(res.status).toBe(status.SUCCESS.POST.CODE);
@@ -140,7 +152,10 @@ describe('post task', () => {
     };
 
     // when
-    const res = await request(app).post('/api/task').send(newTask);
+    const res = await request(app)
+      .post('/api/task')
+      .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
+      .send(newTask);
 
     // then
     expect(res.status).toBe(status.SUCCESS.POST.CODE);
@@ -162,7 +177,10 @@ describe('post task', () => {
     };
 
     // when
-    const res = await request(app).post('/api/task').send(newTask);
+    const res = await request(app)
+      .post('/api/task')
+      .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
+      .send(newTask);
 
     // then
     expect(res.status).toBe(status.SUCCESS.POST.CODE);
@@ -184,7 +202,10 @@ describe('post task', () => {
     };
 
     // when
-    const res = await request(app).post('/api/task').send(newTask);
+    const res = await request(app)
+      .post('/api/task')
+      .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
+      .send(newTask);
 
     // then
     expect(res.status).toBe(status.SUCCESS.POST.CODE);
@@ -206,7 +227,10 @@ describe('post task', () => {
     };
 
     // when
-    const res = await request(app).post('/api/task').send(newTask);
+    const res = await request(app)
+      .post('/api/task')
+      .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
+      .send(newTask);
 
     // then
     expect(res.status).toBe(status.BAD_REQUEST.CODE);
@@ -231,7 +255,10 @@ describe('patch task with id', () => {
 
     try {
       // when
-      const res = await request(app).patch(`/api/task/${seeder.tasks[1].id}`).send(newTask);
+      const res = await request(app)
+        .patch(`/api/task/${seeder.tasks[1].id}`)
+        .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
+        .send(newTask);
 
       // then
       expect(res.status).toBe(status.SUCCESS.CODE);
@@ -249,7 +276,9 @@ describe('delete task', () => {
     const taskId = seeder.tasks[0].id;
     try {
       // when
-      const res = await request(app).delete(`/api/task/${taskId}`);
+      const res = await request(app)
+        .delete(`/api/task/${taskId}`)
+        .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`);
 
       // then
       expect(res.status).toBe(status.SUCCESS.CODE);
@@ -269,7 +298,9 @@ describe('get comments', () => {
 
     try {
       // when
-      const res = await request(app).get(`/api/task/${taskId}/comment`);
+      const res = await request(app)
+        .get(`/api/task/${taskId}/comment`)
+        .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`);
       const firstCommentId = res.body[0].id;
 
       // then
@@ -291,7 +322,10 @@ describe('create comment', () => {
 
     try {
       // when
-      const res = await request(app).post(`/api/task/${taskId}/comment`).send(requestBody);
+      const res = await request(app)
+        .post(`/api/task/${taskId}/comment`)
+        .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
+        .send(requestBody);
 
       // then
       expect(res.status).toBe(status.SUCCESS.POST.CODE);
@@ -315,6 +349,7 @@ describe('update comment', () => {
       // when
       const res = await request(app)
         .put(`/api/task/${taskId}/comment/${commentId}`)
+        .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
         .send(requestBody);
 
       // then
@@ -340,6 +375,7 @@ describe('delete comment', () => {
       // when
       const res = await request(app)
         .delete(`/api/task/${taskId}/comment/${commentId}`)
+        .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
         .send(requestBody);
 
       // then
