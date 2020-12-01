@@ -8,6 +8,8 @@ import UIKit
 
 class AddSectionViewCell: UICollectionViewCell {
     
+    // MARK: - Initialize
+    
     func configCollectionViewCell() {
         let addSectionButton: UIButton = UIButton()
         let addSectionImage = UIImage(systemName: "rectangle.badge.plus", withConfiguration: UIImage.SymbolConfiguration(pointSize: 22, weight: .light, scale: .small))
@@ -29,9 +31,10 @@ class AddSectionViewCell: UICollectionViewCell {
         ])
     }
     
-    @objc func tabAddSection(_ sender: UIButton) {
+    //MARK: - Helper Method
+    
+    @objc private func tabAddSection(_ sender: UIButton) {
         NotificationCenter.default.post(name: Notification.Name(rawValue: "addSection"), object: self)
     }
-    
 }
 

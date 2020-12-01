@@ -29,13 +29,14 @@ class TaskSectionViewCell: UICollectionViewCell {
         configureForReuse()
     }
     
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
+    
     override func prepareForReuse() {
         configureForReuse()
     }
     
-    required init?(coder: NSCoder) {
-        fatalError()
-    }
     
     // MARK: - Initialize
     
@@ -61,7 +62,7 @@ class TaskSectionViewCell: UICollectionViewCell {
 
 private extension TaskSectionViewCell {
     
-    private func configureCollectionView() {
+    func configureCollectionView() {
         collectionView = UICollectionView(frame: contentView.frame, collectionViewLayout: generateLayout())
         guard let collectionView = collectionView else { return }
         contentView.addSubview(collectionView)
@@ -78,7 +79,7 @@ private extension TaskSectionViewCell {
         collectionView.dragInteractionEnabled = true
     }
     
-    private func generateLayout() -> UICollectionViewLayout {
+    func generateLayout() -> UICollectionViewLayout {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
                                               heightDimension: .estimated(50))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
@@ -109,14 +110,13 @@ private extension TaskSectionViewCell {
         
         return layout
     }
-    
 }
 
 // MARK: - Configure CollectionView Data Source
 
 private extension TaskSectionViewCell {
     
-    private func configureDataSource() {
+    func configureDataSource() {
         let cellRegistration = UICollectionView.CellRegistration<TaskCollectionViewListCell, TaskVM> { [weak self] (cell, _: IndexPath, taskItem) in
             cell.taskViewModel = taskItem
             cell.finishHandler = { [weak self] task in
@@ -128,18 +128,17 @@ private extension TaskSectionViewCell {
                 }
                 self.dataSource.apply(currentSnapshot)
             }
-            
             var background = UIBackgroundConfiguration.listPlainCell()
             background.cornerRadius = 8
             background.strokeColor = .systemGray3
+            cell.backgroundConfiguration = background
             cell.layer.shadowColor = UIColor.black.cgColor
             cell.layer.shadowOffset = CGSize(width: 0, height: 2)
             cell.layer.shadowRadius = 7.0
             cell.layer.shadowOpacity = 0.2
             cell.layer.masksToBounds = false
-            cell.backgroundConfiguration = background
         }
-        self.dataSource = UICollectionViewDiffableDataSource<String, TaskVM>(collectionView: collectionView!, cellProvider: { (collectionview, indexPath, task) -> UICollectionViewCell? in
+        dataSource = UICollectionViewDiffableDataSource<String, TaskVM>(collectionView: collectionView!, cellProvider: { (collectionview, indexPath, task) -> UICollectionViewCell? in
             return collectionview.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: task)
         })
         
@@ -165,86 +164,6 @@ private extension TaskSectionViewCell {
         snapshot.append(taskItems)
         return snapshot
     }
-}
-
-//TODO : 따로 파일로 분할하지 않고 우선 여기에 작성하였습니다. class 파일 분할이 필요합니다.
-class TaskBoardSupplementaryView: UICollectionReusableView {
-    
-    var section: Int = 0
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        let view = UIView()
-        addSubview(view)
-        view.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            view.leadingAnchor.constraint(equalTo: leadingAnchor),
-            view.trailingAnchor.constraint(equalTo: trailingAnchor),
-            view.topAnchor.constraint(equalTo: topAnchor),
-            view.bottomAnchor.constraint(equalTo: bottomAnchor)
-        ])
-        self.layer.backgroundColor = UIColor.white.cgColor
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError()
-    }
-    
-    func configureHeader(sectionName: String, rowNum: Int) {
-        let sectionLabel = UILabel()
-        let rowNumberLabel = UILabel()
-        let moreButton = UIButton()
-        let moreImage = UIImage(systemName: "ellipsis", withConfiguration: UIImage.SymbolConfiguration(pointSize: 20, weight: .bold, scale: .medium))
-        
-        addSubview(sectionLabel)
-        addSubview(rowNumberLabel)
-        addSubview(moreButton)
-        moreButton.setImage(moreImage, for: .normal)
-        moreButton.tintColor = .gray
-        sectionLabel.text = sectionName
-        sectionLabel.font = UIFont.boldSystemFont(ofSize: CGFloat(20))
-        rowNumberLabel.text = "\(rowNum)"
-        
-        moreButton.translatesAutoresizingMaskIntoConstraints = false
-        sectionLabel.translatesAutoresizingMaskIntoConstraints = false
-        rowNumberLabel.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            sectionLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
-            sectionLabel.trailingAnchor.constraint(equalTo: rowNumberLabel.leadingAnchor, constant: 20),
-            sectionLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5),
-            rowNumberLabel.widthAnchor.constraint(equalToConstant: 50),
-            rowNumberLabel.trailingAnchor.constraint(equalTo: moreButton.leadingAnchor, constant: 20),
-            rowNumberLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5),
-            moreButton.widthAnchor.constraint(equalToConstant: 50),
-            moreButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -5),
-            moreButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5),
-        ])
-    }
-    
-    func configureFooter() {
-        let addTaskButton = UIButton()
-        let plusImage = UIImage(systemName: "plus", withConfiguration: UIImage.SymbolConfiguration(pointSize: 22, weight: .bold, scale: .medium))
-        addSubview(addTaskButton)
-        addTaskButton.translatesAutoresizingMaskIntoConstraints = false
-        addTaskButton.setImage(plusImage, for: .normal)
-        addTaskButton.setTitleColor(.systemGray, for: .normal)
-        addTaskButton.setTitle(" 작업 추가", for: .normal)
-        addTaskButton.tintColor = .red
-        addTaskButton.addTarget(self, action: #selector(priorityPopover), for: .touchUpInside)
-        NSLayoutConstraint.activate([
-            addTaskButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 30),
-            addTaskButton.topAnchor.constraint(equalTo: topAnchor, constant: 10),
-            addTaskButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10)
-        ])
-    }
-    
-    @objc private func priorityPopover(_ sender: UIButton) {
-        NotificationCenter.default.post(name: Notification.Name(rawValue: "displayAddTask"), object: section)
-        #if DEBUG
-        print("작업 추가 TODO")
-        #endif
-    }
-    
 }
 
 // MARK: - UICollectionViewDragDelegate

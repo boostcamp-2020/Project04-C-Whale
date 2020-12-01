@@ -19,6 +19,7 @@ class TaskAddViewController: UIViewController {
     private let placeHolder: String = "예. 11월 27일날 데모 발표하기"
     private var dueDate: Date = Date()
     private var priority: Int = 4
+    
     // MARK: - Views
     
     private let textView = UITextView()
@@ -26,7 +27,6 @@ class TaskAddViewController: UIViewController {
     private let priorityButton = UIButton()
     private let submitButton = UIButton()
 
-    
     // MARK: - View Life Cycle
     
     override func viewDidLoad() {
@@ -45,7 +45,7 @@ class TaskAddViewController: UIViewController {
         view.layer.maskedCorners = CACornerMask(arrayLiteral: .layerMinXMinYCorner, .layerMaxXMinYCorner)
     }
     
-    @objc func keyboardWillShow(notification: NSNotification) {
+    @objc private func keyboardWillShow(notification: NSNotification) {
         if !viewUpCheck {
             if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
                 keyboardHeight = keyboardSize.height
@@ -55,13 +55,12 @@ class TaskAddViewController: UIViewController {
         }
     }
     
-    @objc func keyboardWillHide(notification: NSNotification) {
+    @objc private func keyboardWillHide(notification: NSNotification) {
         if viewUpCheck {
             self.view.frame.origin.y += keyboardHeight
             viewUpCheck = false
         }
     }
-    
 }
 
 // MARK: - TaskAddViewController TextView Delegate
@@ -84,7 +83,7 @@ extension TaskAddViewController: UITextViewDelegate {
         guard let text = textView.text else { return }
         if text != "" {
             submitButton.alpha = 0.9
-        }else {
+        } else {
             submitButton.alpha = 0.5
         }
         textView.text = textView.text.replacingOccurrences(of: placeHolder, with: "")
@@ -99,7 +98,7 @@ extension TaskAddViewController: UITextViewDelegate {
                 if textViewHeight < estimatedSize.height && textViewHeight != 0 {
                     self.view.frame.size.height += estimatedSize.height - textViewHeight
                     self.view.frame.origin.y -= estimatedSize.height - textViewHeight
-                }else if textViewHeight > estimatedSize.height {
+                } else if textViewHeight > estimatedSize.height {
                     self.view.frame.size.height -= textViewHeight - estimatedSize.height
                     self.view.frame.origin.y += textViewHeight - estimatedSize.height
                 }
@@ -126,12 +125,11 @@ extension TaskAddViewController: UITextViewDelegate {
         if textView.text == placeHolder {
             textView.text = ""
             textView.textColor = UIColor.black
-        }else if textView.text == "" {
+        } else if textView.text == "" {
             textView.text = placeHolder
             textView.textColor = UIColor.lightGray
         }
     }
-    
 }
 
 // MARK: - Date Picker Configure & Method
@@ -139,7 +137,7 @@ extension TaskAddViewController: UITextViewDelegate {
 extension TaskAddViewController {
     
     private func configureDataPickerView() {
-        self.view.addSubview(dateButton)
+        view.addSubview(dateButton)
         let calendarImage = UIImage(systemName: "calendar", withConfiguration: UIImage.SymbolConfiguration(pointSize: 22, weight: .light, scale: .small))
         dateButton.setImage(calendarImage, for: .normal)
         dateButton.setTitle(" 날짜 없음", for: .normal)
@@ -168,21 +166,21 @@ extension TaskAddViewController {
         datePicker.subviews.forEach({ $0.subviews.forEach({ $0.removeFromSuperview() }) })
     }
     
-    @objc func changeDatePicker(_ sender: UIDatePicker) {
+    @objc private func changeDatePicker(_ sender: UIDatePicker) {
         dueDate = sender.date
         let dateFormatter: DateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy년MM월dd일"
         let selectedDate: String = dateFormatter.string(from: sender.date)
         dateButton.setTitle(" \(selectedDate)", for: .normal)
     }
-    
 }
 
 // MARK: - Priority Button Configure & Method
 
-extension TaskAddViewController {
-    private func configurePriority() {
-        self.view.addSubview(priorityButton)
+private extension TaskAddViewController {
+    
+    func configurePriority() {
+        view.addSubview(priorityButton)
         let calendarImage = UIImage(systemName: "flag", withConfiguration: UIImage.SymbolConfiguration(pointSize: 22, weight: .light, scale: .small))
         priorityButton.setImage(calendarImage, for: .normal)
         priorityButton.setTitle(" 우선 순위 없음", for: .normal)
@@ -214,7 +212,7 @@ extension TaskAddViewController {
             self.changePriority(row: indexPath.row)
             self.priority = indexPath.row
         }
-        self.present(popoverViewController, animated:true)
+        present(popoverViewController, animated:true)
     }
     
     private func changePriority(row: Int) {
@@ -235,16 +233,16 @@ extension TaskAddViewController: UIPopoverPresentationControllerDelegate {
 
 // MARK: - Submit Button Configure & Method
 
-extension TaskAddViewController {
+private extension TaskAddViewController {
     
-    private func configureSubmit() {
+    func configureSubmit() {
         self.view.addSubview(submitButton)
         let submitImage = UIImage(systemName: "arrow.up.circle.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 28, weight: .bold, scale: .large))
         submitButton.setImage(submitImage, for: .normal)
         submitButton.alpha = 0.5
         submitButton.tintColor = .red
         submitButton.translatesAutoresizingMaskIntoConstraints = false
-        submitButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10).isActive = true
+        submitButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10).isActive = true
         submitButton.topAnchor.constraint(equalTo: dateButton.topAnchor).isActive = true
         submitButton.addTarget(self, action: #selector(tabSubmitButton), for: .touchUpInside)
     }
