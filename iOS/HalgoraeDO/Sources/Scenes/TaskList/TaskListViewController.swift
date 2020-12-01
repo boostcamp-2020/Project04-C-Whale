@@ -75,6 +75,26 @@ class TaskListViewController: UIViewController {
         editToolBar.isHidden = !editingMode
     }
     
+    private func slideRightConfirmActionViewWillDismiss(targetView: UIView,
+                                                withDuration duration: TimeInterval = 0.5,
+                                                delay: TimeInterval = 0,
+                                                usingSpringWithDamping dampingRatio: CGFloat = 0.7,
+                                                initialSpringVelocity velocity: CGFloat = 0.5,
+                                                options: UIView.AnimationOptions = [.curveEaseIn],
+                                                dismiss deadline: DispatchTime = .now() + 3) {
+        targetView.transform = .init(translationX: -targetView.bounds.width, y: 0)
+        targetView.isHidden = false
+        UIView.animate(withDuration: duration, delay: delay, usingSpringWithDamping: dampingRatio, initialSpringVelocity: velocity, options: options) {
+            targetView.transform = .identity
+        }
+        
+        self.presentConfirmActionWorkItem?.cancel()
+        self.presentConfirmActionWorkItem = DispatchWorkItem { targetView.isHidden = true }
+        if let workItem = self.presentConfirmActionWorkItem {
+            DispatchQueue.main.asyncAfter(deadline: deadline, execute: workItem)
+        }
+    }
+    
     // MARK: IBActions
     
     @IBAction private func didTapMoreButton(_ sender: UIBarButtonItem) {
