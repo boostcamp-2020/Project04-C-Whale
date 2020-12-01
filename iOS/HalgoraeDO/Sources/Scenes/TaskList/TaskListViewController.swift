@@ -84,7 +84,7 @@ class TaskListViewController: UIViewController {
                                                 initialSpringVelocity velocity: CGFloat = 0.5,
                                                 options: UIView.AnimationOptions = [.curveEaseIn],
                                                 dismiss deadline: DispatchTime = .now() + 3) {
-        targetView.transform = .init(translationX: -targetView.bounds.width, y: 0)
+        targetView.transform = .init(translationX: -targetView.frame.maxX, y: 0)
         targetView.isHidden = false
         UIView.animate(withDuration: duration, delay: delay, usingSpringWithDamping: dampingRatio, initialSpringVelocity: velocity, options: options) {
             targetView.transform = .identity
