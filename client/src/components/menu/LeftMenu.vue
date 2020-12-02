@@ -1,8 +1,8 @@
 <template>
   <div>
     <favorite-project-list
-      :managed-project-count="managedProject.taskCount"
-      :today-task-count="todayTaskCount"
+      :managed-project="managedProject"
+      :today-project="todayProject"
     ></favorite-project-list>
     <project-list-container :project-infos="namedProjectInfos"></project-list-container>
     <label-list :labels="labels"></label-list>
@@ -29,14 +29,15 @@ export default {
     "managedProject",
     "labels",
     "priorities",
-    "todayTaskCount",
+    "todayProject",
     "nextDayTaskCount",
   ]),
   methods: {
-    ...mapActions(["fetchProjectInfos", "fetchLabels", "fetchPriorities"]),
+    ...mapActions(["fetchProjectInfos", "fetchTodayProject", "fetchLabels", "fetchPriorities"]),
   },
   created() {
     this.fetchProjectInfos();
+    this.fetchTodayProject();
     this.fetchLabels();
     this.fetchPriorities();
   },

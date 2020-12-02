@@ -1,23 +1,23 @@
 <template>
   <div>
-    <v-list-item-group v-model="model" active-class="font-weight-bold">
-      <v-list-item class="pl-8">
+    <v-list-item-group active-class="font-weight-bold">
+      <v-list-item class="pl-8" :to="`/project/${managedProject.id}`">
         <v-list-item-icon class="mr-4 my-3"
           ><v-icon color="blue">mdi-inbox</v-icon></v-list-item-icon
         >
-        <v-list-item-content>
+        <v-list-item-content :key="managedProject.id">
           <v-list-item-title class="font-14">
-            관리함 <span>{{ managedProjectCount }}</span>
+            관리함 <span>{{ managedProject.taskCount }}</span>
           </v-list-item-title>
         </v-list-item-content>
       </v-list-item>
-      <v-list-item class="pl-8">
+      <v-list-item class="pl-8" :to="`/today`">
         <v-list-item-icon class="mr-4">
           <v-icon color="red">mdi-calendar-today</v-icon>
         </v-list-item-icon>
-        <v-list-item-content>
+        <v-list-item-content :key="todayProject.id">
           <v-list-item-title class="font-14">
-            오늘 <span>{{ todayTaskCount }}</span>
+            오늘 <span>{{ todayProject.taskCount }}</span>
           </v-list-item-title>
         </v-list-item-content>
       </v-list-item>
@@ -26,11 +26,11 @@
 </template>
 
 <script>
+import router from "@/router";
 export default {
   props: {
-    managedProjectCount: Number,
-    todayTaskCount: Number,
-    nextDayTaskCount: Number,
+    managedProject: Object,
+    todayProject: Object,
   },
 };
 </script>

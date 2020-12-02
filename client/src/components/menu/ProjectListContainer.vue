@@ -5,8 +5,13 @@
         <v-list-item-title class="font-14">프로젝트</v-list-item-title>
       </v-list-item-content>
     </template>
-    <v-list-item-group>
-      <v-list-item v-for="project in projectInfos" :key="project.id">
+    <v-list-item-group active-class="list-active">
+      <v-list-item
+        active-class="font-weight-bold list-active"
+        v-for="project in projectInfos"
+        :key="project.id"
+        :to="`/project/${project.id}`"
+      >
         <v-list-item-icon class="mr-4">
           <v-icon color="red">mdi-circle</v-icon>
         </v-list-item-icon>
@@ -27,3 +32,8 @@ export default {
   },
 };
 </script>
+<style lang="scss">
+.list-active {
+  color: black;
+}
+</style>
