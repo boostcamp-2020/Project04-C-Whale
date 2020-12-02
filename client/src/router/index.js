@@ -57,7 +57,6 @@ const routes = [
             path: "task/:taskId",
             name: "TaskDetail",
             component: TaskDetail,
-            // meta: { dialog: false },
           },
         ],
       },
