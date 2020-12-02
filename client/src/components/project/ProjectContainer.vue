@@ -2,8 +2,13 @@
   <div class="project-container">
     <div class="project-header">
       <v-list-item>
-        <v-list-item-content>
-          <p class="text-h5">{{ currentProject.title }}</p>
+        <v-list-item-content class="text-h5">
+          <updatable-title
+            v-if="currentProject.title"
+            :originalTitle="currentProject.title"
+            :parent="currentProject"
+            type="project"
+          />
         </v-list-item-content>
 
         <v-menu :offset-y="true">
@@ -22,10 +27,15 @@
     </div>
 
     <v-list v-for="section in currentProject.sections" :key="section.id" class="mb-5">
-      <v-list-item class="font-weight-black text-h6">{{ section.title }}</v-list-item>
+      <v-list-item class="font-weight-black text-h6">
+        <updatable-title :originalTitle="section.title" :parent="section" type="section" />
+      </v-list-item>
 
       <div v-for="task in section.tasks" :key="task.id" class="task-container">
-        <task-item :task="task" />
+        <div @click="popTaskDetail(task)">
+          <task-item :task="task" />
+        </div>
+
         <v-divider />
 
         <div class="childTaskContainer ml-10" v-for="childTask in task.tasks" :key="childTask.id">
@@ -35,6 +45,11 @@
 
       <add-task :projectId="section.projectId" :sectionId="section.id" />
     </v-list>
+    <v-btn color="primary" dark @click.stop="dialog = true"> Open Dialog </v-btn>
+
+    <v-dialog v-model="dialog" max-width="290">
+      <router-view />
+    </v-dialog>
   </div>
 </template>
 
@@ -42,13 +57,26 @@
 import { mapGetters, mapActions } from "vuex";
 import AddTask from "./AddTask";
 import TaskItem from "./TaskItem";
+import UpdatableTitle from "../common/UpdatableTitle";
+// import router from "@/router/index.js";
 
 export default {
+  data() {
+    return {
+      dialog: false,
+    };
+  },
   methods: {
     ...mapActions(["fetchCurrentProject", "updateTaskToDone"]),
+    popTaskDetail(task) {
+      console.log(task);
+      this.dialog = true;
+      this.$router.push(`/task/${task.id}`);
+      // router.push(`/task/${obj.id}`).catch(() => {});
+    },
   },
   computed: mapGetters(["currentProject"]),
-  components: { AddTask, TaskItem },
+  components: { AddTask, TaskItem, UpdatableTitle },
   created() {
     this.fetchCurrentProject(this.$route.params.projectId);
   },

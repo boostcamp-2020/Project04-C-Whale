@@ -1,11 +1,12 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Login from "../views/Login.vue";
-import Today from "../views/Today.vue";
-import Project from "../views/Project.vue";
-import Task from "../views/Task.vue";
-import Home from "../views/Home.vue";
+import Login from "@/views/Login.vue";
+import Today from "@/views/Today.vue";
+import Project from "@/views/Project.vue";
+import Task from "@/views/Task.vue";
+import Home from "@/views/Home.vue";
 import userAPI from "@/api/user";
+import TaskDetail from "@/components/task/TaskDetail";
 
 Vue.use(VueRouter);
 
@@ -51,12 +52,13 @@ const routes = [
         name: "Project",
         component: Project,
         beforeEnter: requireAuth(),
-      },
-      {
-        path: "task/:taskId",
-        name: "Task",
-        component: Task,
-        beforeEnter: requireAuth(),
+        chiledren: [
+          {
+            path: "../task/:taskId",
+            name: "TaskDetail",
+            component: TaskDetail,
+          },
+        ],
       },
     ],
   },

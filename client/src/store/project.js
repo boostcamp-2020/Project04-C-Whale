@@ -27,6 +27,35 @@ const actions = {
       alert("프로젝트 조회 요청 실패");
     }
   },
+
+  async updateProjectTitle({ dispatch }, { projectId, title }) {
+    try {
+      const { data } = await projectAPI.updateProject(projectId, { title });
+
+      if (data.message !== "ok") {
+        throw new Error();
+      }
+
+      await dispatch("fetchCurrentProject", projectId);
+    } catch (err) {
+      alert("프로젝트 수정 요청 실패");
+    }
+  },
+
+  async updateSectionTitle({ dispatch }, { projectId, sectionId, title }) {
+    try {
+      const { data } = await projectAPI.updateSection(projectId, sectionId, { title });
+
+      if (data.message !== "ok") {
+        throw new Error();
+      }
+
+      await dispatch("fetchCurrentProject", projectId);
+    } catch (err) {
+      alert("섹션 수정 요청 실패");
+    }
+  },
+
   async updateTaskToDone({ dispatch }, { projectId, taskId }) {
     try {
       const { data } = await taskAPI.updateTask(taskId, { isDone: true });

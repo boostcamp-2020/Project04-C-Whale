@@ -44,7 +44,16 @@ const getProjectById = asyncTryCatch(async (req, res) => {
       include: {
         model: models.task,
         where: { isDone: false, parentId: null },
-        include: ['priority', 'labels', 'alarm', 'tasks'],
+        include: [
+          'priority',
+          'labels',
+          'alarm',
+          {
+            model: models.task,
+            where: { isDone: false },
+            required: false,
+          },
+        ],
         required: false,
       },
     },
