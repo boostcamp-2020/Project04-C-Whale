@@ -32,6 +32,7 @@ const retrieveAll = async userId => {
   // });
 
   const task = await taskModel.findAll({
+    where: { isDone: false },
     include: [
       'labels',
       'priority',
