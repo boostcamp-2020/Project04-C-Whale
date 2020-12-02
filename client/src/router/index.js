@@ -6,7 +6,7 @@ import Project from "@/views/Project.vue";
 import Task from "@/views/Task.vue";
 import Home from "@/views/Home.vue";
 import userAPI from "@/api/user";
-import TaskDetail from "@/components/task/TaskDetail";
+import TaskDetail from "@/components/task/TaskDetail.vue";
 
 Vue.use(VueRouter);
 
@@ -52,11 +52,12 @@ const routes = [
         name: "Project",
         component: Project,
         beforeEnter: requireAuth(),
-        chiledren: [
+        children: [
           {
-            path: "../task/:taskId",
+            path: "task/:taskId",
             name: "TaskDetail",
             component: TaskDetail,
+            // meta: { dialog: false },
           },
         ],
       },
