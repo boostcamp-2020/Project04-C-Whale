@@ -8,11 +8,22 @@ import Home from "../views/Home.vue";
 
 Vue.use(VueRouter);
 
+const requireAuth = () => (from, to, next) => {
+  if (localStorage.getItem("token")) return next();
+  next("/login");
+};
+
+const redirectHome = () => (from, to, next) => {
+  if (localStorage.getItem("token")) return next("/");
+  next();
+};
+
 const routes = [
   {
     path: "/login",
     name: "Login",
     component: Login,
+    beforeEnter: redirectHome(),
   },
   {
     path: "/",
@@ -23,16 +34,19 @@ const routes = [
         path: "today",
         name: "Today",
         component: Today,
+        beforeEnter: requireAuth(),
       },
       {
         path: "project/:projectId",
         name: "Project",
         component: Project,
+        beforeEnter: requireAuth(),
       },
       {
         path: "task/:taskId",
         name: "Task",
         component: Task,
+        beforeEnter: requireAuth(),
       },
     ],
   },
