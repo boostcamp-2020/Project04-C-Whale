@@ -1,8 +1,6 @@
 <template>
-  <div>
-    <div>{{ currentTask.title }} hi!!</div>
-    <div>{{ currentTask }}}</div>
-  </div>
+  <div>{{ currentTask }} hi!!</div>
+  <!-- <div>{{ currentTask }}}</div> -->
 </template>
 
 <script>
@@ -11,15 +9,18 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   data() {
     return {
-      dialog: false,
+      dialog: true,
       taskId: this.$route.params.taskId,
     };
   },
+
   methods: {
     ...mapActions(["fetchCurrentTask"]),
   },
   computed: mapGetters(["currentTask"]),
-
+  mounted() {
+    this.$emit("setDialog");
+  },
   created() {
     this.fetchCurrentTask(this.$route.params.taskId);
   },

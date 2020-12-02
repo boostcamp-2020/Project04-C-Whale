@@ -8,41 +8,28 @@
       ></v-radio>
     </v-list-item-action>
 
-    <div class="task-div" @click="showModal({ taskId: task.id })">
+    <div class="task-div" @click="showModal()">
       <v-list-item-content>
         <v-list-item-title>{{ task.title }}</v-list-item-title>
       </v-list-item-content>
     </div>
-
-    <v-dialog v-model="dialog" max-width="290" @click:outside="hideModal()">
-      <router-view />
-    </v-dialog>
   </v-list-item>
 </template>
 
 <script>
 import { mapActions } from "vuex";
-import router from "@/router";
 
 export default {
   data() {
-    return {
-      dialog: false,
-    };
+    return {};
   },
+  props: { task: Object },
   methods: {
     ...mapActions(["updateTaskToDone"]),
-    showModal(taskId) {
-      this.dialog = true;
-      router.push({ name: "TaskDetail", params: taskId });
-    },
-    hideModal() {
-      // this.dialog = false;
-      // router.go(-1);
-      router.push({ name: "Project" });
+    showModal() {
+      this.$emit("pop");
     },
   },
-  props: ["task"],
 };
 </script>
 
