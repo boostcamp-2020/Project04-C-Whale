@@ -94,7 +94,7 @@ describe('update project', () => {
     // given
     const expectedProjectId = seeder.projects[0].id;
     const requestBody = {
-      title: '변경된 프로젝트',
+      title: 'PUT으로 변경된 프로젝트',
       isList: true,
       isFavorite: true,
     };
@@ -117,9 +117,7 @@ describe('update project', () => {
     const expectedUser = seeder.users[0];
     const expectedProjectId = seeder.projects[0].id;
     const requestBody = {
-      title: '변경된 프로젝트',
-      isList: true,
-      isFavorite: true,
+      title: 'PATCH로 변경된 프로젝트!!',
     };
 
     // when
@@ -139,7 +137,7 @@ describe('delete project', () => {
   it('delete project 일반', async done => {
     // given
     const expectedUser = seeder.users[0];
-    const expectedProjectId = seeder.projects[1];
+    const expectedProjectId = seeder.projects[1].id;
     // when
     const res = await request(app)
       .delete(`/api/project/${expectedProjectId}`)
