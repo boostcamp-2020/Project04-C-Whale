@@ -4,7 +4,7 @@ const { responseHandler } = require('@utils/handler');
 const getAllLabels = async (req, res, next) => {
   try {
     const labels = await labelModel.findAll({
-      // where: { userId: req.user.id },
+      where: { userId: req.user.id },
       attributes: ['id', 'title', 'color'],
     });
 
