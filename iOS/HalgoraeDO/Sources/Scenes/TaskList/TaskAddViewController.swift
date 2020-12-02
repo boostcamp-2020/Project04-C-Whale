@@ -23,9 +23,14 @@ class TaskAddViewController: UIViewController {
     // MARK: - Views
     
     private let textView = UITextView()
-    private let dateButton = UIButton()
     private let priorityButton = UIButton()
     private let submitButton = UIButton()
+    private let dateButton: DatePickerButtonView = {
+        let dateButton = DatePickerButtonView()
+        dateButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        return dateButton
+    }()
 
     // MARK: - View Life Cycle
     
@@ -134,40 +139,8 @@ extension TaskAddViewController {
     
     private func configureDataPickerView() {
         view.addSubview(dateButton)
-        let calendarImage = UIImage(systemName: "calendar", withConfiguration: UIImage.SymbolConfiguration(pointSize: 22, weight: .light, scale: .small))
-        dateButton.setImage(calendarImage, for: .normal)
-        dateButton.setTitle(" 날짜 없음", for: .normal)
-        dateButton.setTitleColor(.gray, for: .normal)
-        dateButton.tintColor = .gray
-        dateButton.backgroundColor = .clear
-        dateButton.layer.cornerRadius = 10
-        dateButton.layer.borderWidth = 1
-        dateButton.layer.borderColor = UIColor.gray.cgColor
-        dateButton.contentEdgeInsets = UIEdgeInsets(top: 8, left: 6, bottom: 8, right: 6)
-        dateButton.translatesAutoresizingMaskIntoConstraints = false
-        dateButton.leadingAnchor.constraint(equalTo: textView.leadingAnchor).isActive = true
         dateButton.topAnchor.constraint(equalTo: textView.bottomAnchor, constant: 15).isActive = true
-                
-        let datePicker = UIDatePicker(frame: CGRect(x: 0, y: 50, width: 150, height: 150))
-        self.view.addSubview(datePicker)
-        datePicker.timeZone = NSTimeZone.local
-        datePicker.backgroundColor = UIColor.white.withAlphaComponent(0)
-        datePicker.translatesAutoresizingMaskIntoConstraints = false
-        datePicker.leadingAnchor.constraint(equalTo: dateButton.leadingAnchor).isActive = true
-        datePicker.topAnchor.constraint(equalTo: dateButton.topAnchor).isActive = true
-        datePicker.bottomAnchor.constraint(equalTo: dateButton.bottomAnchor).isActive = true
-        datePicker.trailingAnchor.constraint(equalTo: dateButton.trailingAnchor).isActive = true
-        datePicker.preferredDatePickerStyle = .compact
-        datePicker.addTarget(self, action: #selector(changeDatePicker(_:)), for: .valueChanged)
-        datePicker.subviews.forEach({ $0.subviews.forEach({ $0.removeFromSuperview() }) })
-    }
-    
-    @objc private func changeDatePicker(_ sender: UIDatePicker) {
-        dueDate = sender.date
-        let dateFormatter: DateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy년MM월dd일"
-        let selectedDate: String = dateFormatter.string(from: sender.date)
-        dateButton.setTitle(" \(selectedDate)", for: .normal)
+        dateButton.leadingAnchor.constraint(equalTo: textView.leadingAnchor).isActive = true
     }
 }
 
