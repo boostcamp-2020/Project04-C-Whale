@@ -9,6 +9,7 @@ import userAPI from "@/api/user";
 
 Vue.use(VueRouter);
 
+// TODO: user/me api 2번 호출하는 문제 해결
 const requireAuth = () => async (from, to, next) => {
   try {
     await userAPI.authorize();
