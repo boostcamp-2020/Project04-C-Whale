@@ -23,6 +23,7 @@ const getTaskById = asyncTryCatch(async (req, res) => {
 });
 
 const createTask = asyncTryCatch(async (req, res) => {
+  const { projectId, sectionId } = req.params;
   const { labelIdList, dueDate, ...rest } = req.body;
 
   if (!isValidDueDate(dueDate)) {
@@ -32,8 +33,19 @@ const createTask = asyncTryCatch(async (req, res) => {
   }
 
   await sequelize.transaction(async t => {
-    const task = await models.task.create({ dueDate, ...rest }, { transaction: t });
-    await task.setLabels(JSON.parse(labelIdList), { transaction: t });
+    const section = await models.section.findByPk(sectionId, { include: 'tasks' });
+
+    const maxPosition = section.toJSON().tasks.reduce((maxPosition, task) => {
+      return maxPosition < task.position ? task.position : maxPosition;
+    }, 0);
+
+    const task = await models.task.create(
+      { projectId, sectionId, dueDate, position: maxPosition + 1, ...rest },
+      { transaction: t },
+    );
+    if (labelIdList) {
+      await task.setLabels(JSON.parse(labelIdList), { transaction: t });
+    }
   });
 
   responseHandler(res, 201, { message: 'ok' });
