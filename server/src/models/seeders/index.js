@@ -15,6 +15,14 @@ const users = [
     createdAt: new Date(),
     updatedAt: new Date(),
   },
+  {
+    id: '58719e77-5f55-4ca7-9552-ff94fbb07ea4',
+    email: 'dimple0416@naver.com',
+    name: '박진영',
+    provider: 'naver',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
 ];
 
 const priorities = [
@@ -63,6 +71,15 @@ const projects = [
     createdAt: new Date(),
     updatedAt: new Date(),
   },
+  {
+    id: '082b92fb-dce7-4249-9467-2f261767196b',
+    creatorId: users[2].id,
+    title: '내 프로젝트',
+    isList: false,
+    isFavorite: true,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
 ];
 
 const sections = [
@@ -78,6 +95,14 @@ const sections = [
     id: 'cccf0633-bce2-4972-9249-69f287db8a47',
     title: '섹션 2',
     projectId: projects[0].id,
+    position: 1,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    id: 'dbfc6305-877e-46b9-ac63-d56fb82681dd',
+    title: '섹션 3',
+    projectId: projects[2].id,
     position: 1,
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -161,6 +186,17 @@ const tasks = [
     sectionId: sections[1].id,
     title: '작업 7',
     dueDate: new Date('2021-10-24T14:23:24.090Z'),
+    position: 1,
+    isDone: false,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    id: '4a83b457-e67e-43d8-a284-78ea7fc440d5',
+    projectId: projects[2].id,
+    sectionId: sections[2].id,
+    title: '진영',
+    dueDate: new Date(),
     position: 1,
     isDone: false,
     createdAt: new Date(),

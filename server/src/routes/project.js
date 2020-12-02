@@ -3,8 +3,7 @@ const projectController = require('@controllers/project');
 const taskController = require('@controllers/task');
 
 router.get('/', projectController.getProjects);
-// TO DO
-// router.get('/today', projectController.getTodayProject);
+// TODO: router.get('/today', projectController.getTodayProject);
 router.get('/:projectId', projectController.getProjectById);
 router.post('/', projectController.createProject);
 router.put('/:projectId', projectController.updateProject);

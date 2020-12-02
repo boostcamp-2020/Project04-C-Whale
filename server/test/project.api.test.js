@@ -18,11 +18,16 @@ const SUCCESS_MSG = 'ok';
 
 describe('get all projects', () => {
   it('project get all 일반', done => {
-    const expectedProjects = [
-      { id: 'b7f253e5-7b6b-4ee2-b94e-369ffcdffb5f', taskCount: 5, title: '프로젝트 1' },
-      { id: 'f7605077-96ec-4365-88fc-a9c3af4a084e', taskCount: 0, title: '프로젝트 2' },
-      { taskCount: 2, title: '오늘' },
-    ];
+    const expectedProjects = seeder.projects.map(project => {
+      const tasks = seeder.tasks.filter(task => task.projectId === project.id);
+      const { id, title } = project;
+      return { id, title, taskCount: tasks.length };
+    });
+    //  [
+    //   { id: 'b7f253e5-7b6b-4ee2-b94e-369ffcdffb5f', taskCount: 5, title: '프로젝트 1' },
+    //   { id: 'f7605077-96ec-4365-88fc-a9c3af4a084e', taskCount: 0, title: '프로젝트 2' },
+    //   { taskCount: 2, title: '오늘' },
+    // ];
 
     try {
       request(app)
@@ -31,8 +36,15 @@ describe('get all projects', () => {
           if (err) {
             throw err;
           }
+          expect(
+            res.body.every(project =>
+              expectedProjects.some(
+                expectedProject =>
+                  Object.entries(project).toString === Object.entries(expectedProject).toString,
+              ),
+            ),
+          ).toBeTruthy();
 
-          expect(res.body).toEqual(expectedProjects);
           done();
         });
     } catch (err) {
