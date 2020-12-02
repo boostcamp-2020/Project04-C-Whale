@@ -1,6 +1,9 @@
 <template>
   <div>
-    <favorite-project-list></favorite-project-list>
+    <favorite-project-list
+      :today-task-count="todayTaskCount"
+      :next-day-task-count="nextDayTaskCount"
+    ></favorite-project-list>
     <project-list-container :project-infos="projectInfos"></project-list-container>
     <label-list :labels="labels"></label-list>
     <filter-list :priorities="priorities"></filter-list>
@@ -21,14 +24,21 @@ export default {
     LabelList,
     FilterList,
   },
-  computed: mapGetters(["projectInfos", "labels", "priorities"]),
+  computed: mapGetters([
+    "projectInfos",
+    "labels",
+    "priorities",
+    "todayTaskCount",
+    "nextDayTaskCount",
+  ]),
   methods: {
-    ...mapActions(["fetchProjectInfos", "fetchLabels", "fetchPriorities"]),
+    ...mapActions(["fetchProjectInfos", "fetchLabels", "fetchPriorities", "fetchAllTasks"]),
   },
   created() {
     this.fetchProjectInfos();
     this.fetchLabels();
     this.fetchPriorities();
+    this.fetchAllTasks();
   },
 };
 </script>
