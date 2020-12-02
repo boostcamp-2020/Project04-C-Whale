@@ -7,6 +7,9 @@ const projectAPI = {
   getProjects() {
     return myAxios.GET("/project");
   },
+  getTodayProject() {
+    return myAxios.GET("/project/today");
+  },
   updateProject(projectId, data) {
     return myAxios.PATCH(`/project/${projectId}`, data);
   },

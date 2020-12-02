@@ -9,12 +9,17 @@ const state = {
     sections: [],
   },
   projectInfos: [],
+  todayProject: {
+    id: "",
+    count: 0,
+  },
 };
 
 const getters = {
   currentProject: (state) => state.currentProject,
+  todayProject: (state) => state.todayProject,
   namedProjectInfos: (state) => state.projectInfos.filter((project) => project.title !== "관리함"),
-  managedProject: (state) => state.projectInfos.filter((project) => project.title === "관리함")[0],
+  managedProject: (state) => state.projectInfos.find((project) => project.title === "관리함"),
 };
 
 const actions = {
@@ -25,6 +30,16 @@ const actions = {
       commit("SET_CURRENT_PROJECT", project);
     } catch (err) {
       alert("프로젝트 조회 요청 실패");
+    }
+  },
+
+  async fetchTodayProject({ commit }) {
+    try {
+      const { data: todayProject } = await projectAPI.getTodayProject();
+
+      commit("SET_TODAY_PROJECT", todayProject);
+    } catch (err) {
+      alert("오늘의 프로젝트 조회 요청 실패");
     }
   },
 
@@ -97,6 +112,7 @@ const mutations = {
   //TODO: function vs arrow-function style-guide 보고 통일하기
   SET_CURRENT_PROJECT: (state, currentProject) => (state.currentProject = currentProject),
   SET_PROJECT_INFOS: (state, projectInfos) => (state.projectInfos = projectInfos),
+  SET_TODAY_PROJECT: (state, todayProject) => (state.todayProject = todayProject),
   // newTodo: (state, todo) => state.todos.unshift(todo),
 };
 

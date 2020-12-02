@@ -7,7 +7,6 @@ const state = {
 };
 
 const getters = {
-  todayTaskCount: (state) => state.tasks.filter((task) => isToday(task.dueDate)).length,
   nextDayTaskCount: (state) => state.tasks.filter((task) => !isToday(task.dueDate)).length,
 };
 
