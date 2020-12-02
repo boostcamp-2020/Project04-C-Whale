@@ -8,6 +8,12 @@ const getProjects = asyncTryCatch(async (req, res) => {
   responseHandler(res, 200, projects);
 });
 
+const getTodayProject = asyncTryCatch(async (req, res) => {
+  const todayProject = await projectService.retrieveTodayProject();
+
+  responseHandler(res, 200, todayProject);
+});
+
 const getProjectById = asyncTryCatch(async (req, res) => {
   const project = await projectService.retrieveById(req.params.projectId);
 
@@ -35,7 +41,7 @@ const deleteProject = asyncTryCatch(async (req, res) => {
 
 module.exports = {
   getProjects,
-  // getTodayProject,
+  getTodayProject,
   getProjectById,
   createProject,
   updateProject,
