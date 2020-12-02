@@ -13,8 +13,8 @@ const state = {
 
 const getters = {
   currentProject: (state) => state.currentProject,
-  projectInfos: (state) => state.projectInfos,
-  managedProject: (state) => state.projects.filter((project) => project.title === "관리함"),
+  namedProjectInfos: (state) => state.projectInfos.filter((project) => project.title !== "관리함"),
+  managedProject: (state) => state.projectInfos.filter((project) => project.title === "관리함")[0],
 };
 
 const actions = {
