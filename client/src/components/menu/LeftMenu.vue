@@ -1,35 +1,34 @@
 <template>
   <div>
     <favorite-project-list></favorite-project-list>
-    <v-list-group :value="true" no-action sub-group>
-      <template v-slot:activator>
-        <v-list-item-content>
-          <v-list-item-title>프로젝트</v-list-item-title>
-        </v-list-item-content>
-      </template>
-      <v-list-item v-for="project in projectInfos" :key="project.id">
-        <v-list-item-content>
-          <v-list-item-title>{{ project.title }} {{ project.taskCount }}</v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
-    </v-list-group>
+    <project-list-container :project-infos="projectInfos"></project-list-container>
+    <label-list :labels="labels"></label-list>
+    <filter-list :priorities="priorities"></filter-list>
   </div>
 </template>
 
 <script>
 import FavoriteProjectList from "./FavoriteProjectList";
+import ProjectListContainer from "./ProjectListContainer";
+import LabelList from "./LabelList";
+import FilterList from "./FilterList";
 import { mapGetters, mapActions } from "vuex";
 
 export default {
   components: {
-    "favorite-project-list": FavoriteProjectList,
+    FavoriteProjectList,
+    ProjectListContainer,
+    LabelList,
+    FilterList,
   },
-  computed: mapGetters(["projectInfos"]),
+  computed: mapGetters(["projectInfos", "labels", "priorities"]),
   methods: {
-    ...mapActions(["fetchProjectInfos"]),
+    ...mapActions(["fetchProjectInfos", "fetchLabels", "fetchPriorities"]),
   },
   created() {
     this.fetchProjectInfos();
+    this.fetchLabels();
+    this.fetchPriorities();
   },
 };
 </script>

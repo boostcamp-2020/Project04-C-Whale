@@ -1,9 +1,21 @@
 <template>
-  <ul>
-    <li><span></span><span>관리함</span></li>
-    <li><span></span><span>오늘</span></li>
-    <li><span></span><span>다음</span></li>
-  </ul>
+  <div>
+    <v-list-item>
+      <v-list-item-content>
+        <v-list-item-title>관리함</v-list-item-title>
+      </v-list-item-content>
+    </v-list-item>
+    <v-list-item>
+      <v-list-item-content>
+        <v-list-item-title>오늘</v-list-item-title>
+      </v-list-item-content>
+    </v-list-item>
+    <v-list-item>
+      <v-list-item-content>
+        <v-list-item-title>다음</v-list-item-title>
+      </v-list-item-content>
+    </v-list-item>
+  </div>
 </template>
 
 <script>

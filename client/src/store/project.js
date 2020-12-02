@@ -22,7 +22,7 @@ const actions = {
     try {
       const { data: project } = await projectAPI.getProjectById(projectId);
 
-      commit("setCurrentProject", project);
+      commit("SET_CURRENT_PROJECT", project);
     } catch (err) {
       alert("프로젝트 조회 요청 실패");
     }
@@ -42,9 +42,9 @@ const actions = {
   },
   async fetchProjectInfos({ commit }) {
     try {
-      const { data: projects } = await projectAPI.getProjects();
+      const { data: projectInfos } = await projectAPI.getProjects();
 
-      commit("setProjects", projects);
+      commit("SET_PROJECT_INFOS", projectInfos);
     } catch (err) {
       alert("프로젝트 전체 정보 조회 요청 실패");
     }
@@ -53,8 +53,8 @@ const actions = {
 
 const mutations = {
   //TODO: function vs arrow-function style-guide 보고 통일하기
-  setCurrentProject: (state, currentProject) => (state.currentProject = currentProject),
-  setProjects: (state, projects) => (state.projects = projects),
+  SET_CURRENT_PROJECT: (state, currentProject) => (state.currentProject = currentProject),
+  SET_PROJECT_INFOS: (state, projectInfos) => (state.projectInfos = projectInfos),
   // newTodo: (state, todo) => state.todos.unshift(todo),
 };
 
