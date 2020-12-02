@@ -1,6 +1,7 @@
 <template>
   <div>
     <favorite-project-list
+      v-if="managedProject"
       :managed-project="managedProject"
       :today-project="todayProject"
     ></favorite-project-list>
