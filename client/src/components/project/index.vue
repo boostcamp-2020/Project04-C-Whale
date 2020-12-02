@@ -1,49 +1,55 @@
 <template>
-  <v-container>
-    <p class="text-h4">{{ currentProject.title }}</p>
-    <v-list v-for="section in currentProject.sections" :key="section.id" class="mb-5">
-      <v-list-item class="font-weight-black text-h5">{{ section.title }}</v-list-item>
+  <div class="project-container">
+    <div class="project-header">
+      <v-list-item>
+        <v-list-item-content>
+          <p class="text-h5">{{ currentProject.title }}</p>
+        </v-list-item-content>
 
-      <div v-for="task in section.tasks" :key="task.id">
-        <v-list-item>
-          <v-list-item-action>
-            <v-checkbox
-              @click="updateTaskToDone({ projectId: $route.params.projectId, taskId: task.id })"
-            ></v-checkbox>
-          </v-list-item-action>
-
-          <v-list-item-content>
-            <v-list-item-title>{{ task.title }}</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-        <v-list class="ml-10">
-          <v-list-item v-for="childTask in task.tasks" :key="childTask.id">
+        <v-menu :offset-y="true">
+          <template v-slot:activator="{ on }">
             <v-list-item-action>
-              <v-checkbox></v-checkbox>
+              <v-btn icon v-on="on">
+                <v-icon>mdi-dots-horizontal</v-icon>
+              </v-btn>
             </v-list-item-action>
-            <v-list-item-content>
-              <v-list-item-title>{{ childTask.title }}</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-        </v-list>
+          </template>
+          <v-list>
+            <v-list-item> 섹션 추가 </v-list-item>
+          </v-list>
+        </v-menu>
+      </v-list-item>
+    </div>
+
+    <v-list v-for="section in currentProject.sections" :key="section.id" class="mb-5">
+      <v-list-item class="font-weight-black text-h6">{{ section.title }}</v-list-item>
+
+      <div v-for="task in section.tasks" :key="task.id" class="task-container">
+        <task-item :task="task" />
+        <v-divider />
+
+        <div class="childTaskContainer ml-10" v-for="childTask in task.tasks" :key="childTask.id">
+          <task-item :task="childTask" />
+        </div>
       </div>
 
-      <add-task />
+      <add-task :projectId="section.projectId" :sectionId="section.id" />
     </v-list>
-  </v-container>
+  </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
 import AddTask from "./AddTask";
+import TaskItem from "./TaskItem";
 
 export default {
-  name: "Project",
+  name: "ProjectContainer",
   methods: {
     ...mapActions(["fetchCurrentProject", "updateTaskToDone"]),
   },
   computed: mapGetters(["currentProject"]),
-  components: { AddTask },
+  components: { AddTask, TaskItem },
   created() {
     this.fetchCurrentProject(this.$route.params.projectId);
   },
@@ -51,7 +57,14 @@ export default {
 </script>
 
 <style>
-.toggle {
-  width: 50px;
+.project-header {
+  min-width: 450px;
+}
+.task-container {
+  min-width: 450px;
+}
+.project-container {
+  width: 100%;
+  max-width: 600px;
 }
 </style>
