@@ -77,7 +77,7 @@ export default {
       this.isLoading = true;
 
       // Lazily load input items,
-      const res = await taskAPI.searchTask();
+      const res = await taskAPI.getAllTasks();
       this.tasks = res.data.tasks;
       this.isLoading = false;
     },
