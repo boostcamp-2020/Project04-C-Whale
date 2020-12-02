@@ -93,8 +93,8 @@ const create = async data => {
 
 const findOrCreate = async data => {
   const [result] = await projectModel.findAll({ where: data });
-  console.log(result);
   if (result) return true;
+
   return await create(data);
 };
 
