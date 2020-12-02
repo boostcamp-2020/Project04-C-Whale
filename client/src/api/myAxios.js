@@ -1,28 +1,28 @@
 import axios from "axios";
 
 const headerConfig = {
-  header: {
+  headers: {
     Authorization: `Bearer ${localStorage.getItem("token")}`,
   },
 };
 
-const BASE_URL = process.env.VUE_APP_SERVER_URL;
+const SERVER_URL = process.env.VUE_APP_SERVER_URL + "/api";
 
 const myAxios = {
   GET: (path) => {
-    return axios.get(BASE_URL + path, headerConfig);
+    return axios.get(SERVER_URL + path, headerConfig);
   },
   POST: (path, body) => {
-    return axios.post(BASE_URL + path, body, headerConfig);
+    return axios.post(SERVER_URL + path, body, headerConfig);
   },
   PATCH: (path, body) => {
-    return axios.patch(BASE_URL + path, body, headerConfig);
+    return axios.patch(SERVER_URL + path, body, headerConfig);
   },
   PUT: (path, body) => {
-    return axios.put(BASE_URL + path, body, headerConfig);
+    return axios.put(SERVER_URL + path, body, headerConfig);
   },
   DELETE: (path) => {
-    return axios.delete(BASE_URL + path, headerConfig);
+    return axios.delete(SERVER_URL + path, headerConfig);
   },
 };
 
