@@ -1,20 +1,15 @@
 <template>
   <v-app>
-    <v-navigation-drawer v-model="drawer" app>
-      <!-- <Menu /> -->
-    </v-navigation-drawer>
+    <v-navigation-drawer v-model="drawer" app />
     <v-app-bar app>
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
 
       <v-toolbar-title>할고래DO</v-toolbar-title>
     </v-app-bar>
-    <!-- Sizes your content based upon application components -->
     <v-main>
-      <!-- Provides the application the proper gutter -->
-      <v-container class="pa-15" fill-height>
-        <!-- If using vue-router -->
+      <div class="router-view-container">
         <router-view></router-view>
-      </v-container>
+      </div>
     </v-main>
   </v-app>
 </template>
@@ -27,6 +22,14 @@ export default {
   components: {
     // Menu,
   },
-  data: () => ({ drawer: null }),
+  data: () => ({ drawer: false }),
 };
 </script>
+
+<style>
+.router-view-container {
+  padding: 50px 20%;
+  display: flex;
+  justify-content: center;
+}
+</style>
