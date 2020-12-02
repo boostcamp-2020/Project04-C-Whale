@@ -3,7 +3,7 @@
     <favorite-project-list
       v-if="managedProject"
       :managed-project="managedProject"
-      :today-project="todayProject"
+      :task-count="taskCount"
     ></favorite-project-list>
     <project-list-container :project-infos="namedProjectInfos"></project-list-container>
     <label-list :labels="labels"></label-list>
@@ -32,11 +32,20 @@ export default {
     "priorities",
     "todayProject",
     "nextDayTaskCount",
+    "taskCount",
+    "todayTasks",
   ]),
   methods: {
-    ...mapActions(["fetchProjectInfos", "fetchTodayProject", "fetchLabels", "fetchPriorities"]),
+    ...mapActions([
+      "fetchProjectInfos",
+      "fetchTodayProject",
+      "fetchLabels",
+      "fetchPriorities",
+      "fetchAllTasks",
+    ]),
   },
   created() {
+    this.fetchAllTasks();
     this.fetchProjectInfos();
     this.fetchTodayProject();
     this.fetchLabels();

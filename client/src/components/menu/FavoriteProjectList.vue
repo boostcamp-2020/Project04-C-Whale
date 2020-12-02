@@ -17,7 +17,7 @@
         </v-list-item-icon>
         <v-list-item-content>
           <v-list-item-title class="font-14">
-            오늘 <span>{{ todayProject.taskCount }}</span>
+            오늘 <span>{{ taskCount }}</span>
           </v-list-item-title>
         </v-list-item-content>
       </v-list-item>
@@ -29,7 +29,7 @@
 export default {
   props: {
     managedProject: Object,
-    todayProject: Object,
+    taskCount: Number,
   },
 };
 </script>
