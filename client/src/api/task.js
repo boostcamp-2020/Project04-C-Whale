@@ -1,7 +1,7 @@
 import myAxios from "./myAxios";
 
 const taskAPI = {
-  serachTask() {
+  searchTask() {
     return myAxios.GET("/task");
   },
   updateTask(taskId, data) {
