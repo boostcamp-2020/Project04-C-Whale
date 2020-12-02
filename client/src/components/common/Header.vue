@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-navigation-drawer v-model="drawer" app>
-      <left-menu></left-menu>
+      <left-menu class="menu-nav"></left-menu>
     </v-navigation-drawer>
     <v-app-bar app>
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
@@ -30,3 +30,14 @@ export default {
   },
 };
 </script>
+
+<style lang="scss">
+.menu-nav {
+  top: 64px !important;
+  box-shadow: none !important;
+  border-right: none !important;
+}
+.header {
+  left: 0px !important;
+}
+</style>

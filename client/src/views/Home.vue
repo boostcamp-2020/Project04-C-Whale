@@ -1,10 +1,10 @@
 <template>
   <v-app>
     <my-header />
-    <v-main class="pt-0">
-      <v-container class="pa-15" fill-height>
+    <v-main>
+      <div class="router-view-container">
         <router-view></router-view>
-      </v-container>
+      </div>
     </v-main>
   </v-app>
 </template>
@@ -20,13 +20,10 @@ export default {
 };
 </script>
 
-<style lang="scss">
-.menu-nav {
-  top: 64px !important;
-  box-shadow: none !important;
-  border-right: none !important;
-}
-.header {
-  left: 0px !important;
+<style>
+.router-view-container {
+  padding: 50px 20%;
+  display: flex;
+  justify-content: center;
 }
 </style>

@@ -37,8 +37,19 @@ const retrieveAll = async userId => {
 const create = async taskData => {
   const { labelIdList, dueDate, ...rest } = taskData;
   const result = await sequelize.transaction(async t => {
-    const task = await taskModel.create({ dueDate, ...rest }, { transaction: t });
-    await task.setLabels(JSON.parse(labelIdList), { transaction: t });
+    const section = await models.section.findByPk(sectionId, { include: 'tasks' });
+
+    const maxPosition = section.toJSON().tasks.reduce((maxPosition, task) => {
+      return maxPosition < task.position ? task.position : maxPosition;
+    }, 0);
+
+    const task = await models.task.create(
+      { projectId, sectionId, dueDate, position: maxPosition + 1, ...rest },
+      { transaction: t },
+    );
+    if (labelIdList) {
+      await task.setLabels(JSON.parse(labelIdList), { transaction: t });
+    }
 
     return task;
   });

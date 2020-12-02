@@ -16,7 +16,7 @@ export default {
   name: "Login",
   data() {
     return {
-      OAuthURL: process.env.VUE_APP_SERVER_URL + "/user/oauth/naver",
+      OAuthURL: process.env.VUE_APP_SERVER_URL + "/api/user/oauth/naver",
     };
   },
 };
