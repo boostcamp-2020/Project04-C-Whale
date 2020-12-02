@@ -15,7 +15,8 @@ const getProjectById = asyncTryCatch(async (req, res) => {
 });
 
 const createProject = asyncTryCatch(async (req, res) => {
-  await projectService.create(req.body);
+  const { id: creatorId } = req.user;
+  await projectService.create({ creatorId, ...req.body });
 
   responseHandler(res, 201, { message: 'ok' });
 });
