@@ -34,9 +34,10 @@ const retrieveAll = async userId => {
   return tasks;
 };
 
-const create = async (labelIdList, dueDate, taskData) => {
+const create = async taskData => {
+  const { labelIdList, dueDate, ...rest } = taskData;
   const result = await sequelize.transaction(async t => {
-    const task = await taskModel.create({ dueDate, ...taskData }, { transaction: t });
+    const task = await taskModel.create({ dueDate, ...rest }, { transaction: t });
     await task.setLabels(JSON.parse(labelIdList), { transaction: t });
 
     return task;
@@ -45,10 +46,11 @@ const create = async (labelIdList, dueDate, taskData) => {
   return !!result;
 };
 
-const update = async (labelIdList, dueDate, id, taskData) => {
+const update = async taskData => {
+  const { id, labelIdList, dueDate, ...rest } = taskData;
   const result = await sequelize.transaction(async t => {
     await taskModel.update(
-      { dueDate, ...taskData },
+      { dueDate, ...rest },
       {
         where: { id },
       },

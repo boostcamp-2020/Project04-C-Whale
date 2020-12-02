@@ -16,7 +16,7 @@ const getAllTasks = asyncTryCatch(async (req, res) => {
 });
 
 const createTask = asyncTryCatch(async (req, res) => {
-  const { labelIdList, dueDate, ...rest } = req.body;
+  const { dueDate } = req.body;
 
   // TODO middle ware로 빼내는게 좋을 것 같음
   if (!isValidDueDate(dueDate)) {
@@ -25,12 +25,12 @@ const createTask = asyncTryCatch(async (req, res) => {
     throw err;
   }
 
-  await taskService.create(labelIdList, dueDate, rest);
+  await taskService.create(req.body);
   responseHandler(res, 201, { message: 'ok' });
 });
 
 const updateTask = asyncTryCatch(async (req, res) => {
-  const { labelIdList, dueDate, ...rest } = req.body;
+  const { dueDate } = req.body;
 
   if (!isValidDueDate(dueDate)) {
     const err = new Error('유효하지 않은 dueDate');
@@ -40,7 +40,7 @@ const updateTask = asyncTryCatch(async (req, res) => {
 
   const { taskId } = req.params;
 
-  await taskService.update(labelIdList, dueDate, taskId, rest);
+  await taskService.update({ id: taskId, ...req.body });
   responseHandler(res, 200, { message: 'ok' });
 });
 

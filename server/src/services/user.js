@@ -7,7 +7,8 @@ const retrieveById = async id => {
   return foundUser;
 };
 
-const retrieveOrCreate = async (email, name, provider) => {
+const retrieveOrCreate = async userData => {
+  const { email, name, provider } = userData;
   const user = await userModel.findOrCreate({
     where: { email, provider },
     attributes: ['id', 'email', 'name', 'provider'],
