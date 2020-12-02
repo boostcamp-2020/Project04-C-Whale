@@ -44,7 +44,6 @@ import AddTask from "./AddTask";
 import TaskItem from "./TaskItem";
 
 export default {
-  name: "ProjectContainer",
   methods: {
     ...mapActions(["fetchCurrentProject", "updateTaskToDone"]),
   },
