@@ -34,7 +34,20 @@ const actions = {
 
       await dispatch("fetchCurrentProject", projectId);
     } catch (err) {
-      alert("프로젝트 조회 요청 실패");
+      alert("프로젝트 수정 요청 실패");
+    }
+  },
+  async addTask({ dispatch }, task) {
+    try {
+      const { data } = await taskAPI.createTask(task);
+
+      if (data.message !== "ok") {
+        throw new Error();
+      }
+
+      await dispatch("fetchCurrentProject", task.projectId);
+    } catch {
+      alert("프로젝트 추가 요청 실패");
     }
   },
 };
