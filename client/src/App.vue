@@ -17,6 +17,7 @@ export default {
     const [_, accessToken] = location.search.split("token=");
     if (accessToken) {
       localStorage.setItem("token", accessToken);
+      router.replace("/");
     }
 
     const token = localStorage.getItem("token");
@@ -29,6 +30,5 @@ export default {
       return;
     }
   },
-  mounted() {},
 };
 </script>

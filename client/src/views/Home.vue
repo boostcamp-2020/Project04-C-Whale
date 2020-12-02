@@ -1,11 +1,8 @@
 <template>
   <v-app>
     <my-header />
-    <!-- Sizes your content based upon application components -->
     <v-main class="pt-0">
-      <!-- Provides the application the proper gutter -->
       <v-container class="pa-15" fill-height>
-        <!-- If using vue-router -->
         <router-view></router-view>
       </v-container>
     </v-main>
@@ -13,7 +10,7 @@
 </template>
 
 <script>
-import Header from "../components/common/Header";
+import Header from "@/components/common/Header";
 
 export default {
   name: "Home",
@@ -22,3 +19,14 @@ export default {
   },
 };
 </script>
+
+<style lang="scss">
+.menu-nav {
+  top: 64px !important;
+  box-shadow: none !important;
+  border-right: none !important;
+}
+.header {
+  left: 0px !important;
+}
+</style>

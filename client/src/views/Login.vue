@@ -3,7 +3,7 @@
     <v-layout class="whaleGreen" fill-height d-flex align-center justify-center flex-column>
       <div class="login-layout white d-flex flex-column justify-space-around align-center py-10">
         <img width="200" src="../assets/halgoraedo.png" />
-        <a :href="oAuthURL">
+        <a :href="OAuthURL">
           <img width="200" src="../assets/naverlogin.png" />
         </a>
       </div>
@@ -16,7 +16,7 @@ export default {
   name: "Login",
   data() {
     return {
-      oAuthURL: process.env.VUE_APP_SERVER_URL + "/user/oauth/naver",
+      OAuthURL: process.env.VUE_APP_SERVER_URL + "/user/oauth/naver",
     };
   },
 };

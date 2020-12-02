@@ -29,14 +29,17 @@ const actions = {
       const { data: user } = await userAPI.authorize();
       commit("SET_USER", user);
 
-      if (location.pathname === "/") {
+      if (location.pathname === "/" || location.pathname === "/login") {
         router.replace("/today").catch(() => {});
+        return;
       } else {
         router.replace(location.pathname).catch(() => {});
+        return;
       }
     } catch (err) {
-      alert("로그인에 실패했습니다");
-      router.replace("/login");
+      alert("로그인에 실패했습니다.");
+      router.replace("/login").catch(() => {});
+      return;
     }
   },
 
