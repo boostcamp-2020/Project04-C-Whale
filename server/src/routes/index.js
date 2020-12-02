@@ -8,7 +8,7 @@ const { authenticateUser } = require('@utils/auth');
 
 router.use('/user', userRouter);
 router.use('/task', authenticateUser, taskRouter);
-router.use('/project', projectRouter);
-router.use('/label', labelRouter);
+router.use('/project', authenticateUser, projectRouter);
+router.use('/label', authenticateUser, labelRouter);
 
 module.exports = router;
