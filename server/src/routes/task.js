@@ -4,7 +4,6 @@ const commentController = require('@controllers/comment');
 
 // TODO validation check 로직 추가해야함
 router.get('/', taskController.getAllTasks);
-router.post('/', taskController.createTask);
 router.get('/:taskId', taskController.getTaskById);
 router.patch('/:taskId', taskController.updateTask);
 router.delete('/:taskId', taskController.deleteTask);

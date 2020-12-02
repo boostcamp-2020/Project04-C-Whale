@@ -3,10 +3,9 @@
 </template>
 
 <script>
-import ProjectContainer from "../components/project";
+import ProjectContainer from "../components/project/ProjectContainer";
 
 export default {
-  name: "ProjectContainer",
-  components: { "project-container": ProjectContainer },
+  components: { ProjectContainer },
 };
 </script>

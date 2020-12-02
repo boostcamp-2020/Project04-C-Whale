@@ -25,7 +25,8 @@ const createTask = asyncTryCatch(async (req, res) => {
     throw err;
   }
 
-  await taskService.create(req.body);
+  const { projectId, sectionId } = req.params;
+  await taskService.create({ projectId, sectionId, ...req.body });
   responseHandler(res, 201, { message: 'ok' });
 });
 
