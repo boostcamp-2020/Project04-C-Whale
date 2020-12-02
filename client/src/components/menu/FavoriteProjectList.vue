@@ -15,7 +15,7 @@
         <v-list-item-icon class="mr-4">
           <v-icon color="red">mdi-calendar-today</v-icon>
         </v-list-item-icon>
-        <v-list-item-content :key="todayProject.id">
+        <v-list-item-content>
           <v-list-item-title class="font-14">
             오늘 <span>{{ todayProject.taskCount }}</span>
           </v-list-item-title>
@@ -26,7 +26,6 @@
 </template>
 
 <script>
-import router from "@/router";
 export default {
   props: {
     managedProject: Object,
