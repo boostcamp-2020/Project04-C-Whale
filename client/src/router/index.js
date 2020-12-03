@@ -6,7 +6,7 @@ import Project from "@/views/Project.vue";
 import Task from "@/views/Task.vue";
 import Home from "@/views/Home.vue";
 import userAPI from "@/api/user";
-import TaskDetail from "@/components/task/TaskDetail.vue";
+// import TaskDetail from "@/components/task/TaskDetail.vue";
 
 Vue.use(VueRouter);
 
@@ -50,7 +50,7 @@ const routes = [
           {
             path: "task/:taskId",
             name: "TodayTaskDetail",
-            component: TaskDetail,
+            component: Task,
           },
         ],
       },
@@ -63,7 +63,7 @@ const routes = [
           {
             path: "task/:taskId",
             name: "ProjectTaskDetail",
-            component: TaskDetail,
+            component: Task,
           },
         ],
       },
