@@ -30,7 +30,7 @@ const actions = {
 
       commit("SET_CURRENT_PROJECT", project);
     } catch (err) {
-      alert("프로젝트 조회 요청 실패");
+      commit("SET_ERROR_ALERT", err.response);
     }
   },
 
@@ -40,11 +40,11 @@ const actions = {
 
       commit("SET_TODAY_PROJECT", todayProject);
     } catch (err) {
-      alert("오늘의 프로젝트 조회 요청 실패");
+      commit("SET_ERROR_ALERT", err.response);
     }
   },
 
-  async updateProjectTitle({ dispatch }, { projectId, title }) {
+  async updateProjectTitle({ dispatch, commit }, { projectId, title }) {
     try {
       const { data } = await projectAPI.updateProject(projectId, { title });
 
@@ -54,11 +54,11 @@ const actions = {
 
       await dispatch("fetchCurrentProject", projectId);
     } catch (err) {
-      alert("프로젝트 수정 요청 실패");
+      commit("SET_ERROR_ALERT", err.response);
     }
   },
 
-  async updateSectionTitle({ dispatch }, { projectId, sectionId, title }) {
+  async updateSectionTitle({ dispatch, commit }, { projectId, sectionId, title }) {
     try {
       const { data } = await projectAPI.updateSection(projectId, sectionId, { title });
 
@@ -68,11 +68,11 @@ const actions = {
 
       await dispatch("fetchCurrentProject", projectId);
     } catch (err) {
-      alert("섹션 수정 요청 실패");
+      commit("SET_ERROR_ALERT", err.response);
     }
   },
 
-  async updateTaskToDone({ dispatch }, { projectId, taskId }) {
+  async updateTaskToDone({ dispatch, commit }, { projectId, taskId }) {
     try {
       const { data } = await taskAPI.updateTask(taskId, { isDone: true });
 
@@ -82,11 +82,11 @@ const actions = {
 
       await dispatch("fetchCurrentProject", projectId);
     } catch (err) {
-      alert("프로젝트 수정 요청 실패");
+      commit("SET_ERROR_ALERT", err.response);
     }
   },
 
-  async addTask({ dispatch }, task) {
+  async addTask({ dispatch, commit }, task) {
     try {
       const { data } = await taskAPI.createTask(task);
 
@@ -95,8 +95,8 @@ const actions = {
       }
 
       await dispatch("fetchCurrentProject", task.projectId);
-    } catch {
-      alert("프로젝트 추가 요청 실패");
+    } catch (err) {
+      commit("SET_ERROR_ALERT", err.response);
     }
   },
 
@@ -106,7 +106,8 @@ const actions = {
 
       commit("SET_PROJECT_INFOS", projectInfos);
     } catch (err) {
-      alert("프로젝트 전체 정보 조회 요청 실패");
+      commit("SET_ERROR_ALERT", err.response);
+      // alert("프로젝트 전체 정보 조회 요청 실패");
     }
   },
 
