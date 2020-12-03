@@ -46,6 +46,13 @@ const routes = [
         name: "Today",
         component: Today,
         beforeEnter: requireAuth(),
+        children: [
+          {
+            path: "task/:taskId",
+            name: "TodayTaskDetail",
+            component: TaskDetail,
+          },
+        ],
       },
       {
         path: "project/:projectId",
@@ -55,7 +62,7 @@ const routes = [
         children: [
           {
             path: "task/:taskId",
-            name: "TaskDetail",
+            name: "ProjectTaskDetail",
             component: TaskDetail,
           },
         ],

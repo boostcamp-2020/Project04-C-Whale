@@ -46,13 +46,14 @@ export default {
     ...mapActions(["updateTaskToDone", "startDragTask", "changeTaskPosition"]),
 
     moveToTaskDetail() {
-      console.log(this.task);
-      this.$router
-        .push({
-          name: "TaskDetail",
-          params: { projectId: this.task.projectId, taskId: this.task.id },
-        })
-        .catch(() => {});
+      const destinationInfo = this.$route.params.projectId
+        ? {
+            name: "ProjectTaskDetail",
+            params: { projectId: this.task.projectId, taskId: this.task.id },
+          }
+        : { name: "TodayTaskDetail", params: { taskId: this.task.id } };
+
+      this.$router.push(destinationInfo).catch(() => {});
     },
     handleDragStart() {
       this.dragging = true;
