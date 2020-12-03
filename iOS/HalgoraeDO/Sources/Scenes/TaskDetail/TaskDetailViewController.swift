@@ -16,12 +16,21 @@ class TaskDetailViewController: UIViewController {
     // MARK: - Properties
     
     private var task: Task
+    private var priority: Priority = .four {
+        didSet {
+            priorityButton.tintColor = priority.color
+        }
+    }
     
     // MARK: Views
 
     @IBOutlet weak private var navigationView: UIView!
     @IBOutlet weak private var navigationBar: UINavigationBar!
+    @IBOutlet weak private var saveBarButtomItem: UIBarButtonItem!
     @IBOutlet weak private var titleLabel: UILabel!
+    @IBOutlet weak private var taskTitleTextView: UITextView!
+    @IBOutlet weak private var finishButton: UIButton!
+    @IBOutlet weak private var priorityButton: UIButton!
     @IBOutlet weak private var subContainerView: UIView!
     
     // MARK: View Life Cycle
@@ -38,12 +47,57 @@ class TaskDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setup()
+    }
+    
+    // MARK: - Initialize
+    
+    private func setup() {
+        taskTitleTextView.delegate = self
         titleLabel.text = "Project"
+        taskTitleTextView.text = task.title
+        priority = task.priority
+    }
+    
+    override func setEditing(_ editing: Bool, animated: Bool) {
+        super.setEditing(editing, animated: animated)
+        set(editing)
     }
     
     // MARK: - Methods
     
+    private func set(_ editingMode: Bool) {
+        saveBarButtomItem.isEnabled = task.title != taskTitleTextView.text
+        navigationView.isHidden = editingMode
+        navigationBar.isHidden = !editingMode
+        finishButton.isEnabled = !editingMode
+    }
+    
+    private func configure(popover: PopoverViewController) {
+        popover.modalPresentationStyle = .popover
+        popover.popoverPresentationController?.delegate = self
+        popover.viewModels = Priority.allCases.map { $0.viewModel() }
+        popover.selectHandler = { indexPath in
+            self.priority = Priority.allCases[indexPath.row]
+            popover.dismiss(animated: true, completion: nil)
+        }
+    }
+    
     // MARK: IBActions
+    
+    @IBAction private func didTapCancelBarButtonItem(_ sender: UIBarButtonItem) {
+        setEditing(false, animated: true)
+        view.endEditing(true)
+    }
+    
+    @IBAction private func didTapSaveBarButtonItem(_ sender: UIBarButtonItem) {
+        
+    }
+    
+    
+    @IBAction private func didTapTaskFinishButton(_ sender: UIButton) {
+        
+    }
     
     @IBAction private func didTapSubTasksTabButton(_ sender: UIButton) {
         
@@ -56,8 +110,39 @@ class TaskDetailViewController: UIViewController {
     @IBAction private func didTapBookmarkButton(_ sender: UIButton) {
         
     }
+    
+    // MARK: - Navigation
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let popoverVC = segue.destination as? PopoverViewController else { return }
+        configure(popover: popoverVC)
+    }
 }
+
+// MARK: - TaskDetail DisplayLogic
 
 extension TaskDetailViewController: TaskDetailDisplayLogic {
     
+}
+
+// MARK: - UITextViewDelegate
+
+extension TaskDetailViewController: UITextViewDelegate {
+    
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        setEditing(true, animated: true)
+    }
+    
+    func textViewDidChange(_ textView: UITextView) {
+        saveBarButtomItem.isEnabled = task.title != textView.text
+    }
+}
+
+// MARK: - UIPopoverPresentationControllerDelegate
+
+extension TaskDetailViewController: UIPopoverPresentationControllerDelegate {
+    
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+        return .none
+    }
 }
