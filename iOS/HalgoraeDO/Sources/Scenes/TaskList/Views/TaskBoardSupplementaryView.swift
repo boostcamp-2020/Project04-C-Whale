@@ -72,7 +72,7 @@ class TaskBoardSupplementaryView: UICollectionReusableView {
         addTaskButton.setImage(plusImage, for: .normal)
         addTaskButton.setTitleColor(.systemGray, for: .normal)
         addTaskButton.setTitle(" 작업 추가", for: .normal)
-        addTaskButton.tintColor = .red
+        addTaskButton.tintColor = .halgoraedoDarkBlue
         addTaskButton.addTarget(self, action: #selector(priorityPopover), for: .touchUpInside)
         NSLayoutConstraint.activate([
             addTaskButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 30),

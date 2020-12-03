@@ -236,7 +236,7 @@ private extension TaskAddViewController {
         let submitImage = UIImage(systemName: "arrow.up.circle.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 28, weight: .bold, scale: .large))
         submitButton.setImage(submitImage, for: .normal)
         submitButton.alpha = 0.5
-        submitButton.tintColor = .red
+        submitButton.tintColor = .halgoraedoDarkBlue
         submitButton.translatesAutoresizingMaskIntoConstraints = false
         submitButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10).isActive = true
         submitButton.topAnchor.constraint(equalTo: dateButton.topAnchor).isActive = true

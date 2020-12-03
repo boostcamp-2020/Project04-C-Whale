@@ -417,7 +417,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="할고래DO" id="98D-Jg-aJM">
-                        <barButtonItem key="rightBarButtonItem" title="More" id="Wkv-8H-Efw">
+                        <barButtonItem key="rightBarButtonItem" image="ellipsis" catalog="system" id="Wkv-8H-Efw">
                             <connections>
                                 <action selector="didTapMoreButton:" destination="U6H-lf-q4a" id="sCz-X7-TuZ"/>
                             </connections>
@@ -512,19 +512,55 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uJ9-T2-H3k">
-                                <rect key="frame" x="216" y="407" width="46" height="30"/>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="i1l-sl-RpB">
+                                <rect key="frame" x="0.0" y="88" width="414" height="774"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="2nZ-4X-snI">
+                                    <size key="itemSize" width="128" height="128"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="SyQ-et-RWE">
+                                        <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="F7Y-MW-fso">
+                                            <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </collectionViewCellContentView>
+                                    </collectionViewCell>
+                                </cells>
+                            </collectionView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="qIh-dh-kCn"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="qIh-dh-kCn" firstAttribute="bottom" secondItem="i1l-sl-RpB" secondAttribute="bottom" id="9QE-nh-Ktp"/>
+                            <constraint firstItem="i1l-sl-RpB" firstAttribute="leading" secondItem="4nU-wA-eog" secondAttribute="leading" id="EIa-JR-pfi"/>
+                            <constraint firstItem="i1l-sl-RpB" firstAttribute="leading" secondItem="4nU-wA-eog" secondAttribute="leading" id="FsM-Jo-2Sy"/>
+                            <constraint firstItem="qIh-dh-kCn" firstAttribute="trailing" secondItem="i1l-sl-RpB" secondAttribute="trailing" id="PEo-Bo-dGc"/>
+                            <constraint firstItem="i1l-sl-RpB" firstAttribute="top" secondItem="qIh-dh-kCn" secondAttribute="top" id="Qzn-xu-iXg"/>
+                            <constraint firstItem="i1l-sl-RpB" firstAttribute="top" secondItem="qIh-dh-kCn" secondAttribute="top" id="edN-Rn-r0E"/>
+                            <constraint firstItem="qIh-dh-kCn" firstAttribute="trailing" secondItem="i1l-sl-RpB" secondAttribute="trailing" id="wic-1X-gGd"/>
+                            <constraint firstItem="qIh-dh-kCn" firstAttribute="bottom" secondItem="i1l-sl-RpB" secondAttribute="bottom" id="yHP-dr-uKZ"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="QCA-8H-c9B">
+                        <barButtonItem key="rightBarButtonItem" style="plain" id="A30-82-h5G">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="uJ9-T2-H3k">
+                                <rect key="frame" x="316" y="7" width="78" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button"/>
+                                <state key="normal" title="임시이동버튼"/>
                                 <connections>
                                     <segue destination="BYZ-38-t0r" kind="show" identifier="MenuViewControllerTo TaskListViewController" id="wzC-qO-rhL"/>
                                 </connections>
                             </button>
-                        </subviews>
-                        <viewLayoutGuide key="safeArea" id="qIh-dh-kCn"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                    </view>
-                    <navigationItem key="navigationItem" id="QCA-8H-c9B"/>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="menuCollectionView" destination="i1l-sl-RpB" id="SnW-CE-hhg"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CoZ-mn-0jv" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
