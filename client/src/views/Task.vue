@@ -3,7 +3,7 @@
     <task-detail
       @hideTaskModal="hideTaskModal"
       :task="currentTask"
-      :projectTitle="getProjectTitle"
+      :projectTitle="projectTitle"
     ></task-detail>
   </v-dialog>
 </template>
@@ -29,22 +29,13 @@ export default {
   },
   computed: {
     ...mapGetters(["currentTask", "namedProjectInfos"]),
-    getProjectTitle() {
-      return this.namedProjectInfos.find((project) => project.id === this.currentTask.projectId)
-        .title;
-    },
   },
 
-  created() {
-    // console.log(this);
-    this.fetchCurrentTask(this.$route.params.taskId);
+  async created() {
+    await this.fetchCurrentTask(this.$route.params.taskId);
+    this.projectTitle = this.namedProjectInfos.find(
+      (project) => project.id === this.currentTask.projectId
+    ).title;
   },
-  // mounted() {
-  //   this.projectTitle = this.getProjectTitle();
-  // },
-  // beforeRouteUpdate(to, from, next) {
-  //   this.fetchCurrentTask(to.params.taskId);
-  //   next();
-  // },
 };
 </script>
