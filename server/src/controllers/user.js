@@ -1,28 +1,19 @@
 const { responseHandler } = require('@utils/handler');
 const { createJWT } = require('@utils/auth');
+const { asyncTryCatch } = require('@utils/async-try-catch');
 
-const naverLogin = (req, res, next) => {
-  const clientURL =
-    process.env.NODE_ENV === 'development'
-      ? process.env.CLIENT_DOMAIN_DEVELOP
-      : process.env.CLIENT_DOMAIN_PRODUCTION;
-  try {
-    const { user } = req;
-    const token = createJWT(user);
-    res.header('Authentication', token);
-    res.status(200).redirect(`${clientURL}?token=${token}`);
-  } catch (err) {
-    next(err);
-  }
-};
+const naverLogin = asyncTryCatch(async (req, res) => {
+  const { CLIENT_URL } = process.env;
+  const { user } = req;
+  const token = createJWT(user);
 
-const getOwnInfo = (req, res, next) => {
-  try {
-    const { user } = req;
-    responseHandler(res, 200, user);
-  } catch (err) {
-    next(err);
-  }
-};
+  res.header('Authentication', token);
+  res.status(200).redirect(`${CLIENT_URL}?token=${token}`);
+});
+
+const getOwnInfo = asyncTryCatch(async (req, res) => {
+  const { user } = req;
+  responseHandler(res, 200, user);
+});
 
 module.exports = { naverLogin, getOwnInfo };

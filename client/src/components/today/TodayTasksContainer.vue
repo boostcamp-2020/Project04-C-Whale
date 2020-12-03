@@ -1,0 +1,62 @@
+<template>
+  <div class="project-container">
+    <v-list class="mb-5" v-if="expiredTasks.length > 0">
+      <v-list-item class="font-weight-black text-h6"> 기한이 지난 </v-list-item>
+
+      <div v-for="task in expiredTasks" :key="task.id" class="task-container">
+        <div @click="popTaskDetail(task)">
+          <task-item :task="task" />
+        </div>
+
+        <v-divider />
+
+        <div class="childTaskContainer ml-10" v-for="childTask in task.tasks" :key="childTask.id">
+          <task-item :task="childTask" />
+        </div>
+      </div>
+
+      <!-- <add-task :projectId="section.projectId" :sectionId="section.id" /> -->
+    </v-list>
+    <v-list class="mb-5">
+      <v-list-item class="font-weight-black text-h6"> 오늘 </v-list-item>
+
+      <div v-for="task in todayTasks" :key="task.id" class="task-container">
+        <div @click="popTaskDetail(task)">
+          <task-item :task="task" />
+        </div>
+
+        <v-divider />
+
+        <div class="childTaskContainer ml-10" v-for="childTask in task.tasks" :key="childTask.id">
+          <task-item :task="childTask" />
+        </div>
+      </div>
+      <v-btn color="primary" dark @click.stop="dialog = true"> Open Dialog </v-btn>
+
+      <!-- <add-task :projectId="section.projectId" :sectionId="section.id" /> -->
+    </v-list>
+  </div>
+</template>
+
+<script>
+import { mapActions } from "vuex";
+import TaskItem from "@/components/project/TaskItem";
+
+export default {
+  props: {
+    todayTasks: Array,
+    expiredTasks: Array,
+  },
+  data() {
+    return {};
+  },
+  methods: {
+    ...mapActions(["updateTaskToDone"]),
+    popTaskDetail(task) {
+      this.$router.push(`/task/${task.id}`);
+      // router.push(`/task/${obj.id}`).catch(() => {});
+    },
+  },
+  components: { TaskItem },
+};
+</script>

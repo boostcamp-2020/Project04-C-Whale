@@ -1,13 +1,14 @@
 {
   "name": "halgoraedo",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
     "start": "node ./src/app.js",
     "dev": "nodemon ./src/app.js",
     "seed": "npx sequelize-cli db:seed:all",
     "unseed": "npx sequelize-cli db:seed:undo:all",
-    "test": "jest --detectOpenHandles --forceExit"
+    "test": "jest --detectOpenHandles --forceExit",
+    "concurrent": "concurrently \"npm run dev\" \"npm run serve --prefix ../client\""
   },
   "jest": {
     "moduleNameMapper": {
@@ -20,12 +21,14 @@
       "^@utils/(.*)$": "<rootDir>/src/utils/$1",
       "^@routes(.*)$": "<rootDir>/src/routes/$1",
       "^@routes/(.*)$": "<rootDir>/src/routes/$1",
+      "^@services/(.*)$": "<rootDir>/src/services/$1",
       "^@controllers/(.*)$": "<rootDir>/src/controllers/$1",
       "^@passport(.*)$": "<rootDir>/src/passport/$1",
       "^@passport/(.*)$": "<rootDir>/src/passport/$1"
     }
   },
   "dependencies": {
+    "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "~4.16.1",
     "forever": "^3.0.4",
@@ -41,6 +44,7 @@
     "uuid": "^8.3.1"
   },
   "devDependencies": {
+    "concurrently": "^5.3.0",
     "eslint": "^7.13.0",
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-config-prettier": "^6.15.0",

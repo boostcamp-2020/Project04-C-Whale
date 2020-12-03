@@ -1,21 +1,29 @@
 <template>
   <v-app>
-    <v-navigation-drawer app> menuNav </v-navigation-drawer>
-    <v-app-bar app> Header </v-app-bar>
-    <!-- Sizes your content based upon application components -->
+    <my-header />
     <v-main>
-      <!-- Provides the application the proper gutter -->
-      <v-container fluid fill-height>
-        <!-- If using vue-router -->
+      <div class="router-view-container">
         <router-view></router-view>
-      </v-container>
+      </div>
     </v-main>
   </v-app>
 </template>
 
 <script>
-// @ is an alias to /src
+import Header from "@/components/common/Header";
+
 export default {
   name: "Home",
+  components: {
+    "my-header": Header,
+  },
 };
 </script>
+
+<style>
+.router-view-container {
+  padding: 50px 20%;
+  display: flex;
+  justify-content: center;
+}
+</style>

@@ -12,6 +12,9 @@ module.exports = sequelize => {
       title: {
         type: DataTypes.STRING,
       },
+      position: {
+        type: DataTypes.INTEGER,
+      },
     },
     { tableName: 'section' },
   );
