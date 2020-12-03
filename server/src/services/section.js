@@ -17,10 +17,10 @@ const create = async ({ projectId, ...data }) => {
   return !!result;
 };
 
-const update = async (id, ...data) => {
-  const result = await models.section.update(data, { where: { id } });
+const update = async ({ id, ...data }) => {
+  const [result] = await models.section.update(data, { where: { id } });
 
-  return result.length !== 0;
+  return result !== 0;
 };
 
 const updateTaskPositions = async orderedTasks => {

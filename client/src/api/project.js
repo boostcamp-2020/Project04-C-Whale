@@ -16,6 +16,9 @@ const projectAPI = {
   updateSection(projectId, sectionId, data) {
     return myAxios.PUT(`/project/${projectId}/section/${sectionId}`, data);
   },
+  updateTaskPosition(projectId, sectionId, data) {
+    return myAxios.PATCH(`/project/${projectId}/section/${sectionId}/position`, data);
+  },
 };
 
 export default projectAPI;

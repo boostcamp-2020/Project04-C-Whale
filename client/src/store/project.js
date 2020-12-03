@@ -1,5 +1,6 @@
 import projectAPI from "../api/project";
 import taskAPI from "../api/task";
+import swapArrayItem from "../utils/array-index-swap";
 
 const state = {
   currentProject: {
@@ -84,6 +85,7 @@ const actions = {
       alert("프로젝트 수정 요청 실패");
     }
   },
+
   async addTask({ dispatch }, task) {
     try {
       const { data } = await taskAPI.createTask(task);
@@ -97,6 +99,7 @@ const actions = {
       alert("프로젝트 추가 요청 실패");
     }
   },
+
   async fetchProjectInfos({ commit }) {
     try {
       const { data: projectInfos } = await projectAPI.getProjects();
@@ -105,6 +108,33 @@ const actions = {
     } catch (err) {
       alert("프로젝트 전체 정보 조회 요청 실패");
     }
+  },
+
+  async changeTaskPosition({ dispatch, rootState }, { section, task }) {
+    const taskIds = section.tasks.map((task) => task.id);
+    const draggingTask = rootState.task.draggingTask;
+    console.log(task.position);
+    if (task.sectionId === draggingTask.sectionId) {
+      swapArrayItem(taskIds, draggingTask.position, task.position);
+    } else {
+      taskIds.splice(task.position + 1, 0, task.id);
+    }
+
+    try {
+      await taskAPI.updateTask(draggingTask.id, { sectionId: section.id });
+
+      const { data } = await projectAPI.updateTaskPosition(section.projectId, section.id, {
+        orderedTasks: taskIds,
+      });
+
+      if (data.message !== "ok") {
+        throw new Error();
+      }
+    } catch (err) {
+      alert("위치 변경 실패");
+    }
+
+    await dispatch("fetchCurrentProject", section.projectId);
   },
 };
 

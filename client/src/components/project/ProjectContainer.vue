@@ -31,8 +31,8 @@
         <updatable-title :originalTitle="section.title" :parent="section" type="section" />
       </v-list-item>
 
-      <div v-for="task in section.tasks" :key="task.id" class="task-container">
-        <task-item @pop="showTaskModal(task.id)" :task="task" />
+      <div v-for="(task, index) in section.tasks" :key="task.id" class="task-container">
+        <task-item @pop="showTaskModal(task.id)" :section="section" :task="task" :position="index" />
 
         <v-divider />
 
@@ -78,7 +78,6 @@ export default {
       router.push(`/project/${this.projectId}`);
     },   
   },
-  computed: mapGetters(["currentProject"]),
   components: { AddTask, TaskItem, UpdatableTitle },
 };
 </script>
