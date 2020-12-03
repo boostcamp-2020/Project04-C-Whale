@@ -12,7 +12,7 @@ const getTaskById = asyncTryCatch(async (req, res) => {
 const getAllTasks = asyncTryCatch(async (req, res) => {
   const tasks = await taskService.retrieveAll(req.user.id);
 
-  responseHandler(res, 200, { tasks });
+  responseHandler(res, 200, tasks);
 });
 
 const createTask = asyncTryCatch(async (req, res) => {

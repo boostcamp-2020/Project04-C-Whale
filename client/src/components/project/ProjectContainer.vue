@@ -4,9 +4,9 @@
       <v-list-item>
         <v-list-item-content class="text-h5">
           <updatable-title
-            v-if="currentProject.title"
-            :originalTitle="currentProject.title"
-            :parent="currentProject"
+            v-if="project.title"
+            :originalTitle="project.title"
+            :parent="project"
             type="project"
           />
         </v-list-item-content>
@@ -26,7 +26,7 @@
       </v-list-item>
     </div>
 
-    <v-list v-for="section in currentProject.sections" :key="section.id" class="mb-5">
+    <v-list v-for="section in project.sections" :key="section.id" class="mb-5">
       <v-list-item class="font-weight-black text-h6">
         <updatable-title :originalTitle="section.title" :parent="section" type="section" />
       </v-list-item>
@@ -51,12 +51,15 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import AddTask from "./AddTask";
-import TaskItem from "./TaskItem";
-import UpdatableTitle from "../common/UpdatableTitle";
+import AddTask from "@/components/project/AddTask";
+import TaskItem from "@/components/project/TaskItem";
+import UpdatableTitle from "@/components/common/UpdatableTitle";
 import router from "@/router";
 
 export default {
+  props: {
+    project: Object,
+  },
   data() {
     return {
       dialog: !!this.$route.params.taskId,
@@ -64,7 +67,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["fetchCurrentProject", "updateTaskToDone"]),
+    ...mapActions(["updateTaskToDone"]),
     showTaskModal(taskId) {
       this.dialog = true;
       router
@@ -73,16 +76,10 @@ export default {
     },
     hideTaskModal() {
       router.push(`/project/${this.projectId}`);
-    },
-    callModal() {
-      this.dialog = true;
-    },
+    },   
   },
   computed: mapGetters(["currentProject"]),
   components: { AddTask, TaskItem, UpdatableTitle },
-  created() {
-    this.fetchCurrentProject(this.$route.params.projectId);
-  },
 };
 </script>
 
