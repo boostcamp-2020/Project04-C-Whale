@@ -32,9 +32,7 @@
       </v-list-item>
 
       <div v-for="task in section.tasks" :key="task.id" class="task-container">
-        <div @click="popTaskDetail(task)">
-          <task-item :task="task" />
-        </div>
+        <task-item @pop="showTaskModal(task.id)" :task="task" />
 
         <v-divider />
 
@@ -45,9 +43,7 @@
 
       <add-task :projectId="section.projectId" :sectionId="section.id" />
     </v-list>
-    <v-btn color="primary" dark @click.stop="dialog = true"> Open Dialog </v-btn>
-
-    <v-dialog v-model="dialog" max-width="290">
+    <v-dialog v-model="dialog" max-width="290" @click:outside="hideTaskModal()">
       <router-view />
     </v-dialog>
   </div>
@@ -55,10 +51,10 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import AddTask from "./AddTask";
-import TaskItem from "./TaskItem";
-import UpdatableTitle from "../common/UpdatableTitle";
-// import router from "@/router/index.js";
+import AddTask from "@/components/project/AddTask";
+import TaskItem from "@/components/project/TaskItem";
+import UpdatableTitle from "@/components/common/UpdatableTitle";
+import router from "@/router";
 
 export default {
   props: {
@@ -66,17 +62,21 @@ export default {
   },
   data() {
     return {
-      dialog: false,
+      dialog: !!this.$route.params.taskId,
+      projectId: this.$route.params.projectId,
     };
   },
   methods: {
     ...mapActions(["updateTaskToDone"]),
-    popTaskDetail(task) {
-      console.log(task);
+    showTaskModal(taskId) {
       this.dialog = true;
-      this.$router.push(`/task/${task.id}`);
-      // router.push(`/task/${obj.id}`).catch(() => {});
+      router
+        .push({ name: "TaskDetail", params: { taskId, projectId: this.projectId } })
+        .catch(() => {});
     },
+    hideTaskModal() {
+      router.push(`/project/${this.projectId}`);
+    },   
   },
   computed: mapGetters(["currentProject"]),
   components: { AddTask, TaskItem, UpdatableTitle },

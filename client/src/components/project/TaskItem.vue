@@ -8,9 +8,11 @@
       ></v-radio>
     </v-list-item-action>
 
-    <v-list-item-content>
-      <v-list-item-title>{{ task.title }}</v-list-item-title>
-    </v-list-item-content>
+    <div class="task-div" @click="showModal()">
+      <v-list-item-content>
+        <v-list-item-title>{{ task.title }}</v-list-item-title>
+      </v-list-item-content>
+    </div>
   </v-list-item>
 </template>
 
@@ -18,10 +20,16 @@
 import { mapActions } from "vuex";
 
 export default {
+  data() {
+    return {};
+  },
+  props: { task: Object },
   methods: {
     ...mapActions(["updateTaskToDone"]),
+    showModal() {
+      this.$emit("pop");
+    },
   },
-  props: ["task"],
 };
 </script>
 
@@ -32,5 +40,16 @@ export default {
 
 .done-checkbox {
   border-radius: 100%;
+}
+
+.task-div {
+  width: 100%;
+}
+.task-div:hover {
+  border-radius: 10px;
+  cursor: pointer;
+  background-color: #1c2b82;
+  color: white;
+  padding-left: 10px;
 }
 </style>
