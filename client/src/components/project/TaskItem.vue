@@ -18,11 +18,12 @@
       </v-radio-group>
     </v-list-item-action>
 
-    <div class="task-div" @click="showModal()">
+    <div class="task-div" @click="moveToTaskDetail()">
       <v-list-item-content>
         <v-list-item-title>{{ task.title }}</v-list-item-title>
       </v-list-item-content>
     </div>
+    <router-view />
   </v-list-item>
 </template>
 
@@ -30,10 +31,10 @@
 import { mapGetters, mapActions } from "vuex";
 
 export default {
-  props: { 
-      task: Object, 
-      section: Object, 
-      position: Number  
+  props: {
+    task: Object,
+    section: Object,
+    position: Number,
   },
   data() {
     return {
@@ -43,8 +44,15 @@ export default {
   },
   methods: {
     ...mapActions(["updateTaskToDone", "startDragTask", "changeTaskPosition"]),
-    showModal() {
-      this.$emit("pop");
+
+    moveToTaskDetail() {
+      console.log(this.task);
+      this.$router
+        .push({
+          name: "TaskDetail",
+          params: { projectId: this.task.projectId, taskId: this.task.id },
+        })
+        .catch(() => {});
     },
     handleDragStart() {
       this.dragging = true;
@@ -117,5 +125,5 @@ export default {
   background-color: #1c2b82;
   color: white;
   padding-left: 10px;
- }
+}
 </style>
