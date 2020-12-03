@@ -4,9 +4,9 @@
       <v-list-item>
         <v-list-item-content class="text-h5">
           <updatable-title
-            v-if="currentProject.title"
-            :originalTitle="currentProject.title"
-            :parent="currentProject"
+            v-if="project.title"
+            :originalTitle="project.title"
+            :parent="project"
             type="project"
           />
         </v-list-item-content>
@@ -26,7 +26,7 @@
       </v-list-item>
     </div>
 
-    <v-list v-for="section in currentProject.sections" :key="section.id" class="mb-5">
+    <v-list v-for="section in project.sections" :key="section.id" class="mb-5">
       <v-list-item class="font-weight-black text-h6">
         <updatable-title :originalTitle="section.title" :parent="section" type="section" />
       </v-list-item>
@@ -61,13 +61,16 @@ import UpdatableTitle from "../common/UpdatableTitle";
 // import router from "@/router/index.js";
 
 export default {
+  props: {
+    project: Object,
+  },
   data() {
     return {
       dialog: false,
     };
   },
   methods: {
-    ...mapActions(["fetchCurrentProject", "updateTaskToDone"]),
+    ...mapActions(["updateTaskToDone"]),
     popTaskDetail(task) {
       console.log(task);
       this.dialog = true;
@@ -77,9 +80,6 @@ export default {
   },
   computed: mapGetters(["currentProject"]),
   components: { AddTask, TaskItem, UpdatableTitle },
-  created() {
-    this.fetchCurrentProject(this.$route.params.projectId);
-  },
 };
 </script>
 

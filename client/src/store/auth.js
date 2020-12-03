@@ -19,7 +19,8 @@ const mutations = {
   },
   LOGOUT() {
     localStorage.removeItem("token");
-    location.replace("/");
+    location.replace("/login");
+    return;
   },
 };
 
