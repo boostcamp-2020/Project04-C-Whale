@@ -31,10 +31,8 @@
         <updatable-title :originalTitle="section.title" :parent="section" type="section" />
       </v-list-item>
 
-      <div v-for="task in section.tasks" :key="task.id" class="task-container">
-        <div @click="popTaskDetail(task)">
-          <task-item :task="task" />
-        </div>
+      <div v-for="(task, index) in section.tasks" :key="task.id" class="task-container">
+        <task-item :section="section" :task="task" :position="index" />
 
         <v-divider />
 
@@ -46,7 +44,6 @@
       <add-task :projectId="section.projectId" :sectionId="section.id" />
     </v-list>
     <v-btn color="primary" dark @click.stop="dialog = true"> Open Dialog </v-btn>
-
     <v-dialog v-model="dialog" max-width="290">
       <router-view />
     </v-dialog>
@@ -68,15 +65,9 @@ export default {
   },
   methods: {
     ...mapActions(["fetchCurrentProject", "updateTaskToDone"]),
-    popTaskDetail(task) {
-      console.log(task);
-      this.dialog = true;
-      this.$router.push(`/task/${task.id}`);
-      // router.push(`/task/${obj.id}`).catch(() => {});
-    },
   },
   computed: mapGetters(["currentProject"]),
-  components: { AddTask, TaskItem, UpdatableTitle },
+  components: { AddTask, TaskItem, UpdatableTitle, TaskDetail },
   created() {
     this.fetchCurrentProject(this.$route.params.projectId);
   },
