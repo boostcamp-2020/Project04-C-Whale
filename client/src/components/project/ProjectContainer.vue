@@ -32,7 +32,12 @@
       </v-list-item>
 
       <div v-for="(task, index) in section.tasks" :key="task.id" class="task-container">
-        <task-item @pop="showTaskModal(task.id)" :section="section" :task="task" :position="index" />
+        <task-item
+          @pop="showTaskModal(task.id)"
+          :section="section"
+          :task="task"
+          :position="index"
+        />
 
         <v-divider />
 
@@ -76,7 +81,7 @@ export default {
     },
     hideTaskModal() {
       router.push(`/project/${this.projectId}`);
-    },   
+    },
   },
   components: { AddTask, TaskItem, UpdatableTitle },
 };
