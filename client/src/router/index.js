@@ -3,21 +3,17 @@ import VueRouter from "vue-router";
 import Login from "@/views/Login.vue";
 import Today from "@/views/Today.vue";
 import Project from "@/views/Project.vue";
-import Task from "@/views/Task.vue";
 import Home from "@/views/Home.vue";
 import userAPI from "@/api/user";
 import TaskDetail from "@/components/task/TaskDetail.vue";
 
 Vue.use(VueRouter);
 
-// TODO: user/me api 2번 호출하는 문제 해결
-const requireAuth = () => async (from, to, next) => {
-  try {
-    await userAPI.authorize();
+const requireAuth = () => (from, to, next) => {
+  if (localStorage.getItem("token")) {
     return next();
-  } catch (err) {
-    return next("/login");
   }
+  return next("/login");
 };
 
 const redirectHome = () => async (from, to, next) => {
