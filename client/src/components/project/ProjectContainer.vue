@@ -4,9 +4,9 @@
       <v-list-item>
         <v-list-item-content class="text-h5">
           <updatable-title
-            v-if="currentProject.title"
-            :originalTitle="currentProject.title"
-            :parent="currentProject"
+            v-if="project.title"
+            :originalTitle="project.title"
+            :parent="project"
             type="project"
           />
         </v-list-item-content>
@@ -26,13 +26,13 @@
       </v-list-item>
     </div>
 
-    <v-list v-for="section in currentProject.sections" :key="section.id" class="mb-5">
+    <v-list v-for="section in project.sections" :key="section.id" class="mb-5">
       <v-list-item class="font-weight-black text-h6">
         <updatable-title :originalTitle="section.title" :parent="section" type="section" />
       </v-list-item>
 
       <div v-for="(task, index) in section.tasks" :key="task.id" class="task-container">
-        <task-item :section="section" :task="task" :position="index" />
+        <task-item @pop="showTaskModal(task.id)" :section="section" :task="task" :position="index" />
 
         <v-divider />
 
@@ -43,8 +43,7 @@
 
       <add-task :projectId="section.projectId" :sectionId="section.id" />
     </v-list>
-    <v-btn color="primary" dark @click.stop="dialog = true"> Open Dialog </v-btn>
-    <v-dialog v-model="dialog" max-width="290">
+    <v-dialog v-model="dialog" max-width="290" @click:outside="hideTaskModal()">
       <router-view />
     </v-dialog>
   </div>
@@ -52,25 +51,34 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import AddTask from "./AddTask";
-import TaskItem from "./TaskItem";
-import UpdatableTitle from "../common/UpdatableTitle";
-// import router from "@/router/index.js";
+import AddTask from "@/components/project/AddTask";
+import TaskItem from "@/components/project/TaskItem";
+import UpdatableTitle from "@/components/common/UpdatableTitle";
+import router from "@/router";
 
 export default {
+  props: {
+    project: Object,
+  },
   data() {
     return {
-      dialog: false,
+      dialog: !!this.$route.params.taskId,
+      projectId: this.$route.params.projectId,
     };
   },
   methods: {
-    ...mapActions(["fetchCurrentProject", "updateTaskToDone"]),
+    ...mapActions(["updateTaskToDone"]),
+    showTaskModal(taskId) {
+      this.dialog = true;
+      router
+        .push({ name: "TaskDetail", params: { taskId, projectId: this.projectId } })
+        .catch(() => {});
+    },
+    hideTaskModal() {
+      router.push(`/project/${this.projectId}`);
+    },   
   },
-  computed: mapGetters(["currentProject"]),
-  components: { AddTask, TaskItem, UpdatableTitle, TaskDetail },
-  created() {
-    this.fetchCurrentProject(this.$route.params.projectId);
-  },
+  components: { AddTask, TaskItem, UpdatableTitle },
 };
 </script>
 

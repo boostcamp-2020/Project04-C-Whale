@@ -18,9 +18,11 @@
       </v-radio-group>
     </v-list-item-action>
 
-    <v-list-item-content class="task-title-container">
-      <v-list-item-title>{{ task.title }}</v-list-item-title>
-    </v-list-item-content>
+    <div class="task-div" @click="showModal()">
+      <v-list-item-content>
+        <v-list-item-title>{{ task.title }}</v-list-item-title>
+      </v-list-item-content>
+    </div>
   </v-list-item>
 </template>
 
@@ -28,6 +30,11 @@
 import { mapGetters, mapActions } from "vuex";
 
 export default {
+  props: { 
+      task: Object, 
+      section: Object, 
+      position: Number  
+  },
   data() {
     return {
       dragging: false,
@@ -36,6 +43,9 @@ export default {
   },
   methods: {
     ...mapActions(["updateTaskToDone", "startDragTask", "changeTaskPosition"]),
+    showModal() {
+      this.$emit("pop");
+    },
     handleDragStart() {
       this.dragging = true;
       this.startDragTask({
@@ -79,7 +89,6 @@ export default {
       return middle;
     },
   },
-  props: ["section", "task", "position"],
 };
 </script>
 
@@ -92,10 +101,6 @@ export default {
   border-radius: 100%;
 }
 
-.done-checkbox:hover {
-  border-radius: 50%;
-}
-
 .dragging {
   opacity: 0.3;
 }
@@ -103,4 +108,14 @@ export default {
 .draggedOver {
   border-bottom: 2px solid blue !important;
 }
+.task-div {
+  width: 100%;
+}
+.task-div:hover {
+  border-radius: 10px;
+  cursor: pointer;
+  background-color: #1c2b82;
+  color: white;
+  padding-left: 10px;
+ }
 </style>

@@ -1,15 +1,20 @@
 <template>
-  <v-list-group :value="true" no-action sub-group>
+  <v-list-group :value="false" sub-group active-class="list-active">
     <template v-slot:activator>
       <v-list-item-content>
-        <v-list-item-title>라벨</v-list-item-title>
+        <v-list-item-title class="font-14">라벨</v-list-item-title>
       </v-list-item-content>
     </template>
-    <v-list-item v-for="label in labels" :key="label.id">
-      <v-list-item-content>
-        <v-list-item-title>{{ label.title }}</v-list-item-title>
-      </v-list-item-content>
-    </v-list-item>
+    <v-list-item-group>
+      <v-list-item v-for="label in labels" :key="label.id">
+        <v-list-item-icon class="mr-4">
+          <v-icon :color="label.color">mdi-label</v-icon>
+        </v-list-item-icon>
+        <v-list-item-content>
+          <v-list-item-title class="font-14">{{ label.title }}</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+    </v-list-item-group>
   </v-list-group>
 </template>
 
@@ -20,3 +25,9 @@ export default {
   },
 };
 </script>
+
+<style lang="scss">
+.list-active {
+  color: black;
+}
+</style>

@@ -5,7 +5,7 @@ const { asyncTryCatch } = require('@utils/async-try-catch');
 const getAllLabels = asyncTryCatch(async (req, res) => {
   const labels = await labelService.retrieveAll(req.user.id);
 
-  responseHandler(res, 200, { labels });
+  responseHandler(res, 200, labels);
 });
 
 const createLabel = asyncTryCatch(async (req, res) => {

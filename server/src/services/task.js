@@ -21,17 +21,36 @@ const retrieveById = async id => {
 };
 
 const retrieveAll = async userId => {
-  const tasks = await taskModel.findAll({
-    attributes: ['id', 'title'],
-    include: {
-      model: models.project,
-      attributes: [],
-      where: { creatorId: userId },
-    },
-    // order: [['title', 'ASC']],
-  });
+  // const tasks = await taskModel.findAll({
+  //   attributes: ['id', 'title'],
+  //   include: {
+  //     model: models.project,
+  //     attributes: [],
+  //     where: { creatorId: userId },
+  //   },
+  //   // order: [['title', 'ASC']],
+  // });
 
-  return tasks;
+  const task = await taskModel.findAll({
+    where: { isDone: false },
+    include: [
+      'labels',
+      'priority',
+      'alarm',
+      'bookmarks',
+      {
+        model: taskModel,
+        include: ['labels', 'priority', 'alarm', 'bookmarks'],
+      },
+      {
+        model: models.project,
+        attributes: [],
+        where: { creatorId: userId },
+      },
+    ],
+    order: [[taskModel, 'position', 'ASC']],
+  });
+  return task;
 };
 
 const create = async ({ projectId, sectionId, ...taskData }) => {
