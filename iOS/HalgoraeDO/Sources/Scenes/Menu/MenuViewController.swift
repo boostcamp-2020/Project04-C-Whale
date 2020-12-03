@@ -86,13 +86,15 @@ private extension MenuViewController {
             let section: NSCollectionLayoutSection
             var configuration = UICollectionLayoutListConfiguration(appearance: .plain)
             configuration.leadingSwipeActionsConfigurationProvider = { [weak self] (indexPath) in
-                if indexPath.row == 0 { return nil }
-                guard let self = self,
-                    let item = self.dataSource.itemIdentifier(for: indexPath) else { return nil }
+                guard indexPath.row != 0,
+                    let self = self,
+                    let item = self.dataSource.itemIdentifier(for: indexPath)
+                else {
+                    return nil
+                }
                 return self.leadingSwipeAction(item)
             }
             section = NSCollectionLayoutSection.list(using: configuration, layoutEnvironment: layoutEnvironment)
-            
             return section
         }
     
@@ -105,17 +107,11 @@ private extension MenuViewController {
             guard let section = Section(rawValue: indexPath.section) else { fatalError("Unknown section") }
             switch section {
             case .normal:
-                if indexPath.row == 0 {
-                return collectionView.dequeueConfiguredReusableCell(using: self.configuredNormalCell(), for: indexPath, item: item)
-                } else {
-                    return collectionView.dequeueConfiguredReusableCell(using: self.configuredOutlineCell(), for: indexPath, item: item)
-                }
+                let cellRegistration = indexPath.row == 0 ? self.configuredNormalCell() : self.configuredProjectCell()
+                return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: item)
             case .project:
-                if indexPath.row == 0 {
-                    return collectionView.dequeueConfiguredReusableCell(using: self.configuredOutlineHeaderCell(), for: indexPath, item: item)
-                } else {
-                    return collectionView.dequeueConfiguredReusableCell(using: self.configuredOutlineCell(), for: indexPath, item: item)
-                }
+                let cellRegistration = indexPath.row == 0 ? self.configuredProjectHeaderCell() : self.configuredProjectCell()
+                return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: item)
             }
         }
     }
@@ -135,7 +131,7 @@ private extension MenuViewController {
         }
     }
     
-    func configuredOutlineHeaderCell() -> UICollectionView.CellRegistration<UICollectionViewListCell, Project> {
+    func configuredProjectHeaderCell() -> UICollectionView.CellRegistration<UICollectionViewListCell, Project> {
         return UICollectionView.CellRegistration<UICollectionViewListCell, Project> { (cell, indexPath, project) in
             var content = cell.defaultContentConfiguration()
             content.text = project.title
@@ -147,7 +143,7 @@ private extension MenuViewController {
         }
     }
     
-    func configuredOutlineCell() -> UICollectionView.CellRegistration<UICollectionViewListCell, Project> {
+    func configuredProjectCell() -> UICollectionView.CellRegistration<UICollectionViewListCell, Project> {
         return UICollectionView.CellRegistration<UICollectionViewListCell, Project> { (cell, indexPath, project) in
             var content = cell.defaultContentConfiguration()
             content.text = project.title
