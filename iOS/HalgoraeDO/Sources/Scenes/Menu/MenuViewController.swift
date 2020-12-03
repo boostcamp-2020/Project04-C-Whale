@@ -10,6 +10,7 @@ import UIKit
 class MenuViewController: UIViewController {
     
     /// 임시 property
+    let rootItem = Project(color: nil, title: "프로젝트", taskNum: 0)
     let normalItem = [Project(color: nil, title: "오늘", taskNum: 4)]
     var projectItem = [Project(title: "환영합니다👋", taskNum: 16),
                         Project(color: "#B2CCFF", title: "To Do", taskNum: 8),
@@ -172,7 +173,6 @@ private extension MenuViewController {
         dataSource.apply(normalSnapshot, to: .normal, animatingDifferences: false)
         
         var sectionSnapshot = NSDiffableDataSourceSectionSnapshot<Project>()
-        let rootItem = Project(color: nil, title: "프로젝트", taskNum: 0)
         sectionSnapshot.append([rootItem])
         sectionSnapshot.append(projectItem, to: rootItem)
         sectionSnapshot.expand([rootItem])
@@ -180,7 +180,9 @@ private extension MenuViewController {
     }
     
     func leadingSwipeAction(_ item: Project) -> UISwipeActionsConfiguration? {
-        let isStarred = self.heartProjects.contains(item)
+        var normalSnapshot = self.dataSource.snapshot(for: .normal)
+        var projectSnapshot = self.dataSource.snapshot(for: .project)
+        let isStarred = normalSnapshot.contains(item)
         let starAction = UIContextualAction(style: .normal, title: nil) {
             [weak self] (_, _, completion) in
             guard let self = self else {
@@ -189,24 +191,14 @@ private extension MenuViewController {
             }
             
             if isStarred {
-                self.heartProjects.remove(item)
-                self.projectItem.append(item)
+                normalSnapshot.delete([item])
+                projectSnapshot.append([item], to: self.rootItem)
             } else {
-                self.projectItem = self.projectItem.filter(){ $0 != item}
-                self.heartProjects.insert(item)
+                projectSnapshot.delete([item])
+                normalSnapshot.append([item])
             }
-  
-            var recentsSnapshot = NSDiffableDataSourceSectionSnapshot<Project>()
-            recentsSnapshot.append(self.normalItem)
-            recentsSnapshot.append(Array(self.heartProjects))
-            self.dataSource.apply(recentsSnapshot, to: .normal, animatingDifferences: false)
-            
-            var sectionSnapshot = NSDiffableDataSourceSectionSnapshot<Project>()
-            let rootItem = Project(color: nil, title: "프로젝트", taskNum: 0)
-            sectionSnapshot.append([rootItem])
-            sectionSnapshot.append(self.projectItem, to: rootItem)
-            sectionSnapshot.expand([rootItem])
-            self.dataSource.apply(sectionSnapshot, to: .project, animatingDifferences: false)
+            self.dataSource.apply(normalSnapshot, to: .normal, animatingDifferences: false)
+            self.dataSource.apply(projectSnapshot, to: .project, animatingDifferences: false)
             
             completion(true)
         }
