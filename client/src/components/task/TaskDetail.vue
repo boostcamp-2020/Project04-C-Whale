@@ -18,9 +18,6 @@ export default {
     ...mapActions(["fetchCurrentTask"]),
   },
   computed: mapGetters(["currentTask"]),
-  mounted() {
-    this.$emit("setDialog");
-  },
   created() {
     this.fetchCurrentTask(this.$route.params.taskId);
   },

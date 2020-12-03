@@ -43,15 +43,9 @@
 
       <add-task :projectId="section.projectId" :sectionId="section.id" />
     </v-list>
-    <v-dialog
-      @setDialog="callModal()"
-      v-model="dialog"
-      max-width="290"
-      @click:outside="hideTaskModal()"
-    >
+    <v-dialog v-model="dialog" max-width="290" @click:outside="hideTaskModal()">
       <router-view />
     </v-dialog>
-    <v-btn color="primary" dark @click.stop="dialog = true"> Open Dialog </v-btn>
   </div>
 </template>
 
@@ -65,7 +59,7 @@ import router from "@/router";
 export default {
   data() {
     return {
-      dialog: false,
+      dialog: !!this.$route.params.taskId,
       projectId: this.$route.params.projectId,
     };
   },
