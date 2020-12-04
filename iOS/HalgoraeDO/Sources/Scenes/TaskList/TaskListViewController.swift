@@ -16,7 +16,7 @@ class TaskListViewController: UIViewController {
     // MARK: - Properties
     
     /// 임시 property
-    private var projectTitle = "할고래DO"
+    var projectTitle = "할고래DO"
     private var interactor: TaskListBusinessLogic?
     private var router: (TaskListRoutingLogic & TaskListDataPassing)?
     private var dataSource: UICollectionViewDiffableDataSource<String, TaskVM>! = nil
@@ -41,6 +41,7 @@ class TaskListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        title = projectTitle
         configureLogic()
         configureCollectionView()
         configureDataSource()
@@ -114,6 +115,7 @@ class TaskListViewController: UIViewController {
                 return
             }
             
+            vc.title = self.projectTitle
             let nav = self.navigationController
             nav?.popViewController(animated: false)
             nav?.pushViewController(vc, animated: false)

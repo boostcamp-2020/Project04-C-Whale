@@ -20,16 +20,19 @@
             <rect key="frame" x="0.0" y="0.0" width="276" height="199"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" horizontalCompressionResistancePriority="800" verticalCompressionResistancePriority="755" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yNM-kt-DqB">
-                    <rect key="frame" x="8" y="0.0" width="260" height="199"/>
+                <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="500" horizontalCompressionResistancePriority="800" verticalCompressionResistancePriority="755" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yNM-kt-DqB">
+                    <rect key="frame" x="8" y="0.0" width="155" height="199"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="155" id="rhY-Zf-j8g"/>
+                    </constraints>
                     <color key="tintColor" name="halgoraedoDarkBlue"/>
                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="4" maxY="0.0"/>
                     <state key="normal" title="2020년" image="calendar" catalog="system">
                         <color key="titleColor" name="halgoraedoDarkBlue"/>
                     </state>
                 </button>
-                <datePicker opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="55J-Lv-lhK">
-                    <rect key="frame" x="8" y="0.0" width="260" height="199"/>
+                <datePicker opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="300" horizontalCompressionResistancePriority="800" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="55J-Lv-lhK">
+                    <rect key="frame" x="8" y="0.0" width="155" height="199"/>
                     <connections>
                         <action selector="valueChangedDatePicker:" destination="-1" eventType="valueChanged" id="x5D-M0-YPJ"/>
                     </connections>

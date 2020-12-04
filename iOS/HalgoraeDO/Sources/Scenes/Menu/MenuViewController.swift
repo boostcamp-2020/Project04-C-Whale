@@ -16,7 +16,7 @@ class MenuViewController: UIViewController {
                         Project(color: "#B2CCFF", title: "To Do", taskNum: 8),
                         Project(color: "#B7F0B1", title: "할고래두 프로젝트🐳", taskNum: 12),
                         Project(color: "#FFE08C", title: "네이버 웨일 프젝", taskNum: 3),
-                        Project(color: "#FFA7A7", title: "카카오 코테⭐️", taskNum: 10)]
+                        Project(color: "#FFA7A7", title: "네이버 코테⭐️", taskNum: 10)]
     
     struct Project: Hashable {
         private let identifier = UUID()
@@ -57,7 +57,11 @@ class MenuViewController: UIViewController {
         configureCollectionView()
         configureDataSource()
         applyInitialSnapshots()
-      //performSegue(withIdentifier: "MenuViewControllerTo TaskListViewController", sender: nil) //개발 선택 사항(첫번째 뷰 선택)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        title = "할고래DO"
     }
     
     // MARK: - Initialize
@@ -209,6 +213,14 @@ extension MenuViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
+        
+        let project = dataSource.snapshot().itemIdentifiers[indexPath.item+1]
+        guard let vc = storyboard?.instantiateViewController(identifier: "\(TaskListViewController.self)", creator: { (coder) -> TaskListViewController? in
+            return TaskListViewController(coder: coder)
+        }) else { return }
+        vc.title = project.title
+        vc.projectTitle = project.title ?? ""
+        navigationController?.pushViewController(vc, animated: true)
     }
 }
 
