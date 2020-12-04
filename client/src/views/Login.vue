@@ -7,12 +7,16 @@
           <img width="200" src="../assets/naverlogin.png" />
         </a>
       </div>
+      <alert></alert>
     </v-layout>
   </v-app>
 </template>
 
 <script>
+import Alert from "@/components/common/Alert";
+
 export default {
+  components: { Alert },
   name: "Login",
   data() {
     return {

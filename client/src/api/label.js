@@ -2,7 +2,7 @@ import myAxios from "./myAxios";
 
 const labelAPI = {
   getLabels() {
-    return myAxios.GET("/label");
+    return myAxios.get("/label");
   },
 };
 

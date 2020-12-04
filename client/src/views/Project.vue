@@ -1,13 +1,18 @@
 <template>
-  <project-container :project="currentProject" />
+  <div>
+    <project-container :project="currentProject" />
+    <alert></alert>
+  </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
 import ProjectContainer from "@/components/project/ProjectContainer";
+import Alert from "@/components/common/Alert";
+
 
 export default {
-  components: { ProjectContainer },
+  components: { ProjectContainer, Alert },
   methods: {
     ...mapActions(["fetchCurrentProject"]),
   },

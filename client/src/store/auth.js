@@ -38,7 +38,7 @@ const actions = {
         return;
       }
     } catch (err) {
-      alert("로그인에 실패했습니다.");
+      commit("SET_ERROR_ALERT", err.message);
       router.replace("/login").catch(() => {});
       return;
     }

@@ -11,10 +11,9 @@ export default {
   data: () => ({
     //
   }),
-  created() {
+  beforeCreate() {
     // token 저장
-    // eslint-disable-next-line no-unused-vars
-    const [_, accessToken] = location.search.split("token=");
+    const accessToken = new URLSearchParams(location.search).get("token");
     if (accessToken) {
       localStorage.setItem("token", accessToken);
       router.replace("/");
@@ -30,5 +29,6 @@ export default {
       return;
     }
   },
+  created() {},
 };
 </script>

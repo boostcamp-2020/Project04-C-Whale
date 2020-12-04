@@ -32,10 +32,9 @@
       </v-list-item>
 
       <div v-for="(task, index) in section.tasks" :key="task.id" class="task-container">
+
         <task-item :section="section" :task="task" :position="index" />
-
         <v-divider />
-
         <div class="childTaskContainer ml-10" v-for="childTask in task.tasks" :key="childTask.id">
           <task-item :task="childTask" />
         </div>

@@ -20,7 +20,7 @@ const actions = {
 
       commit("SET_LABELS", labels);
     } catch (err) {
-      alert("라벨 전체 정보 조회 요청 실패");
+      commit("SET_ERROR_ALERT", err.response);
     }
   },
 };

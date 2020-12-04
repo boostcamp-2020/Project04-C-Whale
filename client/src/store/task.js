@@ -24,7 +24,8 @@ const actions = {
       const { data: tasks } = await taskAPI.getAllTasks();
       commit("SET_TASKS", tasks);
     } catch (err) {
-      alert("작업 전체 조회 요청 실패");
+      commit("SET_ERROR_ALERT", err.response);
+      // alert("작업 전체 조회 요청 실패");
     }
   },
   startDragTask({ commit }, { task }) {
@@ -35,7 +36,7 @@ const actions = {
       const { data: task } = await taskAPI.getTaskById(taskId);
       commit("SET_CURRENT_TASK", task);
     } catch (err) {
-      alert("작업 상세 조회 요청 실패");
+      commit("SET_ERROR_ALERT", err.response);
     }
   },
 };
