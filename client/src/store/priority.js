@@ -33,7 +33,7 @@ const actions = {
       ];
       commit("SET_PRIORITIES", priorities);
     } catch (err) {
-      alert("우선순위 전체 정보 조회 요청 실패");
+      commit("SET_ERROR_ALERT", err.response);
     }
   },
 };

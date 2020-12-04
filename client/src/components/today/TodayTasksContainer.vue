@@ -4,9 +4,7 @@
       <v-list-item class="font-weight-black text-h6"> 기한이 지난 </v-list-item>
 
       <div v-for="task in expiredTasks" :key="task.id" class="task-container">
-        <div @click="popTaskDetail(task)">
-          <task-item :task="task" />
-        </div>
+        <task-item :task="task" />
 
         <v-divider />
 
@@ -21,9 +19,7 @@
       <v-list-item class="font-weight-black text-h6"> 오늘 </v-list-item>
 
       <div v-for="task in todayTasks" :key="task.id" class="task-container">
-        <div @click="popTaskDetail(task)">
-          <task-item :task="task" />
-        </div>
+        <task-item :task="task" />
 
         <v-divider />
 
@@ -52,10 +48,6 @@ export default {
   },
   methods: {
     ...mapActions(["updateTaskToDone"]),
-    popTaskDetail(task) {
-      this.$router.push(`/task/${task.id}`);
-      // router.push(`/task/${obj.id}`).catch(() => {});
-    },
   },
   components: { TaskItem },
 };

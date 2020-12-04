@@ -2,22 +2,22 @@ import myAxios from "./myAxios";
 
 const projectAPI = {
   getProjectById(projectId) {
-    return myAxios.GET(`/project/${projectId}`);
+    return myAxios.get(`/project/${projectId}`);
   },
   getProjects() {
-    return myAxios.GET("/project");
+    return myAxios.get("/project");
   },
   getTodayProject() {
-    return myAxios.GET("/project/today");
+    return myAxios.get("/project/today");
   },
   updateProject(projectId, data) {
-    return myAxios.PATCH(`/project/${projectId}`, data);
+    return myAxios.patch(`/project/${projectId}`, data);
   },
   updateSection(projectId, sectionId, data) {
-    return myAxios.PUT(`/project/${projectId}/section/${sectionId}`, data);
+    return myAxios.put(`/project/${projectId}/section/${sectionId}`, data);
   },
   updateTaskPosition(projectId, sectionId, data) {
-    return myAxios.PATCH(`/project/${projectId}/section/${sectionId}/position`, data);
+    return myAxios.patch(`/project/${projectId}/section/${sectionId}/position`, data);
   },
 };
 

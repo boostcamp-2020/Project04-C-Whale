@@ -1,27 +1,41 @@
 <template>
-  <div>{{ currentTask }} hi!!</div>
-  <!-- <div>{{ currentTask }}}</div> -->
+  <!-- <v-dialog v-model="dialog" :retain-focus="false" @click:outside="hideTaskModal()"> -->
+  <v-flex>
+    <v-list-item class="flex-column">
+      <v-list-item-group class="d-flex">
+        <v-list-item-title>
+          <div class="task_detail-project_title">{{ projectTitle }}</div>
+        </v-list-item-title>
+        <v-btn icon @click="hideTaskModal()">
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+      </v-list-item-group>
+      <div>{{ task }} hi!!</div>
+    </v-list-item>
+  </v-flex>
+  <!-- </v-dialog> -->
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
-
 export default {
-  data() {
-    return {
-      dialog: true,
-      taskId: this.$route.params.taskId,
-    };
+  props: {
+    task: Object,
+    projectTitle: String,
   },
 
   methods: {
-    ...mapActions(["fetchCurrentTask"]),
+    hideTaskModal() {
+      this.$emit("hideTaskModal");
+    },
   },
-  computed: mapGetters(["currentTask"]),
-  created() {
-    this.fetchCurrentTask(this.$route.params.taskId);
-  },
+  computed: {},
+  created() {},
+  mounted() {},
 };
 </script>
 
-<style></style>
+<style>
+.v-list-item {
+  align-items: initial;
+}
+</style>

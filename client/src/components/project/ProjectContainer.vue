@@ -32,10 +32,9 @@
       </v-list-item>
 
       <div v-for="(task, index) in section.tasks" :key="task.id" class="task-container">
-        <task-item @pop="showTaskModal(task.id)" :section="section" :task="task" :position="index" />
 
+        <task-item :section="section" :task="task" :position="index" />
         <v-divider />
-
         <div class="childTaskContainer ml-10" v-for="childTask in task.tasks" :key="childTask.id">
           <task-item :task="childTask" />
         </div>
@@ -43,18 +42,14 @@
 
       <add-task :projectId="section.projectId" :sectionId="section.id" />
     </v-list>
-    <v-dialog v-model="dialog" max-width="290" @click:outside="hideTaskModal()">
-      <router-view />
-    </v-dialog>
   </div>
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapActions } from "vuex";
 import AddTask from "@/components/project/AddTask";
 import TaskItem from "@/components/project/TaskItem";
 import UpdatableTitle from "@/components/common/UpdatableTitle";
-import router from "@/router";
 
 export default {
   props: {
@@ -62,21 +57,11 @@ export default {
   },
   data() {
     return {
-      dialog: !!this.$route.params.taskId,
       projectId: this.$route.params.projectId,
     };
   },
   methods: {
     ...mapActions(["updateTaskToDone"]),
-    showTaskModal(taskId) {
-      this.dialog = true;
-      router
-        .push({ name: "TaskDetail", params: { taskId, projectId: this.projectId } })
-        .catch(() => {});
-    },
-    hideTaskModal() {
-      router.push(`/project/${this.projectId}`);
-    },   
   },
   components: { AddTask, TaskItem, UpdatableTitle },
 };
@@ -92,5 +77,11 @@ export default {
 .project-container {
   width: 100%;
   max-width: 600px;
+}
+
+.v-dialog {
+  max-width: 80%;
+  min-height: 80%;
+  background-color: white;
 }
 </style>

@@ -2,16 +2,16 @@ import myAxios from "./myAxios";
 
 const taskAPI = {
   createTask({ projectId, sectionId, ...data }) {
-    return myAxios.POST(`/project/${projectId}/section/${sectionId}/task`, data);
+    return myAxios.post(`/project/${projectId}/section/${sectionId}/task`, data);
   },
   getAllTasks() {
-    return myAxios.GET("/task");
+    return myAxios.get("/task");
   },
   getTaskById(taskId) {
-    return myAxios.GET(`/task/${taskId}`);
+    return myAxios.get(`/task/${taskId}`);
   },
   updateTask(taskId, data) {
-    return myAxios.PATCH(`/task/${taskId}`, data);
+    return myAxios.patch(`/task/${taskId}`, data);
   },
 };
 
