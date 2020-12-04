@@ -48,6 +48,7 @@ extension TaskListRouter: TaskListRoutingLogic {
         else {
             return
         }
+        
         navigateToTaskDetail(source: sourceVC, destination: destinationVC)
     }
     
