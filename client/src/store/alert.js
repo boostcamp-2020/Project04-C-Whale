@@ -1,3 +1,5 @@
+import router from "@/router";
+
 const state = {
   alert: {
     message: "",
@@ -9,6 +11,7 @@ const mutations = {
   SET_ERROR_ALERT(state, { data, status }) {
     if (status === 401) {
       state.alert = { message: "세션이 만료되었습니다", type: "error" };
+      router.replace("/login").catch(() => {});
       return;
     } else {
       state.alert = { message: data.message, type: "error" };
