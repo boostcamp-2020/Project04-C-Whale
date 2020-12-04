@@ -16,6 +16,11 @@ class TaskListWorker {
             ]),
         Task(title: "당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지"),
         Task(title: "두 말하면 섭함"),
+        Task(title: "할고래두 진짜!", subTasks: [
+                Task(title: "hihiㅎㅎ"),
+                Task(title: "hihi2ㅎㅎㅎ"),
+                Task(title: "hehehe3ㅎㅎㅎㅎ"),
+            ])
     ]
     
     func getTasks() -> [Task] {
