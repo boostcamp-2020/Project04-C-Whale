@@ -6,7 +6,6 @@
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
-        <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -19,23 +18,14 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="yTg-6t-2Gl">
-                                <rect key="frame" x="0.0" y="88" width="414" height="774"/>
+                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="nM7-5B-9zL">
                                     <size key="itemSize" width="128" height="128"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
-                                <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="YmF-dx-NAf">
-                                        <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="whH-D6-tRf">
-                                            <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </collectionViewCellContentView>
-                                    </collectionViewCell>
-                                </cells>
+                                <cells/>
                             </collectionView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6wh-Eb-4oT" customClass="RoundButton" customModule="HalgoraeDO" customModuleProvider="target">
                                 <rect key="frame" x="350" y="798" width="44" height="44"/>
@@ -416,7 +406,7 @@
             </objects>
             <point key="canvasLocation" x="3830" y="798"/>
         </scene>
-        <!--할고래DO-->
+        <!--Task Board View Controller-->
         <scene sceneID="Yu7-Kn-tle">
             <objects>
                 <viewController storyboardIdentifier="TaskBoardViewController" id="U6H-lf-q4a" customClass="TaskBoardViewController" customModule="HalgoraeDO" customModuleProvider="target" sceneMemberID="viewController">
@@ -433,16 +423,7 @@
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
-                                <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="jcC-MV-Ekf">
-                                        <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="L77-zt-wdh">
-                                            <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </collectionViewCellContentView>
-                                    </collectionViewCell>
-                                </cells>
+                                <cells/>
                             </collectionView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="vr2-Wc-fgQ"/>
@@ -454,7 +435,7 @@
                             <constraint firstItem="yK6-dz-zBK" firstAttribute="leading" secondItem="vr2-Wc-fgQ" secondAttribute="leading" id="i53-du-w3D"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="할고래DO" id="98D-Jg-aJM">
+                    <navigationItem key="navigationItem" id="98D-Jg-aJM">
                         <barButtonItem key="rightBarButtonItem" image="ellipsis" catalog="system" id="Wkv-8H-Efw">
                             <connections>
                                 <action selector="didTapMoreButton:" destination="U6H-lf-q4a" id="sCz-X7-TuZ"/>
@@ -474,8 +455,8 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="pcJ-NH-hpV" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="GJv-W2-k95">
-                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="GJv-W2-k95">
+                        <rect key="frame" x="0.0" y="44" width="414" height="96"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="tintColor" red="0.1019607843" green="0.15218839049999999" blue="0.41057401900000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="barTintColor" red="0.029415823519999999" green="0.77209502460000001" blue="0.64217513800000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -551,7 +532,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="i1l-sl-RpB">
-                                <rect key="frame" x="0.0" y="88" width="414" height="774"/>
+                                <rect key="frame" x="0.0" y="140" width="414" height="722"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="2nZ-4X-snI">
                                     <size key="itemSize" width="128" height="128"/>
@@ -559,16 +540,7 @@
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
-                                <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="SyQ-et-RWE">
-                                        <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="F7Y-MW-fso">
-                                            <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </collectionViewCellContentView>
-                                    </collectionViewCell>
-                                </cells>
+                                <cells/>
                             </collectionView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="qIh-dh-kCn"/>
@@ -584,18 +556,7 @@
                             <constraint firstItem="qIh-dh-kCn" firstAttribute="bottom" secondItem="i1l-sl-RpB" secondAttribute="bottom" id="yHP-dr-uKZ"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="QCA-8H-c9B">
-                        <barButtonItem key="rightBarButtonItem" style="plain" id="A30-82-h5G">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="uJ9-T2-H3k">
-                                <rect key="frame" x="316" y="7" width="78" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="임시이동버튼"/>
-                                <connections>
-                                    <segue destination="BYZ-38-t0r" kind="show" identifier="MenuViewControllerTo TaskListViewController" id="wzC-qO-rhL"/>
-                                </connections>
-                            </button>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" id="QCA-8H-c9B"/>
                     <connections>
                         <outlet property="menuCollectionView" destination="i1l-sl-RpB" id="SnW-CE-hhg"/>
                     </connections>
