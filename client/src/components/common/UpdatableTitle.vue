@@ -60,6 +60,12 @@ export default {
       this.toggle();
     },
   },
+  watch: {
+    originalTitle: function () {
+      this.newTitle = this.originalTitle;
+      this.showForm = false;
+    },
+  },
 };
 </script>
 
