@@ -238,7 +238,6 @@ extension TaskSectionViewCell: UICollectionViewDropDelegate {
         print("destination path:", coordinator.destinationIndexPath ?? "Not found")
         #endif
     }
-    
 }
 
 private extension TaskSectionViewCell {
