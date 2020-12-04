@@ -1,11 +1,41 @@
 <template>
-  <div>
-    <div>Task View</div>
-  </div>
+  <v-dialog v-model="dialog" :retain-focus="false" @click:outside="hideTaskModal()">
+    <task-detail
+      @hideTaskModal="hideTaskModal"
+      :task="currentTask"
+      :projectTitle="projectTitle"
+    ></task-detail>
+  </v-dialog>
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
+import TaskDetail from "@/components/task/TaskDetail.vue";
+
 export default {
   name: "Task",
+  data() {
+    return {
+      dialog: true,
+      projectTitle: "무제",
+    };
+  },
+  components: { TaskDetail },
+  methods: {
+    ...mapActions(["fetchCurrentTask"]),
+    hideTaskModal() {
+      this.$router.go(-1);
+    },
+  },
+  computed: {
+    ...mapGetters(["currentTask", "namedProjectInfos"]),
+  },
+
+  async created() {
+    await this.fetchCurrentTask(this.$route.params.taskId);
+    this.projectTitle = this.namedProjectInfos.find(
+      (project) => project.id === this.currentTask.projectId
+    ).title;
+  },
 };
 </script>
