@@ -4,7 +4,7 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import ProjectContainer from "../components/project/ProjectContainer";
+import ProjectContainer from "@/components/project/ProjectContainer";
 
 export default {
   components: { ProjectContainer },
@@ -15,8 +15,10 @@ export default {
   created() {
     this.fetchCurrentProject(this.$route.params.projectId);
   },
+
   beforeRouteUpdate(to, from, next) {
     this.fetchCurrentProject(to.params.projectId);
+    next();
   },
 };
 </script>
