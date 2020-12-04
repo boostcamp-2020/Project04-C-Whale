@@ -235,7 +235,7 @@ extension TaskSectionViewCell: UICollectionViewDropDelegate {
     ) {
         lineView.removeFromSuperview()
         #if DEBUG
-        print("destination path:", coordinator.destinationIndexPath)
+        print("destination path:", coordinator.destinationIndexPath ?? "Not found")
         #endif
     }
     
@@ -246,13 +246,13 @@ private extension TaskSectionViewCell {
     func setLocation(_ location: CGPoint, _ destination: IndexPath?) {
         #if DEBUG
         print("location:", location)
-        print("start:", startPoint)
+        print("start:", startPoint ?? "Not found")
         #endif
         
         lineView.removeFromSuperview()
         guard let destination = destination,
               let startIndex = startIndex,
-              let startPoint = startPoint,
+              let _ = startPoint,
               let collectionView = collectionView
         else {
             return
