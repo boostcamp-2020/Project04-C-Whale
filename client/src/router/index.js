@@ -4,8 +4,8 @@ import Login from "@/views/Login.vue";
 import Today from "@/views/Today.vue";
 import Project from "@/views/Project.vue";
 import Home from "@/views/Home.vue";
+import Task from "@/views/Task";
 import userAPI from "@/api/user";
-// import TaskDetail from "@/components/task/TaskDetail.vue";
 
 Vue.use(VueRouter);
 

@@ -57,19 +57,20 @@ export default {
     },
     handleDragStart() {
       this.dragging = true;
-      this.startDragTask({
-        task: {
-          ...this.task,
-          position: this.position,
-        },
-      });
+      this.$emit("taskDragStart", this.task);
+      // this.startDragTask({
+      //   task: {
+      //     ...this.task,
+      //     position: this.position,
+      //   },
+      // });
     },
     handleDragEnd() {
       this.dragging = false;
     },
     handleDragOver() {
       this.draggedOver = true;
-
+      this.$emit("taskDragOver", this.position);
       // const offset = this.middleY - e.clientY;
       // if (offset < 0) {
       //   this.changeTaskPosition({

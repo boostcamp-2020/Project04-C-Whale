@@ -25,30 +25,20 @@
         </v-menu>
       </v-list-item>
     </div>
-
-    <v-list v-for="section in project.sections" :key="section.id" class="mb-5">
-      <v-list-item class="font-weight-black text-h6">
-        <updatable-title :originalTitle="section.title" :parent="section" type="section" />
-      </v-list-item>
-
-      <div v-for="(task, index) in section.tasks" :key="task.id" class="task-container">
-
-        <task-item :section="section" :task="task" :position="index" />
-        <v-divider />
-        <div class="childTaskContainer ml-10" v-for="childTask in task.tasks" :key="childTask.id">
-          <task-item :task="childTask" />
-        </div>
-      </div>
-
-      <add-task :projectId="section.projectId" :sectionId="section.id" />
-    </v-list>
+    <SectionContainer
+      v-for="section in project.sections"
+      :key="section.id"
+      :section="section"
+      :draggingTask="draggingTask"
+      @taskDragStart="taskDragStart"
+      class="mb-5"
+    />
   </div>
 </template>
 
 <script>
 import { mapActions } from "vuex";
-import AddTask from "@/components/project/AddTask";
-import TaskItem from "@/components/project/TaskItem";
+import SectionContainer from "@/components/project/SectionContainer";
 import UpdatableTitle from "@/components/common/UpdatableTitle";
 
 export default {
@@ -58,12 +48,19 @@ export default {
   data() {
     return {
       projectId: this.$route.params.projectId,
+      draggingTask: {},
     };
   },
   methods: {
     ...mapActions(["updateTaskToDone"]),
+    taskDragStart(task) {
+      this.draggingTask = task;
+    },
   },
-  components: { AddTask, TaskItem, UpdatableTitle },
+  components: {
+    UpdatableTitle,
+    SectionContainer,
+  },
 };
 </script>
 
@@ -71,9 +68,7 @@ export default {
 .project-header {
   min-width: 450px;
 }
-.task-container {
-  min-width: 450px;
-}
+
 .project-container {
   width: 100%;
   max-width: 600px;
