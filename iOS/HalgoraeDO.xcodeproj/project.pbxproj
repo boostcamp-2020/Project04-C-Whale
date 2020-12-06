@@ -40,6 +40,7 @@
 		4C42374725771BAE0068A252 /* DatePickerButtonView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4C42374625771BAE0068A252 /* DatePickerButtonView.xib */; };
 		4C42374D25778AE80068A252 /* Date+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C42374C25778AE80068A252 /* Date+.swift */; };
 		4C423751257792690068A252 /* BorderRadiusButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C423750257792690068A252 /* BorderRadiusButton.swift */; };
+		4C4238602578D70D0068A252 /* EndPointType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C42385F2578D70D0068A252 /* EndPointType.swift */; };
 		4CCD31E8256EBC0C00A46D10 /* TaskListWorkerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0CA5F0256E9AF100E66045 /* TaskListWorkerTests.swift */; };
 		4CCD31E9256EBC0C00A46D10 /* TaskListInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0CA60C256EAA7300E66045 /* TaskListInteractorTests.swift */; };
 		4CCD31EA256EBC0C00A46D10 /* TaskListPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0CA629256EABF700E66045 /* TaskListPresenterTests.swift */; };
@@ -55,6 +56,7 @@
 		4CCD3257256F8BA700A46D10 /* Priority.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CCD3256256F8BA700A46D10 /* Priority.swift */; };
 		4CCD325E256F8C1200A46D10 /* UIImage+scaled.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CCD325D256F8C1200A46D10 /* UIImage+scaled.swift */; };
 		4CCD32772570A4EF00A46D10 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CCD32762570A4EF00A46D10 /* MenuViewController.swift */; };
+		4CE91528257CD3C600BCF398 /* EndPointType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C42385F2578D70D0068A252 /* EndPointType.swift */; };
 		AA19EF172575680600E59017 /* TaskSectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA19EF162575680500E59017 /* TaskSectionViewCell.swift */; };
 		AA19EF1B25756C3200E59017 /* AddSectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA19EF1A25756C3200E59017 /* AddSectionViewCell.swift */; };
 		AA19EF252576488B00E59017 /* TaskBoardSupplementaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA19EF242576488B00E59017 /* TaskBoardSupplementaryView.swift */; };
@@ -114,6 +116,7 @@
 		4C42374625771BAE0068A252 /* DatePickerButtonView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DatePickerButtonView.xib; sourceTree = "<group>"; };
 		4C42374C25778AE80068A252 /* Date+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+.swift"; sourceTree = "<group>"; };
 		4C423750257792690068A252 /* BorderRadiusButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderRadiusButton.swift; sourceTree = "<group>"; };
+		4C42385F2578D70D0068A252 /* EndPointType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndPointType.swift; sourceTree = "<group>"; };
 		4CCD31DD256EBC0000A46D10 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4CCD31F8256EBC8000A46D10 /* TaskListDisplaySpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListDisplaySpy.swift; sourceTree = "<group>"; };
 		4CCD31FE256EBCEF00A46D10 /* TaskListPresenterSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListPresenterSpy.swift; sourceTree = "<group>"; };
@@ -256,6 +259,14 @@
 				4C42374625771BAE0068A252 /* DatePickerButtonView.xib */,
 			);
 			path = DatePickerButtonView;
+			sourceTree = "<group>";
+		};
+		4C42385E2578D6FD0068A252 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				4C42385F2578D70D0068A252 /* EndPointType.swift */,
+			);
+			path = Service;
 			sourceTree = "<group>";
 		};
 		4CCD31DA256EBC0000A46D10 /* TaskListTests */ = {
