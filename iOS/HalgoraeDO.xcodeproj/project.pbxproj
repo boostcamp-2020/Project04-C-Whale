@@ -41,6 +41,7 @@
 		4C42374D25778AE80068A252 /* Date+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C42374C25778AE80068A252 /* Date+.swift */; };
 		4C423751257792690068A252 /* BorderRadiusButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C423750257792690068A252 /* BorderRadiusButton.swift */; };
 		4C4238602578D70D0068A252 /* EndPointType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C42385F2578D70D0068A252 /* EndPointType.swift */; };
+		4C4238742579358A0068A252 /* DataRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4238732579358A0068A252 /* DataRequest.swift */; };
 		4C423896257A2A560068A252 /* ParameterEncoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C423895257A2A560068A252 /* ParameterEncoding.swift */; };
 		4C4238A2257A2D800068A252 /* URLParameterEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4238A1257A2D800068A252 /* URLParameterEncoder.swift */; };
 		4CCD31E8256EBC0C00A46D10 /* TaskListWorkerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0CA5F0256E9AF100E66045 /* TaskListWorkerTests.swift */; };
@@ -61,6 +62,7 @@
 		4CE91528257CD3C600BCF398 /* EndPointType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C42385F2578D70D0068A252 /* EndPointType.swift */; };
 		4CE9152C257CD3DE00BCF398 /* ParameterEncoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C423895257A2A560068A252 /* ParameterEncoding.swift */; };
 		4CE9152D257CD3DE00BCF398 /* URLParameterEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4238A1257A2D800068A252 /* URLParameterEncoder.swift */; };
+		4CE91532257CD3DE00BCF398 /* DataRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4238732579358A0068A252 /* DataRequest.swift */; };
 		AA19EF172575680600E59017 /* TaskSectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA19EF162575680500E59017 /* TaskSectionViewCell.swift */; };
 		AA19EF1B25756C3200E59017 /* AddSectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA19EF1A25756C3200E59017 /* AddSectionViewCell.swift */; };
 		AA19EF252576488B00E59017 /* TaskBoardSupplementaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA19EF242576488B00E59017 /* TaskBoardSupplementaryView.swift */; };
@@ -121,6 +123,7 @@
 		4C42374C25778AE80068A252 /* Date+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+.swift"; sourceTree = "<group>"; };
 		4C423750257792690068A252 /* BorderRadiusButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderRadiusButton.swift; sourceTree = "<group>"; };
 		4C42385F2578D70D0068A252 /* EndPointType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndPointType.swift; sourceTree = "<group>"; };
+		4C4238732579358A0068A252 /* DataRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataRequest.swift; sourceTree = "<group>"; };
 		4C423895257A2A560068A252 /* ParameterEncoding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParameterEncoding.swift; sourceTree = "<group>"; };
 		4C4238A1257A2D800068A252 /* URLParameterEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLParameterEncoder.swift; sourceTree = "<group>"; };
 		4CCD31DD256EBC0000A46D10 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -272,6 +275,7 @@
 			children = (
 				4C423894257A2A450068A252 /* Encoding */,
 				4C42385F2578D70D0068A252 /* EndPointType.swift */,
+				4C4238732579358A0068A252 /* DataRequest.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -557,6 +561,7 @@
 				4C3F5665256B8117006D7C9F /* TaskListViewController.swift in Sources */,
 				4CCD325E256F8C1200A46D10 /* UIImage+scaled.swift in Sources */,
 				4C3F5700256CF8A7006D7C9F /* TaskContentConfigure.swift in Sources */,
+				4C4238742579358A0068A252 /* DataRequest.swift in Sources */,
 				AA19EF1B25756C3200E59017 /* AddSectionViewCell.swift in Sources */,
 				4C42371B25763B080068A252 /* TaskDetailInteractor.swift in Sources */,
 				4C42374125771BA40068A252 /* DatePickerButtonView.swift in Sources */,
