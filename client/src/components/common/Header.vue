@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-navigation-drawer class="left-menu px-4 py-4 grey lighten-5" v-model="drawer" app>
-      <left-menu v-if="isAuth"></left-menu>
+      <left-menu></left-menu>
     </v-navigation-drawer>
     <v-app-bar class="header whaleGreen" flat app>
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
@@ -17,18 +17,13 @@
 <script>
 import Search from "@/components/task/Search";
 import LeftMenu from "@/components/menu/LeftMenu";
-import { mapState, mapActions } from "vuex";
+import { mapActions } from "vuex";
 
 export default {
   data: () => ({ drawer: null }),
   components: {
     "search-bar": Search,
     LeftMenu,
-  },
-  computed: {
-    ...mapState({
-      isAuth: (state) => state.auth.isAuth,
-    }),
   },
   methods: {
     ...mapActions(["logout"]),
