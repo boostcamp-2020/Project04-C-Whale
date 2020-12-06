@@ -3,7 +3,9 @@
     <my-header />
     <v-main>
       <div class="router-view-container">
-        <router-view></router-view>
+        <keep-alive>
+          <router-view :key="$route.params.projectId"></router-view>
+        </keep-alive>
       </div>
     </v-main>
   </v-app>

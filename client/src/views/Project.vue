@@ -1,12 +1,12 @@
 <template>
   <div>
-    <project-container :project="currentProject" />
+    <project-container v-if="projectList[projectId]" :project="projectList[projectId]" />
     <alert></alert>
   </div>
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 import ProjectContainer from "../components/project/ProjectContainer";
 import Alert from "@/components/common/Alert";
 
@@ -15,13 +15,16 @@ export default {
   methods: {
     ...mapActions(["fetchCurrentProject"]),
   },
-  computed: mapGetters(["currentProject"]),
+  data() {
+    return {
+      projectId: this.$route.params.projectId,
+    };
+  },
+  computed: {
+    ...mapGetters(["projectList"]),
+  },
   created() {
     this.fetchCurrentProject(this.$route.params.projectId);
-  },
-  beforeRouteUpdate(to, from, next) {
-    this.fetchCurrentProject(to.params.projectId);
-    next();
   },
 };
 </script>

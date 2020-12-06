@@ -10,6 +10,7 @@ const state = {
     sections: [],
   },
   projectInfos: [],
+  projectList: {},
   todayProject: {
     id: "",
     count: 0,
@@ -21,6 +22,7 @@ const getters = {
   todayProject: (state) => state.todayProject,
   namedProjectInfos: (state) => state.projectInfos.filter((project) => project.title !== "관리함"),
   managedProject: (state) => state.projectInfos.find((project) => project.title === "관리함"),
+  projectList: (state) => state.projectList,
 };
 
 const actions = {
@@ -141,7 +143,12 @@ const actions = {
 
 const mutations = {
   //TODO: function vs arrow-function style-guide 보고 통일하기
-  SET_CURRENT_PROJECT: (state, currentProject) => (state.currentProject = currentProject),
+  SET_CURRENT_PROJECT: (state, currentProject) => {
+    const newlyAddedProject = {};
+    newlyAddedProject[currentProject.id] = currentProject;
+    state.projectList = { ...state.projectList, ...newlyAddedProject };
+    state.currentProject = currentProject;
+  },
   SET_PROJECT_INFOS: (state, projectInfos) => (state.projectInfos = projectInfos),
   SET_TODAY_PROJECT: (state, todayProject) => (state.todayProject = todayProject),
   // newTodo: (state, todo) => state.todos.unshift(todo),
