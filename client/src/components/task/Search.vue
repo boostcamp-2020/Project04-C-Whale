@@ -26,7 +26,6 @@
 </template>
 
 <script>
-import router from "@/router/index.js";
 import taskAPI from "@/api/task.js";
 
 export default {
@@ -64,13 +63,16 @@ export default {
   },
 
   watch: {
-    model(obj) {
-      router.push(`/task/${obj.id}`).catch(() => {});
+    model(task) {
+      this.$router.push({
+        name: "ProjectTaskDetail",
+        params: { taskId: task.id, projectId: task.projectId },
+      });
     },
     async search() {
       // Items have already been loaded
       // or Items have already been requested
-      if (this.items.length > 0 || this.isLoading) {
+      if (this.tasks.length > 0 || this.isLoading) {
         return;
       }
 
