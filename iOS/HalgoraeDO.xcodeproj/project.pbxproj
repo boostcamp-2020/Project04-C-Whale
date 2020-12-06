@@ -44,7 +44,6 @@
 		4C42386E257917790068A252 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C42386D257917790068A252 /* NetworkManager.swift */; };
 		4C4238742579358A0068A252 /* DataRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4238732579358A0068A252 /* DataRequest.swift */; };
 		4C42387A25794C8C0068A252 /* SessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C42387925794C8C0068A252 /* SessionManager.swift */; };
-		4C4238802579597F0068A252 /* TaskListEndPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C42387F2579597F0068A252 /* TaskListEndPoint.swift */; };
 		4C423896257A2A560068A252 /* ParameterEncoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C423895257A2A560068A252 /* ParameterEncoding.swift */; };
 		4C4238A2257A2D800068A252 /* URLParameterEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4238A1257A2D800068A252 /* URLParameterEncoder.swift */; };
 		4CCD31E8256EBC0C00A46D10 /* TaskListWorkerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0CA5F0256E9AF100E66045 /* TaskListWorkerTests.swift */; };
@@ -69,7 +68,6 @@
 		4CE91530257CD3DE00BCF398 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C42386D257917790068A252 /* NetworkManager.swift */; };
 		4CE91531257CD3DE00BCF398 /* SessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C42387925794C8C0068A252 /* SessionManager.swift */; };
 		4CE91532257CD3DE00BCF398 /* DataRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4238732579358A0068A252 /* DataRequest.swift */; };
-		4CE91533257CD3DE00BCF398 /* TaskListEndPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C42387F2579597F0068A252 /* TaskListEndPoint.swift */; };
 		4CE9153B257CD73200BCF398 /* EndPointMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CE9153A257CD73200BCF398 /* EndPointMock.swift */; };
 		4CE9154D257CD9E400BCF398 /* TaskList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4236C22574C5F50068A252 /* TaskList.swift */; };
 		4CE91554257CDA2200BCF398 /* Priority+PopoverViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4236B02573B4C90068A252 /* Priority+PopoverViewModelType.swift */; };
@@ -114,7 +112,6 @@
 		4C0CA60C256EAA7300E66045 /* TaskListInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListInteractorTests.swift; sourceTree = "<group>"; };
 		4C0CA629256EABF700E66045 /* TaskListPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListPresenterTests.swift; sourceTree = "<group>"; };
 		4C0CA635256EAC5200E66045 /* TaskListDisplayLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListDisplayLogic.swift; sourceTree = "<group>"; };
-		4C3F5657256B80B4006D7C9F /* HalgoraeDO.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = HalgoraeDO.app; path = "/Users/os/woong/iOS/Boostcamp2020/group_final/Project04-C-Whale/iOS/build/Debug-iphoneos/HalgoraeDO.app"; sourceTree = "<absolute>"; };
 		4C3F5664256B8117006D7C9F /* TaskListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListViewController.swift; sourceTree = "<group>"; };
 		4C3F5669256B82F2006D7C9F /* TaskBoardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskBoardViewController.swift; sourceTree = "<group>"; };
 		4C3F566E256B8C2B006D7C9F /* TaskListInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListInteractor.swift; sourceTree = "<group>"; };
@@ -148,7 +145,6 @@
 		4C42386D257917790068A252 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		4C4238732579358A0068A252 /* DataRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataRequest.swift; sourceTree = "<group>"; };
 		4C42387925794C8C0068A252 /* SessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionManager.swift; sourceTree = "<group>"; };
-		4C42387F2579597F0068A252 /* TaskListEndPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListEndPoint.swift; sourceTree = "<group>"; };
 		4C423895257A2A560068A252 /* ParameterEncoding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParameterEncoding.swift; sourceTree = "<group>"; };
 		4C4238A1257A2D800068A252 /* URLParameterEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLParameterEncoder.swift; sourceTree = "<group>"; };
 		4CCD31DD256EBC0000A46D10 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -162,13 +158,14 @@
 		4CE91517257CCEFA00BCF398 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4CE91520257CD33300BCF398 /* RequestTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestTests.swift; sourceTree = "<group>"; };
 		4CE9153A257CD73200BCF398 /* EndPointMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndPointMock.swift; sourceTree = "<group>"; };
-		4CE91548257CD9CB00BCF398 /* TaskListTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = TaskListTests.xctest; path = "/Users/os/woong/iOS/Boostcamp2020/group_final/Project04-C-Whale/iOS/build/Debug-iphoneos/TaskListTests.xctest"; sourceTree = "<absolute>"; };
-		4CE91549257CD9CB00BCF398 /* ServiceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = ServiceTests.xctest; path = "/Users/os/woong/iOS/Boostcamp2020/group_final/Project04-C-Whale/iOS/build/Debug-iphoneos/ServiceTests.xctest"; sourceTree = "<absolute>"; };
 		4CE91567257CF0C200BCF398 /* SessionManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionManagerTests.swift; sourceTree = "<group>"; };
 		4CE91574257D0DFC00BCF398 /* NetworkManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManagerTests.swift; sourceTree = "<group>"; };
 		4CE91579257D0E5F00BCF398 /* SessionManagerMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionManagerMock.swift; sourceTree = "<group>"; };
 		4CE9157E257D14CB00BCF398 /* CodableMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodableMock.swift; sourceTree = "<group>"; };
 		4CE91583257D190900BCF398 /* DataRequestMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataRequestMock.swift; sourceTree = "<group>"; };
+		4CE91597257D315800BCF398 /* HalgoraeDO.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HalgoraeDO.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4CE91598257D315800BCF398 /* TaskListTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = TaskListTests.xctest; path = "/Users/os/woong/iOS/Boostcamp2020/group_final/Project04-C-Whale/iOS/build/Debug-iphoneos/TaskListTests.xctest"; sourceTree = "<absolute>"; };
+		4CE91599257D315800BCF398 /* ServiceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = ServiceTests.xctest; path = "/Users/os/woong/iOS/Boostcamp2020/group_final/Project04-C-Whale/iOS/build/Debug-iphoneos/ServiceTests.xctest"; sourceTree = "<absolute>"; };
 		AA19EF162575680500E59017 /* TaskSectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskSectionViewCell.swift; sourceTree = "<group>"; };
 		AA19EF1A25756C3200E59017 /* AddSectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSectionViewCell.swift; sourceTree = "<group>"; };
 		AA19EF242576488B00E59017 /* TaskBoardSupplementaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskBoardSupplementaryView.swift; sourceTree = "<group>"; };
@@ -320,7 +317,6 @@
 				4C42386D257917790068A252 /* NetworkManager.swift */,
 				4C42387925794C8C0068A252 /* SessionManager.swift */,
 				4C4238732579358A0068A252 /* DataRequest.swift */,
-				4C42387F2579597F0068A252 /* TaskListEndPoint.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -420,6 +416,7 @@
 				AAEE20DC2564E4A900668FAD /* HalgoraeDO */,
 				4CCD31DA256EBC0000A46D10 /* TaskListTests */,
 				4CE91514257CCEFA00BCF398 /* ServiceTests */,
+				4CE91597257D315800BCF398 /* HalgoraeDO.app */,
 			);
 			sourceTree = "<group>";
 		};
@@ -492,7 +489,7 @@
 			);
 			name = TaskListTests;
 			productName = TaskListTests;
-			productReference = 4CE91548257CD9CB00BCF398 /* TaskListTests.xctest */;
+			productReference = 4CE91598257D315800BCF398 /* TaskListTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		4CE91512257CCEFA00BCF398 /* ServiceTests */ = {
@@ -510,7 +507,7 @@
 			);
 			name = ServiceTests;
 			productName = ServiceTests;
-			productReference = 4CE91549257CD9CB00BCF398 /* ServiceTests.xctest */;
+			productReference = 4CE91599257D315800BCF398 /* ServiceTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		AAEE20D92564E4A900668FAD /* HalgoraeDO */ = {
@@ -527,7 +524,7 @@
 			);
 			name = HalgoraeDO;
 			productName = HalgoraeDO;
-			productReference = 4C3F5657256B80B4006D7C9F /* HalgoraeDO.app */;
+			productReference = 4CE91597257D315800BCF398 /* HalgoraeDO.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -637,7 +634,6 @@
 				4CE9157A257D0E5F00BCF398 /* SessionManagerMock.swift in Sources */,
 				4CE91531257CD3DE00BCF398 /* SessionManager.swift in Sources */,
 				4CE91532257CD3DE00BCF398 /* DataRequest.swift in Sources */,
-				4CE91533257CD3DE00BCF398 /* TaskListEndPoint.swift in Sources */,
 				4CE9157F257D14CB00BCF398 /* CodableMock.swift in Sources */,
 				4CE91521257CD33300BCF398 /* RequestTests.swift in Sources */,
 				4CE91568257CF0C200BCF398 /* SessionManagerTests.swift in Sources */,
@@ -673,7 +669,6 @@
 				AA19EF332576846100E59017 /* UIColor+.swift in Sources */,
 				AA354C2A2570002600072657 /* TaskAddViewController.swift in Sources */,
 				4C42386E257917790068A252 /* NetworkManager.swift in Sources */,
-				4C4238802579597F0068A252 /* TaskListEndPoint.swift in Sources */,
 				4CCD32772570A4EF00A46D10 /* MenuViewController.swift in Sources */,
 				4C4238A2257A2D800068A252 /* URLParameterEncoder.swift in Sources */,
 				4C0CA636256EAC5200E66045 /* TaskListDisplayLogic.swift in Sources */,
