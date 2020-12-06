@@ -7,6 +7,7 @@ const state = {
     name: "",
     email: "",
   },
+  isAuth: false,
 };
 
 const mutations = {
@@ -16,6 +17,7 @@ const mutations = {
       name: user.name,
       email: user.email,
     };
+    state.isAuth = true;
   },
   LOGOUT() {
     localStorage.removeItem("token");

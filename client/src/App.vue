@@ -11,7 +11,7 @@ export default {
   data: () => ({
     //
   }),
-  beforeCreate() {
+  created() {
     // token 저장
     const accessToken = new URLSearchParams(location.search).get("token");
     if (accessToken) {
@@ -29,6 +29,5 @@ export default {
       return;
     }
   },
-  created() {},
 };
 </script>
