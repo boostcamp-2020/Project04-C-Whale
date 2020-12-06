@@ -87,4 +87,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.v-select__slot input {
+  margin-bottom: 0;
+}
+</style>
