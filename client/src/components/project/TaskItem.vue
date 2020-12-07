@@ -2,11 +2,9 @@
   <v-list-item
     draggable="true"
     @dragstart="handleDragStart"
-    @dragend="handleDragEnd"
     @dragover.prevent="handleDragOver"
-    @dragleave="handleDragLeave"
     @drop.prevent="handleDrop"
-    :class="{ dragging, draggedOver }"
+    :class="{ dragging: task.dragging }"
   >
     <v-list-item-action>
       <v-radio-group>
@@ -28,22 +26,18 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions, mapMutations } from "vuex";
 
 export default {
   props: {
     task: Object,
     section: Object,
     position: Number,
-  },
-  data() {
-    return {
-      dragging: false,
-      draggedOver: false,
-    };
+    dragging: Boolean,
   },
   methods: {
-    ...mapActions(["updateTaskToDone", "startDragTask", "changeTaskPosition"]),
+    ...mapActions(["updateTaskToDone"]),
+    ...mapMutations(["SET_DRAGGING_TASK", "SET_DROP_TARGET_SECTION"]),
 
     moveToTaskDetail() {
       const destinationInfo = this.$route.params.projectId
@@ -55,40 +49,26 @@ export default {
 
       this.$router.push(destinationInfo).catch(() => {});
     },
+
     handleDragStart() {
-      this.dragging = true;
-      this.$emit("taskDragStart", this.task);
-      // this.startDragTask({
-      //   task: {
-      //     ...this.task,
-      //     position: this.position,
-      //   },
-      // });
+      this.SET_DRAGGING_TASK(this.task);
+      this.$emit("taskDragStart", { ...this.task, $el: this.$el });
     },
-    handleDragEnd() {
-      this.dragging = false;
-    },
-    handleDragOver() {
-      this.draggedOver = true;
-      this.$emit("taskDragOver", this.position);
-      // const offset = this.middleY - e.clientY;
-      // if (offset < 0) {
-      //   this.changeTaskPosition({
-      //     targetSection: this.section,
-      //     task: this.task,
-      //     position: this.position + 1,
-      //   });
-      // }
-    },
-    handleDragLeave() {
-      this.draggedOver = false;
+
+    handleDragOver(e) {
+      if (this.task.id === this.draggingTask.id) {
+        return;
+      }
+
+      this.SET_DROP_TARGET_SECTION(this.section);
+
+      const offset = this.middleY - e.clientY;
+      this.$emit("taskDragOver", {
+        position: offset > 0 ? this.position : this.position + 1,
+      });
     },
     handleDrop() {
-      this.changeTaskPosition({
-        section: this.section,
-        task: this.task,
-      });
-      this.draggedOver = false;
+      this.$emit("taskDrop");
     },
   },
   computed: {
@@ -112,20 +92,18 @@ export default {
 }
 
 .dragging {
-  opacity: 0.3;
+  opacity: 0.2;
+  background-color: #ededed;
 }
 
-.draggedOver {
-  border-bottom: 2px solid blue !important;
-}
 .task-div {
   width: 100%;
 }
 .task-div:hover {
-  border-radius: 10px;
+  /* border-radius: 10px; */
   cursor: pointer;
-  background-color: #1c2b82;
+  /* background-color: #1c2b82;
   color: white;
-  padding-left: 10px;
+  padding-left: 10px; */
 }
 </style>

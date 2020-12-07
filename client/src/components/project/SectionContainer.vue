@@ -1,5 +1,5 @@
 <template>
-  <v-list>
+  <v-list class="mr-10">
     <v-list-item class="font-weight-black text-h6">
       <UpdatableTitle :originalTitle="section.title" :parent="section" type="section" />
     </v-list-item>
@@ -9,8 +9,8 @@
         :section="section"
         :task="task"
         :position="index"
-        v-on="$listeners"
         @taskDragOver="taskDragOver"
+        @taskDrop="taskDrop"
       />
       <v-divider />
       <TaskItem
@@ -26,6 +26,7 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
 import AddTask from "@/components/project/AddTask";
 import TaskItem from "@/components/project/TaskItem";
 import UpdatableTitle from "@/components/common/UpdatableTitle";
@@ -34,7 +35,6 @@ import _ from "lodash";
 export default {
   props: {
     section: Object,
-    draggingTask: Object,
   },
   data: function () {
     return {
@@ -42,8 +42,15 @@ export default {
     };
   },
   methods: {
-    taskDragOver(position) {
-      this.tasks.splice(position, 0, this.draggingTask);
+    ...mapActions(["changeTaskPosition"]),
+    taskDragOver({ position }) {
+      this.tasks = this.tasks.filter((task) => task.id !== this.draggingTask.id);
+      this.tasks.splice(position, 0, { ...this.draggingTask, dragging: true });
+    },
+    taskDrop() {
+      this.changeTaskPosition({
+        orderedTasks: this.tasks.map((task) => task.id),
+      });
     },
   },
   components: {
@@ -51,9 +58,15 @@ export default {
     TaskItem,
     UpdatableTitle,
   },
+  computed: mapGetters(["draggingTask", "dropTargetSection"]),
   watch: {
     section: function (updatedSection) {
       this.tasks = _.cloneDeep(updatedSection.tasks);
+    },
+    dropTargetSection: function (dropTargetSection) {
+      if (dropTargetSection.id !== this.section.id) {
+        this.tasks = this.tasks.filter((task) => task.id !== this.draggingTask.id);
+      }
     },
   },
 };
