@@ -25,7 +25,7 @@ extension Priority {
         }
     }
     
-    func viewModel(scaled size: CGSize = .init(width: 30, height: 30)) -> ViewModel {
+    func viewModel(scaled size: CGSize = .init(width: 22, height: 22)) -> ViewModel {
         return ViewModel(title: title, tintColor: color, image: UIImage(systemName: "flag.fill")?.scaled(to: size))
     }
 }
