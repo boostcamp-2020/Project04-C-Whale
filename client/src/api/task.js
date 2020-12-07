@@ -13,9 +13,6 @@ const taskAPI = {
   updateTask(taskId, data) {
     return myAxios.patch(`/task/${taskId}`, data);
   },
-  getAllComments(taskId) {
-    return myAxios.get(`/task/${taskId}/comment`);
-  },
 };
 
 export default taskAPI;
