@@ -10,6 +10,7 @@ import UIKit
 // MARK: - For PopoverViewModel
 
 extension Priority {
+    
     struct ViewModel: PopoverViewModelType {
         var title: String
         var tintColor: UIColor?

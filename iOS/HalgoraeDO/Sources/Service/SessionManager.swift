@@ -17,6 +17,7 @@ protocol SessionManagerProtocol {
 }
 
 extension SessionManagerProtocol {
+    
     func request(endPoint: EndPointType,
                  cachePolicy: URLRequest.CachePolicy = .reloadIgnoringLocalAndRemoteCacheData,
                  timeoutInterval: TimeInterval = 10.0) -> Request {

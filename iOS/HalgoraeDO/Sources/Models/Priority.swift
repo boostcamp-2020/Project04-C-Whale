@@ -8,6 +8,7 @@
 import Foundation
 
 enum Priority: Int, CaseIterable {
+    
     case one = 1
     case two
     case three
