@@ -35,7 +35,6 @@ class TaskListViewController: UIViewController {
     
     @IBOutlet weak private var taskListCollectionView: UICollectionView!
     @IBOutlet weak private var moreButton: UIBarButtonItem!
-    @IBOutlet weak private var addButton: RoundButton!
     @IBOutlet weak private var editToolBar: UIToolbar!
     @IBOutlet weak private var confirmActionView: ConfirmActionView!
     private var lineView: UIView = UIView()
@@ -80,7 +79,6 @@ class TaskListViewController: UIViewController {
         title = editingMode ? "\(selectedTasks.count) 개 선택됨" : projectTitle
         taskListCollectionView.isEditing = editingMode
         moreButton.title = editingMode ? "취소" : "More"
-        addButton.isHidden = editingMode
         editToolBar.isHidden = !editingMode
     }
     
