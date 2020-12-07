@@ -1,10 +1,12 @@
 <template>
   <v-dialog v-model="dialog" :retain-focus="false" @click:outside="hideTaskModal()">
     <task-detail-container
+      v-if="this.projectTitle"
       @hideTaskModal="hideTaskModal"
       :task="currentTask"
       :projectTitle="projectTitle"
     ></task-detail-container>
+    <div v-else>데이터를 불러오는 중입니다</div>
   </v-dialog>
 </template>
 
@@ -17,7 +19,7 @@ export default {
   data() {
     return {
       dialog: true,
-      projectTitle: "무제",
+      projectTitle: undefined,
     };
   },
   components: { TaskDetailContainer },
