@@ -24,8 +24,7 @@ class TaskCollectionViewListCell: UICollectionViewListCell {
         backgroundConfiguration?.backgroundColor = (state.isSelected || state.isHighlighted) ? .lightGray : .white
 
         var taskContentConfiguration = TaskContentConfiguration().updated(for: state)
-        taskContentConfiguration.title = taskViewModel?.title
-        taskContentConfiguration.isCompleted = taskViewModel?.isCompleted
+        taskContentConfiguration.configure(viewModel: taskViewModel)
         contentConfiguration = taskContentConfiguration
         
         if let taskContentView = contentView as? TaskContentView {
