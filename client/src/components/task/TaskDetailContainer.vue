@@ -1,5 +1,4 @@
 <template>
-  <!-- <v-dialog v-model="dialog" :retain-focus="false" @click:outside="hideTaskModal()"> -->
   <v-flex>
     <v-list-item class="flex-column">
       <v-list-item-group class="d-flex">
@@ -15,23 +14,14 @@
         <task-item :task="task" />
       </div>
       <task-detail-tabs
-        :tabTitles="this.taskTabs"
         :tasks="this.task.tasks"
+        :tabList="this.tabList"
+        :comments="this.comments"
         :projectId="this.task.projectId"
         :sectionId="this.task.sectionId"
       />
-      <!-- <v-tabs v-model="active" color="#1C2B82" slider-color="#07C4A3">
-        <v-tab v-for="tabTitle in this.taskTaps" :key="tabTitle" ripple> {{ tabTitle }} </v-tab>
-        <v-tab-item v-for="childTask in this.task.tasks" :key="childTask">
-          <v-card flat>
-            <task-item :task="childTask" />
-            <v-card-text>{{ text }}</v-card-text>
-          </v-card>
-        </v-tab-item>
-      </v-tabs> -->
     </v-list-item>
   </v-flex>
-  <!-- </v-dialog> -->
 </template>
 
 <script>
@@ -41,11 +31,16 @@ import TaskDetailTabs from "@/components/task/TaskDetailTabs";
 export default {
   data() {
     return {
-      taskTabs: { childTaskTab: "하위 작업", taskCommentTab: "댓글", taskBookmarkTab: "북마크" },
+      tabList: {
+        childTask: { title: "하위 작업", count: 0 },
+        comment: { title: "댓글", count: 0 },
+        bookmark: { title: "북마크", count: 0 },
+      },
     };
   },
   props: {
     task: Object,
+    comments: Array,
     projectTitle: String,
   },
 
@@ -57,7 +52,11 @@ export default {
     },
   },
   computed: {},
-  created() {},
+  created() {
+    this.tabList.childTask.count = this.task.tasks.length;
+    this.tabList.comment.count = 1;
+    this.tabList.bookmark.count = 3;
+  },
   mounted() {},
 };
 </script>
