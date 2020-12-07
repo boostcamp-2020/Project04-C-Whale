@@ -4,7 +4,6 @@ import { isToday } from "@/utils/date";
 const state = {
   newTask: {},
   tasks: [],
-  draggingTask: {},
   currentTask: {},
 };
 
@@ -15,7 +14,6 @@ const getters = {
   taskCount: (state) => {
     return state.tasks.reduce((acc, task) => acc + task.tasks.length, state.tasks.length);
   },
-  draggingTask: (state) => state.draggingTask,
 };
 
 const actions = {
@@ -43,7 +41,6 @@ const actions = {
 
 const mutations = {
   SET_TASKS: (state, tasks) => (state.tasks = tasks),
-  SET_DRAGGING_TASK: (state, task) => (state.draggingTask = task),
   SET_CURRENT_TASK: (state, currentTask) => (state.currentTask = currentTask),
 };
 

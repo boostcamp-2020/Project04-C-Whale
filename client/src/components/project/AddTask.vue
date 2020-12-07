@@ -59,7 +59,7 @@ export default {
         projectId: this.projectId,
         sectionId: this.sectionId,
         title: "",
-        dueDate: new Date(),
+        dueDate: getTodayString(),
       };
       this.show = !this.show;
     },

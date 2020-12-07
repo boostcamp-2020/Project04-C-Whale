@@ -34,6 +34,8 @@ export default {
 <style lang="scss">
 .header {
   left: 0px !important;
+  padding-left: 2%;
+  padding-right: 2%;
 }
 .left-menu {
   top: 64px !important;

@@ -1,6 +1,5 @@
 import projectAPI from "../api/project";
 import taskAPI from "../api/task";
-import swapArrayItem from "../utils/array-index-swap";
 
 const state = {
   currentProject: {
@@ -113,22 +112,21 @@ const actions = {
     }
   },
 
-  async changeTaskPosition({ dispatch, rootState }, { section, task }) {
-    const taskIds = section.tasks.map((task) => task.id);
-    const draggingTask = rootState.task.draggingTask;
-    console.log(task.position);
-    if (task.sectionId === draggingTask.sectionId) {
-      swapArrayItem(taskIds, draggingTask.position, task.position);
-    } else {
-      taskIds.splice(task.position + 1, 0, task.id);
-    }
+  async changeTaskPosition({ rootState, dispatch }, { orderedTasks }) {
+    const { draggingTask, dropTargetSection } = rootState.dragAndDrop;
 
     try {
-      await taskAPI.updateTask(draggingTask.id, { sectionId: section.id });
-
-      const { data } = await projectAPI.updateTaskPosition(section.projectId, section.id, {
-        orderedTasks: taskIds,
+      await taskAPI.updateTask(draggingTask.id, {
+        sectionId: dropTargetSection.id,
       });
+
+      const { data } = await projectAPI.updateTaskPosition(
+        dropTargetSection.projectId,
+        dropTargetSection.id,
+        {
+          orderedTasks,
+        }
+      );
 
       if (data.message !== "ok") {
         throw new Error();
@@ -137,7 +135,7 @@ const actions = {
       alert("위치 변경 실패");
     }
 
-    await dispatch("fetchCurrentProject", section.projectId);
+    await dispatch("fetchCurrentProject", dropTargetSection.projectId);
   },
 };
 
