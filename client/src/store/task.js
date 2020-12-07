@@ -21,8 +21,8 @@ const getters = {
 const actions = {
   async fetchAllTasks({ commit }) {
     try {
-      const { data: tasks } = await taskAPI.getAllTasks();
-      commit("SET_TASKS", tasks);
+      const { data } = await taskAPI.getAllTasks();
+      commit("SET_TASKS", data.tasks);
     } catch (err) {
       commit("SET_ERROR_ALERT", err.response);
       // alert("작업 전체 조회 요청 실패");
