@@ -22,6 +22,9 @@ const projectAPI = {
   updateTaskPosition(projectId, sectionId, data) {
     return myAxios.patch(`/project/${projectId}/section/${sectionId}/position`, data);
   },
+  deleteProject(projectId) {
+    return myAxios.delete(`/project/${projectId}`);
+  },
 };
 
 export default projectAPI;

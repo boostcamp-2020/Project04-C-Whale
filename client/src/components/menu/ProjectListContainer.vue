@@ -39,10 +39,10 @@
           </template>
           <v-list>
             <v-list-item @click.stop="openUpdateDialog(project.id)">
-              <v-list-item-title>프로젝트 수정 </v-list-item-title>
+              <v-list-item-title class="font-14">프로젝트 수정 </v-list-item-title>
             </v-list-item>
-            <v-list-item>
-              <v-list-item-title>프로젝트 삭제 </v-list-item-title>
+            <v-list-item @click.stop="openDeleteDialog(project.id)">
+              <v-list-item-title class="font-14">프로젝트 삭제 </v-list-item-title>
             </v-list-item>
           </v-list>
         </v-menu>
@@ -69,12 +69,19 @@
       v-on:handleUpdateModal="updateDialog = !updateDialog"
       :projectInfo="projectInfos.find((project) => project.id === projectId)"
     />
+    <DeleteProjectModal
+      v-if="projectInfos.find((project) => project.id === projectId)"
+      :dialog="deleteDialog"
+      v-on:handleDeleteModal="deleteDialog = !deleteDialog"
+      :projectInfo="projectInfos.find((project) => project.id === projectId)"
+    />
   </v-list-group>
 </template>
 
 <script>
 import AddProjectModal from "@/components/project/AddProjectModal.vue";
 import UpdateProjectModal from "@/components/project/UpdateProjectModal.vue";
+import DeleteProjectModal from "@/components/project/DeleteProjectModal.vue";
 
 export default {
   props: {
@@ -83,11 +90,13 @@ export default {
   components: {
     AddProjectModal,
     UpdateProjectModal,
+    DeleteProjectModal,
   },
   data() {
     return {
       addDialog: false,
       updateDialog: false,
+      deleteDialog: false,
       projectId: "",
     };
   },
@@ -102,6 +111,10 @@ export default {
     openUpdateDialog(projectId) {
       this.projectId = projectId;
       this.updateDialog = true;
+    },
+    openDeleteDialog(projectId) {
+      this.projectId = projectId;
+      this.deleteDialog = true;
     },
   },
 };

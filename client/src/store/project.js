@@ -67,6 +67,16 @@ const actions = {
       commit("SET_ERROR_ALERT", err.response);
     }
   },
+  async deleteProject({ dispatch, commit }, { projectId }) {
+    try {
+      await projectAPI.deleteProject(projectId);
+
+      await dispatch("fetchProjectInfos");
+      commit("SET_SUCCESS_ALERT", "프로젝트가 삭제되었습니다.");
+    } catch (err) {
+      commit("SET_ERROR_ALERT", err.response);
+    }
+  },
   async updateSectionTitle({ dispatch, commit }, { projectId, sectionId, title }) {
     try {
       const { data } = await projectAPI.updateSection(projectId, sectionId, { title });
