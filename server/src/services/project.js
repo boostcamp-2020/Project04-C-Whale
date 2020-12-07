@@ -93,7 +93,7 @@ const create = async data => {
     return section.projectId;
   });
 
-  return !!result;
+  return result;
 };
 
 const findOrCreate = async data => {
