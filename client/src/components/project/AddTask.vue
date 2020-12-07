@@ -34,7 +34,7 @@
 
 <script>
 import { mapActions } from "vuex";
-import getTodayString from "../../utils/today-string";
+import { getTodayString } from "../../utils/date";
 
 export default {
   data() {

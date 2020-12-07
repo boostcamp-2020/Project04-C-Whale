@@ -1,7 +1,7 @@
 <template>
   <div>
     <FavoriteProjectList
-      v-if="managedProject"
+      v-if="managedProject && favoriteProjectInfos"
       :managed-project="managedProject"
       :task-count="taskCount"
       :favorite-project-infos="favoriteProjectInfos"

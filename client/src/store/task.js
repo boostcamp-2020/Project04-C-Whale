@@ -9,8 +9,8 @@ const state = {
 
 const getters = {
   currentTask: (state) => state.currentTask,
-  todayTasks: (state) => state.tasks.filter((task) => isToday(task)),
-  expiredTasks: (state) => state.tasks.filter((task) => !isToday(task)),
+  todayTasks: (state) => state.tasks.filter((task) => isToday(task.dueDate)),
+  expiredTasks: (state) => state.tasks.filter((task) => !isToday(task.dueDate)),
   taskCount: (state) => {
     return state.tasks.reduce((acc, task) => acc + task.tasks.length, state.tasks.length);
   },
