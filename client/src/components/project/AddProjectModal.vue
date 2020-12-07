@@ -70,7 +70,7 @@
 
 <script>
 import { colors } from "@/utils/color";
-import { mapActions } from "vuex";
+import { mapActions, mapMutations } from "vuex";
 
 export default {
   props: {
@@ -87,10 +87,26 @@ export default {
   },
   methods: {
     ...mapActions(["addProject"]),
+    ...mapMutations(["SET_ERROR_ALERT"]),
     sendCloseModalEvent() {
       this.$emit("handleModal");
     },
     newProject() {
+      if (this.title === "관리함") {
+        this.SET_ERROR_ALERT({
+          data: { message: "해당 제목으로 프로젝트를 생성할 수 없습니다." },
+          status: 406,
+        });
+        this.title = "";
+        return;
+      }
+      if (!this.color) {
+        this.SET_ERROR_ALERT({
+          data: { message: "프로젝트 색상을 지정해주세요" },
+          status: 406,
+        });
+        return;
+      }
       this.addProject({
         title: this.title,
         color: this.color,
