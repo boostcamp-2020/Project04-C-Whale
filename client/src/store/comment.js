@@ -4,13 +4,12 @@ const SUCCESS_MESSAGE = "ok";
 
 const state = {
   comments: [],
+  commentCounts: 0,
 };
 
 const getters = {
   comments: (state) => state.comments,
-  //   commentsCount: (state) => {
-  //     return state.tasks.reduce((acc, task) => acc + task.tasks.length, state.tasks.length);
-  //   },
+  commentCounts: (state) => state.comments.length,
 };
 
 const actions = {
@@ -19,6 +18,7 @@ const actions = {
       const { data: comments } = await commentAPI.getAllComments(taskId);
       comments.sort((comment1, comment2) => (comment1.updatedAt > comment2.updatedAt ? 1 : -1));
       commit("SET_COMMENTS", comments);
+      commit("SET_COMMENT_COUNTS", comments.length);
     } catch (err) {
       commit("SET_ERROR_ALERT", err.response);
       //   alert("작업 전체 조회 요청 실패");
@@ -36,32 +36,38 @@ const actions = {
       commit("SET_ERROR_ALERT", err.response);
     }
   },
-  async deleteComment({ commit }, comment) {
+
+  async updateComment({ commit, dispatch }, comment) {
+    try {
+      const { data } = await commentAPI.updateComment(comment);
+      if (data.message !== SUCCESS_MESSAGE) {
+        throw Error;
+      }
+      await dispatch("fetchComments", comment.taskId);
+    } catch (err) {
+      commit("SET_ERROR_ALERT", err.response);
+    }
+  },
+  async deleteComment({ commit, dispatch }, comment) {
     try {
       const { data } = await commentAPI.deleteComment(comment);
       if (data.message !== SUCCESS_MESSAGE) {
         throw Error;
       }
 
-      // await dispatch("fetchComments", comment.taskId);
-      commit("DELETE_COMMENT", comment.id);
+      await dispatch("fetchComments", comment.taskId);
+      // commit("DELETE_COMMENT", comment.id);
+      // commit("DECREASE_COMMENT_COUNTS");
     } catch (err) {
       commit("SET_ERROR_ALERT", err.response);
     }
   },
-  //   async fetchUpdateComment({ commit }, comment) {
-  //     try {
-  //       //   const { data: comment } = await commentAPI.getTaskById(taskId, commentId);
-  //       //   commit("SET_CURRENT_TASK", task);
-  //     } catch (err) {
-  //       commit("SET_ERROR_ALERT", err.response);
-  //     }
-  //   },
 };
 
 const mutations = {
   SET_COMMENTS: (state, comments) => (state.comments = comments),
-
+  SET_COMMENT_COUNTS: (state, counts) => (state.commentCounts = counts),
+  DECREASE_COMMENT_COUNTS: (state) => state.commentCounts--,
   //   UPDATE_COMMENT: (state, comment) => (state.comments.find(comment => comment.id) = comment);
   DELETE_COMMENT: (state, commentId) => {
     const index = state.comments.indexOf(
