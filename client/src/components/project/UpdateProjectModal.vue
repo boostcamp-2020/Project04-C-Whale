@@ -5,7 +5,7 @@
       persistent
       max-width="600"
       class="add-project-dialog"
-      @click:outside="sendCloseModalEvent"
+      @click:outside="sendCloseUpdateModalEvent"
     >
       <v-card>
         <v-card-title> 프로젝트 추가 </v-card-title>
@@ -60,8 +60,8 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="black darken-1" text @click="sendCloseModalEvent"> 취소 </v-btn>
-          <v-btn color="whaleGreen" text @click="newProject"> 추가 </v-btn>
+          <v-btn color="black darken-1" text @click="sendCloseUpdateModalEvent"> 취소 </v-btn>
+          <v-btn color="whaleGreen" text @click="UpdateProject"> 수정 </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -75,45 +75,34 @@ import { mapActions, mapMutations } from "vuex";
 export default {
   props: {
     dialog: Boolean,
+    projectInfo: Object,
   },
   data() {
     return {
-      title: "",
-      color: null,
+      title: this.projectInfo.title,
+      color: this.projectInfo.color,
       colors,
-      isFavorite: false,
-      isList: true,
+      isFavorite: this.projectInfo.isFavorite,
+      isList: this.projectInfo.isList,
     };
   },
   methods: {
-    ...mapActions(["addProject"]),
+    ...mapActions(["updateProject"]),
     ...mapMutations(["SET_ERROR_ALERT"]),
-    sendCloseModalEvent() {
-      this.$emit("handleAddModal");
+    sendCloseUpdateModalEvent() {
+      this.$emit("handleUpdateModal");
     },
-    newProject() {
-      if (this.title === "관리함") {
-        this.SET_ERROR_ALERT({
-          data: { message: "해당 제목으로 프로젝트를 생성할 수 없습니다." },
-          status: 406,
-        });
-        this.title = "";
-        return;
-      }
-      if (!this.color) {
-        this.SET_ERROR_ALERT({
-          data: { message: "프로젝트 색상을 지정해주세요" },
-          status: 406,
-        });
-        return;
-      }
-      this.addProject({
-        title: this.title,
-        color: this.color,
-        isFavorite: this.isFavorite,
-        isList: this.isList,
+    UpdateProject() {
+      this.updateProject({
+        projectId: this.projectInfo.id,
+        data: {
+          title: this.title,
+          color: this.color,
+          isFavorite: this.isFavorite,
+          isList: this.isList,
+        },
       });
-      this.$emit("handleAddModal");
+      this.$emit("handleUpdateModal");
     },
   },
 };
