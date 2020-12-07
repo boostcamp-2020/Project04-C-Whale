@@ -1,16 +1,16 @@
 <template>
   <v-dialog v-model="dialog" :retain-focus="false" @click:outside="hideTaskModal()">
-    <task-detail
+    <task-detail-container
       @hideTaskModal="hideTaskModal"
       :task="currentTask"
       :projectTitle="projectTitle"
-    ></task-detail>
+    ></task-detail-container>
   </v-dialog>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import TaskDetail from "@/components/task/TaskDetail.vue";
+import TaskDetailContainer from "@/components/task/TaskDetailContainer.vue";
 
 export default {
   name: "Task",
@@ -20,7 +20,7 @@ export default {
       projectTitle: "무제",
     };
   },
-  components: { TaskDetail },
+  components: { TaskDetailContainer },
   methods: {
     ...mapActions(["fetchCurrentTask"]),
     hideTaskModal() {

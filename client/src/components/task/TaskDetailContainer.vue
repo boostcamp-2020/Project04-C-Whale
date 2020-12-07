@@ -11,17 +11,19 @@
         </v-btn>
       </v-list-item-group>
 
-      <div class="task_container ml-10 mr-10">
+      <div class="task_container mr-10">
         <task-item :task="task" />
       </div>
-      <v-tabs v-model="active" color="#1C2B82" slider-color="#07C4A3">
+      <task-detail-tabs :tabTitles="this.taskTaps" :tasks="this.task.tasks" />
+      <!-- <v-tabs v-model="active" color="#1C2B82" slider-color="#07C4A3">
         <v-tab v-for="tabTitle in this.taskTaps" :key="tabTitle" ripple> {{ tabTitle }} </v-tab>
         <v-tab-item v-for="childTask in this.task.tasks" :key="childTask">
           <v-card flat>
+            <task-item :task="childTask" />
             <v-card-text>{{ text }}</v-card-text>
           </v-card>
         </v-tab-item>
-      </v-tabs>
+      </v-tabs> -->
       <div>{{ task }} hi!!</div>
     </v-list-item>
   </v-flex>
@@ -30,11 +32,11 @@
 
 <script>
 import TaskItem from "@/components/project/TaskItem";
+import TaskDetailTabs from "@/components/task/TaskDetailTabs";
 
 export default {
   data() {
     return {
-      active: null,
       taskTaps: ["하위 작업", "댓글", "북마크"],
     };
   },
@@ -43,15 +45,11 @@ export default {
     projectTitle: String,
   },
 
-  components: { TaskItem },
+  components: { TaskItem, TaskDetailTabs },
 
   methods: {
     hideTaskModal() {
       this.$emit("hideTaskModal");
-    },
-    next() {
-      const active = parseInt(this.active);
-      this.active = active < 2 ? active + 1 : 0;
     },
   },
   computed: {},
