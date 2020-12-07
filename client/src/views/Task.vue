@@ -50,3 +50,8 @@ export default {
   },
 };
 </script>
+<style>
+.v-dialog {
+  max-height: 80% !important;
+}
+</style>
