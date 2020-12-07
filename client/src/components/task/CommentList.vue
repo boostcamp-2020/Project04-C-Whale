@@ -1,27 +1,23 @@
 <template>
   <div>
-    <div>하이 코멘트</div>
     <v-list-item v-for="comment in this.comments" :key="comment.id">
-      <v-list-item-group>
-        <v-list-item-title> {{ comment.updatedAt }} </v-list-item-title>
-        <v-list-item-content> {{ comment.content }} </v-list-item-content>
-      </v-list-item-group>
+      <CommentItem :comment="comment" />
     </v-list-item>
-    <div>{{ this.comments }}</div>
     <form @submit.prevent="submit">
       <div class="comment-form-data">
-        <input type="text" v-model="newComment.content" placeholder="댓글 작성" />
-      </div>
-      <v-flex>
+        <v-text-field v-model="newComment.content" placeholder="댓글 작성"></v-text-field>
         <v-btn type="submit" depressed color="primary" :disabled="newComment.content.length <= 0"
           >댓글 추가</v-btn
         >
-      </v-flex>
+      </div>
+      <v-flex> </v-flex>
     </form>
+    <div>{{ this.comments }}</div>
   </div>
 </template>
 <script>
 import { mapActions } from "vuex";
+import CommentItem from "@/components/task/CommentItem";
 export default {
   props: {
     comments: Array,
@@ -37,17 +33,20 @@ export default {
   methods: {
     ...mapActions(["addComment"]),
     submit() {
-      try {
-        this.addComment(this.newComment);
-        this.newComment = {
-          taskId: this.$route.params.taskId,
-          content: "",
-        };
-      } catch (err) {
-        console.log("오는건가");
-      }
+      this.addComment(this.newComment);
+      this.newComment = {
+        taskId: this.$route.params.taskId,
+        content: "",
+      };
     },
   },
+  components: { CommentItem },
 };
 </script>
-<style></style>
+<style>
+.comment-form-data {
+  min-height: 10%;
+  border-style: groove;
+  border-radius: 5px;
+}
+</style>
