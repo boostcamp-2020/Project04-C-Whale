@@ -47,14 +47,12 @@ export default {
       "fetchAllTasks",
     ]),
   },
-  mounted() {
-    this.$nextTick(() => {
-      this.fetchAllTasks();
-      this.fetchProjectInfos();
-      this.fetchTodayProject();
-      this.fetchLabels();
-      this.fetchPriorities();
-    });
+  created() {
+    this.fetchAllTasks();
+    this.fetchProjectInfos();
+    this.fetchTodayProject();
+    this.fetchLabels();
+    this.fetchPriorities();
   },
 };
 </script>
