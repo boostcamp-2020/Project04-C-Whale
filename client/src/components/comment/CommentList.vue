@@ -4,12 +4,11 @@
       <CommentItem :comment="comment" />
     </v-list-item>
     <CommentFormContainer />
-    <div>{{ this.comments }}</div>
   </div>
 </template>
 <script>
-import CommentItem from "@/components/task/CommentItem";
-import CommentFormContainer from "@/components/task/CommentFormContainer";
+import CommentItem from "@/components/comment/CommentItem";
+import CommentFormContainer from "@/components/comment/CommentFormContainer";
 
 export default {
   props: {

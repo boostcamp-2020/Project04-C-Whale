@@ -11,9 +11,9 @@
       </v-list-item-group>
 
       <div class="task_container mr-10">
-        <task-item :task="task" />
+        <TaskItem :task="task" />
       </div>
-      <task-detail-tabs
+      <TaskDetailTabs
         :tasks="this.task.tasks"
         :tabList="this.tabList"
         :comments="this.comments"

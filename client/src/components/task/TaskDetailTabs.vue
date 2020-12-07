@@ -25,7 +25,7 @@
 
 <script>
 import ChildTaskList from "@/components/task/ChildTaskList";
-import CommentList from "@/components/task/CommentList";
+import CommentList from "@/components/comment/CommentList";
 
 export default {
   props: {

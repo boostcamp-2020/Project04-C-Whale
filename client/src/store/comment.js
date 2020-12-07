@@ -21,7 +21,6 @@ const actions = {
       commit("SET_COMMENT_COUNTS", comments.length);
     } catch (err) {
       commit("SET_ERROR_ALERT", err.response);
-      //   alert("작업 전체 조회 요청 실패");
     }
   },
   async addComment({ commit, dispatch }, comment) {
@@ -56,8 +55,6 @@ const actions = {
       }
 
       await dispatch("fetchComments", comment.taskId);
-      // commit("DELETE_COMMENT", comment.id);
-      // commit("DECREASE_COMMENT_COUNTS");
     } catch (err) {
       commit("SET_ERROR_ALERT", err.response);
     }
@@ -67,15 +64,6 @@ const actions = {
 const mutations = {
   SET_COMMENTS: (state, comments) => (state.comments = comments),
   SET_COMMENT_COUNTS: (state, counts) => (state.commentCounts = counts),
-  DECREASE_COMMENT_COUNTS: (state) => state.commentCounts--,
-  //   UPDATE_COMMENT: (state, comment) => (state.comments.find(comment => comment.id) = comment);
-  DELETE_COMMENT: (state, commentId) => {
-    const index = state.comments.indexOf(
-      state.comments.find((comment) => comment.id === commentId)
-    );
-    const comments = state.comments.splice(index, 1);
-    this.state.comments = comments;
-  },
 };
 
 export default {

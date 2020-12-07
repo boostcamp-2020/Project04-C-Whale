@@ -22,7 +22,7 @@
       <v-list-item-title> {{ comment.updatedAt }} </v-list-item-title>
       <v-list-item-content> {{ comment.content }} </v-list-item-content>
     </v-list-item-group>
-    <!-- <div v-if="showEdit">asd</div> -->
+
     <div v-if="isVisibleEditUtils">
       <v-btn class="ma-2" outlined x-small color="indigo" @click="showCommentEdit">
         <v-icon>mdi-pencil</v-icon>

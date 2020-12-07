@@ -25,7 +25,6 @@ const actions = {
       commit("SET_TASKS", data.tasks);
     } catch (err) {
       commit("SET_ERROR_ALERT", err.response);
-      // alert("작업 전체 조회 요청 실패");
     }
   },
   startDragTask({ commit }, { task }) {

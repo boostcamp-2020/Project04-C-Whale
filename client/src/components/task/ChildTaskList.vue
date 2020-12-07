@@ -1,7 +1,7 @@
 <template>
   <div>
-    <task-item v-for="childTask in opendTasks" :key="childTask.id" :task="childTask" />
-    <add-task :projectId="projectId" :parentId="parentId" :sectionId="sectionId" />
+    <TaskItem v-for="childTask in opendTasks" :key="childTask.id" :task="childTask" />
+    <AddTask :projectId="projectId" :parentId="parentId" :sectionId="sectionId" />
   </div>
 </template>
 
