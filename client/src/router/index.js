@@ -5,7 +5,7 @@ import Today from "@/views/Today.vue";
 import Project from "@/views/Project.vue";
 import Home from "@/views/Home.vue";
 import userAPI from "@/api/user";
-import TaskDetail from "@/components/task/TaskDetail.vue";
+// import TaskDetail from "@/components/task/TaskDetail.vue";
 
 Vue.use(VueRouter);
 
@@ -42,6 +42,13 @@ const routes = [
         name: "Today",
         component: Today,
         beforeEnter: requireAuth(),
+        children: [
+          {
+            path: "task/:taskId",
+            name: "TodayTaskDetail",
+            component: Task,
+          },
+        ],
       },
       {
         path: "project/:projectId",
@@ -51,8 +58,8 @@ const routes = [
         children: [
           {
             path: "task/:taskId",
-            name: "TaskDetail",
-            component: TaskDetail,
+            name: "ProjectTaskDetail",
+            component: Task,
           },
         ],
       },
