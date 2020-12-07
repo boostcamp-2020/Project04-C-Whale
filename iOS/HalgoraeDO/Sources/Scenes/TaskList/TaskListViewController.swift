@@ -154,8 +154,10 @@ class TaskListViewController: UIViewController {
         present(alert, animated: true, completion: nil)
     }
     
-    @IBAction private func didTapAddButton(_ sender: RoundButton) {
-        
+    @IBAction func didTapAddButton(_ sender: UIButton) {
+        let taskAddViewController = TaskAddViewController()
+        taskAddViewController.modalPresentationStyle = .overCurrentContext
+        present(taskAddViewController, animated: true, completion: nil)
     }
 }
 
