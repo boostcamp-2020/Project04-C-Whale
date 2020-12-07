@@ -1,6 +1,12 @@
 <template>
   <v-row justify="center">
-    <v-dialog v-model="dialog" persistent max-width="600" class="add-project-dialog">
+    <v-dialog
+      v-model="dialog"
+      persistent
+      max-width="600"
+      class="add-project-dialog"
+      @click:outside="sendEvent"
+    >
       <v-card>
         <v-card-title> 프로젝트 추가 </v-card-title>
         <v-card-text>
@@ -21,31 +27,29 @@
                   class="font-weight-bold"
                 >
                   <template slot="item" slot-scope="{ item }">
-                    <v-list-item-group>
-                      <v-list-item class="color-list-item">
-                        <v-list-item-icon class="my-2">
-                          <v-icon :color="item.hexa">mdi-circle</v-icon>
-                        </v-list-item-icon>
-                        <v-list-item-content class="py-2">
-                          <v-list-item-title class="font-14">{{ item.text }}</v-list-item-title>
-                        </v-list-item-content>
-                      </v-list-item>
+                    <v-list-item-group class="color-list-item d-flex">
+                      <v-list-item-icon>
+                        <v-icon :color="item.value">mdi-circle</v-icon>
+                      </v-list-item-icon>
+                      <v-list-item-content class="py-2">
+                        <v-list-item-title class="font-14">{{ item.text }}</v-list-item-title>
+                      </v-list-item-content>
                     </v-list-item-group>
                   </template>
                 </v-select>
               </v-col>
 
               <v-col cols="12" sm="12" md="12">
+                <span class="font-weight-bold">즐겨찾기</span>
                 <v-switch
                   v-model="isFavorite"
-                  label="즐겨찾기"
                   color="whaleGreen"
                   class="font-weight-bold"
                 ></v-switch>
               </v-col>
 
               <v-col cols="12" sm="12" md="12">
-                <v-text class="font-weight-bold">보기</v-text>
+                <span class="font-weight-bold">보기</span>
                 <v-radio-group v-model="isList" row>
                   <v-radio color="whaleGreen" label="목록 " :value="true"></v-radio>
                   <v-radio color="whaleGreen" label="보드" :value="false"></v-radio>
@@ -65,6 +69,8 @@
 </template>
 
 <script>
+import { colors } from "@/utils/color";
+
 export default {
   props: {
     dialog: Boolean,
@@ -73,14 +79,7 @@ export default {
     return {
       title: "",
       color: null,
-      colors: [
-        { hexa: "#FFA7A7", text: "레드" },
-        { hexa: "#FFE08C", text: "옐로우" },
-        { hexa: "#B7F0B1", text: "그린" },
-        { hexa: "#B2CCFF", text: "라이트블루" },
-        { hexa: "#FFB2D9", text: "핑크" },
-        { hexa: "#BDBDBD", text: "그레이" },
-      ],
+      colors,
       isFavorite: false,
       isList: true,
     };

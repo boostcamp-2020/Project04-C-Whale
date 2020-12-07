@@ -20,11 +20,12 @@
         :to="`/project/${project.id}`"
       >
         <v-list-item-icon class="mr-4">
-          <v-icon color="red">mdi-circle</v-icon>
+          <v-icon :color="project.color">mdi-circle</v-icon>
         </v-list-item-icon>
         <v-list-item-content>
           <v-list-item-title class="font-14"
-            >{{ project.title }} {{ project.taskCount }}</v-list-item-title
+            >{{ project.title }}
+            <span class="task-count">{{ project.taskCount }}</span></v-list-item-title
           >
         </v-list-item-content>
       </v-list-item>
@@ -77,5 +78,8 @@ export default {
 }
 .add-btn {
   cursor: pointer;
+}
+.task-count {
+  color: grey;
 }
 </style>
