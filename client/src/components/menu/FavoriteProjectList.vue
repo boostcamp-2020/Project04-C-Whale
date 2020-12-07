@@ -25,6 +25,7 @@
         v-for="favoriteProjectInfo in favoriteProjectInfos"
         class="pl-8"
         :key="favoriteProjectInfo.id"
+        :to="`/project/${favoriteProjectInfo.id}`"
       >
         <v-list-item-icon class="mr-4">
           <v-icon :color="favoriteProjectInfo.color">mdi-circle</v-icon>
