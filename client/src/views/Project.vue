@@ -10,7 +10,6 @@ import { mapGetters, mapActions } from "vuex";
 import ProjectContainer from "@/components/project/ProjectContainer";
 import Alert from "@/components/common/Alert";
 
-
 export default {
   components: { ProjectContainer, Alert },
   methods: {
