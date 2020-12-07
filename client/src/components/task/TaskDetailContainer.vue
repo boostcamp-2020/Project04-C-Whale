@@ -54,7 +54,7 @@ export default {
   computed: {},
   created() {
     this.tabList.childTask.count = this.task.tasks.length;
-    this.tabList.comment.count = 1;
+    this.tabList.comment.count = this.comments.length;
     this.tabList.bookmark.count = 3;
   },
   mounted() {},
