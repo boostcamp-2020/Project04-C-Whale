@@ -1,5 +1,7 @@
 import commentAPI from "@/api/comment";
 
+const SUCCESS_MESSAGE = "ok";
+
 const state = {
   comments: [],
 };
@@ -25,11 +27,24 @@ const actions = {
   async addComment({ commit, dispatch }, comment) {
     try {
       const { data } = await commentAPI.createComment(comment);
-      if (data.message !== "ok") {
+      if (data.message !== SUCCESS_MESSAGE) {
         throw new Error();
       }
 
       await dispatch("fetchComments", comment.taskId);
+    } catch (err) {
+      commit("SET_ERROR_ALERT", err.response);
+    }
+  },
+  async deleteComment({ commit }, comment) {
+    try {
+      const { data } = await commentAPI.deleteComment(comment);
+      if (data.message !== SUCCESS_MESSAGE) {
+        throw Error;
+      }
+
+      // await dispatch("fetchComments", comment.taskId);
+      commit("DELETE_COMMENT", comment.id);
     } catch (err) {
       commit("SET_ERROR_ALERT", err.response);
     }
@@ -48,7 +63,13 @@ const mutations = {
   SET_COMMENTS: (state, comments) => (state.comments = comments),
 
   //   UPDATE_COMMENT: (state, comment) => (state.comments.find(comment => comment.id) = comment);
-  //   DELETE_COMMENT: (state, commentId) => delete state.comments.find((comment) => comment.id === commentId),
+  DELETE_COMMENT: (state, commentId) => {
+    const index = state.comments.indexOf(
+      state.comments.find((comment) => comment.id === commentId)
+    );
+    const comments = state.comments.splice(index, 1);
+    this.state.comments = comments;
+  },
 };
 
 export default {
