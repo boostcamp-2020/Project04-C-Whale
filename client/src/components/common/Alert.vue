@@ -1,12 +1,12 @@
 <template>
   <div class="alert">
     <v-alert
-      v-if="alert.alert.type"
-      :value="!!alert.alert.message"
-      :type="alert.alert.type"
+      v-if="alert.message"
+      :value="!!alert.message"
+      :type="alert.type"
       dismissible
       @input="CLEAR_ALERT()"
-      >{{ alert.alert.message }}</v-alert
+      >{{ alert.message }}</v-alert
     >
   </div>
 </template>
@@ -16,7 +16,7 @@ import { mapState, mapMutations } from "vuex";
 
 export default {
   computed: {
-    ...mapState(["alert"]),
+    ...mapState({ alert: (state) => state.alert.alert }),
   },
   methods: {
     ...mapMutations(["CLEAR_ALERT"]),

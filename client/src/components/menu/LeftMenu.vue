@@ -4,11 +4,10 @@
       v-if="managedProject"
       :managed-project="managedProject"
       :task-count="taskCount"
-    ></favorite-project-list>
-    <project-list-container :project-infos="namedProjectInfos"></project-list-container>
-    <label-list :labels="labels"></label-list>
-    <filter-list :priorities="priorities"></filter-list>
-    <alert></alert>
+    />
+    <project-list-container :project-infos="namedProjectInfos" />
+    <label-list :labels="labels" />
+    <filter-list :priorities="priorities" />
   </div>
 </template>
 
@@ -17,7 +16,6 @@ import FavoriteProjectList from "./FavoriteProjectList";
 import ProjectListContainer from "./ProjectListContainer";
 import LabelList from "./LabelList";
 import FilterList from "./FilterList";
-import Alert from "@/components/common/Alert";
 import { mapGetters, mapActions } from "vuex";
 
 export default {
@@ -26,7 +24,6 @@ export default {
     ProjectListContainer,
     LabelList,
     FilterList,
-    Alert,
   },
   computed: mapGetters([
     "namedProjectInfos",
