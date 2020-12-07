@@ -16,7 +16,7 @@ const actions = {
   async fetchComments({ commit }, taskId) {
     try {
       const { data: comments } = await commentAPI.getAllComments(taskId);
-      comments.sort((comment1, comment2) => (comment1.updatedAt > comment2.updatedAt ? 1 : -1));
+      comments.sort((comment1, comment2) => (comment1.createdAt > comment2.createdAt ? 1 : -1));
       commit("SET_COMMENTS", comments);
       commit("SET_COMMENT_COUNTS", comments.length);
     } catch (err) {
