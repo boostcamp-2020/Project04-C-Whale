@@ -21,6 +21,20 @@
           </v-list-item-title>
         </v-list-item-content>
       </v-list-item>
+      <v-list-item
+        v-for="favoriteProjectInfo in favoriteProjectInfos"
+        class="pl-8"
+        :key="favoriteProjectInfo.id"
+      >
+        <v-list-item-icon class="mr-4">
+          <v-icon :color="favoriteProjectInfo.color">mdi-circle</v-icon>
+        </v-list-item-icon>
+        <v-list-item-content class="px-4">
+          <v-list-item-title class="font-14">
+            {{ favoriteProjectInfo.title }} <span>{{ favoriteProjectInfo.taskCount }}</span>
+          </v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
     </v-list-item-group>
   </div>
 </template>
@@ -30,6 +44,7 @@ export default {
   props: {
     managedProject: Object,
     taskCount: Number,
+    favoriteProjectInfos: Array,
   },
 };
 </script>

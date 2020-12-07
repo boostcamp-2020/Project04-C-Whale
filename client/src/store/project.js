@@ -15,8 +15,10 @@ const state = {
 
 const getters = {
   currentProject: (state) => state.currentProject,
-  namedProjectInfos: (state) => state.projectInfos.filter((project) => project.title !== "관리함"),
+  namedProjectInfos: (state) =>
+    state.projectInfos.filter((project) => project.title !== "관리함" && !project.isFavorite),
   managedProject: (state) => state.projectInfos.find((project) => project.title === "관리함"),
+  favoriteProjectInfos: (state) => state.projectInfos.filter((project) => project.isFavorite),
   projectList: (state) => state.projectList,
 };
 

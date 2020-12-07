@@ -11,6 +11,7 @@ const retrieveProjects = async () => {
       'id',
       'title',
       'color',
+      'isFavorite',
       [sequelize.fn('COUNT', sequelize.col('tasks.id')), 'taskCount'],
     ],
     include: {

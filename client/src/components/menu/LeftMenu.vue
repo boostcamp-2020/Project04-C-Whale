@@ -4,6 +4,7 @@
       v-if="managedProject"
       :managed-project="managedProject"
       :task-count="taskCount"
+      :favorite-project-infos="favoriteProjectInfos"
     />
     <ProjectListContainer :project-infos="namedProjectInfos" />
     <LabelList :labels="labels" />
@@ -27,6 +28,7 @@ export default {
   },
   computed: mapGetters([
     "namedProjectInfos",
+    "favoriteProjectInfos",
     "managedProject",
     "labels",
     "priorities",

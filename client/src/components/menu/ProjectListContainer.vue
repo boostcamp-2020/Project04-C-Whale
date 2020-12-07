@@ -6,7 +6,7 @@
           <v-list-item-content>
             <v-list-item-title class="font-14">프로젝트</v-list-item-title>
           </v-list-item-content>
-          <v-list-item-icon :class="{ 'd-none': !hover }" @click="openModalEvent">
+          <v-list-item-icon :class="{ 'd-none ': !hover }" @click="openModalEvent">
             <v-icon>mdi-plus</v-icon>
           </v-list-item-icon>
         </v-list-item>
@@ -14,15 +14,16 @@
     </template>
     <v-list-item-group active-class="list-active">
       <v-list-item
-        active-class="font-weight-bold list-active"
         v-for="project in projectInfos"
         :key="project.id"
         :to="`/project/${project.id}`"
+        class="pl-8"
+        active-class="font-weight-bold list-active"
       >
         <v-list-item-icon class="mr-4">
           <v-icon :color="project.color">mdi-circle</v-icon>
         </v-list-item-icon>
-        <v-list-item-content>
+        <v-list-item-content class="px-4">
           <v-list-item-title class="font-14"
             >{{ project.title }}
             <span class="task-count">{{ project.taskCount }}</span></v-list-item-title

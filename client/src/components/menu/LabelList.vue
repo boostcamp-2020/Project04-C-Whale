@@ -17,7 +17,7 @@
         <v-list-item-icon class="mr-4">
           <v-icon :color="label.color">mdi-label</v-icon>
         </v-list-item-icon>
-        <v-list-item-content>
+        <v-list-item-content class="px-4">
           <v-list-item-title class="font-14">{{ label.title }}</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
