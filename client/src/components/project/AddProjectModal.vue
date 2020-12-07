@@ -5,7 +5,7 @@
       persistent
       max-width="600"
       class="add-project-dialog"
-      @click:outside="sendEvent"
+      @click:outside="sendCloseModalEvent"
     >
       <v-card>
         <v-card-title> 프로젝트 추가 </v-card-title>
@@ -60,8 +60,8 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="black darken-1" text @click="sendEvent"> 취소 </v-btn>
-          <v-btn color="whaleGreen" text @click="sendEvent"> 추가 </v-btn>
+          <v-btn color="black darken-1" text @click="sendCloseModalEvent"> 취소 </v-btn>
+          <v-btn color="whaleGreen" text @click="newProject"> 추가 </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -70,6 +70,7 @@
 
 <script>
 import { colors } from "@/utils/color";
+import { mapActions } from "vuex";
 
 export default {
   props: {
@@ -85,7 +86,17 @@ export default {
     };
   },
   methods: {
-    sendEvent() {
+    ...mapActions(["addProject"]),
+    sendCloseModalEvent() {
+      this.$emit("handleModal");
+    },
+    newProject() {
+      this.addProject({
+        title: this.title,
+        color: this.color,
+        isFavorite: this.isFavorite,
+        isList: this.isList,
+      });
       this.$emit("handleModal");
     },
   },

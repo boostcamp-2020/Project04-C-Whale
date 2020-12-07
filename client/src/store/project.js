@@ -1,5 +1,6 @@
 import projectAPI from "../api/project";
 import taskAPI from "../api/task";
+import router from "@/router";
 
 const state = {
   currentProject: {
@@ -111,7 +112,17 @@ const actions = {
       // alert("프로젝트 전체 정보 조회 요청 실패");
     }
   },
+  async addProject({ dispatch, commit }, data) {
+    try {
+      const response = await projectAPI.createProject(data);
+      await dispatch("fetchProjectInfos");
 
+      commit("SET_SUCCESS_ALERT", "프로젝트가 생성되었습니다.");
+      router.push("/project/" + response.data.projectId);
+    } catch (err) {
+      commit("SET_ERROR_ALERT", err.response);
+    }
+  },
   async changeTaskPosition({ rootState, dispatch }, { orderedTasks }) {
     const { draggingTask, dropTargetSection } = rootState.dragAndDrop;
 
