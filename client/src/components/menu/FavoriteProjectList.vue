@@ -5,7 +5,7 @@
         <v-list-item-icon class="mr-4 my-3"
           ><v-icon color="blue">mdi-inbox</v-icon></v-list-item-icon
         >
-        <v-list-item-content :key="managedProject.id">
+        <v-list-item-content class="px-4" :key="managedProject.id">
           <v-list-item-title class="font-14">
             관리함 <span>{{ managedProject.taskCount }}</span>
           </v-list-item-title>
@@ -15,7 +15,7 @@
         <v-list-item-icon class="mr-4">
           <v-icon color="red">mdi-calendar-today</v-icon>
         </v-list-item-icon>
-        <v-list-item-content>
+        <v-list-item-content class="px-4">
           <v-list-item-title class="font-14">
             오늘 <span>{{ taskCount }}</span>
           </v-list-item-title>
