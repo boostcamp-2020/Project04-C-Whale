@@ -22,7 +22,9 @@ export default {
     ...mapMutations(["CLEAR_ALERT"]),
   },
   beforeUpdate() {
-    setTimeout(() => this.CLEAR_ALERT(), 3000);
+    if (this.alert.message) {
+      setTimeout(() => this.CLEAR_ALERT(), 3000);
+    }
   },
 };
 </script>
@@ -33,5 +35,6 @@ export default {
   top: 0;
   left: 50%;
   transform: translate(-50%, 0);
+  z-index: 100;
 }
 </style>
