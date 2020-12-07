@@ -44,7 +44,7 @@ export default {
   methods: {
     next() {
       const active = parseInt(this.active);
-      this.active = active < 2 ? active + 1 : 0;
+      this.active = active % 3;
     },
   },
   components: { ChildTaskList, CommentList },
