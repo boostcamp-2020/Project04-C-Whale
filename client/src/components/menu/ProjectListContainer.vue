@@ -43,19 +43,19 @@
       </v-list-item>
     </v-list-item-group>
 
-    <add-project :dialog="dialog" v-on:handleModal="dialog = !dialog"></add-project>
+    <add-project-modal :dialog="dialog" v-on:handleModal="dialog = !dialog"></add-project-modal>
   </v-list-group>
 </template>
 
 <script>
-import AddProject from "@/components/project/AddProject.vue";
+import AddProjectModal from "@/components/project/AddProject.vue";
 
 export default {
   props: {
     projectInfos: Array,
   },
   components: {
-    AddProject,
+    AddProjectModal,
   },
   data() {
     return {
