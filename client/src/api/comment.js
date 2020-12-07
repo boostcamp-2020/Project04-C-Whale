@@ -7,6 +7,9 @@ const labelAPI = {
   createComment(data) {
     return myAxios.post(`/task/${data.taskId}/comment`, data);
   },
+  deleteComment(comment) {
+    return myAxios.delete(`/task/${comment.taskId}/comment/${comment.id}`, comment);
+  },
 };
 
 export default labelAPI;
