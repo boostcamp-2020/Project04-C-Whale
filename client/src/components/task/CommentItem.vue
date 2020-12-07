@@ -14,7 +14,7 @@
         <v-icon>mdi-pencil</v-icon>
         수정
       </v-btn>
-      <v-btn class="ma-2" outlined x-small color="indigo" @click="deleteComment">
+      <v-btn class="ma-2" outlined x-small color="indigo" @click="remove(comment.id)">
         <v-icon>mdi-delete</v-icon>
         삭제
       </v-btn>
@@ -22,6 +22,7 @@
   </div>
 </template>
 <script>
+import { mapActions } from "vuex";
 export default {
   props: {
     comment: Object,
@@ -32,6 +33,7 @@ export default {
     };
   },
   methods: {
+    ...mapActions(["deleteComment"]),
     showEditComment() {
       this.showEdit = true;
     },
@@ -41,8 +43,13 @@ export default {
     updateComment() {
       alert("수정 선택");
     },
-    deleteComment() {
-      alert("삭제 선택");
+    remove(commentId) {
+      const isRemove = confirm("정말 삭제하시겠습니까?");
+      if (isRemove) {
+        const data = { id: commentId, taskId: this.$route.params.taskId };
+        this.deleteComment(data);
+        alert("삭제되었습니다.");
+      }
     },
   },
 };
