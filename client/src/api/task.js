@@ -10,8 +10,8 @@ const taskAPI = {
   getTaskById(taskId) {
     return myAxios.get(`/task/${taskId}`);
   },
-  updateTask(taskId, data) {
-    return myAxios.patch(`/task/${taskId}`, data);
+  updateTask(data) {
+    return myAxios.patch(`/task/${data.taskId}`, data);
   },
 };
 
