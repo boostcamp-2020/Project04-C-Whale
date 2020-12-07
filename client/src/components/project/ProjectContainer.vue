@@ -11,7 +11,7 @@
         v-for="section in project.sections"
         :key="section.id"
         :section="section"
-        class="mb-5"
+        class="mb-3"
       />
     </div>
   </div>
@@ -37,7 +37,6 @@ export default {
       this.boardView = false;
     },
     changeToBoardView() {
-      console.log(11);
       this.boardView = true;
     },
   },

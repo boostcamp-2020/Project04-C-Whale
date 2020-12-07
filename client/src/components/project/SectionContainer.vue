@@ -21,7 +21,7 @@
       />
     </div>
 
-    <AddTask :projectId="section.projectId" :sectionId="section.id" />
+    <AddTask :section="section" />
   </v-list>
 </template>
 
@@ -72,7 +72,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .task-container {
   min-width: 450px;
 }
