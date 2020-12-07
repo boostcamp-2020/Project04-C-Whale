@@ -15,7 +15,7 @@ const actions = {
   async fetchComments({ commit }, taskId) {
     try {
       const { data: comments } = await commentAPI.getAllComments(taskId);
-      // console.log(data);
+      comments.sort((comment1, comment2) => (comment1.updatedAt > comment2.updatedAt ? 1 : -1));
       commit("SET_COMMENTS", comments);
     } catch (err) {
       commit("SET_ERROR_ALERT", err.response);
