@@ -14,7 +14,12 @@
       <div class="task_container mr-10">
         <task-item :task="task" />
       </div>
-      <task-detail-tabs :tabTitles="this.taskTaps" :tasks="this.task.tasks" />
+      <task-detail-tabs
+        :tabTitles="this.taskTabs"
+        :tasks="this.task.tasks"
+        :projectId="this.task.projectId"
+        :sectionId="this.task.sectionId"
+      />
       <!-- <v-tabs v-model="active" color="#1C2B82" slider-color="#07C4A3">
         <v-tab v-for="tabTitle in this.taskTaps" :key="tabTitle" ripple> {{ tabTitle }} </v-tab>
         <v-tab-item v-for="childTask in this.task.tasks" :key="childTask">
@@ -24,7 +29,6 @@
           </v-card>
         </v-tab-item>
       </v-tabs> -->
-      <div>{{ task }} hi!!</div>
     </v-list-item>
   </v-flex>
   <!-- </v-dialog> -->
@@ -37,7 +41,7 @@ import TaskDetailTabs from "@/components/task/TaskDetailTabs";
 export default {
   data() {
     return {
-      taskTaps: ["하위 작업", "댓글", "북마크"],
+      taskTabs: { childTaskTab: "하위 작업", taskCommentTab: "댓글", taskBookmarkTab: "북마크" },
     };
   },
   props: {
