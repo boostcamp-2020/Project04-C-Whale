@@ -1,13 +1,13 @@
 <template>
   <div>
-    <favorite-project-list
+    <FavoriteProjectList
       v-if="managedProject"
       :managed-project="managedProject"
       :task-count="taskCount"
     />
-    <project-list-container :project-infos="namedProjectInfos" />
-    <label-list :labels="labels" />
-    <filter-list :priorities="priorities" />
+    <ProjectListContainer :project-infos="namedProjectInfos" />
+    <LabelList :labels="labels" />
+    <FilterList :priorities="priorities" />
   </div>
 </template>
 

@@ -35,7 +35,7 @@
         exact-active-class="list-active"
       >
         <v-list-item-icon class="mr-4">
-          <v-icon color="red">mdi-plus</v-icon>
+          <v-icon color="whaleGreen">mdi-plus</v-icon>
         </v-list-item-icon>
         <v-list-item-content>
           <v-list-item-title class="font-14">프로젝트 추가 </v-list-item-title>
@@ -43,12 +43,12 @@
       </v-list-item>
     </v-list-item-group>
 
-    <add-project-modal :dialog="dialog" v-on:handleModal="dialog = !dialog"></add-project-modal>
+    <AddProjectModal :dialog="dialog" v-on:handleModal="dialog = !dialog" />
   </v-list-group>
 </template>
 
 <script>
-import AddProjectModal from "@/components/project/AddProject.vue";
+import AddProjectModal from "@/components/project/AddProjectModal.vue";
 
 export default {
   props: {
