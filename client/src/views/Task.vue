@@ -4,6 +4,7 @@
       v-if="this.projectTitle"
       @hideTaskModal="hideTaskModal"
       :task="currentTask"
+      :comments="comments"
       :projectTitle="projectTitle"
     ></task-detail-container>
     <div v-else>데이터를 불러오는 중입니다</div>
@@ -24,17 +25,21 @@ export default {
   },
   components: { TaskDetailContainer },
   methods: {
-    ...mapActions(["fetchCurrentTask"]),
+    ...mapActions(["fetchCurrentTask", "fetchComments"]),
     hideTaskModal() {
       this.$router.go(-1);
     },
   },
   computed: {
-    ...mapGetters(["currentTask", "namedProjectInfos"]),
+    ...mapGetters(["currentTask", "namedProjectInfos", "comments"]),
   },
 
   async created() {
-    await this.fetchCurrentTask(this.$route.params.taskId);
+    Promise.all([
+      await this.fetchCurrentTask(this.$route.params.taskId),
+      await this.fetchComments(this.$route.params.taskId),
+    ]);
+
     this.projectTitle = this.namedProjectInfos.find(
       (project) => project.id === this.currentTask.projectId
     ).title;
