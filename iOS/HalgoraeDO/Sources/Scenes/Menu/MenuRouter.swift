@@ -8,7 +8,7 @@
 import Foundation
 
 protocol MenuRoutingLogic {
-    
+    func routeToTaskList(for project: MenuModels.ProjectVM)
 }
 
 protocol MenuDataPassing {
@@ -28,4 +28,18 @@ class MenuRouter: MenuDataPassing {
 
 extension MenuRouter: MenuRoutingLogic {
     
+    func routeToTaskList(for project: MenuModels.ProjectVM) {
+        let projectId = project.id.replacingOccurrences(of: "+", with: "")
+        
+        let storyboard = viewController?.storyboard
+        guard let projectIndex = dataStore.projects.firstIndex(where: { $0.id == projectId }),
+            let vc = storyboard?.instantiateViewController(identifier: "\(TaskListViewController.self)",
+                                                        creator: { [unowned self] (coder) -> TaskListViewController? in
+            return TaskListViewController(coder: coder, project: self.dataStore.projects[projectIndex])
+        })
+        else {
+            return
+        }
+        viewController?.navigationController?.pushViewController(vc, animated: true)
+    }
 }

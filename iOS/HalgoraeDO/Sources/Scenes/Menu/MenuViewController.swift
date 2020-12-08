@@ -205,12 +205,7 @@ extension MenuViewController: UICollectionViewDelegate {
             return
         }
         
-        guard let vc = storyboard?.instantiateViewController(identifier: "\(TaskListViewController.self)", creator: { (coder) -> TaskListViewController? in
-            return TaskListViewController(coder: coder)
-        }) else { return }
-        vc.title = project.title
-        vc.projectTitle = project.title
-        navigationController?.pushViewController(vc, animated: true)
+        rotuer?.routeToTaskList(for: project)
     }
 }
 
