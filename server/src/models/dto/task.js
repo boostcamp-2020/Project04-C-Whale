@@ -28,15 +28,15 @@ class TaskDto {
   @IsUUID('4')
   id;
 
-  @IsString({ groups: ['create'] }, { message: errorMessage.wrongProperty('title') })
-  @MinLength(1, { groups: ['create'] }, { message: errorMessage.wrongProperty('title') })
+  @IsString({ groups: ['create'] }, { message: errorMessage.TYPE_ERROR('title') })
+  @MinLength(1, { groups: ['create'] }, { message: errorMessage.INVALID_INPUT_ERROR('title') })
   title;
 
   @IsDateString(
     { strict: true },
-    { groups: ['create'], message: errorMessage.wrongProperty('dueDate') },
+    { groups: ['create'], message: errorMessage.TYPE_ERROR('dueDate') },
   )
-  @isAfterToday('dueDate', { groups: ['create'], message: errorMessage.beforeDueDate })
+  @isAfterToday('dueDate', { groups: ['create'], message: errorMessage.DUEDATE_ERROR() })
   dueDate;
 
   @IsInt()
@@ -51,12 +51,12 @@ class TaskDto {
   @IsUUID('4')
   parentId;
 
-  @IsString({ groups: ['create'], message: errorMessage.wrongProperty('sectionId') })
-  @IsUUID('4', { groups: ['create'], message: errorMessage.wrongProperty('sectionId') })
+  @IsString({ groups: ['create'], message: errorMessage.TYPE_ERROR('sectionId') })
+  @IsUUID('4', { groups: ['create'], message: errorMessage.TYPE_ERROR('sectionId') })
   sectionId;
 
-  @IsString({ groups: ['create'], message: errorMessage.wrongProperty('projectId') })
-  @IsUUID('4', { groups: ['create'], message: errorMessage.wrongProperty('projectId') })
+  @IsString({ groups: ['create'], message: errorMessage.TYPE_ERROR('projectId') })
+  @IsUUID('4', { groups: ['create'], message: errorMessage.TYPE_ERROR('projectId') })
   projectId;
 
   @IsString()
