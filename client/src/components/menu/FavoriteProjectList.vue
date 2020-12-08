@@ -25,7 +25,7 @@
         v-for="favoriteProjectInfo in favoriteProjectInfos"
         class="pl-4"
         :key="favoriteProjectInfo.id"
-        :to="`/project/${favoriteProjectInfo.id}`"
+        @click="pushRoute(favoriteProjectInfo.id)"
       >
         <v-list-item-icon class="mr-1">
           <v-icon small :color="favoriteProjectInfo.color">mdi-circle</v-icon>
@@ -35,17 +35,69 @@
             {{ favoriteProjectInfo.title }} <span>{{ favoriteProjectInfo.taskCount }}</span>
           </v-list-item-title>
         </v-list-item-content>
+        <v-menu :offset-y="true">
+          <template v-slot:activator="{ on }">
+            <v-list-item-action>
+              <v-btn icon v-on.prevent="on">
+                <v-icon>mdi-dots-horizontal</v-icon>
+              </v-btn>
+            </v-list-item-action>
+          </template>
+          <v-list>
+            <v-list-item @click.stop="openUpdateDialog(favoriteProjectInfo.id)">
+              <v-list-item-title class="font-14">프로젝트 수정 </v-list-item-title>
+            </v-list-item>
+            <v-list-item @click.stop="openDeleteDialog(favoriteProjectInfo.id)">
+              <v-list-item-title class="font-14">프로젝트 삭제 </v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
       </v-list-item>
+      <UpdateProjectModal
+        v-if="favoriteProjectInfos.find((project) => project.id === projectId)"
+        :dialog="updateDialog"
+        v-on:handleUpdateModal="updateDialog = !updateDialog"
+        :projectInfo="favoriteProjectInfos.find((project) => project.id === projectId)"
+      />
+      <DeleteProjectModal
+        v-if="favoriteProjectInfos.find((project) => project.id === projectId)"
+        :dialog="deleteDialog"
+        v-on:handleDeleteModal="deleteDialog = !deleteDialog"
+        :projectInfo="favoriteProjectInfos.find((project) => project.id === projectId)"
+      />
     </v-list-item-group>
   </div>
 </template>
 
 <script>
+import UpdateProjectModal from "@/components/project/UpdateProjectModal.vue";
+import DeleteProjectModal from "@/components/project/DeleteProjectModal.vue";
+
 export default {
   props: {
     managedProject: Object,
     taskCount: Number,
     favoriteProjectInfos: Array,
+  },
+  components: {
+    UpdateProjectModal,
+    DeleteProjectModal,
+  },
+  data() {
+    return { updateDialog: false, deleteDialog: false, projectId: "" };
+  },
+  methods: {
+    pushRoute(projectId) {
+      this.$router.push("/project/" + projectId);
+    },
+    openUpdateDialog(projectId) {
+      this.projectId = projectId;
+      this.updateDialog = true;
+    },
+    openDeleteDialog(projectId) {
+      this.projectId = projectId;
+      this.deleteDialog = true;
+    },
   },
 };
 </script>
