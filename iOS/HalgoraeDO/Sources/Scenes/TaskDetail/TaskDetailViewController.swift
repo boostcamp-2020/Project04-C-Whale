@@ -16,6 +16,7 @@ class TaskDetailViewController: UIViewController {
     // MARK: - Properties
     
     private var task: Task
+    private var interactor: TaskDetailBusinessLogic?
     private var priority: Priority = .four {
         didSet {
             priorityButton.tintColor = priority.color
@@ -72,11 +73,26 @@ class TaskDetailViewController: UIViewController {
     
     // MARK: - Initialize
     
+    private func configureLogic() {
+        let taskDetailSubTasksViewController = pages[0] as? TaskDetailSubTasksViewController
+        let taskDetailCommentViewController = pages[1] as? TaskDetailCommentViewController
+        let taskDetailBookmarkViewController = pages[2] as? TaskDetailBookmarkViewController
+        let presenter: TaskDetailPresenter = TaskDetailPresenter(viewController: self,
+                                            subTaskViewController: taskDetailSubTasksViewController,
+                                            subTaskCommentViewController: taskDetailCommentViewController,
+                                            subTaskBookmarkViewController: taskDetailBookmarkViewController)
+        let interactor = TaskDetailInteractor(presenter: presenter, worker: TaskDetailWorker(sessionManager: SessionManager(configuration: .default)))
+        taskDetailSubTasksViewController?.configure(interactor: interactor)
+        taskDetailCommentViewController?.configure(interactor: interactor)
+        taskDetailBookmarkViewController?.configure(interactor: interactor)
+        self.interactor = interactor
+    }
+    
     private func setup() {
         taskTitleTextView.delegate = self
         titleLabel.text = "Project"
         taskTitleTextView.text = task.title
-        priority = task.priority
+        priority = task.priority ?? .four
     }
     
     override func setEditing(_ editing: Bool, animated: Bool) {
