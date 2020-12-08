@@ -11,13 +11,8 @@ class TaskDetailPageViewController: UIPageViewController {
     
     // MARK: - Properties
     
-    lazy var pages: [UIViewController] = {
-        return [
-            self.instance(name: String(describing: TaskDetailSubTasksViewController.self)),
-            self.instance(name: String(describing: TaskDetailCommentViewController.self)),
-            self.instance(name: String(describing: TaskDetailBookmarkViewController.self))
-        ]
-    }()
+    lazy var pages: [UIViewController] = []
+    private var interactor: TaskListBusinessLogic?
     
     // MARK: - View Life Cycle
 
@@ -28,9 +23,12 @@ class TaskDetailPageViewController: UIPageViewController {
     
     // MARK: - Initialize
     
+    func configureLogic(interactor: TaskListBusinessLogic) {
+        self.interactor = interactor
+    }
+    
     private func configurePageViewController() {
         self.dataSource = self
-        self.delegate = self
         if let firstVC = pages.first {
             setViewControllers([firstVC], direction: .forward, animated: true, completion: nil)
         }
@@ -58,10 +56,4 @@ extension TaskDetailPageViewController: UIPageViewControllerDataSource {
         
         return nextIndex >= pages.count ? pages.first : pages[nextIndex]
     }
-}
-
-// MARK: - UIPageViewController Delegate
-
-extension TaskDetailPageViewController: UIPageViewControllerDelegate {
-    
 }

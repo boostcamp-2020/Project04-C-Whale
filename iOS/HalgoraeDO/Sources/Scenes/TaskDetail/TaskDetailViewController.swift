@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol TaskDetailDisplayLogic {
+protocol TaskDetailDisplayLogic: class {
     
 }
 
@@ -16,11 +16,28 @@ class TaskDetailViewController: UIViewController {
     // MARK: - Properties
     
     private var task: Task
+    private var interactor: TaskDetailBusinessLogic?
     private var priority: Priority = .four {
         didSet {
             priorityButton.tintColor = priority.color
         }
     }
+    private var currentTabIndex = 0 {
+        didSet {
+            subTabStackView
+                .arrangedSubviews
+                .compactMap({$0 as? UIButton})
+                .enumerated()
+                .forEach { $0.element.isSelected = $0.offset == currentTabIndex }
+        }
+    }
+    lazy var pages: [UIViewController] = {
+        return [
+            instance(name: "\(TaskDetailSubTasksViewController.self)"),
+            instance(name: "\(TaskDetailCommentViewController.self)"),
+            instance(name: "\(TaskDetailBookmarkViewController.self)"),
+        ]
+    }()
     
     // MARK: Views
 
@@ -31,7 +48,11 @@ class TaskDetailViewController: UIViewController {
     @IBOutlet weak private var taskTitleTextView: UITextView!
     @IBOutlet weak private var finishButton: UIButton!
     @IBOutlet weak private var priorityButton: UIButton!
-    @IBOutlet weak private var subContainerView: UIView!
+    @IBOutlet weak var subTaskTabButton: UIButton!
+    @IBOutlet weak var commentTabButton: UIButton!
+    @IBOutlet weak var bookmarkTabButton: UIButton!
+    @IBOutlet weak var subTabStackView: UIStackView!
+    weak var pageViewController: UIPageViewController?
     
     // MARK: View Life Cycle
     
@@ -52,11 +73,26 @@ class TaskDetailViewController: UIViewController {
     
     // MARK: - Initialize
     
+    private func configureLogic() {
+        let taskDetailSubTasksViewController = pages[0] as? TaskDetailSubTasksViewController
+        let taskDetailCommentViewController = pages[1] as? TaskDetailCommentViewController
+        let taskDetailBookmarkViewController = pages[2] as? TaskDetailBookmarkViewController
+        let presenter: TaskDetailPresenter = TaskDetailPresenter(viewController: self,
+                                            subTaskViewController: taskDetailSubTasksViewController,
+                                            subTaskCommentViewController: taskDetailCommentViewController,
+                                            subTaskBookmarkViewController: taskDetailBookmarkViewController)
+        let interactor = TaskDetailInteractor(presenter: presenter, worker: TaskDetailWorker(sessionManager: SessionManager(configuration: .default)))
+        taskDetailSubTasksViewController?.configure(interactor: interactor)
+        taskDetailCommentViewController?.configure(interactor: interactor)
+        taskDetailBookmarkViewController?.configure(interactor: interactor)
+        self.interactor = interactor
+    }
+    
     private func setup() {
         taskTitleTextView.delegate = self
         titleLabel.text = "Project"
         taskTitleTextView.text = task.title
-        priority = task.priority
+        priority = task.priority ?? .four
     }
     
     override func setEditing(_ editing: Bool, animated: Bool) {
@@ -100,29 +136,41 @@ class TaskDetailViewController: UIViewController {
     }
     
     @IBAction private func didTapSubTasksTabButton(_ sender: UIButton) {
-        
+        let tabIndex = 0
+        let direection: UIPageViewController.NavigationDirection = currentTabIndex == 2 ? .forward : .reverse
+        pageViewController?.setViewControllers([pages[tabIndex]], direction: direection, animated: true, completion: nil)
+        currentTabIndex = tabIndex
     }
     
     @IBAction private func didTapCommentTabButton(_ sender: UIButton) {
-        
+        let tabIndex = 1
+        let direection: UIPageViewController.NavigationDirection = currentTabIndex < tabIndex ? .forward : .reverse
+        pageViewController?.setViewControllers([pages[tabIndex]], direction: direection, animated: true, completion: nil)
+        currentTabIndex = tabIndex
     }
     
     @IBAction private func didTapBookmarkButton(_ sender: UIButton) {
-        
+        let tabIndex = 2
+        let direection: UIPageViewController.NavigationDirection = .forward
+        pageViewController?.setViewControllers([pages[tabIndex]], direction: direection, animated: true, completion: nil)
+        currentTabIndex = tabIndex
     }
     
     // MARK: - Navigation
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard let popoverVC = segue.destination as? PopoverViewController else { return }
-        configure(popover: popoverVC)
+    private func instance(name: String) -> UIViewController {
+        return UIStoryboard(name: "Main", bundle: nil).instantiateViewController(identifier: name)
     }
-}
-
-// MARK: - TaskDetail DisplayLogic
-
-extension TaskDetailViewController: TaskDetailDisplayLogic {
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let pagingVC = segue.destination as? TaskDetailPageViewController {
+            pageViewController = pagingVC
+            pagingVC.delegate = self
+            pagingVC.pages = pages
+        } else if let popoverVC = segue.destination as? PopoverViewController {
+            configure(popover: popoverVC)
+        }
+    }
 }
 
 // MARK: - UITextViewDelegate
@@ -145,4 +193,27 @@ extension TaskDetailViewController: UIPopoverPresentationControllerDelegate {
     func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
         return .none
     }
+}
+
+// MARK: - UIPageViewControllerDelegate
+
+extension TaskDetailViewController: UIPageViewControllerDelegate {
+    
+    func pageViewController(_ pageViewController: UIPageViewController, willTransitionTo pendingViewControllers: [UIViewController]) {
+        
+    }
+    
+    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+        guard let currentVC = pageViewController.viewControllers?.first,
+            let currentIndex = pages.firstIndex(of: currentVC)
+        else {
+            return
+        }
+        
+        currentTabIndex = currentIndex
+    }
+}
+
+extension TaskDetailViewController: TaskDetailDisplayLogic {
+    
 }

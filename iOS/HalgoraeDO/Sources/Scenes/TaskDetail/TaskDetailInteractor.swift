@@ -8,7 +8,7 @@
 import Foundation
 
 protocol TaskDetailBusinessLogic {
-    
+    func fetchSubTasks(request: TaskDetailModels.FetchSubTasks.Request)
 }
 
 protocol TaskDetailDataStore {
@@ -17,8 +17,18 @@ protocol TaskDetailDataStore {
 
 class TaskDetailInteractor: TaskDetailDataStore {
     
+    var presenter: TaskDetailPresentLogic
+    var worker: TaskDetailWorker
+    
+    init(presenter: TaskDetailPresentLogic, worker: TaskDetailWorker) {
+        self.presenter = presenter
+        self.worker = worker
+    }
 }
 
 extension TaskDetailInteractor: TaskDetailBusinessLogic {
+    func fetchSubTasks(request: TaskDetailModels.FetchSubTasks.Request) {
+        
+    }
     
 }
