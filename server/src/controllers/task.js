@@ -5,7 +5,17 @@ const { asyncTryCatch } = require('@utils/async-try-catch');
 const { responseHandler } = require('@utils/handler');
 
 const getTaskById = asyncTryCatch(async (req, res) => {
-  const task = await taskService.retrieveById(req.params.taskId);
+  const id = req.params.taskId;
+  try {
+    await validator(TaskDto, { id }, { groups: ['retrieve'] });
+  } catch (errs) {
+    const message = getErrorMsg(errs);
+    const err = new Error(message);
+    err.status = 400;
+    throw err;
+  }
+
+  const task = await taskService.retrieveById(id);
 
   responseHandler(res, 200, task);
 });
