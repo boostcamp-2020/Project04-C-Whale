@@ -21,6 +21,13 @@ class TaskDetailViewController: UIViewController {
             priorityButton.tintColor = priority.color
         }
     }
+    lazy var pages: [UIViewController] = {
+        return [
+            instance(name: "\(TaskDetailSubTasksViewController.self)"),
+            instance(name: "\(TaskDetailCommentViewController.self)"),
+            instance(name: "\(TaskDetailBookmarkViewController.self)"),
+        ]
+    }()
     
     // MARK: Views
 
@@ -113,16 +120,19 @@ class TaskDetailViewController: UIViewController {
     
     // MARK: - Navigation
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard let popoverVC = segue.destination as? PopoverViewController else { return }
-        configure(popover: popoverVC)
+    private func instance(name: String) -> UIViewController {
+        return UIStoryboard(name: "Main", bundle: nil).instantiateViewController(identifier: name)
     }
-}
-
-// MARK: - TaskDetail DisplayLogic
-
-extension TaskDetailViewController: TaskDetailDisplayLogic {
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let pagingVC = segue.destination as? TaskDetailPageViewController {
+            pageViewController = pagingVC
+            pagingVC.delegate = self
+            pagingVC.pages = pages
+        } else if let popoverVC = segue.destination as? PopoverViewController {
+            configure(popover: popoverVC)
+        }
+    }
 }
 
 // MARK: - UITextViewDelegate
