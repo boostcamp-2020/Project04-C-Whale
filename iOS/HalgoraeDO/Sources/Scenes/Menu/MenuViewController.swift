@@ -7,43 +7,19 @@
 
 import UIKit
 
+protocol MenuDisplayLogic: class {
+}
+
 class MenuViewController: UIViewController {
     
-    /// 임시 property
-    let rootItem = Project(color: nil, title: "프로젝트", taskNum: 0)
-    let normalItem = [Project(color: nil, title: "오늘", taskNum: 4)]
-    var projectItem = [Project(title: "환영합니다👋", taskNum: 16),
-                        Project(color: "#B2CCFF", title: "To Do", taskNum: 8),
-                        Project(color: "#B7F0B1", title: "할고래두 프로젝트🐳", taskNum: 12),
-                        Project(color: "#FFE08C", title: "네이버 웨일 프젝", taskNum: 3),
-                        Project(color: "#FFA7A7", title: "네이버 코테⭐️", taskNum: 10)]
-    
-    struct Project: Hashable {
-        private let identifier = UUID()
-        let title: String?
-        let color: String?
-        let taskNum: Int
-        init(color: String? = "#BDBDBD", title: String? = nil, taskNum: Int = 0) {
-            self.title = title
-            self.color = color
-            self.taskNum = taskNum
-        }
-    }
-    
-    enum Section: Int, Hashable, CaseIterable, CustomStringConvertible {
-        case normal, project
-        var description: String {
-            switch self {
-            case .normal: return ""
-            case .project: return "프로젝트"
-            }
-        }
-    }
+    typealias Section = MenuModels.ProjectSection
+    typealias ProjectVM = MenuModels.ProjectVM
     
     // MARK: - Properties
 
-    var heartProjects = Set<Project>()
-    private var dataSource: UICollectionViewDiffableDataSource<Section, Project>!
+    private var dataSource: UICollectionViewDiffableDataSource<Section, ProjectVM>!
+    private var interactor: MenuBusinessLogic?
+    private var rotuer: (MenuDataPassing & MenuRoutingLogic)?
     
     // MARK: Views
     
@@ -53,18 +29,27 @@ class MenuViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        configureLogic()
         configureNavItem()
         configureCollectionView()
         configureDataSource()
-        applyInitialSnapshots()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         title = "할고래DO"
+        interactor?.fetchProjects()
     }
     
     // MARK: - Initialize
+    
+    func configureLogic() {
+        let presenter = MenuPresenter(viewController: self)
+        let interactor = MenuInteractor(presenter: presenter, worker: MenuWorker(sessionManager: SessionManager(configuration: .default)))
+        self.interactor = interactor
+        self.rotuer = MenuRouter(dataStore: interactor, viewController: self)
+    }
     
     func configureNavItem() {
         navigationItem.title = "메뉴"
@@ -224,4 +209,8 @@ extension MenuViewController: UICollectionViewDelegate {
     }
 }
 
+// MARK: - Menu DisplayLogic
 
+extension MenuViewController: MenuDisplayLogic {
+
+}
