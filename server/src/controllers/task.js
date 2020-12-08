@@ -1,6 +1,6 @@
 const TaskDto = require('@models/dto/task');
 const taskService = require('@services/task');
-const validator = require('@utils/validator');
+const { validator, getErrorMsg } = require('@utils/validator');
 const { asyncTryCatch } = require('@utils/async-try-catch');
 const { responseHandler } = require('@utils/handler');
 
@@ -18,16 +18,13 @@ const getAllTasks = asyncTryCatch(async (req, res) => {
 
 const createTask = asyncTryCatch(async (req, res) => {
   const { projectId, sectionId } = req.params;
-  const task = {
-    ...req.body,
-    projectId,
-    sectionId,
-  };
+  const task = { ...req.body, projectId, sectionId };
 
   try {
-    await validator(TaskDto, task);
+    await validator(TaskDto, task, { groups: ['create'] });
   } catch (errs) {
-    const err = new Error('Bad Request');
+    const message = getErrorMsg(errs);
+    const err = new Error(message);
     err.status = 400;
     throw err;
   }
