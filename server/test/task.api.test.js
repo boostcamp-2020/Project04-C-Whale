@@ -4,6 +4,7 @@ const app = require('@root/app');
 const seeder = require('@test/test-seed');
 const status = require('@test/response-status');
 const { createJWT } = require('@utils/auth');
+const errorMessage = require('@models/dto/error-messages');
 
 beforeAll(async done => {
   await seeder.up();
@@ -35,16 +36,11 @@ describe('get All task', () => {
         .set('Authorization', `Bearer ${createJWT(expectedUser)}`);
 
       const { tasks } = res.body;
+
       // then
       expect(
-        tasks.every(task =>
-          expectedTasks.some(
-            expectedTask =>
-              Object.entries(expectedTask).toString() === Object.entries(task).toString(),
-          ),
-        ),
+        tasks.every(task => expectedTasks.some(expectedTask => expectedTask.id === task.id)),
       ).toBeTruthy();
-      // expect(tasks).toStrictEqual(expectedTasks);
       done();
     } catch (err) {
       done(err);
@@ -68,10 +64,24 @@ describe('get All task', () => {
       done(err);
     }
   });
+  it('토큰 값이 없는 경우 ', async done => {
+    // given
+    try {
+      // when
+      const res = await request(app).get('/api/task');
+
+      // then
+      expect(res.status).toBe(status.UNAUTHORIZED.CODE);
+      expect(res.body.message).toBe(status.UNAUTHORIZED.MSG);
+      done();
+    } catch (err) {
+      done(err);
+    }
+  });
 });
 
 describe('get task by id', () => {
-  it('get task by id 일반', async done => {
+  it('get task by id 성공', async done => {
     // given
     const taskId = seeder.tasks[0].id;
     const expectedChildren = seeder.tasks.filter(task => task.parentId === taskId);
@@ -90,6 +100,62 @@ describe('get task by id', () => {
           expectedChildren.some(expectedChild => recievedChild.id === expectedChild.id),
         ).toBeTruthy();
       });
+
+      done();
+    } catch (err) {
+      done(err);
+    }
+  });
+  it('잘못된 id 값 요청', async done => {
+    // given
+    const taskId = 'invalidId';
+
+    try {
+      // when
+      const res = await request(app)
+        .get(`/api/task/${taskId}`)
+        .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`);
+
+      // then
+      expect(res.status).toBe(status.BAD_REQUEST.CODE);
+      expect(res.body.message).toBe(errorMessage.INVALID_INPUT_ERROR('id'));
+      done();
+    } catch (err) {
+      done(err);
+    }
+  });
+  it('자신의 task id가 아닌 경우', async done => {
+    // given
+    const taskId = seeder.tasks[0].id;
+
+    try {
+      // when
+      const res = await request(app)
+        .get(`/api/task/${taskId}`)
+        .set('Authorization', `Bearer ${createJWT(seeder.users[1])}`);
+
+      // then
+      expect(res.status).toBe(status.FORBIDDEN.CODE);
+      expect(res.body.message).toBe(status.FORBIDDEN.MSG);
+
+      done();
+    } catch (err) {
+      done(err);
+    }
+  });
+  it('존재하지 않는 task id인 경우', async done => {
+    // given
+    const taskId = 'c213d58a-661a-4395-b0da-fb48dc11fa2e';
+
+    try {
+      // when
+      const res = await request(app)
+        .get(`/api/task/${taskId}`)
+        .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`);
+
+      // then
+      expect(res.status).toBe(status.NOT_FOUND.CODE);
+      expect(res.body.message).toBe(status.NOT_FOUND.MSG);
 
       done();
     } catch (err) {
