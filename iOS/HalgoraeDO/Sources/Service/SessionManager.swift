@@ -8,19 +8,16 @@
 import Foundation
 
 protocol SessionManagerProtocol {
-    
-    associatedtype Request: DataResponsing
-    
     func request(endPoint: EndPointType,
                  cachePolicy: URLRequest.CachePolicy,
-                 timeoutInterval: TimeInterval) -> Request
+                 timeoutInterval: TimeInterval) -> DataRequest
 }
 
 extension SessionManagerProtocol {
     
     func request(endPoint: EndPointType,
                  cachePolicy: URLRequest.CachePolicy = .reloadIgnoringLocalAndRemoteCacheData,
-                 timeoutInterval: TimeInterval = 10.0) -> Request {
+                 timeoutInterval: TimeInterval = 10.0) -> DataRequest {
         request(endPoint: endPoint, cachePolicy: cachePolicy, timeoutInterval: timeoutInterval)
     }
 }
