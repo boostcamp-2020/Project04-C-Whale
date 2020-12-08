@@ -11,7 +11,7 @@ class TaskList {
     
     var tasks: [Task] = []
     
-    func task(identifier: UUID, postion: Int, parentPosition: Int?) -> Task? {
+    func task(identifier: String, postion: Int, parentPosition: Int?) -> Task? {
         var superTasks = tasks
         if let parentPosition = parentPosition  {
             superTasks = tasks[parentPosition].subTasks

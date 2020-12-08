@@ -8,6 +8,6 @@
 import Foundation
 
 struct Comment: Codable {
-    var id: UUID
+    var id: String
     var contents: String
 }

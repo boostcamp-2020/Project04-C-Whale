@@ -8,7 +8,7 @@
 import Foundation
 
 class Section: Codable {
-    var id: UUID
+    var id: String
     var title: String
     var createdAt: Date
     var updatedAt: Date

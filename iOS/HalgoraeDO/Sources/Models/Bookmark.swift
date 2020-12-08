@@ -8,6 +8,6 @@
 import Foundation
 
 struct Bookmark: Codable {
-    var id: UUID
+    var id: String
     var url: String
 }

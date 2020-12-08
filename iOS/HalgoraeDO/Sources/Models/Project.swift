@@ -8,9 +8,20 @@
 import Foundation
 
 class Project: Codable {
-    var id: UUID
+    var id: String?
     var title: String
     var taskCount: Int
-    var isList: Bool
-    var sections: [Section]
+    var isFavorite: Bool?
+    var isList: Bool?
+    var sections: [Section]?
+}
+
+extension Project: Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+    
+    static func ==(lhs: Project, rhs: Project) -> Bool {
+        return lhs.id == rhs.id
+    }
 }
