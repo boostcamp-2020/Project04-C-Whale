@@ -5,6 +5,7 @@
     @dragover.prevent="handleDragOver"
     @drop.prevent="handleDrop"
     :class="{ dragging: task.dragging }"
+    class="task-item text-subtitle"
   >
     <v-list-item-action>
       <v-radio-group>
@@ -18,7 +19,11 @@
 
     <div class="task-div" @click="moveToTaskDetail()">
       <v-list-item-content>
-        <v-list-item-title>{{ task.title }}</v-list-item-title>
+        <v-list-item-title>
+          <vue-markdown class="mark-down">
+            {{ task.title }}
+          </vue-markdown>
+        </v-list-item-title>
       </v-list-item-content>
     </div>
     <router-view />
@@ -27,6 +32,7 @@
 
 <script>
 import { mapGetters, mapActions, mapMutations } from "vuex";
+import VueMarkDown from "vue-markdown";
 
 export default {
   props: {
@@ -34,6 +40,9 @@ export default {
     section: Object,
     position: Number,
     dragging: Boolean,
+  },
+  components: {
+    "vue-markdown": VueMarkDown,
   },
   methods: {
     ...mapActions(["updateTaskToDone"]),
@@ -83,6 +92,10 @@ export default {
 </script>
 
 <style>
+.task-item {
+  height: 1px;
+}
+
 .container {
   min-width: 500px;
 }
