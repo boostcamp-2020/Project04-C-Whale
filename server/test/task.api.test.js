@@ -92,7 +92,9 @@ describe('get task by id', () => {
         .get(`/api/task/${taskId}`)
         .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`);
 
-      const recievedChildren = res.body.tasks.filter(task => task.parentId === taskId);
+      const recievedChildren = res.body.task.tasks.filter(
+        childTask => childTask.parentId === taskId,
+      );
 
       // then
       recievedChildren.forEach(recievedChild => {
@@ -171,7 +173,7 @@ describe('patch task with id', () => {
     const patchTask = {
       title: '할일',
       projectId: seeder.projects[0].id,
-      sessionId: seeder.sessions[0].id,
+      sectionId: seeder.sections[0].id,
       priorityId: seeder.priorities[0].id,
       dueDate: new Date(),
       parentId: null,
@@ -217,7 +219,7 @@ describe('patch task with id', () => {
 
   it('id값이 포함된 수정', async done => {
     // given
-    const patchTask = { id: seeder.tasks[0].id, title: 'ㅁㄴㅇ' };
+    const patchTask = { id: seeder.tasks[0].id, title: '졸리다' };
 
     // when
     const res = await request(app)
@@ -227,7 +229,7 @@ describe('patch task with id', () => {
 
     // then
     expect(res.status).toBe(status.BAD_REQUEST.CODE);
-    expect(res.body.message).toBe(errorMessage.INVALID_INPUT_ERROR('title'));
+    expect(res.body.message).toBe(errorMessage.UNNECESSARY_INPUT_ERROR('id'));
     done();
   });
   it('잘못된 title 수정', async done => {
