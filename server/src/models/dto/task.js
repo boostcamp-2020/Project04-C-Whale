@@ -36,11 +36,11 @@ class TaskDto {
   position;
 
   @IsOptional({ groups: ['patch'] })
-  @IsBoolean({ groups: ['patch'], message: errorMessage.TYPE_ERROR('position') })
+  @IsBoolean({ groups: ['patch'], message: errorMessage.TYPE_ERROR('isDone') })
   isDone;
 
   @IsOptional({ groups: ['create', 'patch'] })
-  @IsString({ groups: ['create', 'patch'], message: errorMessage.TYPE_ERROR('sectionId') })
+  @IsString({ groups: ['create', 'patch'], message: errorMessage.TYPE_ERROR('parentId') })
   @IsUUID('4', {
     groups: ['create', 'patch'],
     message: errorMessage.INVALID_INPUT_ERROR('parentId'),
