@@ -56,6 +56,22 @@ enum MenuModels {
         }
     }
     
+    enum UpdateProject {
+        struct Request {
+            var project: ProjectVM
+        }
+        
+        struct Response {
+            var project: Project
+        }
+        
+        struct ViewModel {
+            var favorite: ProjectVM
+            var project: ProjectVM
+        }
+    }
+}
+
 extension MenuModels {
     
     enum ProjectSection: Int, Hashable, CaseIterable, CustomStringConvertible {

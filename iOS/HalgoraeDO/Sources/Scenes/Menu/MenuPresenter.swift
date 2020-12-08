@@ -9,6 +9,7 @@ import Foundation
 
 protocol MenuPresentLogic {
     func presentProjects(response: MenuModels.FetchProjects.Response)
+    func presentUpdatedProject(response: MenuModels.UpdateProject.Response)
 }
 
 class MenuPresenter {
@@ -27,3 +28,10 @@ extension MenuPresenter: MenuPresentLogic {
         viewController?.displayFetchedProjects(viewModel: viewModel)
     }
     
+    func presentUpdatedProject(response: MenuModels.UpdateProject.Response) {
+        let vm = MenuModels.ProjectVM(project: response.project)
+        let favorite = MenuModels.ProjectVM(project: response.project, makeFavorite: true)
+        let viewModel = MenuModels.UpdateProject.ViewModel(favorite: favorite, project: vm)
+        viewController?.displayUpdatedProject(viewModel: viewModel)
+    }
+}

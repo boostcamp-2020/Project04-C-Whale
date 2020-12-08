@@ -9,6 +9,7 @@ import Foundation
 
 protocol MenuBusinessLogic {
     func fetchProjects()
+    func updateProject(request: MenuModels.UpdateProject.Request)
 }
 
 protocol MenuDataStore {
@@ -37,3 +38,13 @@ extension MenuInteractor: MenuBusinessLogic {
         }
     }
     
+    func updateProject(request: MenuModels.UpdateProject.Request) {
+        let vm = request.project
+        let vmId = vm.id.replacingOccurrences(of: "+", with: "")
+        if let index = projects.firstIndex(where: { $0.id == vmId }) {
+            projects[index].isFavorite = !vm.isFavorite
+            presenter.presentUpdatedProject(response: .init(project: projects[index]))
+        }
+    }
+}
+

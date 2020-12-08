@@ -9,6 +9,7 @@ import UIKit
 
 protocol MenuDisplayLogic: class {
     func displayFetchedProjects(viewModel: MenuModels.FetchProjects.ViewModel)
+    func displayUpdatedProject(viewModel: MenuModels.UpdateProject.ViewModel)
 }
 
 class MenuViewController: UIViewController {
@@ -176,30 +177,17 @@ private extension MenuViewController {
             DispatchQueue.main.async {
                 self.dataSource.apply(sectionSnapshot, to: section)
             }
-    func leadingSwipeAction(_ item: Project) -> UISwipeActionsConfiguration? {
-        var normalSnapshot = self.dataSource.snapshot(for: .normal)
-        var projectSnapshot = self.dataSource.snapshot(for: .project)
-        let isStarred = normalSnapshot.contains(item)
-        let starAction = UIContextualAction(style: .normal, title: nil) {
-            [weak self] (_, _, completion) in
-            guard let self = self else {
-                completion(false)
-                return
         }
         
-            if isStarred {
-                normalSnapshot.delete([item])
-                projectSnapshot.append([item], to: self.rootItem)
-            } else {
-                projectSnapshot.delete([item])
-                normalSnapshot.append([item])
     }
-            self.dataSource.apply(normalSnapshot, to: .normal, animatingDifferences: false)
-            self.dataSource.apply(projectSnapshot, to: .project, animatingDifferences: false)
-            
+
+    func leadingSwipeAction(_ item: ProjectVM) -> UISwipeActionsConfiguration? {
+        let starAction = UIContextualAction(style: .normal, title: nil) {
+            [weak self] (_, _, completion) in
+            self?.interactor?.updateProject(request: .init(project: item))
             completion(true)
         }
-        starAction.image = UIImage(systemName: isStarred ? "heart.slash" : "heart.fill")
+        starAction.image = UIImage(systemName: item.isFavorite ? "heart.slash" : "heart.fill")
         starAction.backgroundColor = .halgoraedoDarkBlue
 
         return UISwipeActionsConfiguration(actions: [starAction])
@@ -234,3 +222,27 @@ extension MenuViewController: MenuDisplayLogic {
         applySnapshot(projects: viewModel.projects)
     }
     
+    func displayUpdatedProject(viewModel: MenuModels.UpdateProject.ViewModel) {
+        
+        let favorite = viewModel.favorite
+        if favorite.isFavorite {
+            appendSnapshot(items: [favorite], to: .normal)
+        } else {
+            deleteSnapshot(for: [favorite])
+        }
+        
+        let project = viewModel.project
+        var sectionSnapshot = dataSource.snapshot(for: .project)
+        let originIndex = sectionSnapshot.index(of: project)
+        sectionSnapshot.delete([project])
+        
+        if 0..<sectionSnapshot.items.count ~= originIndex ?? -1 {
+            let nextItem = sectionSnapshot.items[originIndex!]
+            sectionSnapshot.insert([project], before: nextItem)
+        } else {
+            sectionSnapshot.append([project])
+        }
+
+        dataSource.apply(sectionSnapshot, to: .project, animatingDifferences: true, completion: nil)
+    }
+}
