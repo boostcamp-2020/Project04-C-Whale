@@ -16,8 +16,8 @@ const { isAfterToday } = require('@utils/validator');
 
 class TaskDto {
   @IsEmpty({ groups: ['create'], message: errorMessage.UNNECESSARY_INPUT_ERROR('id') })
-  @IsString()
-  @IsUUID('4')
+  @IsString({ groups: ['retrieve'], message: errorMessage.TYPE_ERROR('id') })
+  @IsUUID('4', { groups: ['retrieve'], message: errorMessage.INVALID_INPUT_ERROR('id') })
   id;
 
   @IsString({ groups: ['create'], message: errorMessage.TYPE_ERROR('title') })
