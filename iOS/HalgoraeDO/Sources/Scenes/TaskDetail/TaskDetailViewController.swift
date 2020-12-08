@@ -21,6 +21,15 @@ class TaskDetailViewController: UIViewController {
             priorityButton.tintColor = priority.color
         }
     }
+    private var currentTabIndex = 0 {
+        didSet {
+            subTabStackView
+                .arrangedSubviews
+                .compactMap({$0 as? UIButton})
+                .enumerated()
+                .forEach { $0.element.isSelected = $0.offset == currentTabIndex }
+        }
+    }
     lazy var pages: [UIViewController] = {
         return [
             instance(name: "\(TaskDetailSubTasksViewController.self)"),
@@ -38,7 +47,11 @@ class TaskDetailViewController: UIViewController {
     @IBOutlet weak private var taskTitleTextView: UITextView!
     @IBOutlet weak private var finishButton: UIButton!
     @IBOutlet weak private var priorityButton: UIButton!
-    @IBOutlet weak private var subContainerView: UIView!
+    @IBOutlet weak var subTaskTabButton: UIButton!
+    @IBOutlet weak var commentTabButton: UIButton!
+    @IBOutlet weak var bookmarkTabButton: UIButton!
+    @IBOutlet weak var subTabStackView: UIStackView!
+    weak var pageViewController: UIPageViewController?
     
     // MARK: View Life Cycle
     
@@ -107,15 +120,24 @@ class TaskDetailViewController: UIViewController {
     }
     
     @IBAction private func didTapSubTasksTabButton(_ sender: UIButton) {
-        
+        let tabIndex = 0
+        let direection: UIPageViewController.NavigationDirection = currentTabIndex == 2 ? .forward : .reverse
+        pageViewController?.setViewControllers([pages[tabIndex]], direction: direection, animated: true, completion: nil)
+        currentTabIndex = tabIndex
     }
     
     @IBAction private func didTapCommentTabButton(_ sender: UIButton) {
-        
+        let tabIndex = 1
+        let direection: UIPageViewController.NavigationDirection = currentTabIndex < tabIndex ? .forward : .reverse
+        pageViewController?.setViewControllers([pages[tabIndex]], direction: direection, animated: true, completion: nil)
+        currentTabIndex = tabIndex
     }
     
     @IBAction private func didTapBookmarkButton(_ sender: UIButton) {
-        
+        let tabIndex = 2
+        let direection: UIPageViewController.NavigationDirection = .forward
+        pageViewController?.setViewControllers([pages[tabIndex]], direction: direection, animated: true, completion: nil)
+        currentTabIndex = tabIndex
     }
     
     // MARK: - Navigation
@@ -155,4 +177,27 @@ extension TaskDetailViewController: UIPopoverPresentationControllerDelegate {
     func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
         return .none
     }
+}
+
+// MARK: - UIPageViewControllerDelegate
+
+extension TaskDetailViewController: UIPageViewControllerDelegate {
+    
+    func pageViewController(_ pageViewController: UIPageViewController, willTransitionTo pendingViewControllers: [UIViewController]) {
+        
+    }
+    
+    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+        guard let currentVC = pageViewController.viewControllers?.first,
+            let currentIndex = pages.firstIndex(of: currentVC)
+        else {
+            return
+        }
+        
+        currentTabIndex = currentIndex
+    }
+}
+
+extension TaskDetailViewController: TaskDetailDisplayLogic {
+    
 }
