@@ -9,7 +9,53 @@ import Foundation
 
 enum MenuModels {
     
-
+    // MARK: - Usecase
+    
+    enum FetchProjects {
+        struct Request {
+            
+        }
+        
+        struct Response {
+            var projects: [Project]
+        }
+        
+        struct ViewModel {
+            var projects = [ProjectSection: [ProjectVM]]()
+            
+            init(projects origins: [Project]) {
+                self.projects = generateViewModels(for: origins)
+            }
+            
+            func generateViewModels(for projects: [Project]) -> [ProjectSection: [ProjectVM]] {
+                var viewModels = [ProjectSection: [ProjectVM]]()
+                for section in ProjectSection.allCases {
+                    switch section {
+                        case .normal:
+                            viewModels[section] = [ProjectVM(title: "오늘", isHeader: false)]
+                        case .project:
+                            viewModels[section] = [ProjectVM(title: "프로젝트", isHeader: true)]
+                    }
+                }
+                
+                for project in projects {
+                    guard project.title != "오늘" else {
+                        viewModels[.normal]?[0].taskCount = project.taskCount
+                        continue
+                    }
+                    
+                    viewModels[.project]?[0].taskCount += project.taskCount
+                    viewModels[.project]?.append(.init(project: project))
+                    
+                    if project.isFavorite ?? false {
+                        viewModels[.normal]?.append(.init(project: project, makeFavorite: true))
+                    }
+                }
+                return viewModels
+            }
+        }
+    }
+    
 extension MenuModels {
     
     enum ProjectSection: Int, Hashable, CaseIterable, CustomStringConvertible {
