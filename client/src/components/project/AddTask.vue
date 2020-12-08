@@ -60,7 +60,7 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import getTodayString from "../../utils/today-string";
+import { getTodayString } from "../../utils/date";
 
 export default {
   data() {
@@ -70,6 +70,7 @@ export default {
       task: {
         projectId: this.parentProjectId,
         sectionId: this.parentSectionId,
+        parentId: this.parentId,
         title: "",
         dueDate: getTodayString(),
       },
@@ -82,6 +83,7 @@ export default {
       this.task = {
         projectId: this.section.projectId,
         sectionId: this.section.id,
+        parentId: this.parentId,
         title: "",
         dueDate: getTodayString(),
       };
@@ -111,6 +113,9 @@ export default {
   props: {
     project: Object,
     section: Object,
+    projectId: String, 
+    sectionId: String, 
+    parentId: String,
   },
   computed: {
     ...mapGetters(["projectInfos"]),

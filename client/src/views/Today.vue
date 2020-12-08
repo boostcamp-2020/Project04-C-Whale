@@ -1,10 +1,5 @@
 <template>
-  <div>
-    <today-tasks-container
-      :today-tasks="todayTasks"
-      :expired-tasks="expiredTasks"
-    ></today-tasks-container>
-  </div>
+  <today-tasks-container :today-tasks="todayTasks" :expired-tasks="expiredTasks" />
 </template>
 
 <script>
