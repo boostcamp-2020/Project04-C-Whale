@@ -197,12 +197,17 @@ extension MenuViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
         
-        let project = dataSource.snapshot().itemIdentifiers[indexPath.item+1]
+        guard let project = dataSource.itemIdentifier(for: indexPath),
+              !project.isHeader
+        else {
+            return
+        }
+        
         guard let vc = storyboard?.instantiateViewController(identifier: "\(TaskListViewController.self)", creator: { (coder) -> TaskListViewController? in
             return TaskListViewController(coder: coder)
         }) else { return }
         vc.title = project.title
-        vc.projectTitle = project.title ?? ""
+        vc.projectTitle = project.title
         navigationController?.pushViewController(vc, animated: true)
     }
 }
