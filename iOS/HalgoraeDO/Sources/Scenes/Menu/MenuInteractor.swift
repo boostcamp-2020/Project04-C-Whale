@@ -8,7 +8,7 @@
 import Foundation
 
 protocol MenuBusinessLogic {
-    
+    func fetchProjects()
 }
 
 protocol MenuDataStore {
@@ -29,5 +29,11 @@ class MenuInteractor: MenuDataStore {
 
 extension MenuInteractor: MenuBusinessLogic {
 
-}
-
+    func fetchProjects() {
+        worker.request(endPoint: .getAll) { [weak self] (projects: [Project]?, error) in
+            let projects = projects ?? []
+            self?.projects = projects
+            self?.presenter.presentProjects(response: .init(projects: projects))
+        }
+    }
+    

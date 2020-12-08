@@ -8,7 +8,7 @@
 import Foundation
 
 protocol MenuPresentLogic {
-    
+    func presentProjects(response: MenuModels.FetchProjects.Response)
 }
 
 class MenuPresenter {
@@ -22,4 +22,8 @@ class MenuPresenter {
 
 extension MenuPresenter: MenuPresentLogic {
     
-}
+    func presentProjects(response: MenuModels.FetchProjects.Response) {
+        let viewModel = MenuModels.FetchProjects.ViewModel(projects: response.projects)
+        viewController?.displayFetchedProjects(viewModel: viewModel)
+    }
+    

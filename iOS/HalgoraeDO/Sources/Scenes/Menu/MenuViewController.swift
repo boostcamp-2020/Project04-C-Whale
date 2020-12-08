@@ -8,6 +8,7 @@
 import UIKit
 
 protocol MenuDisplayLogic: class {
+    func displayFetchedProjects(viewModel: MenuModels.FetchProjects.ViewModel)
 }
 
 class MenuViewController: UIViewController {
@@ -91,7 +92,7 @@ private extension MenuViewController {
     }
     
     func configureDataSource() {
-        dataSource = UICollectionViewDiffableDataSource<Section, Project>(collectionView: menuCollectionView) {
+        dataSource = UICollectionViewDiffableDataSource<Section, ProjectVM>(collectionView: menuCollectionView) {
             (collectionView, indexPath, item) -> UICollectionViewCell? in
             guard let section = Section(rawValue: indexPath.section) else { fatalError("Unknown section") }
             switch section {
@@ -105,9 +106,9 @@ private extension MenuViewController {
         }
     }
     
-    func configuredNormalCell() -> UICollectionView.CellRegistration<UICollectionViewListCell, Project> {
-        return UICollectionView.CellRegistration<UICollectionViewListCell, Project> { (cell, indexPath, project) in
-            var content = UIListContentConfiguration.cell()
+    func configuredNormalCell() -> UICollectionView.CellRegistration<UICollectionViewListCell, ProjectVM> {
+        return UICollectionView.CellRegistration<UICollectionViewListCell, ProjectVM> { (cell, indexPath, project) in
+            var content = cell.defaultContentConfiguration()
             content.text = project.title
             content.image = UIImage(systemName: "calendar")
             content.imageProperties.tintColor = .halgoraedoDarkBlue
@@ -115,13 +116,13 @@ private extension MenuViewController {
             content.directionalLayoutMargins = .zero
             cell.contentConfiguration = content
             let taskNum = UILabel()
-            taskNum.text = "\(project.taskNum)"
+            taskNum.text = "\(project.taskCount)"
             cell.accessories.append(.customView(configuration: .init(customView: taskNum, placement: .trailing())))
         }
     }
     
-    func configuredProjectHeaderCell() -> UICollectionView.CellRegistration<UICollectionViewListCell, Project> {
-        return UICollectionView.CellRegistration<UICollectionViewListCell, Project> { (cell, indexPath, project) in
+    func configuredProjectHeaderCell() -> UICollectionView.CellRegistration<UICollectionViewListCell, ProjectVM> {
+        return UICollectionView.CellRegistration<UICollectionViewListCell, ProjectVM> { (cell, indexPath, project) in
             var content = cell.defaultContentConfiguration()
             content.text = project.title
             cell.contentConfiguration = content
@@ -132,38 +133,35 @@ private extension MenuViewController {
         }
     }
     
-    func configuredProjectCell() -> UICollectionView.CellRegistration<UICollectionViewListCell, Project> {
-        return UICollectionView.CellRegistration<UICollectionViewListCell, Project> { (cell, indexPath, project) in
+    func configuredProjectCell() -> UICollectionView.CellRegistration<UICollectionViewListCell, ProjectVM> {
+        return UICollectionView.CellRegistration<UICollectionViewListCell, ProjectVM> { (cell, indexPath, project) in
             var content = cell.defaultContentConfiguration()
             content.text = project.title
             content.textProperties.font = .systemFont(ofSize: 17, weight: .light)
             cell.contentConfiguration = content
             cell.indentationLevel = 0
             let taskNum = UILabel()
-            taskNum.text = "\(project.taskNum)"
+            taskNum.text = "\(project.taskCount)"
             let starAccessory = UIImageView(image: UIImage(systemName: "star.fill"))
-            starAccessory.tintColor = UIColor(hexFromString: project.color!)
+            starAccessory.tintColor = UIColor(hexFromString: project.color)
             cell.accessories.append(.customView(configuration: .init(customView: taskNum, placement: .trailing())))
             cell.accessories.append(.customView(configuration: .init(customView: starAccessory, placement: .leading())))
         }
     }
-
-    func applyInitialSnapshots() {
-        var snapshot = NSDiffableDataSourceSnapshot<Section, Project>()
-        snapshot.appendSections(Section.allCases)
-        dataSource.apply(snapshot, animatingDifferences: false)
-        var normalSnapshot = NSDiffableDataSourceSectionSnapshot<Project>()
-        normalSnapshot.append(normalItem)
-        normalSnapshot.append(Array(heartProjects))
-        dataSource.apply(normalSnapshot, to: .normal, animatingDifferences: false)
-        
-        var sectionSnapshot = NSDiffableDataSourceSectionSnapshot<Project>()
-        sectionSnapshot.append([rootItem])
-        sectionSnapshot.append(projectItem, to: rootItem)
-        sectionSnapshot.expand([rootItem])
-        dataSource.apply(sectionSnapshot, to: .project, animatingDifferences: false)
-    }
     
+    func applySnapshot(projects: [Section: [ProjectVM]]) {
+        for (section, projectVMs) in projects.sorted(by: { $0.key.rawValue < $1.key.rawValue }) {
+            guard !projectVMs.isEmpty else { continue }
+            var projectVMs = projectVMs
+            var sectionSnapshot = NSDiffableDataSourceSectionSnapshot<ProjectVM>()
+            
+            let header = projectVMs.removeFirst()
+            sectionSnapshot.append([header])
+            sectionSnapshot.append(projectVMs, to: header)
+            sectionSnapshot.expand([header])
+            DispatchQueue.main.async {
+                self.dataSource.apply(sectionSnapshot, to: section)
+            }
     func leadingSwipeAction(_ item: Project) -> UISwipeActionsConfiguration? {
         var normalSnapshot = self.dataSource.snapshot(for: .normal)
         var projectSnapshot = self.dataSource.snapshot(for: .project)
@@ -173,15 +171,15 @@ private extension MenuViewController {
             guard let self = self else {
                 completion(false)
                 return
-            }
-            
+        }
+        
             if isStarred {
                 normalSnapshot.delete([item])
                 projectSnapshot.append([item], to: self.rootItem)
             } else {
                 projectSnapshot.delete([item])
                 normalSnapshot.append([item])
-            }
+    }
             self.dataSource.apply(normalSnapshot, to: .normal, animatingDifferences: false)
             self.dataSource.apply(projectSnapshot, to: .project, animatingDifferences: false)
             
@@ -212,5 +210,8 @@ extension MenuViewController: UICollectionViewDelegate {
 // MARK: - Menu DisplayLogic
 
 extension MenuViewController: MenuDisplayLogic {
-
-}
+    
+    func displayFetchedProjects(viewModel: MenuModels.FetchProjects.ViewModel) {
+        applySnapshot(projects: viewModel.projects)
+    }
+    
