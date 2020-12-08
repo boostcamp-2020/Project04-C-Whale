@@ -25,7 +25,7 @@
         v-for="favoriteProjectInfo in favoriteProjectInfos"
         class="pl-4"
         :key="favoriteProjectInfo.id"
-        @click="pushRoute(favoriteProjectInfo.id)"
+        :to="`/project/${favoriteProjectInfo.id}`"
       >
         <v-list-item-icon class="mr-1">
           <v-icon small :color="favoriteProjectInfo.color">mdi-circle</v-icon>
@@ -44,6 +44,8 @@
             </v-list-item-action>
           </template>
           <v-list>
+            <!-- TODO: 클릭했을때 라우팅이동하는 문제 해결 -->
+            <!-- TODO: 프로젝트 title 길어질때 설정 버튼 사라지는 문제 해결 -->
             <v-list-item @click.stop="openUpdateDialog(favoriteProjectInfo.id)">
               <v-list-item-title class="font-14">프로젝트 수정 </v-list-item-title>
             </v-list-item>
@@ -87,9 +89,6 @@ export default {
     return { updateDialog: false, deleteDialog: false, projectId: "" };
   },
   methods: {
-    pushRoute(projectId) {
-      this.$router.push("/project/" + projectId);
-    },
     openUpdateDialog(projectId) {
       this.projectId = projectId;
       this.updateDialog = true;
