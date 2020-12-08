@@ -77,6 +77,10 @@
 		4CE9157A257D0E5F00BCF398 /* SessionManagerMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CE91579257D0E5F00BCF398 /* SessionManagerMock.swift */; };
 		4CE9157F257D14CB00BCF398 /* CodableMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CE9157E257D14CB00BCF398 /* CodableMock.swift */; };
 		4CE91584257D190900BCF398 /* DataRequestMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CE91583257D190900BCF398 /* DataRequestMock.swift */; };
+		4CE915EB257F61DA00BCF398 /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CE915EA257F61DA00BCF398 /* Project.swift */; };
+		4CE915F0257F633200BCF398 /* Section.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CE915EF257F633200BCF398 /* Section.swift */; };
+		4CE915F5257F661E00BCF398 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CE915F4257F661E00BCF398 /* Comment.swift */; };
+		4CE915FA257F662800BCF398 /* Bookmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CE915F9257F662800BCF398 /* Bookmark.swift */; };
 		AA19EF172575680600E59017 /* TaskSectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA19EF162575680500E59017 /* TaskSectionViewCell.swift */; };
 		AA19EF1B25756C3200E59017 /* AddSectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA19EF1A25756C3200E59017 /* AddSectionViewCell.swift */; };
 		AA19EF252576488B00E59017 /* TaskBoardSupplementaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA19EF242576488B00E59017 /* TaskBoardSupplementaryView.swift */; };
@@ -166,6 +170,10 @@
 		4CE91597257D315800BCF398 /* HalgoraeDO.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HalgoraeDO.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4CE91598257D315800BCF398 /* TaskListTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = TaskListTests.xctest; path = "/Users/os/woong/iOS/Boostcamp2020/group_final/Project04-C-Whale/iOS/build/Debug-iphoneos/TaskListTests.xctest"; sourceTree = "<absolute>"; };
 		4CE91599257D315800BCF398 /* ServiceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = ServiceTests.xctest; path = "/Users/os/woong/iOS/Boostcamp2020/group_final/Project04-C-Whale/iOS/build/Debug-iphoneos/ServiceTests.xctest"; sourceTree = "<absolute>"; };
+		4CE915EA257F61DA00BCF398 /* Project.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Project.swift; sourceTree = "<group>"; };
+		4CE915EF257F633200BCF398 /* Section.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Section.swift; sourceTree = "<group>"; };
+		4CE915F4257F661E00BCF398 /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
+		4CE915F9257F662800BCF398 /* Bookmark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bookmark.swift; sourceTree = "<group>"; };
 		AA19EF162575680500E59017 /* TaskSectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskSectionViewCell.swift; sourceTree = "<group>"; };
 		AA19EF1A25756C3200E59017 /* AddSectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSectionViewCell.swift; sourceTree = "<group>"; };
 		AA19EF242576488B00E59017 /* TaskBoardSupplementaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskBoardSupplementaryView.swift; sourceTree = "<group>"; };
@@ -262,9 +270,13 @@
 		4C3F5693256BA21B006D7C9F /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				4C3F5694256BA228006D7C9F /* Task.swift */,
 				4CCD3256256F8BA700A46D10 /* Priority.swift */,
 				4C4236B02573B4C90068A252 /* Priority+PopoverViewModelType.swift */,
+				4CE915EA257F61DA00BCF398 /* Project.swift */,
+				4CE915EF257F633200BCF398 /* Section.swift */,
+				4C3F5694256BA228006D7C9F /* Task.swift */,
+				4CE915F4257F661E00BCF398 /* Comment.swift */,
+				4CE915F9257F662800BCF398 /* Bookmark.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -648,6 +660,7 @@
 				AA19EF172575680600E59017 /* TaskSectionViewCell.swift in Sources */,
 				4C42371F25763B100068A252 /* TaskDetailWorker.swift in Sources */,
 				4C42370D25762FC10068A252 /* TaskDetailCommentViewController.swift in Sources */,
+				4CE915F0257F633200BCF398 /* Section.swift in Sources */,
 				4C3F573F256D2263006D7C9F /* RoundButton.swift in Sources */,
 				4C4236F825761A8E0068A252 /* TaskDetailPageViewController.swift in Sources */,
 				4C42370425761CB00068A252 /* TaskDetailSubTasksViewController.swift in Sources */,
@@ -656,6 +669,7 @@
 				AA19EF252576488B00E59017 /* TaskBoardSupplementaryView.swift in Sources */,
 				4C3F5695256BA228006D7C9F /* Task.swift in Sources */,
 				4C4236C32574C5F50068A252 /* TaskList.swift in Sources */,
+				4CE915F5257F661E00BCF398 /* Comment.swift in Sources */,
 				4C4236E02574DF980068A252 /* ConfirmActionView.swift in Sources */,
 				4C3F5705256CF8B9006D7C9F /* TaskContentView.swift in Sources */,
 				AA19EF332576846100E59017 /* UIColor+.swift in Sources */,
@@ -663,7 +677,9 @@
 				4C42386E257917790068A252 /* NetworkManager.swift in Sources */,
 				4CCD32772570A4EF00A46D10 /* MenuViewController.swift in Sources */,
 				4C4238A2257A2D800068A252 /* URLParameterEncoder.swift in Sources */,
+				4CE915C1257E1D5700BCF398 /* ProjectEndPoint.swift in Sources */,
 				4C0CA636256EAC5200E66045 /* TaskListDisplayLogic.swift in Sources */,
+				4CE915EB257F61DA00BCF398 /* Project.swift in Sources */,
 				4C4238602578D70D0068A252 /* EndPointType.swift in Sources */,
 				4C423751257792690068A252 /* BorderRadiusButton.swift in Sources */,
 				4C42372325763B1C0068A252 /* TaskDetailPresenter.swift in Sources */,
@@ -677,6 +693,7 @@
 				4C4238742579358A0068A252 /* DataRequest.swift in Sources */,
 				AA19EF1B25756C3200E59017 /* AddSectionViewCell.swift in Sources */,
 				4C42371B25763B080068A252 /* TaskDetailInteractor.swift in Sources */,
+				4CE915FA257F662800BCF398 /* Bookmark.swift in Sources */,
 				4C423896257A2A560068A252 /* ParameterEncoding.swift in Sources */,
 				4C42387A25794C8C0068A252 /* SessionManager.swift in Sources */,
 				4C42374125771BA40068A252 /* DatePickerButtonView.swift in Sources */,

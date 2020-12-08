@@ -18,3 +18,7 @@ enum Priority: Int, CaseIterable {
         return "우선순위 \(self.rawValue)"
     }
 }
+
+extension Priority: Codable {
+    
+}
