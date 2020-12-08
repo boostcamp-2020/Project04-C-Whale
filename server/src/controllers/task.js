@@ -17,7 +17,7 @@ const getTaskById = asyncTryCatch(async (req, res) => {
 
   const task = await taskService.retrieveById(id);
 
-  responseHandler(res, 200, task);
+  responseHandler(res, 200, { task });
 });
 
 const getAllTasks = asyncTryCatch(async (req, res) => {
@@ -39,22 +39,24 @@ const createTask = asyncTryCatch(async (req, res) => {
     throw err;
   }
 
-  await taskService.create({ projectId, sectionId, ...req.body });
+  await taskService.create(task);
   responseHandler(res, 201, { message: 'ok' });
 });
 
 const updateTask = asyncTryCatch(async (req, res) => {
-  const { dueDate } = req.body;
+  const { taskId } = req.params;
+  const task = { ...req.body };
 
-  if (!isValidDueDate(dueDate)) {
-    const err = new Error('유효하지 않은 dueDate');
+  try {
+    await validator(TaskDto, task, { groups: ['patch'] });
+  } catch (errs) {
+    const message = getErrorMsg(errs);
+    const err = new Error(message);
     err.status = 400;
     throw err;
   }
 
-  const { taskId } = req.params;
-
-  await taskService.update({ id: taskId, ...req.body });
+  await taskService.update({ id: taskId, ...task });
   responseHandler(res, 200, { message: 'ok' });
 });
 
