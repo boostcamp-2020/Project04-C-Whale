@@ -105,17 +105,13 @@ const findOrCreate = async data => {
   return await create(data);
 };
 
-const update = async ({ projectId, ...data }) => {
-  const result = await projectModel.update(data, {
-    where: {
-      id: projectId,
-    },
-  });
+const update = async ({ id, ...data }) => {
+  const result = await projectModel.update(data, { where: { id } });
 
   return result === 1;
 };
 
-const remove = async id => {
+const remove = async ({ id }) => {
   const result = await projectModel.destroy({ where: { id } });
 
   return result === 1;
