@@ -14,11 +14,15 @@ const retrieveProjects = async () => {
       'isFavorite',
       'isList',
       [sequelize.fn('COUNT', sequelize.col('tasks.id')), 'taskCount'],
+      [sequelize.fn('max', sequelize.col('sections.id')), 'sectionId'],
     ],
-    include: {
-      model: models.task,
-      attributes: [],
-    },
+    include: [
+      {
+        model: models.task,
+        attributes: [],
+      },
+      { model: models.section, attributes: [], order: [['createdAt', 'ASC']] },
+    ],
     group: ['project.id'],
   });
 
