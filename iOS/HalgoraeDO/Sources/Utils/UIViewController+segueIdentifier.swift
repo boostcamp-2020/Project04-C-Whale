@@ -8,6 +8,7 @@
 import UIKit
 
 extension UIViewController {
+    
     func segueIdentifier(to destination: UIViewController.Type) -> String {
         return "\(Self.self)To\(destination.self)"
     }

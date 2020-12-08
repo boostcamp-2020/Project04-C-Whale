@@ -11,12 +11,19 @@ struct TaskContentConfiguration: UIContentConfiguration, Hashable {
     
     // MARK: - Properties
     
-    var title: String?
-    var image: UIImage?
-    var isCompleted: Bool?
-    var isEditing = false
+    private(set) var title: String?
+    private(set) var image: UIImage?
+    private(set) var tintColor: UIColor?
+    private(set) var isCompleted: Bool?
+    private(set) var isEditing = false
     
     // MARK: - Methods
+    
+    mutating func configure(viewModel: TaskListModels.DisplayedTask?) {
+        title = viewModel?.title
+        isCompleted = viewModel?.isCompleted
+        tintColor = viewModel?.tintColor
+    }
     
     func makeContentView() -> UIView & UIContentView {
         return TaskContentView(configuration: self)

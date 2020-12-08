@@ -186,29 +186,9 @@ private extension TaskBoardViewController {
 private extension TaskBoardViewController {
     
     func showAddTaskView(sectionNum: Int) {
-        visualEffectView.frame = view.frame
-        view.addSubview(visualEffectView)
-        taskAddViewController = TaskAddViewController()
-        addChild(taskAddViewController)
-        view.addSubview(taskAddViewController.view)
-        taskAddViewController.section = sectionNum
-        taskAddViewController.view.backgroundColor = .white
-        taskAddViewController.view.frame = CGRect(x: 0, y: view.bounds.height - 130, width: view.bounds.width, height: 130)
-        visualEffectView.backgroundColor = .gray
-        visualEffectView.alpha = 0.4
-        visualEffectView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleViewTap(recognizer:))))
-    }
-    
-    @objc func handleViewTap (recognizer: UITapGestureRecognizer) {
-        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        let selectTaskAction = UIAlertAction(title: "삭제", style: .destructive) { (action) in
-            self.taskAddViewController.view.removeFromSuperview()
-            self.visualEffectView.removeFromSuperview()
-        }
-        let cancelAction = UIAlertAction(title: "계속 편집", style: .default) { (action) in
-        }
-        [selectTaskAction, cancelAction].forEach { alert.addAction($0) }
-        present(alert, animated: true, completion: nil)
+        let taskAddViewController = TaskAddViewController()
+        taskAddViewController.modalPresentationStyle = .overCurrentContext
+        present(taskAddViewController, animated: true, completion: nil)
     }
 }
 
