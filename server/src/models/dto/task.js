@@ -14,22 +14,29 @@ const {
   IsNotEmpty,
   IsBoolean,
   IsArray,
-  MinDate,
+  MinLength,
+  IsDateString,
+  ValidateIf,
+  IsUUID,
 } = require('class-validator');
+const errorMessage = require('@models/dto/error-messages');
+const { isAfterToday } = require('@utils/validator');
 
 class TaskDto {
+  @ValidateIf(o => !!o.id)
   @IsString()
-  @Length(36, 36)
-  @IsNotEmpty()
+  @IsUUID('4')
   id;
 
-  @IsString()
-  @IsNotEmpty()
+  @IsString({ groups: ['create'] }, { message: errorMessage.wrongProperty('title') })
+  @MinLength(1, { groups: ['create'] }, { message: errorMessage.wrongProperty('title') })
   title;
 
-  // TODO: custom validation decorator
-  @IsDate()
-  @MinDate(new Date('2020-12-08'))
+  @IsDateString(
+    { strict: true },
+    { groups: ['create'], message: errorMessage.wrongProperty('dueDate') },
+  )
+  @isAfterToday('dueDate', { groups: ['create'], message: errorMessage.beforeDueDate })
   dueDate;
 
   @IsInt()
@@ -41,22 +48,22 @@ class TaskDto {
   isDone;
 
   @IsString()
-  @Length(36, 36)
+  @IsUUID('4')
   parentId;
 
-  @IsString()
-  @Length(36, 36)
+  @IsString({ groups: ['create'], message: errorMessage.wrongProperty('sectionId') })
+  @IsUUID('4', { groups: ['create'], message: errorMessage.wrongProperty('sectionId') })
   sectionId;
 
-  @IsString()
-  @Length(36, 36)
+  @IsString({ groups: ['create'], message: errorMessage.wrongProperty('projectId') })
+  @IsUUID('4', { groups: ['create'], message: errorMessage.wrongProperty('projectId') })
   projectId;
 
   @IsString()
-  @Length(36, 36)
+  @IsUUID('4')
   priorityId;
 
-  @Length(36, 36)
+  @IsUUID('4')
   alarmId;
 
   @IsArray
