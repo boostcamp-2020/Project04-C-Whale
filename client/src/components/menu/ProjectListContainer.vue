@@ -6,7 +6,7 @@
           <v-list-item-content>
             <v-list-item-title class="font-14">프로젝트</v-list-item-title>
           </v-list-item-content>
-          <v-list-item-icon :class="{ 'd-none ': !hover }" @click="openModalEvent">
+          <v-list-item-icon :class="{ 'd-none ': !hover }" @click.stop="addDialog = true">
             <v-icon>mdi-plus</v-icon>
           </v-list-item-icon>
         </v-list-item>
@@ -101,10 +101,6 @@ export default {
     };
   },
   methods: {
-    openModalEvent(e) {
-      e.stopPropagation();
-      this.AddDialog = true;
-    },
     pushRoute(projectId) {
       this.$router.push("/project/" + projectId);
     },
