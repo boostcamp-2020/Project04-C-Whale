@@ -34,7 +34,7 @@ export default {
 
 <style>
 .router-view-container {
-  padding: 50px 20%;
+  padding: 10px 20%;
   display: flex;
   justify-content: center;
 }

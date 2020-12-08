@@ -15,6 +15,8 @@ const state = {
 
 const getters = {
   currentProject: (state) => state.currentProject,
+  todayProject: (state) => state.todayProject,
+  projectInfos: (state) => state.projectInfos,
   namedProjectInfos: (state) =>
     state.projectInfos.filter((project) => project.title !== "관리함" && !project.isFavorite),
   managedProject: (state) => state.projectInfos.find((project) => project.title === "관리함"),
@@ -70,13 +72,28 @@ const actions = {
   async deleteProject({ dispatch, commit }, { projectId }) {
     try {
       await projectAPI.deleteProject(projectId);
-
       await dispatch("fetchProjectInfos");
       commit("SET_SUCCESS_ALERT", "프로젝트가 삭제되었습니다.");
     } catch (err) {
       commit("SET_ERROR_ALERT", err.response);
     }
   },
+  async addSection({ dispatch, commit }, { projectId, section }) {
+    try {
+      const { data } = await projectAPI.createSection(projectId, {
+        title: section.title,
+      });
+
+      if (data.message !== "ok") {
+        throw new Error();
+      }
+
+      await dispatch("fetchCurrentProject", projectId);
+    } catch (err) {
+      commit("SET_ERROR_ALERT", err.response);
+    }
+  },
+
   async updateSectionTitle({ dispatch, commit }, { projectId, sectionId, title }) {
     try {
       const { data } = await projectAPI.updateSection(projectId, sectionId, { title });

@@ -21,7 +21,7 @@
       />
     </div>
 
-    <AddTask :projectId="section.projectId" :sectionId="section.id" />
+    <AddTask :project="project" :section="section" />
   </v-list>
 </template>
 
@@ -34,6 +34,7 @@ import _ from "lodash";
 
 export default {
   props: {
+    project: Object,
     section: Object,
   },
   data: function () {
@@ -72,7 +73,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .task-container {
   min-width: 450px;
 }

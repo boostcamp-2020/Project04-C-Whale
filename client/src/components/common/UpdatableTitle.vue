@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-click-outside="clickOutside">
     <div v-if="showForm">
       <form @submit.prevent="submit">
         <div class="title-data">
@@ -37,6 +37,11 @@ export default {
         this.$nextTick(() => {
           this.$refs.input.focus();
         });
+      }
+    },
+    clickOutside() {
+      if (this.showForm) {
+        this.toggle();
       }
     },
     submit() {

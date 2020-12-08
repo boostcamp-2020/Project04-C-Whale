@@ -16,6 +16,9 @@ const projectAPI = {
   updateProject(projectId, data) {
     return myAxios.patch(`/project/${projectId}`, data);
   },
+  createSection(projectId, data) {
+    return myAxios.post(`/project/${projectId}/section`, data);
+  },
   updateSection(projectId, sectionId, data) {
     return myAxios.put(`/project/${projectId}/section/${sectionId}`, data);
   },
