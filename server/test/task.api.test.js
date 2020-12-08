@@ -165,12 +165,13 @@ describe('get task by id', () => {
 });
 
 describe('patch task with id', () => {
-  it('patch task with id 일반', async done => {
+  it('patch task with id 성공', async done => {
     // given
-    const newTask = {
+    const taskId = seeder.tasks[0].id;
+    const patchTask = {
       title: '할일',
       projectId: seeder.projects[0].id,
-      labelIdList: JSON.stringify(seeder.labels.map(label => label.id)),
+      sessionId: seeder.sessions[0].id,
       priorityId: seeder.priorities[0].id,
       dueDate: new Date(),
       parentId: null,
@@ -181,9 +182,29 @@ describe('patch task with id', () => {
     try {
       // when
       const res = await request(app)
-        .patch(`/api/task/${seeder.tasks[1].id}`)
+        .patch(`/api/task/${taskId}`)
         .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
-        .send(newTask);
+        .send(patchTask);
+
+      // then
+      expect(res.status).toBe(status.SUCCESS.CODE);
+      expect(res.body.message).toBe(status.SUCCESS.MSG);
+      done();
+    } catch (err) {
+      done(err);
+    }
+  });
+  it('isDone 성공', async done => {
+    // given
+    const taskId = seeder.tasks[0].id;
+    const patchTask = { isDone: true };
+
+    try {
+      // when
+      const res = await request(app)
+        .patch(`/api/task/${taskId}`)
+        .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
+        .send(patchTask);
 
       // then
       expect(res.status).toBe(status.SUCCESS.CODE);
@@ -194,33 +215,134 @@ describe('patch task with id', () => {
     }
   });
 
-  it('patch task without labels', async done => {
+  it('id값이 포함된 수정', async done => {
     // given
-    const newTask = {
-      title: '할일',
-      projectId: seeder.projects[0].id,
-      labelIdList: JSON.stringify([]),
-      priorityId: seeder.priorities[0].id,
-      dueDate: new Date(),
-      parentId: null,
-      alarmId: seeder.alarms[0].id,
-      position: 1,
-    };
+    const patchTask = { id: seeder.tasks[0].id, title: 'ㅁㄴㅇ' };
 
-    try {
-      // when
-      const res = await request(app)
-        .patch(`/api/task/${seeder.tasks[2].id}`)
-        .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
-        .send(newTask);
+    // when
+    const res = await request(app)
+      .patch(`/api/task/${patchTask.id}`)
+      .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
+      .send(patchTask);
 
-      // then
-      expect(res.status).toBe(status.SUCCESS.CODE);
-      expect(res.body.message).toBe(status.SUCCESS.MSG);
-      done();
-    } catch (err) {
-      done(err);
-    }
+    // then
+    expect(res.status).toBe(status.BAD_REQUEST.CODE);
+    expect(res.body.message).toBe(errorMessage.INVALID_INPUT_ERROR('title'));
+    done();
+  });
+  it('잘못된 title 수정', async done => {
+    // given
+    const taskId = seeder.tasks[0].id;
+    const patchTask = { title: '' };
+
+    // when
+    const res = await request(app)
+      .patch(`/api/task/${taskId}`)
+      .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
+      .send(patchTask);
+
+    // then
+    expect(res.status).toBe(status.BAD_REQUEST.CODE);
+    expect(res.body.message).toBe(errorMessage.INVALID_INPUT_ERROR('title'));
+    done();
+  });
+
+  it('잘못된 parentId 수정', async done => {
+    // given
+    const taskId = seeder.tasks[0].id;
+    const patchTask = { parentId: 'invalidId' };
+
+    // when
+    const res = await request(app)
+      .patch(`/api/task/${taskId}`)
+      .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
+      .send(patchTask);
+
+    // then
+    expect(res.status).toBe(status.BAD_REQUEST.CODE);
+    expect(res.body.message).toBe(errorMessage.INVALID_INPUT_ERROR('parentId'));
+    done();
+  });
+
+  it('잘못된 projectId 수정', async done => {
+    // given
+    const taskId = seeder.tasks[0].id;
+    const patchTask = { projectId: 'invalidId' };
+
+    // when
+    const res = await request(app)
+      .patch(`/api/task/${taskId}`)
+      .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
+      .send(patchTask);
+
+    // then
+    expect(res.status).toBe(status.BAD_REQUEST.CODE);
+    expect(res.body.message).toBe(errorMessage.INVALID_INPUT_ERROR('projectId'));
+    done();
+  });
+  it('잘못된 priorityId 수정', async done => {
+    // given
+    const taskId = seeder.tasks[0].id;
+    const patchTask = { priorityId: 'invalidId' };
+
+    // when
+    const res = await request(app)
+      .patch(`/api/task/${taskId}`)
+      .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
+      .send(patchTask);
+
+    // then
+    expect(res.status).toBe(status.BAD_REQUEST.CODE);
+    expect(res.body.message).toBe(errorMessage.INVALID_INPUT_ERROR('priorityId'));
+    done();
+  });
+  it('잘못된 alarmId 수정', async done => {
+    // given
+    const taskId = seeder.tasks[0].id;
+    const patchTask = { alarmId: 'invalidId' };
+
+    // when
+    const res = await request(app)
+      .patch(`/api/task/${taskId}`)
+      .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
+      .send(patchTask);
+
+    // then
+    expect(res.status).toBe(status.BAD_REQUEST.CODE);
+    expect(res.body.message).toBe(errorMessage.INVALID_INPUT_ERROR('alarmId'));
+    done();
+  });
+  it('잘못된 isDone 수정', async done => {
+    // given
+    const taskId = seeder.tasks[0].id;
+    const patchTask = { isDone: 'hi' };
+
+    // when
+    const res = await request(app)
+      .patch(`/api/task/${taskId}`)
+      .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
+      .send(patchTask);
+
+    // then
+    expect(res.status).toBe(status.BAD_REQUEST.CODE);
+    expect(res.body.message).toBe(errorMessage.TYPE_ERROR('isDone'));
+    done();
+  });
+  it('잘못된 duedate 수정', async done => {
+    // given
+    const taskId = seeder.tasks[0].id;
+    const patchTask = { duedate: new Date('2020-11-11') };
+
+    // when
+    const res = await request(app)
+      .patch(`/api/task/${taskId}`)
+      .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
+      .send(patchTask);
+
+    // then
+    expect(res.status).toBe(status.BAD_REQUEST.CODE);
+    expect(res.body.message).toBe(errorMessage.DUEDATE_ERROR);
+    done();
   });
 });
 
