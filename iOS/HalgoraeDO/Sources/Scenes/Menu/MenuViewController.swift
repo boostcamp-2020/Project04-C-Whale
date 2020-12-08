@@ -94,7 +94,7 @@ private extension MenuViewController {
     func configureDataSource() {
         dataSource = UICollectionViewDiffableDataSource<Section, ProjectVM>(collectionView: menuCollectionView) {
             (collectionView, indexPath, item) -> UICollectionViewCell? in
-            guard let section = Section(rawValue: indexPath.section) else { fatalError("Unknown section") }
+            guard let section = Section(rawValue: indexPath.section) else { fatalError() }
             switch section {
             case .normal:
                 let cellRegistration = indexPath.row == 0 ? self.configuredNormalCell() : self.configuredProjectCell()
