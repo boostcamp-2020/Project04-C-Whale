@@ -3,7 +3,14 @@ const { plainToClass } = require('class-transformer');
 
 const validator = async (Dto, object, options) => {
   const classObject = plainToClass(Dto, object);
-  await validateOrReject(classObject, options);
+  await validateOrReject(classObject, { ...options, stopAtFirstError: true });
 };
 
-module.exports = validator;
+const getErrorMsg = errorArray => {
+  const [validationError] = errorArray;
+  const [message] = Object.values(validationError.constraints);
+
+  return message;
+};
+
+module.exports = { validator, getErrorMsg };
