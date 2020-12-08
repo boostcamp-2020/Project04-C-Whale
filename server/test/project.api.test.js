@@ -266,16 +266,16 @@ describe('post task', () => {
     done();
   });
 
-  it('project 없이 생성', async done => {
-    // TODO: validation 체크하는 로직 생각해서 테스트 코드 작성해야 합니다.
-    // given
+  // it('project 없이 생성', async done => {
+  //   // TODO: validation 체크하는 로직 생각해서 테스트 코드 작성해야 합니다.
+  //   // given
 
-    // when
+  //   // when
 
-    // then
-    expect(true).toBeFalsy();
-    done();
-  });
+  //   // then
+  //   expect(true).toBeFalsy();
+  //   done();
+  // });
 
   it('label 없이 생성', async done => {
     // given
@@ -381,7 +381,7 @@ describe('post task', () => {
     done();
   });
 
-  it('유요하지 않은 duedate 생성', async done => {
+  it('유효하지 않은 duedate 생성', async done => {
     // given
     const expectedProjectId = seeder.projects[0].id;
     const expectedSectionId = seeder.sections[0].id;
@@ -404,7 +404,7 @@ describe('post task', () => {
 
     // then
     expect(res.status).toBe(status.BAD_REQUEST.CODE);
-    expect(res.body.message).toBe('유효하지 않은 dueDate');
+    expect(res.body.message).toBe('dueDate는 현재시간보다 이전을 설정할 수 없습니다.');
     done();
   });
 });
