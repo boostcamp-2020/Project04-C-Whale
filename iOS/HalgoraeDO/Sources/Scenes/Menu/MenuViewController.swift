@@ -55,6 +55,20 @@ class MenuViewController: UIViewController {
     func configureNavItem() {
         navigationItem.title = "메뉴"
     }
+    
+    // MARK: - Methods
+    
+    private func deleteSnapshot(for items: [ProjectVM]) {
+        var snapshot = dataSource.snapshot()
+        snapshot.deleteItems(items)
+        dataSource.apply(snapshot)
+    }
+    
+    private func appendSnapshot(items: [ProjectVM], to: Section) {
+        var normalSnapshot = dataSource.snapshot(for: .normal)
+        normalSnapshot.append(items)
+        dataSource.apply(normalSnapshot, to: .normal)
+    }
 }
 
 
