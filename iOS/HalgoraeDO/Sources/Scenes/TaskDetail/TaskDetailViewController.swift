@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol TaskDetailDisplayLogic {
+protocol TaskDetailDisplayLogic: class {
     
 }
 
