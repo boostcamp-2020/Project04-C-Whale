@@ -4,6 +4,7 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
         <capability name="Image references" minToolsVersion="12.0"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -27,37 +28,27 @@
                                 </collectionViewFlowLayout>
                                 <cells/>
                             </collectionView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6wh-Eb-4oT" customClass="RoundButton" customModule="HalgoraeDO" customModuleProvider="target">
-                                <rect key="frame" x="350" y="798" width="44" height="44"/>
-                                <color key="backgroundColor" red="0.086274509799999996" green="0.10980392160000001" blue="0.43921568630000002" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="44" id="h9o-zq-YRj"/>
-                                    <constraint firstAttribute="height" constant="44" id="ob3-JN-kbb"/>
-                                </constraints>
-                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <state key="normal">
-                                    <imageReference key="image" image="plus" catalog="system" renderingMode="template"/>
-                                </state>
-                                <connections>
-                                    <action selector="didTapAddButton:" destination="4Td-2h-MKy" eventType="touchUpInside" id="8gP-tn-7kg"/>
-                                    <action selector="didTapAddButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="GX3-mz-9sK"/>
-                                </connections>
-                            </button>
-                            <toolbar hidden="YES" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bvh-S3-6Iw">
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bvh-S3-6Iw">
                                 <rect key="frame" x="0.0" y="813" width="414" height="49"/>
                                 <items>
-                                    <barButtonItem title="Item" id="d79-gZ-QP6"/>
-                                    <barButtonItem style="plain" id="gxj-t1-Bap">
-                                        <view key="customView" contentMode="scaleToFill" id="XV2-sW-WUy">
-                                            <rect key="frame" x="64.5" y="9" width="240" height="36"/>
+                                    <barButtonItem id="OFl-gf-RxD">
+                                        <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="KZv-al-1TI">
+                                            <rect key="frame" x="20" y="15" width="90" height="24"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                        </view>
+                                            <color key="tintColor" name="halgoraedoDarkBlue"/>
+                                            <state key="normal" title="작업 추가">
+                                                <imageReference key="image" image="square.and.pencil" catalog="system" renderingMode="template"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="didTapAddButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="9gV-SJ-Eme"/>
+                                            </connections>
+                                        </button>
                                     </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="OIr-hP-iMa"/>
                                 </items>
                             </toolbar>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RvX-pt-Szt" customClass="ConfirmActionView" customModule="HalgoraeDO" customModuleProvider="target">
-                                <rect key="frame" x="8" y="792" width="326" height="50"/>
+                                <rect key="frame" x="8" y="753" width="326" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" priority="750" constant="50" id="mW0-FJ-Bta"/>
                                 </constraints>
@@ -68,13 +59,11 @@
                         <constraints>
                             <constraint firstItem="bvh-S3-6Iw" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="1lj-uR-Zkk"/>
                             <constraint firstItem="yTg-6t-2Gl" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="294-1C-5Au"/>
-                            <constraint firstItem="6wh-Eb-4oT" firstAttribute="bottom" secondItem="RvX-pt-Szt" secondAttribute="bottom" id="AcV-vR-Mny"/>
+                            <constraint firstItem="RvX-pt-Szt" firstAttribute="bottom" secondItem="bvh-S3-6Iw" secondAttribute="top" constant="-10" id="5vA-WF-0MR"/>
                             <constraint firstItem="RvX-pt-Szt" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="8" id="Dd1-V0-eKC"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="6wh-Eb-4oT" secondAttribute="bottom" constant="20" id="GeQ-BU-Bg6"/>
                             <constraint firstItem="bvh-S3-6Iw" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="H6q-Pr-697"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="yTg-6t-2Gl" secondAttribute="trailing" id="HyQ-Sy-cOl"/>
-                            <constraint firstItem="6wh-Eb-4oT" firstAttribute="leading" secondItem="RvX-pt-Szt" secondAttribute="trailing" constant="16" id="aNX-4A-i04"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="6wh-Eb-4oT" secondAttribute="trailing" constant="20" id="gwg-gb-uDi"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="RvX-pt-Szt" secondAttribute="trailing" constant="80" id="SDN-mb-oEz"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="yTg-6t-2Gl" secondAttribute="bottom" id="hg8-S6-77t"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="bvh-S3-6Iw" secondAttribute="bottom" id="p9G-bq-2oi"/>
                             <constraint firstItem="yTg-6t-2Gl" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="xKk-kG-U9b"/>
@@ -88,7 +77,6 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="addButton" destination="6wh-Eb-4oT" id="MXK-UA-AAx"/>
                         <outlet property="confirmActionView" destination="RvX-pt-Szt" id="wvy-b1-knD"/>
                         <outlet property="editToolBar" destination="bvh-S3-6Iw" id="xV3-Zp-h5b"/>
                         <outlet property="moreButton" destination="DbE-IM-Pob" id="u9k-vw-G03"/>
@@ -96,7 +84,6 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
-                <exit id="4Td-2h-MKy" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="1047.8260869565217" y="86.383928571428569"/>
         </scene>
@@ -579,8 +566,11 @@
         <image name="check_empty" width="512" height="512"/>
         <image name="ellipsis" catalog="system" width="128" height="37"/>
         <image name="flag.fill" catalog="system" width="128" height="121"/>
-        <image name="plus" catalog="system" width="128" height="113"/>
+        <image name="square.and.pencil" catalog="system" width="128" height="115"/>
         <image name="xmark.circle.fill" catalog="system" width="128" height="121"/>
+        <namedColor name="halgoraedoDarkBlue">
+            <color red="0.10999999940395355" green="0.17000000178813934" blue="0.50999999046325684" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

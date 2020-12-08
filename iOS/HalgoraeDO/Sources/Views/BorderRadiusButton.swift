@@ -38,4 +38,10 @@ class BorderRadiusButton: UIButton {
             layer.cornerRadius = newValue
         }
     }
+    
+    func configure(borderWidth: CGFloat, borderColor: UIColor, radius: CGFloat) {
+        self.borderWidth = borderWidth
+        self.borderColor = borderColor
+        self.radius = radius
+    }
 }

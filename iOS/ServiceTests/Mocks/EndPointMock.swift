@@ -17,6 +17,7 @@ enum EndPointMock {
 
 
 extension EndPointMock: EndPointType {
+    
     var baseURL: URL {
         switch self {
             case .test(let baseURL, _, _, _, _): return URL(string: baseURL)!

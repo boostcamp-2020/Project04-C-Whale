@@ -8,6 +8,7 @@
 import Foundation
 
 protocol NetworkDispatcher {
+    
     associatedtype NetworkError
     
     func fetchData<T: Decodable>(_ endpoint: EndPointType, completion: @escaping (_ data: T?, _ error: NetworkError?) -> Void)
