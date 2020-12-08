@@ -72,6 +72,7 @@ describe('create project', () => {
     // given
     const requestBody = {
       title: '새 프로젝트',
+      color: '#FFA7A7',
       isList: true,
     };
     const expectedUser = seeder.users[0];
@@ -95,6 +96,7 @@ describe('update project', () => {
     const expectedProjectId = seeder.projects[0].id;
     const requestBody = {
       title: 'PUT으로 변경된 프로젝트',
+      color: '#FFA7A7',
       isList: true,
       isFavorite: true,
     };

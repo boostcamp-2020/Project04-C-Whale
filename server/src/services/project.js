@@ -7,7 +7,14 @@ const projectModel = models.project;
 
 const retrieveProjects = async () => {
   const projects = await projectModel.findAll({
-    attributes: ['id', 'title', [sequelize.fn('COUNT', sequelize.col('tasks.id')), 'taskCount']],
+    attributes: [
+      'id',
+      'title',
+      'color',
+      'isFavorite',
+      'isList',
+      [sequelize.fn('COUNT', sequelize.col('tasks.id')), 'taskCount'],
+    ],
     include: {
       model: models.task,
       attributes: [],
@@ -88,7 +95,7 @@ const create = async data => {
     return section.projectId;
   });
 
-  return !!result;
+  return result;
 };
 
 const findOrCreate = async data => {

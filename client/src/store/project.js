@@ -1,5 +1,6 @@
 import projectAPI from "../api/project";
 import taskAPI from "../api/task";
+import router from "@/router";
 
 const state = {
   currentProject: {
@@ -10,17 +11,14 @@ const state = {
   },
   projectInfos: [],
   projectList: {},
-  todayProject: {
-    id: "",
-    count: 0,
-  },
 };
 
 const getters = {
   currentProject: (state) => state.currentProject,
-  todayProject: (state) => state.todayProject,
-  namedProjectInfos: (state) => state.projectInfos.filter((project) => project.title !== "관리함"),
+  namedProjectInfos: (state) =>
+    state.projectInfos.filter((project) => project.title !== "관리함" && !project.isFavorite),
   managedProject: (state) => state.projectInfos.find((project) => project.title === "관리함"),
+  favoriteProjectInfos: (state) => state.projectInfos.filter((project) => project.isFavorite),
   projectList: (state) => state.projectList,
 };
 
@@ -54,11 +52,31 @@ const actions = {
       }
 
       await dispatch("fetchCurrentProject", projectId);
+      await dispatch("fetchAllTasks");
     } catch (err) {
       commit("SET_ERROR_ALERT", err.response);
     }
   },
+  async updateProject({ dispatch, commit }, { projectId, data }) {
+    try {
+      await projectAPI.updateProject(projectId, data);
 
+      await dispatch("fetchProjectInfos");
+      commit("SET_SUCCESS_ALERT", "프로젝트가 수정되었습니다.");
+    } catch (err) {
+      commit("SET_ERROR_ALERT", err.response);
+    }
+  },
+  async deleteProject({ dispatch, commit }, { projectId }) {
+    try {
+      await projectAPI.deleteProject(projectId);
+
+      await dispatch("fetchProjectInfos");
+      commit("SET_SUCCESS_ALERT", "프로젝트가 삭제되었습니다.");
+    } catch (err) {
+      commit("SET_ERROR_ALERT", err.response);
+    }
+  },
   async updateSectionTitle({ dispatch, commit }, { projectId, sectionId, title }) {
     try {
       const { data } = await projectAPI.updateSection(projectId, sectionId, { title });
@@ -68,6 +86,7 @@ const actions = {
       }
 
       await dispatch("fetchCurrentProject", projectId);
+      await dispatch("fetchAllTasks");
     } catch (err) {
       commit("SET_ERROR_ALERT", err.response);
     }
@@ -82,6 +101,7 @@ const actions = {
       }
 
       await dispatch("fetchCurrentProject", projectId);
+      await dispatch("fetchAllTasks");
     } catch (err) {
       commit("SET_ERROR_ALERT", err.response);
     }
@@ -96,6 +116,8 @@ const actions = {
       }
 
       await dispatch("fetchCurrentProject", task.projectId);
+      await dispatch("fetchAllTasks");
+      commit("ADD_TASK_COUNT", task.projectId);
     } catch (err) {
       commit("SET_ERROR_ALERT", err.response);
     }
@@ -111,7 +133,17 @@ const actions = {
       // alert("프로젝트 전체 정보 조회 요청 실패");
     }
   },
+  async addProject({ dispatch, commit }, data) {
+    try {
+      const response = await projectAPI.createProject(data);
+      await dispatch("fetchProjectInfos");
 
+      commit("SET_SUCCESS_ALERT", "프로젝트가 생성되었습니다.");
+      router.push("/project/" + response.data.projectId);
+    } catch (err) {
+      commit("SET_ERROR_ALERT", err.response);
+    }
+  },
   async changeTaskPosition({ rootState, dispatch }, { orderedTasks }) {
     const { draggingTask, dropTargetSection } = rootState.dragAndDrop;
 
@@ -136,20 +168,24 @@ const actions = {
     }
 
     await dispatch("fetchCurrentProject", dropTargetSection.projectId);
+    await dispatch("fetchAllTasks");
   },
 };
 
 const mutations = {
-  //TODO: function vs arrow-function style-guide 보고 통일하기
   SET_CURRENT_PROJECT: (state, currentProject) => {
-    const newlyAddedProject = {};
-    newlyAddedProject[currentProject.id] = currentProject;
-    state.projectList = { ...state.projectList, ...newlyAddedProject };
+    const newlyFetchedProject = {};
+    newlyFetchedProject[currentProject.id] = currentProject;
+    state.projectList = { ...state.projectList, ...newlyFetchedProject };
     state.currentProject = currentProject;
   },
   SET_PROJECT_INFOS: (state, projectInfos) => (state.projectInfos = projectInfos),
   SET_TODAY_PROJECT: (state, todayProject) => (state.todayProject = todayProject),
-  // newTodo: (state, todo) => state.todos.unshift(todo),
+  ADD_TASK_COUNT: (state, projectId) => {
+    const copyed = [...state.projectInfos];
+    copyed.find((projectInfo) => projectInfo.id === projectId).taskCount += 1;
+    state.projectInfos = [...copyed];
+  },
 };
 
 export default {

@@ -8,17 +8,21 @@
         </keep-alive>
       </div>
     </v-main>
+    <alert />
   </v-app>
 </template>
 
 <script>
 import Header from "@/components/common/Header";
+import Alert from "@/components/common/Alert";
+
 import { mapState } from "vuex";
 
 export default {
   name: "Home",
   components: {
     "my-header": Header,
+    Alert,
   },
   computed: {
     ...mapState({
