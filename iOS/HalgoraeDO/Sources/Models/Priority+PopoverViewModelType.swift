@@ -10,6 +10,7 @@ import UIKit
 // MARK: - For PopoverViewModel
 
 extension Priority {
+    
     struct ViewModel: PopoverViewModelType {
         var title: String
         var tintColor: UIColor?
@@ -25,7 +26,7 @@ extension Priority {
         }
     }
     
-    func viewModel(scaled size: CGSize = .init(width: 30, height: 30)) -> ViewModel {
+    func viewModel(scaled size: CGSize = .init(width: 22, height: 22)) -> ViewModel {
         return ViewModel(title: title, tintColor: color, image: UIImage(systemName: "flag.fill")?.scaled(to: size))
     }
 }

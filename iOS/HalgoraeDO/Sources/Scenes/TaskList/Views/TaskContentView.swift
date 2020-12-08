@@ -38,8 +38,10 @@ class TaskContentView: UIView, UIContentView {
     private let completeButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setImage(UIImage(named: "check_empty"), for: .normal)
-        button.setImage(UIImage(named: "check"), for: .selected)
+        let checkEmptyImage = UIImage(named: "check_empty")?.withRenderingMode(.alwaysTemplate)
+        let checkImage = UIImage(named: "check")?.withRenderingMode(.alwaysTemplate)
+        button.setImage(checkEmptyImage, for: .normal)
+        button.setImage(checkImage, for: .selected)
         button.addTarget(self, action: #selector(didTapCompleteButton(_:)), for: .touchUpInside)
         button.imageView?.contentMode = .scaleAspectFit
         button.layer.masksToBounds = false
@@ -113,6 +115,8 @@ private extension TaskContentView {
         titleLabel.text = configuration.title
         completeButton.isSelected = configuration.isCompleted ?? false
         completeButton.isUserInteractionEnabled = !configuration.isEditing
+        completeButton.tintColor = configuration.tintColor
+        
         currentConfiguration = configuration
     }
 }
