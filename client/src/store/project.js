@@ -19,6 +19,7 @@ const state = {
 const getters = {
   currentProject: (state) => state.currentProject,
   todayProject: (state) => state.todayProject,
+  projectInfos: (state) => state.projectInfos,
   namedProjectInfos: (state) => state.projectInfos.filter((project) => project.title !== "관리함"),
   managedProject: (state) => state.projectInfos.find((project) => project.title === "관리함"),
   projectList: (state) => state.projectList,
@@ -48,6 +49,22 @@ const actions = {
   async updateProjectTitle({ dispatch, commit }, { projectId, title }) {
     try {
       const { data } = await projectAPI.updateProject(projectId, { title });
+
+      if (data.message !== "ok") {
+        throw new Error();
+      }
+
+      await dispatch("fetchCurrentProject", projectId);
+    } catch (err) {
+      commit("SET_ERROR_ALERT", err.response);
+    }
+  },
+
+  async addSection({ dispatch, commit }, { projectId, section }) {
+    try {
+      const { data } = await projectAPI.createSection(projectId, {
+        title: section.title,
+      });
 
       if (data.message !== "ok") {
         throw new Error();
