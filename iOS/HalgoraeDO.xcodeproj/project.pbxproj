@@ -61,6 +61,7 @@
 		AA19EF2F2576835900E59017 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA19EF2E2576835900E59017 /* Colors.xcassets */; };
 		AA19EF332576846100E59017 /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA19EF322576846100E59017 /* UIColor+.swift */; };
 		AA354C2A2570002600072657 /* TaskAddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA354C292570002600072657 /* TaskAddViewController.swift */; };
+		AAA74C74257DAE00004FC883 /* AddProjectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA74C73257DAE00004FC883 /* AddProjectViewController.swift */; };
 		AAEE20DE2564E4A900668FAD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAEE20DD2564E4A900668FAD /* AppDelegate.swift */; };
 		AAEE20E02564E4A900668FAD /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAEE20DF2564E4A900668FAD /* SceneDelegate.swift */; };
 		AAEE20E52564E4AA00668FAD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AAEE20E32564E4AA00668FAD /* Main.storyboard */; };
@@ -109,7 +110,6 @@
 		4C42371E25763B100068A252 /* TaskDetailWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDetailWorker.swift; sourceTree = "<group>"; };
 		4C42372225763B1C0068A252 /* TaskDetailPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDetailPresenter.swift; sourceTree = "<group>"; };
 		4C423726257640470068A252 /* UIViewController+segueIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+segueIdentifier.swift"; sourceTree = "<group>"; };
-		4C42373C2576897A0068A252 /* TaskListTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = TaskListTests.xctest; path = "/Users/os/woong/iOS/Boostcamp2020/group_final/Project04-C-Whale/iOS/build/Debug-iphoneos/TaskListTests.xctest"; sourceTree = "<absolute>"; };
 		4C42374025771BA40068A252 /* DatePickerButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerButtonView.swift; sourceTree = "<group>"; };
 		4C42374625771BAE0068A252 /* DatePickerButtonView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DatePickerButtonView.xib; sourceTree = "<group>"; };
 		4C42374C25778AE80068A252 /* Date+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+.swift"; sourceTree = "<group>"; };
@@ -122,12 +122,14 @@
 		4CCD3256256F8BA700A46D10 /* Priority.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Priority.swift; sourceTree = "<group>"; };
 		4CCD325D256F8C1200A46D10 /* UIImage+scaled.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+scaled.swift"; sourceTree = "<group>"; };
 		4CCD32762570A4EF00A46D10 /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
+		AA01CB94257DAA7C001C30E6 /* TaskListTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TaskListTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA19EF162575680500E59017 /* TaskSectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskSectionViewCell.swift; sourceTree = "<group>"; };
 		AA19EF1A25756C3200E59017 /* AddSectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSectionViewCell.swift; sourceTree = "<group>"; };
 		AA19EF242576488B00E59017 /* TaskBoardSupplementaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskBoardSupplementaryView.swift; sourceTree = "<group>"; };
 		AA19EF2E2576835900E59017 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		AA19EF322576846100E59017 /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
 		AA354C292570002600072657 /* TaskAddViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskAddViewController.swift; sourceTree = "<group>"; };
+		AAA74C73257DAE00004FC883 /* AddProjectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProjectViewController.swift; sourceTree = "<group>"; };
 		AAEE20DD2564E4A900668FAD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AAEE20DF2564E4A900668FAD /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		AAEE20E42564E4AA00668FAD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -311,6 +313,7 @@
 			isa = PBXGroup;
 			children = (
 				4CCD32762570A4EF00A46D10 /* MenuViewController.swift */,
+				AAA74C73257DAE00004FC883 /* AddProjectViewController.swift */,
 			);
 			path = Menu;
 			sourceTree = "<group>";
@@ -321,6 +324,7 @@
 				AAEE20DC2564E4A900668FAD /* HalgoraeDO */,
 				4C3F5657256B80B4006D7C9F /* HalgoraeDO.app */,
 				4CCD31DA256EBC0000A46D10 /* TaskListTests */,
+				AA01CB94257DAA7C001C30E6 /* TaskListTests.xctest */,
 			);
 			sourceTree = "<group>";
 		};
@@ -392,7 +396,7 @@
 			);
 			name = TaskListTests;
 			productName = TaskListTests;
-			productReference = 4C42373C2576897A0068A252 /* TaskListTests.xctest */;
+			productReference = AA01CB94257DAA7C001C30E6 /* TaskListTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		AAEE20D92564E4A900668FAD /* HalgoraeDO */ = {
@@ -530,6 +534,7 @@
 				4CCD325E256F8C1200A46D10 /* UIImage+scaled.swift in Sources */,
 				4C3F5700256CF8A7006D7C9F /* TaskContentConfigure.swift in Sources */,
 				AA19EF1B25756C3200E59017 /* AddSectionViewCell.swift in Sources */,
+				AAA74C74257DAE00004FC883 /* AddProjectViewController.swift in Sources */,
 				4C42371B25763B080068A252 /* TaskDetailInteractor.swift in Sources */,
 				4C42374125771BA40068A252 /* DatePickerButtonView.swift in Sources */,
 				4C4236FE25761AA00068A252 /* TaskDetailViewController.swift in Sources */,

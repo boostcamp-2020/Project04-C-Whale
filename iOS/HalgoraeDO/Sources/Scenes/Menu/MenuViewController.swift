@@ -144,6 +144,13 @@ private extension MenuViewController {
             backgroundColor.backgroundColor = .systemGray4
             cell.backgroundConfiguration = backgroundColor
             cell.accessories = [.outlineDisclosure()]
+            let addProjectImage = UIImage(systemName: "plus")
+            let addProjectButton = UIButton()
+            addProjectButton.setImage(addProjectImage, for: .normal)
+            addProjectButton.alpha = 0.5
+            addProjectButton.tintColor = .gray
+            addProjectButton.addTarget(self, action: #selector(self.tabAddProject), for: .touchUpInside)
+            cell.accessories.append(.customView(configuration: .init(customView: addProjectButton, placement: .trailing())))
         }
     }
     
@@ -207,6 +214,14 @@ private extension MenuViewController {
 
         return UISwipeActionsConfiguration(actions: [starAction])
     }
+    
+    // MARK: Help Function
+    
+    @objc func tabAddProject(_ sender: UIButton) {
+        guard let addProjectViewController = storyboard?.instantiateViewController(identifier: "AddProjectViewController") as? AddProjectViewController else { return }
+        addProjectViewController.menuAddProjectDelegate = self
+        self.present(addProjectViewController, animated: true, completion: nil)
+    }
 }
 
 extension MenuViewController: UICollectionViewDelegate {
@@ -224,4 +239,14 @@ extension MenuViewController: UICollectionViewDelegate {
     }
 }
 
+extension MenuViewController: MenuAddProjectDelegate {
+    
+    func addProject(_ projectName: String, _ showMode: Bool, _ color: String) {
+        //TODO show Mode도 추가하기
+        var projectSnapshot = self.dataSource.snapshot(for: .project)
+        let newProject = Project(color: color, title: projectName, taskNum: 0)
+        projectSnapshot.append([newProject], to: self.rootItem)
+        self.dataSource.apply(projectSnapshot, to: .project, animatingDifferences: false)
+    }
+}
 
