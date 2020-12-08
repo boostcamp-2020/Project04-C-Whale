@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./src/app.js",
-    "dev": "nodemon ./src/app.js",
+    "dev": "nodemon --exec babel-node ./src/app.js",
     "seed": "npx sequelize-cli db:seed:all",
     "unseed": "npx sequelize-cli db:seed:undo:all",
     "test": "jest --detectOpenHandles --forceExit",
