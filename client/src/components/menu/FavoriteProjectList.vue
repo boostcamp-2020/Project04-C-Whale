@@ -37,7 +37,7 @@
         </v-list-item-content>
         <v-menu :offset-y="true">
           <template v-slot:activator="{ on }">
-            <v-list-item-action>
+            <v-list-item-action class="my-0">
               <v-btn icon v-on.prevent="on">
                 <v-icon>mdi-dots-horizontal</v-icon>
               </v-btn>

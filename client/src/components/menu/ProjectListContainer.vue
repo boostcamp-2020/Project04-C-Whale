@@ -1,5 +1,5 @@
 <template>
-  <v-list-group small :value="false" sub-group active-class="list-active">
+  <v-list-group small :value="false" sub-group active-class="list-active px-3">
     <template v-slot:activator>
       <v-hover v-slot="{ hover }">
         <v-list-item>
@@ -31,7 +31,7 @@
         </v-list-item-content>
         <v-menu :offset-y="true">
           <template v-slot:activator="{ on }">
-            <v-list-item-action>
+            <v-list-item-action class="my-0">
               <v-btn icon v-on.prevent="on">
                 <v-icon>mdi-dots-horizontal</v-icon>
               </v-btn>
@@ -57,7 +57,7 @@
           <v-icon small color="whaleGreen">mdi-plus</v-icon>
         </v-list-item-icon>
         <v-list-item-content>
-          <v-list-item-title class="font-14">프로젝트 추가 </v-list-item-title>
+          <v-list-item-title class="font-14 px-3">프로젝트 추가 </v-list-item-title>
         </v-list-item-content>
       </v-list-item>
     </v-list-item-group>
@@ -129,5 +129,11 @@ export default {
 }
 .task-count {
   color: grey;
+}
+.v-list-group__header {
+  padding-left: 12px !important;
+}
+.v-list-group--sub-group .v-list-item__icon:first-child {
+  margin-right: 4px !important;
 }
 </style>
