@@ -22,9 +22,9 @@ const getProjectById = asyncTryCatch(async (req, res) => {
 
 const createProject = asyncTryCatch(async (req, res) => {
   const { id: creatorId } = req.user;
-  await projectService.create({ creatorId, ...req.body });
+  const projectId = await projectService.create({ creatorId, ...req.body });
 
-  responseHandler(res, 201, { message: 'ok' });
+  responseHandler(res, 201, { message: 'ok', projectId });
 });
 
 const updateProject = asyncTryCatch(async (req, res) => {

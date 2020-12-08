@@ -20,6 +20,9 @@ const mutations = {
   CLEAR_ALERT(state) {
     state.alert = { message: "", type: "" };
   },
+  SET_SUCCESS_ALERT(state, message) {
+    state.alert = { message, type: "success" };
+  },
 };
 
 const getters = {};

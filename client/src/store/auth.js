@@ -40,7 +40,7 @@ const actions = {
         return;
       }
     } catch (err) {
-      commit("SET_ERROR_ALERT", err.message);
+      commit("SET_ERROR_ALERT", err.response);
       router.replace("/login").catch(() => {});
       return;
     }
