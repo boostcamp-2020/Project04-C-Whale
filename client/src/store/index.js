@@ -7,9 +7,10 @@ import priority from "./priority";
 import task from "./task";
 import alert from "./alert";
 import dragAndDrop from "./dragAndDrop";
+import comment from "./comment";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  modules: { auth, project, label, priority, task, alert, dragAndDrop },
+  modules: { auth, project, label, priority, task, alert, dragAndDrop, comment },
 });

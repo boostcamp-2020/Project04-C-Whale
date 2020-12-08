@@ -1,6 +1,8 @@
 import taskAPI from "../api/task";
 import { isToday } from "@/utils/date";
 
+const SUCCESS_MESSAGE = "ok";
+
 const state = {
   newTask: {},
   tasks: [],
@@ -23,7 +25,6 @@ const actions = {
       commit("SET_TASKS", data.tasks);
     } catch (err) {
       commit("SET_ERROR_ALERT", err.response);
-      // alert("작업 전체 조회 요청 실패");
     }
   },
   startDragTask({ commit }, { task }) {
@@ -33,6 +34,17 @@ const actions = {
     try {
       const { data: task } = await taskAPI.getTaskById(taskId);
       commit("SET_CURRENT_TASK", task);
+    } catch (err) {
+      commit("SET_ERROR_ALERT", err.response);
+    }
+  },
+  async updateTask({ commit, dispatch }, task) {
+    try {
+      const { data } = await taskAPI.updateTask(task);
+      if (data.message !== SUCCESS_MESSAGE) {
+        throw Error;
+      }
+      dispatch("fetchAllTasks");
     } catch (err) {
       commit("SET_ERROR_ALERT", err.response);
     }

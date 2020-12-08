@@ -43,6 +43,7 @@ export default {
       task: {
         projectId: this.projectId,
         sectionId: this.sectionId,
+        parentId: this.parentId,
         title: "",
         dueDate: getTodayString(),
       },
@@ -58,13 +59,14 @@ export default {
       this.task = {
         projectId: this.projectId,
         sectionId: this.sectionId,
+        parentId: this.parentId,
         title: "",
         dueDate: getTodayString(),
       };
       this.show = !this.show;
     },
   },
-  props: ["projectId", "sectionId"],
+  props: { projectId: String, sectionId: String, parentId: String },
 };
 </script>
 

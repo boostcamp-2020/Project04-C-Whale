@@ -21,7 +21,7 @@
         <v-list-item-title>{{ task.title }}</v-list-item-title>
       </v-list-item-content>
     </div>
-    <router-view />
+    <router-view :key="$route.params.taskId" />
   </v-list-item>
 </template>
 
