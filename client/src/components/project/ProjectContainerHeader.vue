@@ -19,7 +19,7 @@
           </v-list-item-action>
         </template>
         <v-list>
-          <v-list-item>
+          <v-list-item @click="showAddSection">
             <v-list-item-title>섹션 추가 </v-list-item-title>
           </v-list-item>
           <v-list-item @click="selectListView">
@@ -49,6 +49,9 @@ export default {
     },
     selectBoardView() {
       this.$emit("selectBoardView");
+    },
+    showAddSection() {
+      this.$emit("showAddSection");
     },
   },
   components: {
