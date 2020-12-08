@@ -1,16 +1,6 @@
 const {
-  validate,
-  validateOrReject,
-  Contains,
   IsInt,
-  Length,
-  IsEmail,
-  IsFQDN,
-  IsDate,
-  Min,
-  Max,
   IsString,
-  IsDefined,
   IsNotEmpty,
   IsBoolean,
   IsArray,
@@ -18,25 +8,27 @@ const {
   IsDateString,
   ValidateIf,
   IsUUID,
+  IsOptional,
+  IsEmpty,
 } = require('class-validator');
 const errorMessage = require('@models/dto/error-messages');
 const { isAfterToday } = require('@utils/validator');
 
 class TaskDto {
-  @ValidateIf(o => !!o.id)
+  @IsEmpty({ groups: ['create'], message: errorMessage.UNNECESSARY_INPUT_ERROR('id') })
   @IsString()
   @IsUUID('4')
   id;
 
-  @IsString({ groups: ['create'] }, { message: errorMessage.wrongProperty('title') })
-  @MinLength(1, { groups: ['create'] }, { message: errorMessage.wrongProperty('title') })
+  @IsString({ groups: ['create'], message: errorMessage.TYPE_ERROR('title') })
+  @MinLength(1, { groups: ['create'], message: errorMessage.INVALID_INPUT_ERROR('title') })
   title;
 
   @IsDateString(
     { strict: true },
-    { groups: ['create'], message: errorMessage.wrongProperty('dueDate') },
+    { groups: ['create'], message: errorMessage.TYPE_ERROR('dueDate') },
   )
-  @isAfterToday('dueDate', { groups: ['create'], message: errorMessage.beforeDueDate })
+  @isAfterToday('dueDate', { groups: ['create'], message: errorMessage.DUEDATE_ERROR })
   dueDate;
 
   @IsInt()
@@ -47,16 +39,17 @@ class TaskDto {
   @IsNotEmpty()
   isDone;
 
-  @IsString()
-  @IsUUID('4')
+  @IsOptional({ groups: ['create'] })
+  @IsString({ groups: ['create'], message: errorMessage.TYPE_ERROR('sectionId') })
+  @IsUUID('4', { groups: ['create'], message: errorMessage.INVALID_INPUT_ERROR('parentId') })
   parentId;
 
-  @IsString({ groups: ['create'], message: errorMessage.wrongProperty('sectionId') })
-  @IsUUID('4', { groups: ['create'], message: errorMessage.wrongProperty('sectionId') })
+  @IsString({ groups: ['create'], message: errorMessage.TYPE_ERROR('sectionId') })
+  @IsUUID('4', { groups: ['create'], message: errorMessage.INVALID_INPUT_ERROR('sectionId') })
   sectionId;
 
-  @IsString({ groups: ['create'], message: errorMessage.wrongProperty('projectId') })
-  @IsUUID('4', { groups: ['create'], message: errorMessage.wrongProperty('projectId') })
+  @IsString({ groups: ['create'], message: errorMessage.TYPE_ERROR('projectId') })
+  @IsUUID('4', { groups: ['create'], message: errorMessage.INVALID_INPUT_ERROR('projectId') })
   projectId;
 
   @IsString()
