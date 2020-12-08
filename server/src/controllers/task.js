@@ -1,7 +1,8 @@
+const TaskDto = require('@models/dto/task');
 const taskService = require('@services/task');
+const validator = require('@utils/validator');
 const { asyncTryCatch } = require('@utils/async-try-catch');
 const { responseHandler } = require('@utils/handler');
-const { isValidDueDate } = require('@utils/date');
 
 const getTaskById = asyncTryCatch(async (req, res) => {
   const task = await taskService.retrieveById(req.params.taskId);
@@ -16,16 +17,21 @@ const getAllTasks = asyncTryCatch(async (req, res) => {
 });
 
 const createTask = asyncTryCatch(async (req, res) => {
-  const { dueDate } = req.body;
+  const { projectId, sectionId } = req.params;
+  const task = {
+    ...req.body,
+    projectId,
+    sectionId,
+  };
 
-  // TODO middle ware로 빼내는게 좋을 것 같음
-  if (!isValidDueDate(dueDate)) {
-    const err = new Error('유효하지 않은 dueDate');
+  try {
+    await validator(TaskDto, task);
+  } catch (errs) {
+    const err = new Error('Bad Request');
     err.status = 400;
     throw err;
   }
 
-  const { projectId, sectionId } = req.params;
   await taskService.create({ projectId, sectionId, ...req.body });
   responseHandler(res, 201, { message: 'ok' });
 });
