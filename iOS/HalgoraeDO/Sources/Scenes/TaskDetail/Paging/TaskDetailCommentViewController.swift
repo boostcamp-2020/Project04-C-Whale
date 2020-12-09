@@ -8,7 +8,7 @@
 import UIKit
 
 protocol TaskDetailCommentDisplayLogic: class {
-    
+    func displayFetchedComments(viewModel: TaskDetailModels.FetchComments.ViewModel)
 }
 
 class TaskDetailCommentViewController: UIViewController {
@@ -92,6 +92,12 @@ private extension TaskDetailCommentViewController {
     }
 }
 
+// MARK: - TaskDetailCommentViewController DisplayLogic
+
 extension TaskDetailCommentViewController: TaskDetailCommentDisplayLogic {
     
+    func displayFetchedComments(viewModel: TaskDetailModels.FetchComments.ViewModel) {
+        let sectionSnapshot = snapshot(taskItems: viewModel.commentVMs)
+        dataSource.apply(sectionSnapshot, to: "")
+    }
 }
