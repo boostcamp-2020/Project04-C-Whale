@@ -31,7 +31,7 @@
           <v-icon small :color="favoriteProjectInfo.color">mdi-circle</v-icon>
         </v-list-item-icon>
         <v-list-item-content class="px-3">
-          <v-list-item-title class="font-14">
+          <v-list-item-title class="font-14 white-space-normal">
             {{ favoriteProjectInfo.title }} <span>{{ favoriteProjectInfo.taskCount }}</span>
           </v-list-item-title>
         </v-list-item-content>
