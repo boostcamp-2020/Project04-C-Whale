@@ -201,6 +201,8 @@ private extension TaskListViewController {
             
             return UISwipeActionsConfiguration(actions: [editAction])
         }
+        listConfiguration.headerMode = .supplementary
+        
         let layout = UICollectionViewCompositionalLayout.list(using: listConfiguration)
         
         return layout
@@ -234,6 +236,18 @@ private extension TaskListViewController {
         dataSource = UICollectionViewDiffableDataSource<TaskListModels.SectionVM, TaskVM>(collectionView: taskListCollectionView, cellProvider: { (collectionView, indexPath, task) -> UICollectionViewCell? in
             return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: task)
         })
+        configureDataSourceForHeader(dataSource)
+    }
+    
+    func configureDataSourceForHeader(_ dataSource: UICollectionViewDiffableDataSource<TaskListModels.SectionVM, TaskListModels.DisplayedTask>) {
+        let headerRegistration = UICollectionView.SupplementaryRegistration
+        <TaskBoardSupplementaryView>(elementKind: "Header") {
+            (supplementaryView, string, indexPath) in
+            supplementaryView.configureHeader(sectionName: dataSource.snapshot().sectionIdentifiers[indexPath.section].title, rowNum: dataSource.snapshot().sectionIdentifiers[indexPath.section].tasks.count)
+        }
+        dataSource.supplementaryViewProvider = { (view, kind, index) in
+            return self.taskListCollectionView.dequeueConfiguredReusableSupplementary(using: headerRegistration, for: index)
+        }
     }
     
     func snapshot(taskItems: [TaskVM]) -> NSDiffableDataSourceSectionSnapshot<TaskVM> {
