@@ -406,4 +406,21 @@ describe('delete task', () => {
       done(err);
     }
   });
+  it('없는 id', async done => {
+    // given
+    const taskId = seeder.sections[0].id;
+    try {
+      // when
+      const res = await request(app)
+        .delete(`/api/task/${taskId}`)
+        .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`);
+
+      // then
+      expect(res.status).toBe(status.BAD_REQUEST.CODE);
+      expect(res.body.message).toBe(errorMessage.BAD_REQUEST_ERROR('id'));
+      done();
+    } catch (err) {
+      done(err);
+    }
+  });
 });
