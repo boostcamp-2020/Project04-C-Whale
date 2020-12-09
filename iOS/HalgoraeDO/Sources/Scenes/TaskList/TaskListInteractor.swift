@@ -10,6 +10,7 @@ import Foundation
 protocol TaskListBusinessLogic {
     func fetchTasks(request: TaskListModels.FetchTasks.Request)
     func changeFinish(request: TaskListModels.FinishTask.Request)
+    func createTask(request: TaskListModels.CreateTask.Request)
 }
 
 protocol TaskListDataStore {
@@ -30,8 +31,11 @@ class TaskListInteractor: TaskListDataStore {
 extension TaskListInteractor: TaskListBusinessLogic {
     
     func fetchTasks(request: TaskListModels.FetchTasks.Request) {
-        taskList.tasks = worker.getTasks()
-        presenter.presentFetchTasks(response: TaskListModels.FetchTasks.Response(tasks: taskList.tasks))
+        guard let id = request.projectId else { return }
+        worker.request(endPoint: .get(projectId: id)) { [weak self] (project: Project?, error) in
+            self?.taskList.sections = project?.sections ?? []
+            self?.presenter.presentFetchTasks(response: TaskListModels.FetchTasks.Response(sections: self?.taskList.sections ?? []))
+        }
     }
     
     func changeFinish(request: TaskListModels.FinishTask.Request) {
@@ -43,9 +47,13 @@ extension TaskListInteractor: TaskListBusinessLogic {
             else {
                 return
             }
-            task.isCompleted = viewModel.isCompleted
+            task.isDone = viewModel.isCompleted
             worker.changeFinish(task: task, postion: viewModel.position, parentPosition: viewModel.parentPosition)
         }
         presenter.presentFinshChanged(response: .init(tasks: taskList.tasks))
+    }
+    
+    func createTask(request: TaskListModels.CreateTask.Request) {
+        let taskFields = request.taskFields
     }
 }

@@ -101,6 +101,13 @@
             ReferencedContainer = "container:HalgoraeDO.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
+      <EnvironmentVariables>
+         <EnvironmentVariable
+            key = "token"
+            value = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjM1NzNjYmJlLWJiYmItNDFhMy1hMzJkLWY4MTE4YjE1YTJiZCIsImVtYWlsIjoiY2N3MTAyMS5kZXZAZ21haWwuY29tIiwibmFtZSI6Iuy1nOyyoOybhSIsInByb3ZpZGVyIjoibmF2ZXIiLCJpYXQiOjE2MDczMjkwNjYsImV4cCI6MTYwNzMzMjY2Nn0.yDbVfkgRCaht6iAM0GUwYniKX8QX5NeIukMIxqbbhG4&quot;"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+      </EnvironmentVariables>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"

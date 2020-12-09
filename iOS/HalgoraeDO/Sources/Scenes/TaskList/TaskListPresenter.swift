@@ -24,10 +24,9 @@ class TaskListPresenter {
 extension TaskListPresenter: TaskListPresentLogic {
     
     func presentFetchTasks(response: TaskListModels.FetchTasks.Response) {
-        let taskViewModels = response.tasks.enumerated().map { (idx, task) in
-            TaskListModels.DisplayedTask(task: task, position: idx, parentPosition: nil)
-        }
-        viewController.displayFetchTasks(viewModel: TaskListModels.FetchTasks.ViewModel(displayedTasks: taskViewModels))
+        let sectionVMs = response.sections.compactMap { TaskListModels.SectionVM(section: $0) }
+        viewController.displayFetchTasks(viewModel: TaskListModels.FetchTasks.ViewModel(sectionVMs: sectionVMs))
+        
     }
     
     func presentDetail(of task: Task) {
@@ -36,8 +35,8 @@ extension TaskListPresenter: TaskListPresentLogic {
     
     func presentFinshChanged(response: TaskListModels.FinishTask.Response) {
         let taskViewModels = response.tasks.enumerated().map { (idx, task) in
-            TaskListModels.DisplayedTask(task: task, position: idx, parentPosition: nil)
+            TaskListModels.DisplayedTask(task: task)
         }
-        viewController.displayFetchTasks(viewModel: .init(displayedTasks: taskViewModels))
+        // TODO: Display 필요
     }
 }

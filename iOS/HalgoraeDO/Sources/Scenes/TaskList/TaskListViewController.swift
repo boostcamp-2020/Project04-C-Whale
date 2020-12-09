@@ -16,10 +16,10 @@ class TaskListViewController: UIViewController {
     // MARK: - Properties
     
     /// 임시 property
-    var projectTitle = "할고래DO"
+    private let project: Project
     private var interactor: TaskListBusinessLogic?
     private var router: (TaskListRoutingLogic & TaskListDataPassing)?
-    private var dataSource: UICollectionViewDiffableDataSource<String, TaskVM>! = nil
+    private var dataSource: UICollectionViewDiffableDataSource<TaskListModels.SectionVM, TaskVM>! = nil
     private var displayCompleted = false
     private var presentConfirmActionWorkItem: DispatchWorkItem?
     private var childCheck = 0
@@ -43,9 +43,19 @@ class TaskListViewController: UIViewController {
     
     // MARK: - View Life Cycle
     
+    init?(coder: NSCoder, project: Project) {
+        self.project = project
+        super.init(coder: coder)
+    }
+    
+    required init?(coder: NSCoder) {
+        self.project = Project(title: "")
+        super.init(coder: coder)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = projectTitle
+        title = project.title
         configureLogic()
         configureCollectionView()
         configureDataSource()
@@ -53,14 +63,14 @@ class TaskListViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        interactor?.fetchTasks(request: .init())
+        interactor?.fetchTasks(request: .init(projectId: project.id ?? ""))
     }
     
     // MARK: - Initialize
     
     private func configureLogic() {
         let presenter = TaskListPresenter(viewController: self)
-        let interactor = TaskListInteractor(presenter: presenter, worker: TaskListWorker())
+        let interactor = TaskListInteractor(presenter: presenter, worker: TaskListWorker(sessionManager: SessionManager(configuration: .default)))
         self.interactor = interactor
         router = TaskListRouter(viewController: self, dataStore: interactor)
     }
@@ -76,7 +86,7 @@ class TaskListViewController: UIViewController {
         if !editingMode {
             selectedTasks.removeAll()
         }
-        title = editingMode ? "\(selectedTasks.count) 개 선택됨" : projectTitle
+        title = editingMode ? "\(selectedTasks.count) 개 선택됨" : project.title
         taskListCollectionView.isEditing = editingMode
         moreButton.title = editingMode ? "취소" : "More"
         editToolBar.isHidden = !editingMode
@@ -118,7 +128,7 @@ class TaskListViewController: UIViewController {
                 return
             }
             
-            vc.title = self.projectTitle
+            vc.title = self.project.title
             let nav = self.navigationController
             nav?.popViewController(animated: false)
             nav?.pushViewController(vc, animated: false)
@@ -135,7 +145,7 @@ class TaskListViewController: UIViewController {
         let changeCompletedDisplayTitle = displayCompleted ? "완료된 항목 숨기기" : "완료된 항목 보기"
         let changeCompletedDisplayAction = UIAlertAction(title: changeCompletedDisplayTitle, style: .default) { (_: UIAlertAction) in
             self.displayCompleted.toggle()
-            self.interactor?.fetchTasks(request: .init())
+            self.interactor?.fetchTasks(request: .init(projectId: self.project.id))
         }
 
         let cancelAction = UIAlertAction(title: "취소", style: .cancel) { (_: UIAlertAction) in
@@ -157,6 +167,7 @@ class TaskListViewController: UIViewController {
     @IBAction func didTapAddButton(_ sender: UIButton) {
         let taskAddViewController = TaskAddViewController()
         taskAddViewController.modalPresentationStyle = .overCurrentContext
+        taskAddViewController.delegate = self
         present(taskAddViewController, animated: true, completion: nil)
     }
 }
@@ -220,7 +231,7 @@ private extension TaskListViewController {
             cell.accessories = taskItem.subItems.isEmpty ? [] : [.outlineDisclosure(options: disclosureOptions)]
         }
         
-        dataSource = UICollectionViewDiffableDataSource<String, TaskVM>(collectionView: taskListCollectionView, cellProvider: { (collectionView, indexPath, task) -> UICollectionViewCell? in
+        dataSource = UICollectionViewDiffableDataSource<TaskListModels.SectionVM, TaskVM>(collectionView: taskListCollectionView, cellProvider: { (collectionView, indexPath, task) -> UICollectionViewCell? in
             return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: task)
         })
     }
@@ -246,19 +257,14 @@ private extension TaskListViewController {
 extension TaskListViewController: TaskListDisplayLogic {
     
     func displayFetchTasks(viewModel: TaskListModels.FetchTasks.ViewModel) {
-        let currentSnapshot = dataSource.snapshot(for: projectTitle)
-        displayTasks = filterCompletedIfNeeded(for: viewModel.displayedTasks)
-        var snapShot = snapshot(taskItems: displayTasks)
-        for item in snapShot.items {
-            guard currentSnapshot.contains(item),
-                currentSnapshot.isExpanded(item)
-            else {
-                continue
+        
+        for sectionVM in viewModel.sectionVMs {
+            var sectionSnapshot = NSDiffableDataSourceSectionSnapshot<TaskListModels.DisplayedTask>()
+            sectionSnapshot.append(sectionVM.tasks)
+            DispatchQueue.main.async {
+                self.dataSource.apply(sectionSnapshot, to: sectionVM)
             }
-            
-            snapShot.expand([item])
         }
-        dataSource.apply(snapShot, to: projectTitle, animatingDifferences: true)
     }
     
     func displayDetail(of task: Task) {
@@ -343,7 +349,7 @@ extension TaskListViewController: UICollectionViewDragDelegate {
     
     private func dragItems(at indexPath: IndexPath) -> [UIDragItem] {
         guard let taskObject = taskListCollectionView.cellForItem(at: indexPath) as? TaskCollectionViewListCell else { return [] }
-        let provider = NSItemProvider(object: taskObject.taskViewModel!.id.uuidString as NSString)
+        let provider = NSItemProvider(object: taskObject.taskViewModel!.id as NSString)
         let dragItem = UIDragItem(itemProvider: provider)
         guard let collectionView = taskListCollectionView else { return [dragItem] }
         let cell = collectionView.cellForItem(at: indexPath)
@@ -400,7 +406,8 @@ extension TaskListViewController: UICollectionViewDropDelegate {
                     }
             
                     let snapShot = dropHelper(displayTasks, dataSource.itemIdentifier(for: sourceIndexPath)!, dataSource.itemIdentifier(for: tempIndex)!)
-                    dataSource.apply(snapShot, to: projectTitle, animatingDifferences: true)
+                    let section = dataSource.snapshot().sectionIdentifiers[sourceIndexPath.section]
+                    dataSource.apply(snapShot, to: section, animatingDifferences: true)
                     coordinator.drop(item.dragItem, toItemAt: destinationIndexPath)
                 }
             }
@@ -509,3 +516,14 @@ private extension TaskListViewController {
     }
 }
 
+// MARK: - TaskAddViewController Delegate
+
+extension TaskListViewController: TaskAddViewControllerDelegate {
+    
+    func taskAddViewControllerDidDone(_ taskAddViewController: TaskAddViewController) {
+        let taskFields = TaskListModels.TaskFields(title: taskAddViewController.text,
+                                                  date: taskAddViewController.date,
+                                                  priority: taskAddViewController.priority)
+        interactor?.createTask(request: .init(taskFields: taskFields))
+    }
+}

@@ -7,38 +7,52 @@
 
 import Foundation
 
-class Task {
+final class Task {
 
     // MARK:  - Constatns
     
-    let identifier = UUID()
+    var id: String = UUID().uuidString
     
     // MARK: - Properties
     
-    private(set) var subTasks: [Task]
+    var tasks: [Task]?
     weak var parent: Task?
-    var section: String
     var title: String
-    var isCompleted: Bool
-    var dueDate: Date
-    var priority: Priority
+    var isDone: Bool
+    var dueDate: String
+    var position: Int
+    var createdAt: String
+    var updatedAt: String
+    var priority: Priority?
+    var comments: [Comment]?
+    var bookmarks: [Bookmark]?
     
     init(section: String = "",
          title: String,
          isCompleted: Bool = false,
-         dueDate: Date = Date(),
+         dueDate: String = "\(Date())",
+         position: Int,
+         createdAt: String = "\(Date())",
+         updatedAt: String = "\(Date())",
          priority: Priority = .four,
          parent: Task? = nil,
-         subTasks: [Task] = []) {
+         subTasks: [Task] = [],
+         comments: [Comment] = [],
+         bookmarks: [Bookmark] = []
+    ) {
         
-        self.section = section
         self.title = title
-        self.isCompleted = isCompleted
+        self.isDone = isCompleted
         self.dueDate = dueDate
+        self.position = position
+        self.createdAt = createdAt
+        self.updatedAt = updatedAt
         self.priority = priority
         self.parent = parent
-        self.subTasks = subTasks
-        self.subTasks.forEach { $0.parent = self }
+        self.tasks = subTasks
+        self.comments = comments
+        self.bookmarks = bookmarks
+        self.tasks?.forEach { $0.parent = self }
     }
         
     // MARK: - Methods
@@ -46,33 +60,45 @@ class Task {
     // MARK: Mutable
     
     func insert(_ task: Task, at index: Int) {
-        assert(!(0..<subTasks.count ~= index), "Out of Index")
+        guard var tasks = task.tasks else { return }
+        assert(!(0..<tasks.count ~= index), "Out of Index")
         task.parent = self
-        subTasks.insert(task, at: index)
+        tasks.insert(task, at: index)
     }
     
     func append(_ task: Task) {
+        guard var tasks = task.tasks else { return }
         task.parent = self
-        self.subTasks.append(task)
+        tasks.append(task)
+        self.tasks = tasks
     }
     
     @discardableResult
     func remove(_ task: Task) -> Task? {
-        guard let index = subTasks.firstIndex(of: task) else { return nil }
-        subTasks[index].parent = nil
-        return subTasks.remove(at: index)
+        guard var tasks = task.tasks,
+              let index = tasks.firstIndex(of: task)
+        else {
+            return nil
+        }
+        tasks[index].parent = nil
+        
+        return tasks.remove(at: index)
     }
+}
+
+extension Task: Codable {
+    
 }
 
 // MARK: - Hashable
 
 extension Task: Hashable {
     func hash(into hasher: inout Hasher) {
-        hasher.combine(identifier)
+        hasher.combine(id)
     }
     
     static func ==(lhs: Task, rhs: Task) -> Bool {
-        return lhs.identifier == rhs.identifier
+        return lhs.id == rhs.id
     }
 }
 
@@ -80,6 +106,6 @@ extension Task: Hashable {
 
 extension Task: CustomStringConvertible {
     var description: String {
-        return "id: \(identifier), title: \(title), isCompleted: \(isCompleted), parent: \(parent ?? "nil" as CustomStringConvertible), subTasks: \(subTasks)"
+        return "id: \(id), title: \(title), isCompleted: \(isDone), parent: \(parent ?? "nil" as CustomStringConvertible), subTasks: \(tasks)"
     }
 }

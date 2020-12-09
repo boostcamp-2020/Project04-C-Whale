@@ -20,6 +20,7 @@
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="yTg-6t-2Gl">
                                 <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="nM7-5B-9zL">
                                     <size key="itemSize" width="128" height="128"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -259,7 +260,7 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="Fl7-oy-TQZ">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="50"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Pe-WI-bxb">
+                                            <button opaque="NO" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Pe-WI-bxb">
                                                 <rect key="frame" x="0.0" y="0.0" width="138" height="50"/>
                                                 <state key="normal" title="하위작업">
                                                     <color key="titleColor" red="0.1018261239" green="0.15218839049999999" blue="0.41057401900000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -309,7 +310,7 @@
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fT0-Kb-7tn">
                                 <rect key="frame" x="0.0" y="320.5" width="414" height="541.5"/>
                                 <connections>
-                                    <segue destination="0ln-em-1OC" kind="embed" id="XlB-7M-ywm"/>
+                                    <segue destination="0ln-em-1OC" kind="embed" identifier="TaskDetailViewControllerTo TaskDetailPageViewController" id="XlB-7M-ywm"/>
                                 </connections>
                             </containerView>
                         </subviews>
@@ -335,11 +336,15 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="bookmarkTabButton" destination="vZE-sc-veY" id="XYD-CQ-nWw"/>
+                        <outlet property="commentTabButton" destination="xTE-Ce-ANu" id="tM0-Um-KhB"/>
                         <outlet property="finishButton" destination="ovW-bp-nsn" id="agw-B9-7KS"/>
                         <outlet property="navigationBar" destination="hbn-2h-nDV" id="biM-Sq-vCa"/>
                         <outlet property="navigationView" destination="sZF-UA-ODh" id="xlH-sk-POR"/>
                         <outlet property="priorityButton" destination="YHa-fV-ExY" id="3ds-rG-kBc"/>
                         <outlet property="saveBarButtomItem" destination="OUj-YT-J5Z" id="Kkc-XV-ox0"/>
+                        <outlet property="subTabStackView" destination="Fl7-oy-TQZ" id="yTj-4a-wef"/>
+                        <outlet property="subTaskTabButton" destination="8Pe-WI-bxb" id="Vbs-8E-Hik"/>
                         <outlet property="taskTitleTextView" destination="htc-6e-bKT" id="rRU-2L-vVc"/>
                         <outlet property="titleLabel" destination="z49-7l-AZe" id="lx9-S7-xBS"/>
                     </connections>
@@ -355,9 +360,31 @@
                     <view key="view" contentMode="scaleToFill" id="GGL-B7-pBg">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="lVt-5S-agt">
+                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="PmY-gE-gMc">
+                                    <size key="itemSize" width="128" height="128"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells/>
+                            </collectionView>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="num-GV-B5u"/>
-                        <color key="backgroundColor" systemColor="systemGray3Color"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="lVt-5S-agt" firstAttribute="leading" secondItem="num-GV-B5u" secondAttribute="leading" id="2VD-MY-hFX"/>
+                            <constraint firstItem="num-GV-B5u" firstAttribute="bottom" secondItem="lVt-5S-agt" secondAttribute="bottom" id="6vj-Pb-3oU"/>
+                            <constraint firstItem="num-GV-B5u" firstAttribute="trailing" secondItem="lVt-5S-agt" secondAttribute="trailing" id="Gfx-sR-dBt"/>
+                            <constraint firstItem="lVt-5S-agt" firstAttribute="top" secondItem="num-GV-B5u" secondAttribute="top" id="eV9-DN-8SG"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="subTaskCollectionView" destination="lVt-5S-agt" id="ofm-xR-sBl"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8ia-K0-YiX" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

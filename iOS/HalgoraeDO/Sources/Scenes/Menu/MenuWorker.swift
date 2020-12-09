@@ -1,13 +1,13 @@
 //
-//  TaskListWorker.swift
+//  MenuWorker.swift
 //  HalgoraeDO
 //
-//  Created by woong on 2020/11/23.
+//  Created by woong on 2020/12/08.
 //
 
 import Foundation
 
-class TaskListWorker {
+class MenuWorker {
     
     let networkManager: NetworkDispatcher
     
@@ -19,11 +19,5 @@ class TaskListWorker {
         networkManager.fetchData(endPoint) { (result: T?, error: NetworkError?) in
             completion(result, error)
         }
-    }
-    
-    // func fetchTasks(End)
-    
-    func changeFinish(task: Task, postion: Int, parentPosition: Int?) {
-        
     }
 }

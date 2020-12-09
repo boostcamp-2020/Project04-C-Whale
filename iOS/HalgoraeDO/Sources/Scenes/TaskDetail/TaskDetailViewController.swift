@@ -62,7 +62,7 @@ class TaskDetailViewController: UIViewController {
     }
     
     required init?(coder: NSCoder) {
-        self.task = Task(title: "")
+        self.task = Task(title: "", position: 0)
         super.init(coder: coder)
     }
     
