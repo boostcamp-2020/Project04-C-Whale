@@ -78,6 +78,9 @@
 		4CE9157F257D14CB00BCF398 /* CodableMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CE9157E257D14CB00BCF398 /* CodableMock.swift */; };
 		4CE91584257D190900BCF398 /* DataRequestMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CE91583257D190900BCF398 /* DataRequestMock.swift */; };
 		4CE915C1257E1D5700BCF398 /* ProjectEndPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CE915C0257E1D5700BCF398 /* ProjectEndPoint.swift */; };
+		4CE915C6257E205500BCF398 /* JSONParameterEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CE915C5257E205500BCF398 /* JSONParameterEncoder.swift */; };
+		4CE915D1257E5D2B00BCF398 /* TaskDetailModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CE915D0257E5D2B00BCF398 /* TaskDetailModels.swift */; };
+		4CE915D9257F228400BCF398 /* TaskEndPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CE915D8257F228400BCF398 /* TaskEndPoint.swift */; };
 		4CE915EB257F61DA00BCF398 /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CE915EA257F61DA00BCF398 /* Project.swift */; };
 		4CE915F0257F633200BCF398 /* Section.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CE915EF257F633200BCF398 /* Section.swift */; };
 		4CE915F5257F661E00BCF398 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CE915F4257F661E00BCF398 /* Comment.swift */; };
@@ -176,9 +179,10 @@
 		4CE9157E257D14CB00BCF398 /* CodableMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodableMock.swift; sourceTree = "<group>"; };
 		4CE91583257D190900BCF398 /* DataRequestMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataRequestMock.swift; sourceTree = "<group>"; };
 		4CE91597257D315800BCF398 /* HalgoraeDO.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HalgoraeDO.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		4CE91598257D315800BCF398 /* TaskListTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = TaskListTests.xctest; path = "/Users/os/woong/iOS/Boostcamp2020/group_final/Project04-C-Whale/iOS/build/Debug-iphoneos/TaskListTests.xctest"; sourceTree = "<absolute>"; };
-		4CE91599257D315800BCF398 /* ServiceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = ServiceTests.xctest; path = "/Users/os/woong/iOS/Boostcamp2020/group_final/Project04-C-Whale/iOS/build/Debug-iphoneos/ServiceTests.xctest"; sourceTree = "<absolute>"; };
 		4CE915C0257E1D5700BCF398 /* ProjectEndPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectEndPoint.swift; sourceTree = "<group>"; };
+		4CE915C5257E205500BCF398 /* JSONParameterEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONParameterEncoder.swift; sourceTree = "<group>"; };
+		4CE915D0257E5D2B00BCF398 /* TaskDetailModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDetailModels.swift; sourceTree = "<group>"; };
+		4CE915D8257F228400BCF398 /* TaskEndPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskEndPoint.swift; sourceTree = "<group>"; };
 		4CE915EA257F61DA00BCF398 /* Project.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Project.swift; sourceTree = "<group>"; };
 		4CE915EF257F633200BCF398 /* Section.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Section.swift; sourceTree = "<group>"; };
 		4CE915F4257F661E00BCF398 /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
@@ -188,6 +192,8 @@
 		4CE9160E257F81C500BCF398 /* MenuPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuPresenter.swift; sourceTree = "<group>"; };
 		4CE91613257F82A100BCF398 /* MenuModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuModels.swift; sourceTree = "<group>"; };
 		4CE91618257F83AD00BCF398 /* MenuRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuRouter.swift; sourceTree = "<group>"; };
+		4CE9161F257FECE500BCF398 /* TaskListTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = TaskListTests.xctest; path = "/Users/os/woong/iOS/Boostcamp2020/group_final/Project04-C-Whale/iOS/build/Debug-iphoneos/TaskListTests.xctest"; sourceTree = "<absolute>"; };
+		4CE91620257FECE500BCF398 /* ServiceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = ServiceTests.xctest; path = "/Users/os/woong/iOS/Boostcamp2020/group_final/Project04-C-Whale/iOS/build/Debug-iphoneos/ServiceTests.xctest"; sourceTree = "<absolute>"; };
 		AA19EF162575680500E59017 /* TaskSectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskSectionViewCell.swift; sourceTree = "<group>"; };
 		AA19EF1A25756C3200E59017 /* AddSectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSectionViewCell.swift; sourceTree = "<group>"; };
 		AA19EF242576488B00E59017 /* TaskBoardSupplementaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskBoardSupplementaryView.swift; sourceTree = "<group>"; };
@@ -195,8 +201,6 @@
 		AA19EF322576846100E59017 /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
 		AA354C292570002600072657 /* TaskAddViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskAddViewController.swift; sourceTree = "<group>"; };
 		AAA74C73257DAE00004FC883 /* AddProjectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProjectViewController.swift; sourceTree = "<group>"; };
-		AAA74C7C257FBA9A004FC883 /* TaskListTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TaskListTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		AAA74C7D257FBA9A004FC883 /* ServiceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ServiceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		AAA74C9C25805BC2004FC883 /* TaskDetailModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskDetailModels.swift; sourceTree = "<group>"; };
 		AAEE20DD2564E4A900668FAD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AAEE20DF2564E4A900668FAD /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -317,6 +321,7 @@
 				AAA74C9C25805BC2004FC883 /* TaskDetailModels.swift */,
 				4C42371E25763B100068A252 /* TaskDetailWorker.swift */,
 				4C42372225763B1C0068A252 /* TaskDetailPresenter.swift */,
+				4CE915D0257E5D2B00BCF398 /* TaskDetailModels.swift */,
 			);
 			path = TaskDetail;
 			sourceTree = "<group>";
@@ -359,6 +364,7 @@
 			children = (
 				4C423895257A2A560068A252 /* ParameterEncoding.swift */,
 				4C4238A1257A2D800068A252 /* URLParameterEncoder.swift */,
+				4CE915C5257E205500BCF398 /* JSONParameterEncoder.swift */,
 			);
 			path = Encoding;
 			sourceTree = "<group>";
@@ -441,7 +447,15 @@
 			path = Mocks;
 			sourceTree = "<group>";
 		};
+		4CE915B7257E1B7F00BCF398 /* EndPoints */ = {
+			isa = PBXGroup;
+			children = (
 				4CE915C0257E1D5700BCF398 /* ProjectEndPoint.swift */,
+				4CE915D8257F228400BCF398 /* TaskEndPoint.swift */,
+			);
+			path = EndPoints;
+			sourceTree = "<group>";
+		};
 		AAEE20D12564E4A900668FAD = {
 			isa = PBXGroup;
 			children = (
@@ -449,8 +463,6 @@
 				4CCD31DA256EBC0000A46D10 /* TaskListTests */,
 				4CE91514257CCEFA00BCF398 /* ServiceTests */,
 				4CE91597257D315800BCF398 /* HalgoraeDO.app */,
-				AAA74C7C257FBA9A004FC883 /* TaskListTests.xctest */,
-				AAA74C7D257FBA9A004FC883 /* ServiceTests.xctest */,
 			);
 			sourceTree = "<group>";
 		};
@@ -522,7 +534,7 @@
 			);
 			name = TaskListTests;
 			productName = TaskListTests;
-			productReference = AAA74C7C257FBA9A004FC883 /* TaskListTests.xctest */;
+			productReference = 4CE9161F257FECE500BCF398 /* TaskListTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		4CE91512257CCEFA00BCF398 /* ServiceTests */ = {
@@ -540,7 +552,7 @@
 			);
 			name = ServiceTests;
 			productName = ServiceTests;
-			productReference = AAA74C7D257FBA9A004FC883 /* ServiceTests.xctest */;
+			productReference = 4CE91620257FECE500BCF398 /* ServiceTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		AAEE20D92564E4A900668FAD /* HalgoraeDO */ = {
@@ -701,6 +713,7 @@
 				AA19EF252576488B00E59017 /* TaskBoardSupplementaryView.swift in Sources */,
 				4C3F5695256BA228006D7C9F /* Task.swift in Sources */,
 				4C4236C32574C5F50068A252 /* TaskList.swift in Sources */,
+				4CE915D9257F228400BCF398 /* TaskEndPoint.swift in Sources */,
 				4CE915F5257F661E00BCF398 /* Comment.swift in Sources */,
 				4C4236E02574DF980068A252 /* ConfirmActionView.swift in Sources */,
 				4C3F5705256CF8B9006D7C9F /* TaskContentView.swift in Sources */,
@@ -727,7 +740,9 @@
 				4C4238742579358A0068A252 /* DataRequest.swift in Sources */,
 				AA19EF1B25756C3200E59017 /* AddSectionViewCell.swift in Sources */,
 				AAA74C74257DAE00004FC883 /* AddProjectViewController.swift in Sources */,
+				4CE915D1257E5D2B00BCF398 /* TaskDetailModels.swift in Sources */,
 				4C42371B25763B080068A252 /* TaskDetailInteractor.swift in Sources */,
+				4CE915C6257E205500BCF398 /* JSONParameterEncoder.swift in Sources */,
 				4CE915FA257F662800BCF398 /* Bookmark.swift in Sources */,
 				4C423896257A2A560068A252 /* ParameterEncoding.swift in Sources */,
 				4C42387A25794C8C0068A252 /* SessionManager.swift in Sources */,
