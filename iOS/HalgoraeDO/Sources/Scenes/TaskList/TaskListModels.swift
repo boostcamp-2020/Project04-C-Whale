@@ -120,24 +120,38 @@ enum TaskListModels {
             self.subItems = subItems
         }
         
-        init(task: Task, position: Int, parentPosition: Int?) {
-            self.id = task.identifier
+        init(task: Task) {
+            self.id = task.id
             self.title = task.title
-            self.isCompleted = task.isCompleted
-            self.tintColor = task.priority.color
-            self.position = position
-            self.parentPosition = parentPosition
-            self.subItems = task.subTasks.enumerated().compactMap { (idx, task) in
-                DisplayedTask(task: task, position: idx, parentPosition: position)
-            }
+            self.isCompleted = task.isDone
+            self.tintColor = task.priority?.color ?? .black
+            self.position = task.position
+            self.parentPosition = task.parent?.position
+            guard let tasks = task.tasks else { return }
+            self.subItems = tasks.compactMap { DisplayedTask(task: $0) }
         }
-        
-        static func ==(lhs: Self, rhs: Self) -> Bool {
-            return lhs.id == rhs.id
-        }
-        
-        func hash(into hasher: inout Hasher) {
-            hasher.combine(id)
-        }
+    }
+}
+
+extension TaskListModels.SectionVM: Hashable {
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+    
+    static func ==(lhs: Self, rhs: Self) -> Bool {
+        return lhs.id == rhs.id
+    }
+}
+
+
+extension TaskListModels.DisplayedTask: Hashable {
+    
+    static func ==(lhs: Self, rhs: Self) -> Bool {
+        return lhs.id == rhs.id
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
     }
 }
