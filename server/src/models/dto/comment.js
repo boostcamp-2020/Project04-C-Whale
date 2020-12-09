@@ -16,8 +16,8 @@ class CommentDto {
   @IsUUID()
   id;
 
-  @IsString({ groups: ['create'], message: errorMessage.TYPE_ERROR('id') })
-  @MinLength(1, { groups: ['create'], message: errorMessage.INVALID_INPUT_ERROR('id') })
+  @IsString({ groups: ['create'], message: errorMessage.TYPE_ERROR('content') })
+  @MinLength(1, { groups: ['create'], message: errorMessage.INVALID_INPUT_ERROR('content') })
   content;
 
   @IsString()
