@@ -20,5 +20,18 @@ enum Priority: Int, CaseIterable {
 }
 
 extension Priority: Codable {
+    enum CodingKeys: String, CodingKey {
+        case title
+    }
     
+    init(from decoder: Decoder) throws {
+        let title = try? decoder.container(keyedBy: CodingKeys.self).decode(String.self, forKey: .title)
+        if let number = title?.last,
+            let rawValue = Int("\(number)"),
+           let priority = Priority(rawValue: rawValue) {
+            self = priority
+        } else {
+            self = .four
+        }
+    }
 }

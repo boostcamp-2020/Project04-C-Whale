@@ -10,7 +10,7 @@ import Foundation
 class Project: Codable {
     var id: String?
     var title: String
-    var taskCount: Int
+    var taskCount: Int?
     var isFavorite: Bool?
     var isList: Bool?
     var sections: [Section]?

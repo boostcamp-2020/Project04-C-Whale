@@ -10,7 +10,7 @@ import Foundation
 class Section: Codable {
     var id: String
     var title: String
-    var createdAt: Date
-    var updatedAt: Date
-    var tasks: [Task]
+    var createdAt: String
+    var updatedAt: String
+    var tasks: [Task]?
 }
