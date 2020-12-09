@@ -40,7 +40,7 @@ extension NetworkManager: NetworkDispatcher {
         sessionManager.request(endPoint: endpoint).responseData { (result, response) in
             guard let result = result else {
 
-                completion(nil, .responseFail(response as! String))
+                completion(nil, .responseFail(response))
                 return
             }
 
@@ -50,7 +50,7 @@ extension NetworkManager: NetworkDispatcher {
                 let result = try decoder.decode(T.self, from: result)
                 completion(result, nil)
             } catch {
-                completion(nil, .unableToDecode("Could not decode data"))
+                completion(nil, .unableToDecode("\(error)"))
             }
         }
     }

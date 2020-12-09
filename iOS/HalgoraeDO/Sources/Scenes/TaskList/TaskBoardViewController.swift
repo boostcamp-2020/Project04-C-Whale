@@ -14,6 +14,7 @@ class TaskBoardViewController: UIViewController {
     
     // MARK: - Properties
     
+    private let project: Project
     private var interactor: TaskListBusinessLogic?
     private var router: (TaskListRoutingLogic & TaskListDataPassing)?
     private var dataSource: UICollectionViewDiffableDataSource<String, TaskVM>! = nil
@@ -27,6 +28,16 @@ class TaskBoardViewController: UIViewController {
     
     // MARK: - View Life Cycle
     
+    init?(coder: NSCoder, project: Project) {
+        self.project = project
+        super.init(coder: coder)
+    }
+    
+    required init?(coder: NSCoder) {
+        self.project = Project(title: "")
+        super.init(coder: coder)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         NotificationCenter.default.addObserver(self, selector: #selector(displayAddTask), name: NSNotification.Name(rawValue: "displayAddTask"), object: nil)
@@ -39,7 +50,7 @@ class TaskBoardViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.prefersLargeTitles = false
-        interactor?.fetchTasks(request: .init())
+        interactor?.fetchTasks(request: .init(projectId: project.id ?? ""))
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -51,7 +62,7 @@ class TaskBoardViewController: UIViewController {
     
     private func configureLogic() {
         let presenter = TaskListPresenter(viewController: self)
-        let interactor = TaskListInteractor(presenter: presenter, worker: TaskListWorker())
+        let interactor = TaskListInteractor(presenter: presenter, worker: TaskListWorker(sessionManager: SessionManager(configuration: .default)))
         self.interactor = interactor
     }
     
@@ -78,7 +89,7 @@ class TaskBoardViewController: UIViewController {
         else {
             return
         }
-        let temp = TaskListModels.DisplayedTask(id: UUID(), title: taskTitle, isCompleted: false, tintColor: .red, position: 1, parentPosition: nil, subItems: [])
+        let temp = TaskListModels.DisplayedTask(id: UUID().uuidString, title: taskTitle, isCompleted: false, tintColor: .red, position: 1, parentPosition: nil, subItems: [])
         taskVM.append(temp)
         taskBoardCollectionView.reloadData()
     }
@@ -227,7 +238,9 @@ extension TaskBoardViewController: TaskListDisplayLogic {
     }
     
     func displayFetchTasks(viewModel: TaskListModels.FetchTasks.ViewModel) {
-        taskVM = viewModel.displayedTasks
+        for sectionVM in viewModel.sectionVMs {
+            taskVM = sectionVM.tasks
+        }
     }
     
     func displayDetail(of task: Task) {

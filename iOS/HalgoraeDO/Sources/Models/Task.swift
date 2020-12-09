@@ -11,28 +11,29 @@ final class Task {
 
     // MARK:  - Constatns
     
-    let id: String = UUID().uuidString
+    var id: String = UUID().uuidString
     
     // MARK: - Properties
     
-    private(set) var subTasks: [Task]
+    var tasks: [Task]?
     weak var parent: Task?
-    var section: String
     var title: String
     var isDone: Bool
-    var dueDate: Date
-    var createdAt: Date
-    var updatedAt: Date
+    var dueDate: String
+    var position: Int
+    var createdAt: String
+    var updatedAt: String
     var priority: Priority?
-    var comments: [Comment]
-    var bookmarks: [Bookmark]
+    var comments: [Comment]?
+    var bookmarks: [Bookmark]?
     
     init(section: String = "",
          title: String,
          isCompleted: Bool = false,
-         dueDate: Date = Date(),
-         createdAt: Date = Date(),
-         updatedAt: Date = Date(),
+         dueDate: String = "\(Date())",
+         position: Int,
+         createdAt: String = "\(Date())",
+         updatedAt: String = "\(Date())",
          priority: Priority = .four,
          parent: Task? = nil,
          subTasks: [Task] = [],
@@ -40,18 +41,18 @@ final class Task {
          bookmarks: [Bookmark] = []
     ) {
         
-        self.section = section
         self.title = title
         self.isDone = isCompleted
         self.dueDate = dueDate
+        self.position = position
         self.createdAt = createdAt
         self.updatedAt = updatedAt
         self.priority = priority
         self.parent = parent
-        self.subTasks = subTasks
-        // self.subTasks.forEach { $0.parent = self }
+        self.tasks = subTasks
         self.comments = comments
         self.bookmarks = bookmarks
+        self.tasks?.forEach { $0.parent = self }
     }
         
     // MARK: - Methods
@@ -59,21 +60,29 @@ final class Task {
     // MARK: Mutable
     
     func insert(_ task: Task, at index: Int) {
-        assert(!(0..<subTasks.count ~= index), "Out of Index")
+        guard var tasks = task.tasks else { return }
+        assert(!(0..<tasks.count ~= index), "Out of Index")
         task.parent = self
-        subTasks.insert(task, at: index)
+        tasks.insert(task, at: index)
     }
     
     func append(_ task: Task) {
+        guard var tasks = task.tasks else { return }
         task.parent = self
-        self.subTasks.append(task)
+        tasks.append(task)
+        self.tasks = tasks
     }
     
     @discardableResult
     func remove(_ task: Task) -> Task? {
-        guard let index = subTasks.firstIndex(of: task) else { return nil }
-        subTasks[index].parent = nil
-        return subTasks.remove(at: index)
+        guard var tasks = task.tasks,
+              let index = tasks.firstIndex(of: task)
+        else {
+            return nil
+        }
+        tasks[index].parent = nil
+        
+        return tasks.remove(at: index)
     }
 }
 
@@ -97,6 +106,6 @@ extension Task: Hashable {
 
 extension Task: CustomStringConvertible {
     var description: String {
-        return "id: \(id), title: \(title), isCompleted: \(isDone), parent: \(parent ?? "nil" as CustomStringConvertible), subTasks: \(subTasks)"
+        return "id: \(id), title: \(title), isCompleted: \(isDone), parent: \(parent ?? "nil" as CustomStringConvertible), subTasks: \(tasks)"
     }
 }

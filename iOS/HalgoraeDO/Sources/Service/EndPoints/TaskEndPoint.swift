@@ -1,40 +1,38 @@
 //
-//  ProjectEndPoint.swift
+//  TaskEndPoint.swift
 //  HalgoraeDO
 //
-//  Created by woong on 2020/12/07.
+//  Created by woong on 2020/12/08.
 //
 
 import Foundation
 
-enum ProjectEndPoint {
-    case getAll
-    case get(projectId: String)
+enum TaskEndPoint {
+    case get(taskId: Int)
     case create(request: Data)
     case titleUpdate(id: Int, titleData: Data)
     case update(id: Int, project: Data)
     case delete(id: Int)
 }
 
-extension ProjectEndPoint: EndPointType {
+extension TaskEndPoint: EndPointType {
+
     var baseURL: URL {
         return URL(string: "http://101.101.210.222:3000/api")!
     }
 
     var path: String {
         switch self {
-            case .getAll: return "project"
-            case .get(let id): return "project/\(id)"
-            case .create: return "project"
-            case .titleUpdate(let id, _): return "project/\(id)"
-            case .update(let id, _): return "project/\(id)"
-            case .delete(let id): return "project/\(id)"
+            case .get(let id): return "task/\(id)"
+            case .create: return "task"
+            case .titleUpdate(let id, _): return "\(id)"
+            case .update(let id, _): return "\(id)"
+            case .delete(let id): return "\(id)"
         }
     }
 
     var httpMethod: HTTPMethod {
         switch self {
-            case .getAll: return .get
             case .get: return .get
             case .create: return .post
             case .titleUpdate: return .patch
@@ -45,7 +43,6 @@ extension ProjectEndPoint: EndPointType {
 
     var httpTask: HTTPTask {
         switch self {
-            case .getAll: return (nil, nil)
             case .get: return (nil, nil)
             case .create(let body): return (body, nil)
             case .titleUpdate(_, let titleData): return (titleData, nil)

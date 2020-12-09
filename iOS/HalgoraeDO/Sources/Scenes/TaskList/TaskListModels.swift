@@ -9,19 +9,19 @@ import UIKit
 
 enum TaskListModels {
     
-    // MARK:  - Use cases
+    // MARK:  - Usecases
     
     enum FetchTasks {
         struct Request {
-
+            var projectId: String?
         }
         
         struct Response {
-            var tasks: [Task]
+            var sections: [Section]
         }
         
         struct ViewModel {
-            var displayedTasks: [DisplayedTask]
+            var sectionVMs: [SectionVM]
         }
     }
     
@@ -66,26 +66,45 @@ enum TaskListModels {
             var displayedTask: DisplayedTask
         }
     }
-}
-
-// MARK:  - Models
-
-extension TaskListModels {
+    
+    // MARK:  - Models
     
     struct TaskFields {
-        
+        var title: String
+        var date: Date?
+        var priority: Priority
     }
     
-    struct DisplayedTask: Hashable {
-        var id: UUID
+    struct SectionVM {
+        var id: String
+        var title: String
+        var tasks: [DisplayedTask] = []
+        
+        init(id: String,
+            title: String,
+            tasks: [DisplayedTask]) {
+            self.id = id
+            self.title = title
+            self.tasks = tasks
+        }
+        
+        init(section: Section) {
+            self.id = section.id
+            self.title = section.title
+            self.tasks = section.tasks?.compactMap { DisplayedTask(task: $0) } ?? []
+        }
+    }
+    
+    struct DisplayedTask: TaskContentViewModelType {
+        var id: String
         var title: String
         var isCompleted: Bool
         var tintColor: UIColor
         var position: Int
         var parentPosition: Int?
-        var subItems: [DisplayedTask]
+        var subItems: [DisplayedTask] = []
         
-        init(id: UUID,
+        init(id: String,
              title: String,
              isCompleted: Bool = false,
              tintColor: UIColor,
@@ -101,24 +120,38 @@ extension TaskListModels {
             self.subItems = subItems
         }
         
-        init(task: Task, position: Int, parentPosition: Int?) {
-            self.id = task.identifier
+        init(task: Task) {
+            self.id = task.id
             self.title = task.title
-            self.isCompleted = task.isCompleted
-            self.tintColor = task.priority.color
-            self.position = position
-            self.parentPosition = parentPosition
-            self.subItems = task.subTasks.enumerated().compactMap { (idx, task) in
-                DisplayedTask(task: task, position: idx, parentPosition: position)
-            }
+            self.isCompleted = task.isDone
+            self.tintColor = task.priority?.color ?? .black
+            self.position = task.position
+            self.parentPosition = task.parent?.position
+            guard let tasks = task.tasks else { return }
+            self.subItems = tasks.compactMap { DisplayedTask(task: $0) }
         }
-        
-        static func ==(lhs: Self, rhs: Self) -> Bool {
-            return lhs.id == rhs.id
-        }
-        
-        func hash(into hasher: inout Hasher) {
-            hasher.combine(id)
-        }
+    }
+}
+
+extension TaskListModels.SectionVM: Hashable {
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+    
+    static func ==(lhs: Self, rhs: Self) -> Bool {
+        return lhs.id == rhs.id
+    }
+}
+
+
+extension TaskListModels.DisplayedTask: Hashable {
+    
+    static func ==(lhs: Self, rhs: Self) -> Bool {
+        return lhs.id == rhs.id
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
     }
 }
