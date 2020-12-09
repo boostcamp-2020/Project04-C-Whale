@@ -9,12 +9,13 @@ import Foundation
 
 class TaskList {
     
+    var sections: [Section] = []
     var tasks: [Task] = []
     
     func task(identifier: String, postion: Int, parentPosition: Int?) -> Task? {
         var superTasks = tasks
         if let parentPosition = parentPosition  {
-            superTasks = tasks[parentPosition].subTasks
+            superTasks = tasks[parentPosition].tasks ?? []
         }
         let isInRagne = 0..<superTasks.count ~= postion
         
