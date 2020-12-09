@@ -13,9 +13,15 @@ myAxios.interceptors.request.use((config) => {
   return config;
 });
 
-myAxios.interceptors.response.use((config) => {
-  bus.$emit("end:spinner");
-  return config;
-});
+myAxios.interceptors.response.use(
+  (res) => {
+    bus.$emit("end:spinner");
+    return res;
+  },
+  (error) => {
+    bus.$emit("end:spinner");
+    return Promise.reject(error);
+  }
+);
 
 export default myAxios;
