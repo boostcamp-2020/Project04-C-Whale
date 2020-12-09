@@ -224,6 +224,56 @@ describe('post task', () => {
     expect(res.body.message).toBe(errorMessage.UNNECESSARY_INPUT_ERROR('id'));
     done();
   });
+  it('프로젝트 id가 포함된 생성', async done => {
+    // given
+    const expectedProjectId = seeder.projects[0].id;
+    const expectedSectionId = seeder.sections[0].id;
+    const newTask = {
+      title: '할일',
+      projectId: expectedProjectId,
+      labelIdList: JSON.stringify(seeder.labels.map(label => label.id)),
+      priorityId: seeder.priorities[0].id,
+      dueDate: new Date(),
+      parentId: null,
+      alarmId: seeder.alarms[0].id,
+      position: 1,
+    };
+    // when
+    const res = await request(app)
+      .post(`/api/project/${expectedProjectId}/section/${expectedSectionId}/task`)
+      .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
+      .send(newTask);
+
+    // then
+    expect(res.status).toBe(status.BAD_REQUEST.CODE);
+    expect(res.body.message).toBe(errorMessage.UNNECESSARY_INPUT_ERROR('projectId'));
+    done();
+  });
+  it('섹션 id가 포함된 생성', async done => {
+    // given
+    const expectedProjectId = seeder.projects[0].id;
+    const expectedSectionId = seeder.sections[0].id;
+    const newTask = {
+      title: '할일',
+      sectionId: expectedSectionId,
+      labelIdList: JSON.stringify(seeder.labels.map(label => label.id)),
+      priorityId: seeder.priorities[0].id,
+      dueDate: new Date(),
+      parentId: null,
+      alarmId: seeder.alarms[0].id,
+      position: 1,
+    };
+    // when
+    const res = await request(app)
+      .post(`/api/project/${expectedProjectId}/section/${expectedSectionId}/task`)
+      .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
+      .send(newTask);
+
+    // then
+    expect(res.status).toBe(status.BAD_REQUEST.CODE);
+    expect(res.body.message).toBe(errorMessage.UNNECESSARY_INPUT_ERROR('sectionId'));
+    done();
+  });
   it('빈 문자열 title 생성', async done => {
     // given
     const expectedProjectId = seeder.projects[0].id;
@@ -248,7 +298,7 @@ describe('post task', () => {
     expect(res.body.message).toBe(errorMessage.INVALID_INPUT_ERROR('title'));
     done();
   });
-  it('잘못된 projectId 생성', async done => {
+  it('존재하지 않는 projectId 생성', async done => {
     // given
     const expectedProjectId = 'wrongId';
     const expectedSectionId = seeder.sections[0].id;
@@ -272,7 +322,7 @@ describe('post task', () => {
     expect(res.body.message).toBe(errorMessage.NOT_FOUND_ERROR('projectId'));
     done();
   });
-  it('잘못된 sectionId 생성', async done => {
+  it('존재하지 않는 sectionId 생성', async done => {
     // given
     const expectedProjectId = seeder.projects[0].id;
     const expectedSectionId = 'wrongId';
