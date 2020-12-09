@@ -7,23 +7,34 @@
 
 import UIKit
 
+protocol TaskAddViewControllerDelegate: class {
+    func taskAddViewControllerDidDone(_ taskAddViewController: TaskAddViewController)
+}
+
 class TaskAddViewController: UIViewController {
     
     var section: Int = 0
 
     // MARK: - Properties
     
+    weak var delegate: TaskAddViewControllerDelegate?
     private var viewUpCheck: Bool = false
     private var keyboardHeight: CGFloat = 0
     private var textViewHeight: CGFloat = 0
     private let placeHolder: String = "예. 11월 27일날 데모 발표하기"
-    private var dueDate: Date = Date()
-    private var priority: Priority = .four {
+    
+    private(set) var priority: Priority = .four {
         didSet {
             let viewModel = priority.viewModel()
             priorityButton.tintColor = viewModel.tintColor
             priorityButton.setTitle(" \(viewModel.title)", for: .normal)
         }
+    }
+    var text: String {
+        return textView.text
+    }
+    var date: Date {
+        return dateButtonView.date
     }
     
     // MARK: - Views

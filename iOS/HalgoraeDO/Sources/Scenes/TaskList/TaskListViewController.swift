@@ -519,3 +519,14 @@ private extension TaskListViewController {
     }
 }
 
+// MARK: - TaskAddViewController Delegate
+
+extension TaskListViewController: TaskAddViewControllerDelegate {
+    
+    func taskAddViewControllerDidDone(_ taskAddViewController: TaskAddViewController) {
+        let taskFields = TaskListModels.TaskFields(title: taskAddViewController.text,
+                                                  date: taskAddViewController.date,
+                                                  priority: taskAddViewController.priority)
+        interactor?.createTask(request: .init(taskFields: taskFields))
+    }
+}
