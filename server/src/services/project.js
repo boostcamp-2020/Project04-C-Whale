@@ -20,6 +20,8 @@ const retrieveProjects = async () => {
     include: [
       {
         model: models.task,
+        required: false,
+        where: { isDone: false },
         attributes: [],
       },
       {
