@@ -33,6 +33,7 @@ enum ProjectColors: Int, CaseIterable {
     func colorButton(_ button: UIButton) {
         button.tintColor = UIColor(hexFromString: color)
         button.setImage(UIImage(systemName: "circle.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 28, weight: .bold, scale: .large)), for: .normal)
+        button.setImage(UIImage(systemName: "checkmark.circle.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 28, weight: .bold, scale: .large)), for: .selected)
     }
 }
 
@@ -41,46 +42,46 @@ class AddProjectViewController: UIViewController {
     // MARK: - Properties
     
     var menuAddProjectDelegate: MenuAddProjectDelegate?
-    var isList: Bool = true
-    var projectColor: Int = 0
+    private var isList: Bool = true
+    private var projectColor: ProjectColors? = ProjectColors.init(rawValue: 0)
     
     // MARK: Views
     
-    @IBOutlet weak var projectName: UITextField!
-    @IBOutlet var colorSet: [UIButton]!
+    @IBOutlet weak private var projectNameTextField: UITextField!
+    @IBOutlet private var colorSet: [UIButton]!
     
     // MARK: - View Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        colorButtonCheckmark(index: 0)
+        configColorSets()
     }
     
     // MARK: - Methods
     
-    private func colorButtonCheckmark(index: Int) {
+    private func configColorSets() {
+        colorSet[0].isSelected = true
         for i in 0..<colorSet.count {
             ProjectColors.init(rawValue: i)?.colorButton(colorSet[i])
         }
-        colorSet[index].setImage(UIImage(systemName: "checkmark.circle.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 28, weight: .bold, scale: .large)), for: .normal)
     }
     
     // MARK: IBActions
     
-    @IBAction func tabCancelButton(_ sender: UIButton) {
+    @IBAction private func tapCancelButton(_ sender: UIButton) {
         self.dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func tabAddProjectButton(_ sender: UIButton) {
-        if projectName.text == "" {
+    @IBAction private func tapAddProject(_ sender: UIButton) {
+        if projectNameTextField.text == "" {
             let alert = UIAlertController(title: "새 프로젝트", message: "프로젝트 이름을 입력하세요", preferredStyle: .alert)
             let defaultAction = UIAlertAction(title: "OK", style: .destructive, handler : nil)
             alert.addAction(defaultAction)
             present(alert, animated: false, completion: nil)
             return
         }
-        guard let projectName = projectName.text,
-              let color = ProjectColors.init(rawValue: projectColor)?.color
+        guard let projectName = projectNameTextField.text,
+              let color = projectColor?.color
         else {
             return
         }
@@ -88,16 +89,15 @@ class AddProjectViewController: UIViewController {
         dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func showModeSegment(_ sender: UISegmentedControl) {
-        if sender.selectedSegmentIndex == 0 {
-            isList = true
-        } else {
-            isList = false
-        }
+    @IBAction private func showModeSegment(_ sender: UISegmentedControl) {
+        isList = sender.selectedSegmentIndex == 0
     }
     
-    @IBAction func tabColorSet(_ sender: UIButton) {
-        colorButtonCheckmark(index: sender.tag)
-        projectColor = sender.tag
+    @IBAction private func tapColorSet(_ sender: UIButton) {
+        for button in colorSet {
+            button.isSelected = false
+        }
+        sender.isSelected = true
+        projectColor = ProjectColors.init(rawValue: sender.tag)
     }
 }

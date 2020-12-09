@@ -408,13 +408,13 @@
                                         <barButtonItem key="leftBarButtonItem" title="취소" id="LfO-iz-qx1">
                                             <color key="tintColor" systemColor="systemRedColor"/>
                                             <connections>
-                                                <action selector="tabCancelButton:" destination="8s7-jx-2w2" id="Be2-hC-kZP"/>
+                                                <action selector="tapCancelButton:" destination="8s7-jx-2w2" id="Be2-hC-kZP"/>
                                             </connections>
                                         </barButtonItem>
                                         <barButtonItem key="rightBarButtonItem" title="완료" id="EiZ-F6-oWD">
                                             <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <connections>
-                                                <action selector="tabAddProjectButton:" destination="8s7-jx-2w2" id="wdJ-KM-2se"/>
+                                                <action selector="tapAddProject:" destination="8s7-jx-2w2" id="wdJ-KM-2se"/>
                                             </connections>
                                         </barButtonItem>
                                     </navigationItem>
@@ -493,7 +493,7 @@
                                             <imageReference key="image" image="circle.fill" catalog="system" symbolScale="large"/>
                                         </state>
                                         <connections>
-                                            <action selector="tabColorSet:" destination="8s7-jx-2w2" eventType="touchUpInside" id="jYr-A3-MDu"/>
+                                            <action selector="tapColorSet:" destination="8s7-jx-2w2" eventType="touchUpInside" id="jYr-A3-MDu"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" tag="1" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="j3Z-M8-Lnv">
@@ -503,7 +503,7 @@
                                             <imageReference key="image" image="circle.fill" catalog="system" symbolScale="large"/>
                                         </state>
                                         <connections>
-                                            <action selector="tabColorSet:" destination="8s7-jx-2w2" eventType="touchUpInside" id="Q5y-9R-GJH"/>
+                                            <action selector="tapColorSet:" destination="8s7-jx-2w2" eventType="touchUpInside" id="Q5y-9R-GJH"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" tag="2" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="R9B-mO-lXZ">
@@ -513,7 +513,7 @@
                                             <imageReference key="image" image="circle.fill" catalog="system" symbolScale="large"/>
                                         </state>
                                         <connections>
-                                            <action selector="tabColorSet:" destination="8s7-jx-2w2" eventType="touchUpInside" id="Qk4-mr-3wR"/>
+                                            <action selector="tapColorSet:" destination="8s7-jx-2w2" eventType="touchUpInside" id="Qk4-mr-3wR"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" tag="3" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jhx-7W-7VH">
@@ -523,7 +523,7 @@
                                             <imageReference key="image" image="circle.fill" catalog="system" symbolScale="large"/>
                                         </state>
                                         <connections>
-                                            <action selector="tabColorSet:" destination="8s7-jx-2w2" eventType="touchUpInside" id="aG0-Ru-0Wv"/>
+                                            <action selector="tapColorSet:" destination="8s7-jx-2w2" eventType="touchUpInside" id="aG0-Ru-0Wv"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" tag="4" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4wk-RB-TWD">
@@ -533,7 +533,7 @@
                                             <imageReference key="image" image="circle.fill" catalog="system" symbolScale="large"/>
                                         </state>
                                         <connections>
-                                            <action selector="tabColorSet:" destination="8s7-jx-2w2" eventType="touchUpInside" id="Gsy-HQ-d9j"/>
+                                            <action selector="tapColorSet:" destination="8s7-jx-2w2" eventType="touchUpInside" id="Gsy-HQ-d9j"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" tag="5" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Nw-24-ODf">
@@ -543,7 +543,7 @@
                                             <imageReference key="image" image="circle.fill" catalog="system" symbolScale="large"/>
                                         </state>
                                         <connections>
-                                            <action selector="tabColorSet:" destination="8s7-jx-2w2" eventType="touchUpInside" id="mwe-hR-miA"/>
+                                            <action selector="tapColorSet:" destination="8s7-jx-2w2" eventType="touchUpInside" id="mwe-hR-miA"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -585,7 +585,7 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="projectName" destination="Mq5-Fx-Lm2" id="6G0-4m-5hL"/>
+                        <outlet property="projectNameTextField" destination="Mq5-Fx-Lm2" id="6G0-4m-5hL"/>
                         <outletCollection property="colorSet" destination="M47-O2-WFI" collectionClass="NSMutableArray" id="tOt-Ca-vu2"/>
                         <outletCollection property="colorSet" destination="j3Z-M8-Lnv" collectionClass="NSMutableArray" id="Jzq-G1-Ka2"/>
                         <outletCollection property="colorSet" destination="R9B-mO-lXZ" collectionClass="NSMutableArray" id="SEq-CP-ytx"/>
