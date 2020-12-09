@@ -46,13 +46,13 @@ class TaskDto {
   })
   parentId;
 
-  @IsEmpty({ groups: ['create'], message: errorMessage.UNNECESSARY_INPUT_ERROR('id') })
+  @IsEmpty({ groups: ['create'], message: errorMessage.UNNECESSARY_INPUT_ERROR('sectionId') })
   @IsOptional({ groups: ['patch'] })
   @IsString({ groups: ['patch'], message: errorMessage.TYPE_ERROR('sectionId') })
   @IsUUID('4', { groups: ['patch'], message: errorMessage.INVALID_INPUT_ERROR('sectionId') })
   sectionId;
 
-  @IsEmpty({ groups: ['create'], message: errorMessage.UNNECESSARY_INPUT_ERROR('id') })
+  @IsEmpty({ groups: ['create'], message: errorMessage.UNNECESSARY_INPUT_ERROR('projectId') })
   @IsOptional({ groups: ['patch'] })
   @IsString({ groups: ['patch'], message: errorMessage.TYPE_ERROR('projectId') })
   @IsUUID('4', { groups: ['patch'], message: errorMessage.INVALID_INPUT_ERROR('projectId') })
