@@ -64,18 +64,27 @@ import { getTodayString } from "../../utils/date";
 import whaleApi from "../../utils/whaleApi";
 
 export default {
+  props: {
+    project: Object,
+    section: Object,
+    parentId: String,
+  },
   data() {
     return {
       show: false,
       projectTitle: "",
       task: {
-        projectId: this.parentProjectId,
-        sectionId: this.parentSectionId,
-        parentId: this.parentId,
+        projectId: "",
+        sectionId: "",
+        parentId: "",
         title: "",
         dueDate: getTodayString(),
       },
     };
+  },
+  computed: {
+    ...mapGetters(["projectInfos"]),
+    ...mapGetters(["managedProject"]),
   },
   methods: {
     ...mapActions(["addTask"]),
@@ -111,26 +120,20 @@ export default {
       this.projectTitle = projectInfo.title;
     },
   },
-  props: {
-    project: Object,
-    section: Object,
-    projectId: String,
-    sectionId: String,
-    parentId: String,
-  },
-  computed: {
-    ...mapGetters(["projectInfos"]),
-    ...mapGetters(["managedProject"]),
-  },
-  created: function () {
-    if (this.project === undefined || this.section === undefined) {
-      const { title, id } = this.managedProject;
-      this.projectTitle = title;
-      this.task.projectId = id;
-    }
-    this.projectTitle = this.project.title;
-    this.task.projectId = this.project.id;
-    this.task.sectionId = this.section.id;
+
+  watch: {
+    managedProject() {
+      if (this.project === undefined || this.section === undefined) {
+        const { title, id, defaultSectionId } = this.managedProject;
+        this.projectTitle = title;
+        this.task.projectId = id;
+        this.task.sectionId = defaultSectionId;
+        return;
+      }
+      this.projectTitle = this.project.title;
+      this.task.projectId = this.project.id;
+      this.task.sectionId = this.section.id;
+    },
   },
 };
 </script>
