@@ -20,11 +20,15 @@ const retrieveById = async ({ id, userId }) => {
     ],
     order: [[taskModel, 'position', 'ASC']],
   });
+
+  // task가 없는 경우, url params로 넘어오는 taskId가 유효하지 않음
   if (!task) {
     const error = new Error(errorMessage.NOT_FOUND_ERROR('task'));
     error.status = errorCode.NOT_FOUND_ERROR;
     throw error;
   }
+
+  // 요청받은 task가 해당 유저의 작업이 아닌 경우 리소스 접근 권한이 없음
   if (!(await isTaskOwner({ id, userId }))) {
     const error = new Error(errorMessage.FORBIDDEN_ERROR);
     error.status = errorCode.FORBIDDEN_ERROR;
@@ -93,21 +97,34 @@ const create = async ({ projectId, sectionId, ...taskData }) => {
 };
 
 const update = async taskData => {
-  const { id, labelIdList, dueDate, ...rest } = taskData;
-  const result = await sequelize.transaction(async t => {
-    await taskModel.update(
-      { dueDate, ...rest },
-      {
-        where: { id },
-      },
-      { transaction: t },
-    );
+  const { id, labelIdList, dueDate, userId, ...rest } = taskData;
 
-    const task = await taskModel.findByPk(id, { transaction: t });
-    if (labelIdList) {
-      await task.setLabels(JSON.parse(labelIdList), { transaction: t });
+  const result = await sequelize.transaction(async t => {
+    try {
+      const task = await taskModel.findByPk(id, { transaction: t });
+      if (!task) {
+        const error = new Error(errorMessage.NOT_FOUND_ERROR('task'));
+        error.status = errorCode.NOT_FOUND_ERROR;
+        throw error;
+      }
+
+      // 요청받은 task가 해당 유저의 작업이 아닌 경우 리소스 접근 권한이 없음
+      if (!(await isTaskOwner({ id, userId }))) {
+        const error = new Error(errorMessage.FORBIDDEN_ERROR);
+        error.status = errorCode.FORBIDDEN_ERROR;
+        throw error;
+      }
+
+      await task.update({ dueDate, ...rest });
+      if (labelIdList) {
+        await task.setLabels(JSON.parse(labelIdList), { transaction: t });
+      }
+      task.save();
+      return true;
+    } catch (err) {
+      t.rollback();
+      throw err;
     }
-    return true;
   });
 
   return result;

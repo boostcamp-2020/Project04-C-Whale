@@ -55,7 +55,7 @@ const updateTask = asyncTryCatch(async (req, res) => {
     throw err;
   }
 
-  await taskService.update({ id: taskId, ...task });
+  await taskService.update({ id: taskId, userId: req.user.id, ...task });
   responseHandler(res, 200, { message: 'ok' });
 });
 
