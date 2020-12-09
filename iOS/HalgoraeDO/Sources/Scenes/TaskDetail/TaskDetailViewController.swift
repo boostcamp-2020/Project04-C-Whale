@@ -69,6 +69,7 @@ class TaskDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
+        configureLogic()
     }
     
     // MARK: - Initialize
@@ -82,9 +83,9 @@ class TaskDetailViewController: UIViewController {
                                             subTaskCommentViewController: taskDetailCommentViewController,
                                             subTaskBookmarkViewController: taskDetailBookmarkViewController)
         let interactor = TaskDetailInteractor(presenter: presenter, worker: TaskDetailWorker(sessionManager: SessionManager(configuration: .default)))
-        taskDetailSubTasksViewController?.configure(interactor: interactor)
-        taskDetailCommentViewController?.configure(interactor: interactor)
-        taskDetailBookmarkViewController?.configure(interactor: interactor)
+        taskDetailSubTasksViewController?.configure(interactor: interactor, task: task)
+        taskDetailCommentViewController?.configure(interactor: interactor, task: task)
+        taskDetailBookmarkViewController?.configure(interactor: interactor, task: task)
         self.interactor = interactor
     }
     
