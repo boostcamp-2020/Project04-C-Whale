@@ -14,6 +14,7 @@ class TaskBoardViewController: UIViewController {
     
     // MARK: - Properties
     
+    private let project: Project
     private var interactor: TaskListBusinessLogic?
     private var router: (TaskListRoutingLogic & TaskListDataPassing)?
     private var dataSource: UICollectionViewDiffableDataSource<String, TaskVM>! = nil
@@ -27,6 +28,16 @@ class TaskBoardViewController: UIViewController {
     
     // MARK: - View Life Cycle
     
+    init?(coder: NSCoder, project: Project) {
+        self.project = project
+        super.init(coder: coder)
+    }
+    
+    required init?(coder: NSCoder) {
+        self.project = Project(title: "")
+        super.init(coder: coder)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         NotificationCenter.default.addObserver(self, selector: #selector(displayAddTask), name: NSNotification.Name(rawValue: "displayAddTask"), object: nil)
@@ -39,7 +50,7 @@ class TaskBoardViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.prefersLargeTitles = false
-        interactor?.fetchTasks(request: .init())
+        interactor?.fetchTasks(request: .init(projectId: project.id ?? ""))
     }
     
     override func viewWillDisappear(_ animated: Bool) {
