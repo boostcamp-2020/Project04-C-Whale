@@ -1,0 +1,28 @@
+{
+  "manifest_version": 2, 
+  "name": "안녕 웨일",
+  "version": "1.0.0",
+
+  "description": "확장앱 설명",
+
+  "sidebar_action": {
+    "default_icon": {               
+      "16": "images/icon.png"
+     },
+    "default_page": "index.html"
+  },
+
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  },
+
+  "permissions": [
+    "tabs",
+    "contextMenus"
+  ],
+
+  "externally_connectable": {
+    "matches": ["http://localhost/*"]
+  }
+}
