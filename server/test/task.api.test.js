@@ -4,7 +4,7 @@ const app = require('@root/app');
 const seeder = require('@test/test-seed');
 const status = require('@test/response-status');
 const { createJWT } = require('@utils/auth');
-const errorMessage = require('@models/dto/error-messages');
+const errorMessage = require('@utils/error-messages');
 
 beforeAll(async done => {
   await seeder.up();

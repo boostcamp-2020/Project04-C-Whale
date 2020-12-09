@@ -4,7 +4,7 @@ const app = require('@root/app');
 const seeder = require('@test/test-seed');
 const status = require('@test/response-status');
 const { createJWT } = require('@utils/auth');
-const errorMessage = require('@models/dto/error-messages');
+const errorMessage = require('@utils/error-messages');
 
 beforeAll(async done => {
   await seeder.up();
@@ -173,55 +173,6 @@ describe('post task', () => {
     expect(res.body.message).toBe(errorMessage.DUEDATE_ERROR);
     done();
   });
-
-  it('잘못된 projectId 생성', async done => {
-    // given
-    const expectedProjectId = 'wrongId';
-    const expectedSectionId = seeder.sections[0].id;
-    const newTask = {
-      title: '할일',
-      labelIdList: JSON.stringify(seeder.labels.map(label => label.id)),
-      priorityId: seeder.priorities[0].id,
-      dueDate: new Date(),
-      parentId: null,
-      alarmId: seeder.alarms[0].id,
-      position: 1,
-    };
-    // when
-    const res = await request(app)
-      .post(`/api/project/${expectedProjectId}/section/${expectedSectionId}/task`)
-      .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
-      .send(newTask);
-
-    // then
-    expect(res.status).toBe(status.BAD_REQUEST.CODE);
-    expect(res.body.message).toBe(errorMessage.INVALID_INPUT_ERROR('projectId'));
-    done();
-  });
-  it('잘못된 sectionId 생성', async done => {
-    // given
-    const expectedProjectId = seeder.projects[0].id;
-    const expectedSectionId = 'wrongId';
-    const newTask = {
-      title: '할일',
-      labelIdList: JSON.stringify(seeder.labels.map(label => label.id)),
-      priorityId: seeder.priorities[0].id,
-      dueDate: new Date(),
-      parentId: null,
-      alarmId: seeder.alarms[0].id,
-      position: 1,
-    };
-    // when
-    const res = await request(app)
-      .post(`/api/project/${expectedProjectId}/section/${expectedSectionId}/task`)
-      .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
-      .send(newTask);
-
-    // then
-    expect(res.status).toBe(status.BAD_REQUEST.CODE);
-    expect(res.body.message).toBe(errorMessage.INVALID_INPUT_ERROR('sectionId'));
-    done();
-  });
   it('잘못된 parentId 생성', async done => {
     // given
     const expectedProjectId = seeder.projects[0].id;
@@ -295,6 +246,54 @@ describe('post task', () => {
     // then
     expect(res.status).toBe(status.BAD_REQUEST.CODE);
     expect(res.body.message).toBe(errorMessage.INVALID_INPUT_ERROR('title'));
+    done();
+  });
+  it('잘못된 projectId 생성', async done => {
+    // given
+    const expectedProjectId = 'wrongId';
+    const expectedSectionId = seeder.sections[0].id;
+    const newTask = {
+      title: '할일',
+      labelIdList: JSON.stringify(seeder.labels.map(label => label.id)),
+      priorityId: seeder.priorities[0].id,
+      dueDate: new Date(),
+      parentId: null,
+      alarmId: seeder.alarms[0].id,
+      position: 1,
+    };
+    // when
+    const res = await request(app)
+      .post(`/api/project/${expectedProjectId}/section/${expectedSectionId}/task`)
+      .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
+      .send(newTask);
+
+    // then
+    expect(res.status).toBe(status.NOT_FOUND.CODE);
+    expect(res.body.message).toBe(errorMessage.NOT_FOUND_ERROR('projectId'));
+    done();
+  });
+  it('잘못된 sectionId 생성', async done => {
+    // given
+    const expectedProjectId = seeder.projects[0].id;
+    const expectedSectionId = 'wrongId';
+    const newTask = {
+      title: '할일',
+      labelIdList: JSON.stringify(seeder.labels.map(label => label.id)),
+      priorityId: seeder.priorities[0].id,
+      dueDate: new Date(),
+      parentId: null,
+      alarmId: seeder.alarms[0].id,
+      position: 1,
+    };
+    // when
+    const res = await request(app)
+      .post(`/api/project/${expectedProjectId}/section/${expectedSectionId}/task`)
+      .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
+      .send(newTask);
+
+    // then
+    expect(res.status).toBe(status.NOT_FOUND.CODE);
+    expect(res.body.message).toBe(errorMessage.NOT_FOUND_ERROR('sectionId'));
     done();
   });
 });
