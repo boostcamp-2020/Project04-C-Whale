@@ -21,7 +21,7 @@ const retrieveById = async ({ id, userId }) => {
     order: [[taskModel, 'position', 'ASC']],
   });
   if (!task) {
-    const error = new Error(errorMessage.NOT_FOUND_ERROR('작업'));
+    const error = new Error(errorMessage.NOT_FOUND_ERROR('task'));
     error.status = errorCode.NOT_FOUND_ERROR;
     throw error;
   }
@@ -58,8 +58,21 @@ const retrieveAll = async userId => {
 
 const create = async ({ projectId, sectionId, ...taskData }) => {
   const { labelIdList, dueDate, ...rest } = taskData;
+
+  const project = await models.project.findByPk(projectId);
+  if (!project) {
+    const error = new Error(errorMessage.NOT_FOUND_ERROR('project'));
+    error.status = errorCode.NOT_FOUND_ERROR;
+    throw error;
+  }
+
   const result = await sequelize.transaction(async t => {
     const section = await models.section.findByPk(sectionId, { include: 'tasks' });
+    if (!section) {
+      const error = new Error(errorMessage.NOT_FOUND_ERROR('section'));
+      error.status = errorCode.NOT_FOUND_ERROR;
+      throw error;
+    }
 
     const maxPosition = section.toJSON().tasks.reduce((max, task) => {
       return Math.max(max, task.position);
