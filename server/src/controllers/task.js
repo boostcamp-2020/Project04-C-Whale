@@ -27,17 +27,16 @@ const getAllTasks = asyncTryCatch(async (req, res) => {
 });
 
 const createTask = asyncTryCatch(async (req, res) => {
-  const { projectId, sectionId } = req.params;
-  const task = { ...req.body, projectId, sectionId };
-
   try {
-    await validator(TaskDto, task, { groups: ['create'] });
+    await validator(TaskDto, req.body, { groups: ['create'] });
   } catch (errs) {
     const message = getErrorMsg(errs);
     const err = new Error(message);
     err.status = 400;
     throw err;
   }
+  const { projectId, sectionId } = req.params;
+  const task = { ...req.body, projectId, sectionId };
 
   await taskService.create(task);
   responseHandler(res, 201, { message: 'ok' });
