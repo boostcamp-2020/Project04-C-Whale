@@ -19,6 +19,13 @@ class TaskDetailCommentViewController: UIViewController {
     private var interactor: TaskDetailBusinessLogic?
     private var dataSource: UICollectionViewDiffableDataSource<String, TaskDetailModels.CommentVM>!
     
+    // MARK: - Views
+    
+    @IBOutlet weak var commentCollectionView: UICollectionView!
+    @IBOutlet weak var commentAddView: CommentAddView!
+    
+    // MARK: - View Life Cycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
         configureCollectionView()
