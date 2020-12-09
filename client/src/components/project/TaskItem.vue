@@ -17,7 +17,7 @@
       </v-radio-group>
     </v-list-item-action>
 
-    <div class="task-div" @click="moveToTaskDetail()">
+    <div class="task-div d-flex" @click="moveToTaskDetail()">
       <v-list-item-content>
         <v-list-item-title>
           <vue-markdown class="mark-down">
@@ -91,7 +91,7 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
 .task-item {
   height: 1px;
 }
@@ -111,12 +111,13 @@ export default {
 
 .task-div {
   width: 100%;
+
+  &:hover {
+    cursor: pointer;
+  }
 }
-.task-div:hover {
-  /* border-radius: 10px; */
-  cursor: pointer;
-  /* background-color: #1c2b82;
-  color: white;
-  padding-left: 10px; */
+
+.mark-down > p {
+  margin: 0;
 }
 </style>
