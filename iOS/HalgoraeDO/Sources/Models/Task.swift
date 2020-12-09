@@ -27,8 +27,7 @@ final class Task {
     var comments: [Comment]?
     var bookmarks: [Bookmark]?
     
-    init(section: String = "",
-         title: String,
+    init(title: String,
          isCompleted: Bool = false,
          dueDate: String = "\(Date())",
          position: Int,
