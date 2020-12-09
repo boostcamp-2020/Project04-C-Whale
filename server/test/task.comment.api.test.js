@@ -144,26 +144,6 @@ describe('update comment', () => {
       done(err);
     }
   });
-  it('content가 누락된 경우', async done => {
-    // given
-    const requestBody = { isImage: false };
-    const taskId = seeder.tasks[1].id;
-    const commentId = seeder.comments[0].id;
-    try {
-      // when
-      const res = await request(app)
-        .put(`/api/task/${taskId}/comment/${commentId}`)
-        .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
-        .send(requestBody);
-
-      // then
-      expect(res.status).toBe(status.BAD_REQUEST.CODE);
-      expect(res.body.message).toBe(errorMessage.NECESSARY_INPUT_ERROR('content'));
-      done();
-    } catch (err) {
-      done(err);
-    }
-  });
   it('빈 배열 content', async done => {
     // given
     const requestBody = { content: '', isImage: false };
@@ -179,26 +159,6 @@ describe('update comment', () => {
       // then
       expect(res.status).toBe(status.BAD_REQUEST.CODE);
       expect(res.body.message).toBe(errorMessage.INVALID_INPUT_ERROR('content'));
-      done();
-    } catch (err) {
-      done(err);
-    }
-  });
-  it('isImage가 없는 경우', async done => {
-    // given
-    const requestBody = { content: '하이하이' };
-    const taskId = seeder.tasks[1].id;
-    const commentId = seeder.comments[0].id;
-    try {
-      // when
-      const res = await request(app)
-        .put(`/api/task/${taskId}/comment/${commentId}`)
-        .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
-        .send(requestBody);
-
-      // then
-      expect(res.status).toBe(status.BAD_REQUEST.CODE);
-      expect(res.body.message).toBe(errorMessage.NECESSARY_INPUT_ERROR('isImage'));
       done();
     } catch (err) {
       done(err);
