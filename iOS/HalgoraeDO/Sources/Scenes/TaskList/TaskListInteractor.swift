@@ -46,7 +46,7 @@ extension TaskListInteractor: TaskListBusinessLogic {
             else {
                 return
             }
-            task.isCompleted = viewModel.isCompleted
+            task.isDone = viewModel.isCompleted
             worker.changeFinish(task: task, postion: viewModel.position, parentPosition: viewModel.parentPosition)
         }
         presenter.presentFinshChanged(response: .init(tasks: taskList.tasks))
