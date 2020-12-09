@@ -30,8 +30,11 @@ class TaskListInteractor: TaskListDataStore {
 extension TaskListInteractor: TaskListBusinessLogic {
     
     func fetchTasks(request: TaskListModels.FetchTasks.Request) {
-        taskList.tasks = worker.getTasks()
-        presenter.presentFetchTasks(response: TaskListModels.FetchTasks.Response(tasks: taskList.tasks))
+        guard let id = request.projectId else { return }
+        worker.request(endPoint: .get(projectId: id)) { [weak self] (project: Project?, error) in
+            self?.taskList.sections = project?.sections ?? []
+            self?.presenter.presentFetchTasks(response: TaskListModels.FetchTasks.Response(sections: self?.taskList.sections ?? []))
+        }
     }
     
     func changeFinish(request: TaskListModels.FinishTask.Request) {
