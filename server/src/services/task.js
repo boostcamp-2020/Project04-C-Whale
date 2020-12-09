@@ -1,5 +1,5 @@
 const sequelize = require('@models');
-const { isTaskOwner } = require('@services/authorization-check');
+const { isTaskOwner, isProjectOwner, isSectionOwner } = require('@services/authorization-check');
 const errorMessage = require('@utils/error-messages');
 const errorCode = require('@utils/error-codes');
 
@@ -60,7 +60,7 @@ const retrieveAll = async userId => {
   return task;
 };
 
-const create = async ({ projectId, sectionId, ...taskData }) => {
+const create = async ({ projectId, sectionId, userId, ...taskData }) => {
   const { labelIdList, dueDate, ...rest } = taskData;
 
   const project = await models.project.findByPk(projectId);
@@ -69,12 +69,28 @@ const create = async ({ projectId, sectionId, ...taskData }) => {
     error.status = errorCode.NOT_FOUND_ERROR;
     throw error;
   }
+  if (!(await isProjectOwner({ id: projectId, userId }))) {
+    const error = new Error(errorMessage.FORBIDDEN_ERROR);
+    error.status = errorCode.FORBIDDEN_ERROR;
+    throw error;
+  }
 
   const result = await sequelize.transaction(async t => {
     const section = await models.section.findByPk(sectionId, { include: 'tasks' });
     if (!section) {
       const error = new Error(errorMessage.NOT_FOUND_ERROR('section'));
       error.status = errorCode.NOT_FOUND_ERROR;
+      throw error;
+    }
+    if (!(await isSectionOwner({ id: sectionId, userId }))) {
+      const error = new Error(errorMessage.FORBIDDEN_ERROR('section'));
+      error.status = errorCode.NOT_FOUND_ERROR;
+      throw error;
+    }
+
+    if (section.projectId !== projectId) {
+      const error = new Error(errorMessage.WRONG_RELATION_ERROR('project, section'));
+      error.status = errorCode.BAD_REQUEST_ERROR;
       throw error;
     }
 
