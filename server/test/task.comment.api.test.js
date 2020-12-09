@@ -27,7 +27,7 @@ describe('get comments', () => {
       const res = await request(app)
         .get(`/api/task/${taskId}/comment`)
         .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`);
-      const firstCommentId = res.body[0].id;
+      const firstCommentId = res.body.comments[0].id;
 
       // then
       expect(firstCommentId).toEqual(expectedCommentId);
@@ -79,7 +79,7 @@ describe('create comment', () => {
       done(err);
     }
   });
-  it('잘못된 content 생성', async done => {
+  it('잘못된 생성 id 포함', async done => {
     // given
     const requestBody = { id: 'unnecessary id', content: '하이' };
     const taskId = seeder.tasks[1].id;
