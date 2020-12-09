@@ -38,7 +38,9 @@
             </div>
           </div>
           <v-flex>
-            <v-btn type="submit" depressed color="primary">+ 작업 추가</v-btn>
+            <v-btn type="submit" depressed color="primary" :disabled="task.title.length === 0"
+              >+ 작업 추가</v-btn
+            >
             <v-btn @click="closeForm" text color="primary">취소</v-btn>
           </v-flex>
         </form>
@@ -76,7 +78,7 @@ export default {
       task: {
         projectId: "",
         sectionId: "",
-        parentId: "",
+        parentId: this.parentId || null,
         title: "",
         dueDate: getTodayString(),
       },
@@ -91,9 +93,9 @@ export default {
     submit() {
       this.addTask(this.task);
       this.task = {
-        projectId: this.section.projectId,
-        sectionId: this.section.id,
-        parentId: this.parentId,
+        projectId: this.section?.projectId || this.managedProject.id,
+        sectionId: this.section?.id || this.managedProject.defaultSectionId,
+        parentId: this.parentId || null,
         title: "",
         dueDate: getTodayString(),
       };
