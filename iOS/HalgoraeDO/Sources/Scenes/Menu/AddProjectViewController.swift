@@ -7,8 +7,8 @@
 
 import UIKit
 
-protocol MenuAddProjectDelegate {
-    func addProject(_ projectName: String, _ showMode: Bool, _ color: String)
+protocol AddProjectViewControllerDelegate {
+    func addProjectViewControllerDidDone(_ addProjectViewController: AddProjectViewController, _ projectData: AddProjectViewController.AddProject)
 }
 
 enum ProjectColors: Int, CaseIterable {
@@ -39,9 +39,15 @@ enum ProjectColors: Int, CaseIterable {
 
 class AddProjectViewController: UIViewController {
     
+    struct AddProject {
+        var projectName: String
+        var isList: Bool
+        var color: String
+    }
+    
     // MARK: - Properties
     
-    var menuAddProjectDelegate: MenuAddProjectDelegate?
+    var addProjectViewControllerDelegate: AddProjectViewControllerDelegate?
     private var isList: Bool = true
     private var projectColor: ProjectColors? = ProjectColors.gray
     
@@ -85,7 +91,7 @@ class AddProjectViewController: UIViewController {
         else {
             return
         }
-        menuAddProjectDelegate?.addProject(projectName, isList, color)
+        addProjectViewControllerDelegate?.addProjectViewControllerDidDone(self, AddProject(projectName: projectName, isList: isList, color: color))
         dismiss(animated: true, completion: nil)
     }
     

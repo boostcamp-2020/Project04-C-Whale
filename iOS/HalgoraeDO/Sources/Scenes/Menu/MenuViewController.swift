@@ -219,7 +219,7 @@ private extension MenuViewController {
     
     @objc func tabAddProject(_ sender: UIButton) {
         guard let addProjectViewController = storyboard?.instantiateViewController(identifier: "AddProjectViewController") as? AddProjectViewController else { return }
-        addProjectViewController.menuAddProjectDelegate = self
+        addProjectViewController.addProjectViewControllerDelegate = self
         self.present(addProjectViewController, animated: true, completion: nil)
     }
 }
@@ -239,12 +239,12 @@ extension MenuViewController: UICollectionViewDelegate {
     }
 }
 
-extension MenuViewController: MenuAddProjectDelegate {
+extension MenuViewController: AddProjectViewControllerDelegate {
     
-    func addProject(_ projectName: String, _ showMode: Bool, _ color: String) {
+    func addProjectViewControllerDidDone(_ addProjectViewController: AddProjectViewController, _ projectData: AddProjectViewController.AddProject) {
         //TODO show Mode도 추가하기
         var projectSnapshot = self.dataSource.snapshot(for: .project)
-        let newProject = Project(color: color, title: projectName, taskNum: 0)
+        let newProject = Project(color: projectData.color, title: projectData.projectName, taskNum: 0)
         projectSnapshot.append([newProject], to: self.rootItem)
         self.dataSource.apply(projectSnapshot, to: .project, animatingDifferences: false)
     }
