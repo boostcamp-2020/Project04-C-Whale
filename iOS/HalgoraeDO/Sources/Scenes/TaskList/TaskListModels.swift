@@ -9,19 +9,19 @@ import UIKit
 
 enum TaskListModels {
     
-    // MARK:  - Use cases
+    // MARK:  - Usecases
     
     enum FetchTasks {
         struct Request {
-
+            var projectId: String?
         }
         
         struct Response {
-            var tasks: [Task]
+            var sections: [Section]
         }
         
         struct ViewModel {
-            var displayedTasks: [DisplayedTask]
+            var sectionVMs: [SectionVM]
         }
     }
     
