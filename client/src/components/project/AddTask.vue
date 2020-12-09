@@ -61,6 +61,7 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import { getTodayString } from "../../utils/date";
+import whaleApi from "../../utils/whaleApi";
 
 export default {
   data() {
@@ -91,7 +92,7 @@ export default {
     },
     showForm(target) {
       if (target === "url") {
-        whale.runtime.sendMessage("ekioepkamjlegkeihddddbcchkdcbihb", "hi", ({ title, url }) => {
+        whaleApi.getCurrentTabUrl(({ title, url }) => {
           this.task.title = `[${title}](${url})`;
         });
       }
@@ -113,8 +114,8 @@ export default {
   props: {
     project: Object,
     section: Object,
-    projectId: String, 
-    sectionId: String, 
+    projectId: String,
+    sectionId: String,
     parentId: String,
   },
   computed: {
