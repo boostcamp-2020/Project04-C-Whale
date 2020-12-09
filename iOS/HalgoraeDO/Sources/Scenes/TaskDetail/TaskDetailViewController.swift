@@ -48,11 +48,11 @@ class TaskDetailViewController: UIViewController {
     @IBOutlet weak private var taskTitleTextView: UITextView!
     @IBOutlet weak private var finishButton: UIButton!
     @IBOutlet weak private var priorityButton: UIButton!
-    @IBOutlet weak var subTaskTabButton: UIButton!
-    @IBOutlet weak var commentTabButton: UIButton!
-    @IBOutlet weak var bookmarkTabButton: UIButton!
-    @IBOutlet weak var subTabStackView: UIStackView!
-    weak var pageViewController: UIPageViewController?
+    @IBOutlet weak private var subTaskTabButton: UIButton!
+    @IBOutlet weak private var commentTabButton: UIButton!
+    @IBOutlet weak private var bookmarkTabButton: UIButton!
+    @IBOutlet weak private var subTabStackView: UIStackView!
+    weak private var pageViewController: UIPageViewController?
     
     // MARK: View Life Cycle
     
