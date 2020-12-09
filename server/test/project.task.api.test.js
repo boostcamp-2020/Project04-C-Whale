@@ -346,4 +346,76 @@ describe('post task', () => {
     expect(res.body.message).toBe(errorMessage.NOT_FOUND_ERROR('section'));
     done();
   });
+  it('자신의 프로젝트가 아닌 경우', async done => {
+    // given
+    const expectedProjectId = seeder.projects[0].id;
+    const expectedSectionId = seeder.sections[0].id;
+    const newTask = {
+      title: '할일',
+      labelIdList: [],
+      priorityId: seeder.priorities[0].id,
+      dueDate: new Date(),
+      parentId: null,
+      alarmId: seeder.alarms[0].id,
+      position: 1,
+    };
+    // when
+    const res = await request(app)
+      .post(`/api/project/${expectedProjectId}/section/${expectedSectionId}/task`)
+      .set('Authorization', `Bearer ${createJWT(seeder.users[1])}`)
+      .send(newTask);
+
+    // then
+    expect(res.status).toBe(status.FORBIDDEN.CODE);
+    expect(res.body.message).toBe(errorMessage.FORBIDDEN_ERROR);
+    done();
+  });
+  it('자신의 섹션 아닌 경우', async done => {
+    // given
+    const expectedProjectId = seeder.projects[0].id;
+    const expectedSectionId = seeder.sections[0].id;
+    const newTask = {
+      title: '할일',
+      labelIdList: [],
+      priorityId: seeder.priorities[0].id,
+      dueDate: new Date(),
+      parentId: null,
+      alarmId: seeder.alarms[0].id,
+      position: 1,
+    };
+    // when
+    const res = await request(app)
+      .post(`/api/project/${expectedProjectId}/section/${expectedSectionId}/task`)
+      .set('Authorization', `Bearer ${createJWT(seeder.users[1])}`)
+      .send(newTask);
+
+    // then
+    expect(res.status).toBe(status.FORBIDDEN.CODE);
+    expect(res.body.message).toBe(errorMessage.FORBIDDEN_ERROR);
+    done();
+  });
+  it('잘못된 관계의 프로젝트와 섹션의 경우', async done => {
+    // given
+    const expectedProjectId = seeder.projects[0].id;
+    const expectedSectionId = seeder.sections[1].id;
+    const newTask = {
+      title: '할일',
+      labelIdList: [],
+      priorityId: seeder.priorities[0].id,
+      dueDate: new Date(),
+      parentId: null,
+      alarmId: seeder.alarms[0].id,
+      position: 1,
+    };
+    // when
+    const res = await request(app)
+      .post(`/api/project/${expectedProjectId}/section/${expectedSectionId}/task`)
+      .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
+      .send(newTask);
+
+    // then
+    expect(res.status).toBe(status.BAD_REQUEST.CODE);
+    expect(res.body.message).toBe(errorMessage.WRONG_RELATION_ERROR('project, section'));
+    done();
+  });
 });
