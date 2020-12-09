@@ -319,7 +319,7 @@ describe('post task', () => {
 
     // then
     expect(res.status).toBe(status.NOT_FOUND.CODE);
-    expect(res.body.message).toBe(errorMessage.NOT_FOUND_ERROR('projectId'));
+    expect(res.body.message).toBe(errorMessage.NOT_FOUND_ERROR('project'));
     done();
   });
   it('존재하지 않는 sectionId 생성', async done => {
@@ -343,7 +343,7 @@ describe('post task', () => {
 
     // then
     expect(res.status).toBe(status.NOT_FOUND.CODE);
-    expect(res.body.message).toBe(errorMessage.NOT_FOUND_ERROR('sectionId'));
+    expect(res.body.message).toBe(errorMessage.NOT_FOUND_ERROR('section'));
     done();
   });
 });

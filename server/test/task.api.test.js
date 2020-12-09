@@ -157,7 +157,7 @@ describe('get task by id', () => {
 
       // then
       expect(res.status).toBe(status.NOT_FOUND.CODE);
-      expect(res.body.message).toBe(errorMessage.NOT_FOUND_ERROR('작업'));
+      expect(res.body.message).toBe(errorMessage.NOT_FOUND_ERROR('task'));
 
       done();
     } catch (err) {
