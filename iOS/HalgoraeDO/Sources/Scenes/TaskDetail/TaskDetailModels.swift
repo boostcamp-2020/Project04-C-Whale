@@ -52,4 +52,25 @@ enum TaskDetailModels {
             
         }
     }
+    
+    struct CommentVM: Hashable {
+        
+        var id: String
+        var contents: String?
+        var isImage: Bool = false
+        
+        init(comment: Comment) {
+            self.id = comment.id
+            self.contents = comment.contents
+            self.isImage = comment.isImage
+        }
+        
+        func hash(into hasher: inout Hasher) {
+            hasher.combine(id)
+        }
+        
+        static func ==(lhs: Self, rhs: Self) -> Bool {
+            return lhs.id == rhs.id
+        }
+    }
 }
