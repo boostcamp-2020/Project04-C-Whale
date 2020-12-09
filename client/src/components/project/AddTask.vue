@@ -99,6 +99,7 @@ export default {
         title: "",
         dueDate: getTodayString(),
       };
+      this.projectTitle = this.managedProject.title;
       this.show = !this.show;
     },
     showForm(target) {
@@ -115,10 +116,8 @@ export default {
     },
     selectProject(projectInfo) {
       // TO DO : 에러 처리
-      if (this.project) {
-        return;
-      }
       this.task.projectId = projectInfo.id;
+      this.task.sectionId = projectInfo.defaultSectionId;
       this.projectTitle = projectInfo.title;
     },
   },
