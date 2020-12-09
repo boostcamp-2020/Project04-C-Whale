@@ -99,6 +99,25 @@ describe('create comment', () => {
       done(err);
     }
   });
+  it('isImage가 Boolean 타입이 아닌 경우', async done => {
+    // given
+    const requestBody = { content: '하이하이', isImage: '잘못된 타입' };
+    const taskId = seeder.tasks[1].id;
+    try {
+      // when
+      const res = await request(app)
+        .post(`/api/task/${taskId}/comment`)
+        .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
+        .send(requestBody);
+
+      // then
+      expect(res.status).toBe(status.BAD_REQUEST.CODE);
+      expect(res.body.message).toBe(errorMessage.TYPE_ERROR('isImage'));
+      done();
+    } catch (err) {
+      done(err);
+    }
+  });
 });
 
 describe('update comment', () => {
@@ -159,6 +178,26 @@ describe('update comment', () => {
       // then
       expect(res.status).toBe(status.BAD_REQUEST.CODE);
       expect(res.body.message).toBe(errorMessage.INVALID_INPUT_ERROR('content'));
+      done();
+    } catch (err) {
+      done(err);
+    }
+  });
+  it('isImage가 Boolean 타입이 아닌 경우', async done => {
+    // given
+    const requestBody = { content: '하이하이', isImage: '잘못된 타입' };
+    const taskId = seeder.tasks[1].id;
+    const commentId = seeder.comments[0].id;
+    try {
+      // when
+      const res = await request(app)
+        .put(`/api/task/${taskId}/comment/${commentId}`)
+        .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
+        .send(requestBody);
+
+      // then
+      expect(res.status).toBe(status.BAD_REQUEST.CODE);
+      expect(res.body.message).toBe(errorMessage.TYPE_ERROR('isImage'));
       done();
     } catch (err) {
       done(err);
