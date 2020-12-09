@@ -7,6 +7,7 @@ const projectModel = models.project;
 
 const retrieveProjects = async () => {
   const projects = await projectModel.findAll({
+    raw: true,
     attributes: [
       'id',
       'title',
@@ -14,12 +15,16 @@ const retrieveProjects = async () => {
       'isFavorite',
       'isList',
       [sequelize.fn('COUNT', sequelize.col('tasks.id')), 'taskCount'],
+      [sequelize.col('sections.id'), 'sectionId'],
     ],
-    include: {
-      model: models.task,
-      attributes: [],
-    },
-    group: ['project.id'],
+    include: [
+      {
+        model: models.task,
+        attributes: [],
+      },
+      { model: models.section, attributes: [], where: { position: 0 }, required: false },
+    ],
+    group: ['project.id', 'sections.id'],
   });
 
   return projects;
@@ -105,17 +110,13 @@ const findOrCreate = async data => {
   return await create(data);
 };
 
-const update = async ({ projectId, ...data }) => {
-  const result = await projectModel.update(data, {
-    where: {
-      id: projectId,
-    },
-  });
+const update = async ({ id, ...data }) => {
+  const result = await projectModel.update(data, { where: { id } });
 
   return result === 1;
 };
 
-const remove = async id => {
+const remove = async ({ id }) => {
   const result = await projectModel.destroy({ where: { id } });
 
   return result === 1;

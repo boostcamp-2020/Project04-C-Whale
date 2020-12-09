@@ -14,7 +14,7 @@ module.exports = sequelize => {
         type: DataTypes.STRING,
       },
       color: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.STRING,
       },
       isList: {

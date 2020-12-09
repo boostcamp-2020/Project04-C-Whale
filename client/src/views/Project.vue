@@ -9,6 +9,7 @@
 import { mapActions, mapGetters } from "vuex";
 import ProjectContainer from "../components/project/ProjectContainer";
 import Alert from "@/components/common/Alert";
+import ListMixin from "@/mixins/ListMixins.js";
 
 export default {
   components: { ProjectContainer, Alert },
@@ -26,5 +27,6 @@ export default {
   created() {
     this.fetchCurrentProject(this.$route.params.projectId);
   },
+  mixins: [ListMixin],
 };
 </script>
