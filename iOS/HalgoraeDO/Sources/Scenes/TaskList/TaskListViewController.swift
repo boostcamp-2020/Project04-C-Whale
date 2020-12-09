@@ -19,7 +19,7 @@ class TaskListViewController: UIViewController {
     private let project: Project
     private var interactor: TaskListBusinessLogic?
     private var router: (TaskListRoutingLogic & TaskListDataPassing)?
-    private var dataSource: UICollectionViewDiffableDataSource<String, TaskVM>! = nil
+    private var dataSource: UICollectionViewDiffableDataSource<TaskListModels.SectionVM, TaskVM>! = nil
     private var displayCompleted = false
     private var presentConfirmActionWorkItem: DispatchWorkItem?
     private var childCheck = 0
@@ -63,14 +63,14 @@ class TaskListViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        interactor?.fetchTasks(request: .init())
+        interactor?.fetchTasks(request: .init(projectId: project.id ?? ""))
     }
     
     // MARK: - Initialize
     
     private func configureLogic() {
         let presenter = TaskListPresenter(viewController: self)
-        let interactor = TaskListInteractor(presenter: presenter, worker: TaskListWorker())
+        let interactor = TaskListInteractor(presenter: presenter, worker: TaskListWorker(sessionManager: SessionManager(configuration: .default)))
         self.interactor = interactor
         router = TaskListRouter(viewController: self, dataStore: interactor)
     }
@@ -145,7 +145,7 @@ class TaskListViewController: UIViewController {
         let changeCompletedDisplayTitle = displayCompleted ? "완료된 항목 숨기기" : "완료된 항목 보기"
         let changeCompletedDisplayAction = UIAlertAction(title: changeCompletedDisplayTitle, style: .default) { (_: UIAlertAction) in
             self.displayCompleted.toggle()
-            self.interactor?.fetchTasks(request: .init())
+            self.interactor?.fetchTasks(request: .init(projectId: self.project.id))
         }
 
         let cancelAction = UIAlertAction(title: "취소", style: .cancel) { (_: UIAlertAction) in
@@ -167,6 +167,7 @@ class TaskListViewController: UIViewController {
     @IBAction func didTapAddButton(_ sender: UIButton) {
         let taskAddViewController = TaskAddViewController()
         taskAddViewController.modalPresentationStyle = .overCurrentContext
+        taskAddViewController.delegate = self
         present(taskAddViewController, animated: true, completion: nil)
     }
 }
@@ -230,7 +231,7 @@ private extension TaskListViewController {
             cell.accessories = taskItem.subItems.isEmpty ? [] : [.outlineDisclosure(options: disclosureOptions)]
         }
         
-        dataSource = UICollectionViewDiffableDataSource<String, TaskVM>(collectionView: taskListCollectionView, cellProvider: { (collectionView, indexPath, task) -> UICollectionViewCell? in
+        dataSource = UICollectionViewDiffableDataSource<TaskListModels.SectionVM, TaskVM>(collectionView: taskListCollectionView, cellProvider: { (collectionView, indexPath, task) -> UICollectionViewCell? in
             return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: task)
         })
     }
@@ -256,19 +257,14 @@ private extension TaskListViewController {
 extension TaskListViewController: TaskListDisplayLogic {
     
     func displayFetchTasks(viewModel: TaskListModels.FetchTasks.ViewModel) {
-        let currentSnapshot = dataSource.snapshot(for: project.title)
-        displayTasks = filterCompletedIfNeeded(for: viewModel.displayedTasks)
-        var snapShot = snapshot(taskItems: displayTasks)
-        for item in snapShot.items {
-            guard currentSnapshot.contains(item),
-                currentSnapshot.isExpanded(item)
-            else {
-                continue
+        
+        for sectionVM in viewModel.sectionVMs {
+            var sectionSnapshot = NSDiffableDataSourceSectionSnapshot<TaskListModels.DisplayedTask>()
+            sectionSnapshot.append(sectionVM.tasks)
+            DispatchQueue.main.async {
+                self.dataSource.apply(sectionSnapshot, to: sectionVM)
             }
-            
-            snapShot.expand([item])
         }
-        dataSource.apply(snapShot, to: project.title, animatingDifferences: true)
     }
     
     func displayDetail(of task: Task) {
@@ -410,7 +406,8 @@ extension TaskListViewController: UICollectionViewDropDelegate {
                     }
             
                     let snapShot = dropHelper(displayTasks, dataSource.itemIdentifier(for: sourceIndexPath)!, dataSource.itemIdentifier(for: tempIndex)!)
-                    dataSource.apply(snapShot, to: project.title, animatingDifferences: true)
+                    let section = dataSource.snapshot().sectionIdentifiers[sourceIndexPath.section]
+                    dataSource.apply(snapShot, to: section, animatingDifferences: true)
                     coordinator.drop(item.dragItem, toItemAt: destinationIndexPath)
                 }
             }
