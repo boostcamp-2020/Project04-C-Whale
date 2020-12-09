@@ -43,7 +43,7 @@ class AddProjectViewController: UIViewController {
     
     var menuAddProjectDelegate: MenuAddProjectDelegate?
     private var isList: Bool = true
-    private var projectColor: ProjectColors? = ProjectColors.init(rawValue: 0)
+    private var projectColor: ProjectColors? = ProjectColors.gray
     
     // MARK: Views
     
