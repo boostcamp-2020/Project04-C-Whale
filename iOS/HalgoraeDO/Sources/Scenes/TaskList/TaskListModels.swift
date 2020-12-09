@@ -66,26 +66,45 @@ enum TaskListModels {
             var displayedTask: DisplayedTask
         }
     }
-}
-
-// MARK:  - Models
-
-extension TaskListModels {
+    
+    // MARK:  - Models
     
     struct TaskFields {
-        
+        var title: String
+        var date: Date?
+        var priority: Priority
     }
     
-    struct DisplayedTask: Hashable {
-        var id: UUID
+    struct SectionVM {
+        var id: String
+        var title: String
+        var tasks: [DisplayedTask] = []
+        
+        init(id: String,
+            title: String,
+            tasks: [DisplayedTask]) {
+            self.id = id
+            self.title = title
+            self.tasks = tasks
+        }
+        
+        init(section: Section) {
+            self.id = section.id
+            self.title = section.title
+            self.tasks = section.tasks?.compactMap { DisplayedTask(task: $0) } ?? []
+        }
+    }
+    
+    struct DisplayedTask: TaskContentViewModelType {
+        var id: String
         var title: String
         var isCompleted: Bool
         var tintColor: UIColor
         var position: Int
         var parentPosition: Int?
-        var subItems: [DisplayedTask]
+        var subItems: [DisplayedTask] = []
         
-        init(id: UUID,
+        init(id: String,
              title: String,
              isCompleted: Bool = false,
              tintColor: UIColor,
