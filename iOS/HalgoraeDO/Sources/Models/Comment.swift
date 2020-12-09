@@ -8,6 +8,7 @@
 import Foundation
 
 struct Comment: Codable {
-    var id: String
+    var id: String = UUID().uuidString
     var contents: String
+    var isImage: Bool = false
 }
