@@ -7,6 +7,12 @@
 
 import UIKit
 
+protocol TaskContentViewModelType {
+    var title: String { get }
+    var tintColor: UIColor { get }
+    var isCompleted: Bool { get set }
+}
+
 struct TaskContentConfiguration: UIContentConfiguration, Hashable {
     
     // MARK: - Properties
@@ -19,7 +25,7 @@ struct TaskContentConfiguration: UIContentConfiguration, Hashable {
     
     // MARK: - Methods
     
-    mutating func configure(viewModel: TaskListModels.DisplayedTask?) {
+    mutating func configure(viewModel: TaskContentViewModelType?) {
         title = viewModel?.title
         isCompleted = viewModel?.isCompleted
         tintColor = viewModel?.tintColor
