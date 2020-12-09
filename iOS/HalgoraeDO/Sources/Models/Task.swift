@@ -75,9 +75,13 @@ final class Task {
     
     @discardableResult
     func remove(_ task: Task) -> Task? {
-        guard var tasks = task.tasks else { return nil }
-        guard let index = tasks.firstIndex(of: task) else { return nil }
+        guard var tasks = task.tasks,
+              let index = tasks.firstIndex(of: task)
+        else {
+            return nil
+        }
         tasks[index].parent = nil
+        
         return tasks.remove(at: index)
     }
 }
