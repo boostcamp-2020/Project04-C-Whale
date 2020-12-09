@@ -7,8 +7,8 @@
       :favorite-project-infos="favoriteProjectInfos"
     />
     <ProjectListContainer :project-infos="namedProjectInfos" />
-    <LabelList :labels="labels" />
-    <FilterList :priorities="priorities" />
+    <!-- <LabelList :labels="labels" />
+    <FilterList :priorities="priorities" /> -->
   </div>
 </template>
 
