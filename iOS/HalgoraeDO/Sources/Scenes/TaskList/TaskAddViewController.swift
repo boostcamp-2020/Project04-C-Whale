@@ -64,7 +64,7 @@ class TaskAddViewController: UIViewController {
         return stackView
     }()
     
-    private let dateButton: DatePickerButtonView = {
+    private let dateButtonView: DatePickerButtonView = {
         let dateButton = DatePickerButtonView()
         
         return dateButton
@@ -96,7 +96,7 @@ class TaskAddViewController: UIViewController {
         
         return submitButton
     }()
-
+    
     // MARK: - View Life Cycle
     
     override func viewDidLoad() {
@@ -125,7 +125,7 @@ class TaskAddViewController: UIViewController {
         contentView.addSubview(accessoryView)
         accessoryView.addSubview(submitButton)
         accessoryView.addSubview(accessoryStackView)
-        accessoryStackView.addArrangedSubview(dateButton)
+        accessoryStackView.addArrangedSubview(dateButtonView)
         accessoryStackView.addArrangedSubview(priorityButton)
         
         NSLayoutConstraint.activate([
@@ -220,9 +220,11 @@ class TaskAddViewController: UIViewController {
             return
         }
         
+        delegate?.taskAddViewControllerDidDone(self)
+        
         var object: [String: Any] = [:]
         object.updateValue(text, forKey: "taskTitle")
-        object.updateValue(dueDate, forKey: "dueDate")
+        // object.updateValue(dueDate, forKey: "dueDate")
         object.updateValue(priority, forKey: "priority")
         object.updateValue(section, forKey: "section")
         NotificationCenter.default.post(name: Notification.Name(rawValue: "addTask"), object: object)
