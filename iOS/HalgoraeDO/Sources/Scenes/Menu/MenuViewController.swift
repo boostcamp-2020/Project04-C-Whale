@@ -229,8 +229,9 @@ extension MenuViewController: AddProjectViewControllerDelegate {
     func addProjectViewControllerDidDone(_ addProjectViewController: AddProjectViewController, _ projectData: AddProjectViewController.AddProject) {
         //TODO show Mode도 추가하기
         var projectSnapshot = self.dataSource.snapshot(for: .project)
-        let newProject = Project(color: projectData.color, title: projectData.projectName, taskNum: 0)
-        projectSnapshot.append([newProject], to: self.rootItem)
+        
+        let newProject = ProjectVM(id: UUID().uuidString, title: projectData.projectName, color: projectData.color, taskCount: 0, isFavorite: false, isHeader: false)
+        projectSnapshot.append([newProject])
         self.dataSource.apply(projectSnapshot, to: .project, animatingDifferences: false)
     }
 }

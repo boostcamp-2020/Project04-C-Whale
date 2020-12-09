@@ -40,11 +40,11 @@ enum MenuModels {
                 
                 for project in projects {
                     guard project.title != "오늘" else {
-                        viewModels[.normal]?[0].taskCount = project.taskCount
+                        viewModels[.normal]?[0].taskCount = project.taskCount ?? 0
                         continue
                     }
                     
-                    viewModels[.project]?[0].taskCount += project.taskCount
+                    viewModels[.project]?[0].taskCount += project.taskCount ?? 0
                     viewModels[.project]?.append(.init(project: project))
                     
                     if project.isFavorite ?? false {
@@ -111,7 +111,7 @@ extension MenuModels {
             self.id = project.id ?? UUID().uuidString
             self.title = project.title
             self.color = "#BDBDBD"
-            self.taskCount = project.taskCount
+            self.taskCount = project.taskCount ?? 0
             self.isFavorite = project.isFavorite ?? false
             
             if makeFavorite {
