@@ -7,6 +7,7 @@ const projectModel = models.project;
 
 const retrieveProjects = async () => {
   const projects = await projectModel.findAll({
+    raw: true,
     attributes: [
       'id',
       'title',
@@ -14,16 +15,16 @@ const retrieveProjects = async () => {
       'isFavorite',
       'isList',
       [sequelize.fn('COUNT', sequelize.col('tasks.id')), 'taskCount'],
-      [sequelize.fn('max', sequelize.col('sections.id')), 'sectionId'],
+      [sequelize.col('sections.id'), 'sectionId'],
     ],
     include: [
       {
         model: models.task,
         attributes: [],
       },
-      { model: models.section, attributes: [], order: [['createdAt', 'ASC']] },
+      { model: models.section, attributes: [], where: { position: 0 }, required: false },
     ],
-    group: ['project.id'],
+    group: ['project.id', 'sections.id'],
   });
 
   return projects;
