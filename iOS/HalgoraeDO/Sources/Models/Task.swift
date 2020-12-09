@@ -7,11 +7,11 @@
 
 import Foundation
 
-class Task {
+final class Task {
 
     // MARK:  - Constatns
     
-    let identifier = UUID()
+    let id: String = UUID().uuidString
     
     // MARK: - Properties
     
@@ -19,26 +19,39 @@ class Task {
     weak var parent: Task?
     var section: String
     var title: String
-    var isCompleted: Bool
+    var isDone: Bool
     var dueDate: Date
-    var priority: Priority
+    var createdAt: Date
+    var updatedAt: Date
+    var priority: Priority?
+    var comments: [Comment]
+    var bookmarks: [Bookmark]
     
     init(section: String = "",
          title: String,
          isCompleted: Bool = false,
          dueDate: Date = Date(),
+         createdAt: Date = Date(),
+         updatedAt: Date = Date(),
          priority: Priority = .four,
          parent: Task? = nil,
-         subTasks: [Task] = []) {
+         subTasks: [Task] = [],
+         comments: [Comment] = [],
+         bookmarks: [Bookmark] = []
+    ) {
         
         self.section = section
         self.title = title
-        self.isCompleted = isCompleted
+        self.isDone = isCompleted
         self.dueDate = dueDate
+        self.createdAt = createdAt
+        self.updatedAt = updatedAt
         self.priority = priority
         self.parent = parent
         self.subTasks = subTasks
-        self.subTasks.forEach { $0.parent = self }
+        // self.subTasks.forEach { $0.parent = self }
+        self.comments = comments
+        self.bookmarks = bookmarks
     }
         
     // MARK: - Methods
@@ -64,15 +77,19 @@ class Task {
     }
 }
 
+extension Task: Codable {
+    
+}
+
 // MARK: - Hashable
 
 extension Task: Hashable {
     func hash(into hasher: inout Hasher) {
-        hasher.combine(identifier)
+        hasher.combine(id)
     }
     
     static func ==(lhs: Task, rhs: Task) -> Bool {
-        return lhs.identifier == rhs.identifier
+        return lhs.id == rhs.id
     }
 }
 
@@ -80,6 +97,6 @@ extension Task: Hashable {
 
 extension Task: CustomStringConvertible {
     var description: String {
-        return "id: \(identifier), title: \(title), isCompleted: \(isCompleted), parent: \(parent ?? "nil" as CustomStringConvertible), subTasks: \(subTasks)"
+        return "id: \(id), title: \(title), isCompleted: \(isDone), parent: \(parent ?? "nil" as CustomStringConvertible), subTasks: \(subTasks)"
     }
 }

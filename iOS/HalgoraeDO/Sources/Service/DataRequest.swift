@@ -9,12 +9,10 @@ import Foundation
 
 protocol DataResponsing {
     
-    associatedtype NetworkResponse
-    
     @discardableResult
-    func responseData(completionHandler: @escaping (Data?, NetworkResponse?) -> Void) -> Self
+    func responseData(completionHandler: @escaping (Data?, String?) -> Void) -> Self
     @discardableResult
-    func responseURL(completionHandler: @escaping (URL?, NetworkResponse?) -> Void) -> Self
+    func responseURL(completionHandler: @escaping (URL?, String?) -> Void) -> Self
 }
 
 class DataRequest {
@@ -44,40 +42,39 @@ class DataRequest {
 }
 
 extension DataRequest: DataResponsing {
-    
     @discardableResult
-    func responseData(completionHandler: @escaping (Data?, NetworkResponse?) -> Void) -> Self {
+    func responseData(completionHandler: @escaping (Data?, String?) -> Void) -> Self {
         session.dataTask(with: request, completionHandler: { (data, response, error) in
             guard error == nil else {
-                completionHandler(nil, .failed)
+                completionHandler(nil, NetworkResponse.failed.rawValue)
                 return
             }
 
             guard let data = data else {
-                completionHandler(nil, .noData)
+                completionHandler(nil, NetworkResponse.noData.rawValue)
                 return
             }
             
-            completionHandler(data, .success)
+            completionHandler(data, NetworkResponse.success.rawValue)
         }).resume()
         
         return self
     }
     
     @discardableResult
-    func responseURL(completionHandler: @escaping (URL?, NetworkResponse?) -> Void) -> Self {
+    func responseURL(completionHandler: @escaping (URL?, String?) -> Void) -> Self {
         session.downloadTask(with: request) { (url, response, error) in
             guard error == nil else {
-                completionHandler(nil, .failed)
+                completionHandler(nil, NetworkResponse.failed.rawValue)
                 return
             }
 
             guard let url = url else {
-                completionHandler(nil, .noData)
+                completionHandler(nil, NetworkResponse.noData.rawValue)
                 return
             }
             
-            completionHandler(url, .success)
+            completionHandler(url, NetworkResponse.success.rawValue)
         }.resume()
         
         return self

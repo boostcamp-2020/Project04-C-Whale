@@ -7,43 +7,21 @@
 
 import UIKit
 
+protocol MenuDisplayLogic: class {
+    func displayFetchedProjects(viewModel: MenuModels.FetchProjects.ViewModel)
+    func displayUpdatedProject(viewModel: MenuModels.UpdateProject.ViewModel)
+}
+
 class MenuViewController: UIViewController {
     
-    /// 임시 property
-    let rootItem = Project(color: nil, title: "프로젝트", taskNum: 0)
-    let normalItem = [Project(color: nil, title: "오늘", taskNum: 4)]
-    var projectItem = [Project(title: "환영합니다👋", taskNum: 16),
-                        Project(color: "#B2CCFF", title: "To Do", taskNum: 8),
-                        Project(color: "#B7F0B1", title: "할고래두 프로젝트🐳", taskNum: 12),
-                        Project(color: "#FFE08C", title: "네이버 웨일 프젝", taskNum: 3),
-                        Project(color: "#FFA7A7", title: "네이버 코테⭐️", taskNum: 10)]
-    
-    struct Project: Hashable {
-        private let identifier = UUID()
-        let title: String?
-        let color: String?
-        let taskNum: Int
-        init(color: String? = "#BDBDBD", title: String? = nil, taskNum: Int = 0) {
-            self.title = title
-            self.color = color
-            self.taskNum = taskNum
-        }
-    }
-    
-    enum Section: Int, Hashable, CaseIterable, CustomStringConvertible {
-        case normal, project
-        var description: String {
-            switch self {
-            case .normal: return ""
-            case .project: return "프로젝트"
-            }
-        }
-    }
+    typealias Section = MenuModels.ProjectSection
+    typealias ProjectVM = MenuModels.ProjectVM
     
     // MARK: - Properties
 
-    var heartProjects = Set<Project>()
-    private var dataSource: UICollectionViewDiffableDataSource<Section, Project>!
+    private var dataSource: UICollectionViewDiffableDataSource<Section, ProjectVM>!
+    private var interactor: MenuBusinessLogic?
+    private var rotuer: (MenuDataPassing & MenuRoutingLogic)?
     
     // MARK: Views
     
@@ -53,21 +31,44 @@ class MenuViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        configureLogic()
         configureNavItem()
         configureCollectionView()
         configureDataSource()
-        applyInitialSnapshots()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         title = "할고래DO"
+        interactor?.fetchProjects()
     }
     
     // MARK: - Initialize
     
+    func configureLogic() {
+        let presenter = MenuPresenter(viewController: self)
+        let interactor = MenuInteractor(presenter: presenter, worker: MenuWorker(sessionManager: SessionManager(configuration: .default)))
+        self.interactor = interactor
+        self.rotuer = MenuRouter(dataStore: interactor, viewController: self)
+    }
+    
     func configureNavItem() {
         navigationItem.title = "메뉴"
+    }
+    
+    // MARK: - Methods
+    
+    private func deleteSnapshot(for items: [ProjectVM]) {
+        var snapshot = dataSource.snapshot()
+        snapshot.deleteItems(items)
+        dataSource.apply(snapshot)
+    }
+    
+    private func appendSnapshot(items: [ProjectVM], to: Section) {
+        var normalSnapshot = dataSource.snapshot(for: .normal)
+        normalSnapshot.append(items)
+        dataSource.apply(normalSnapshot, to: .normal)
     }
 }
 
@@ -106,9 +107,9 @@ private extension MenuViewController {
     }
     
     func configureDataSource() {
-        dataSource = UICollectionViewDiffableDataSource<Section, Project>(collectionView: menuCollectionView) {
+        dataSource = UICollectionViewDiffableDataSource<Section, ProjectVM>(collectionView: menuCollectionView) {
             (collectionView, indexPath, item) -> UICollectionViewCell? in
-            guard let section = Section(rawValue: indexPath.section) else { fatalError("Unknown section") }
+            guard let section = Section(rawValue: indexPath.section) else { fatalError() }
             switch section {
             case .normal:
                 let cellRegistration = indexPath.row == 0 ? self.configuredNormalCell() : self.configuredProjectCell()
@@ -120,9 +121,9 @@ private extension MenuViewController {
         }
     }
     
-    func configuredNormalCell() -> UICollectionView.CellRegistration<UICollectionViewListCell, Project> {
-        return UICollectionView.CellRegistration<UICollectionViewListCell, Project> { (cell, indexPath, project) in
-            var content = UIListContentConfiguration.cell()
+    func configuredNormalCell() -> UICollectionView.CellRegistration<UICollectionViewListCell, ProjectVM> {
+        return UICollectionView.CellRegistration<UICollectionViewListCell, ProjectVM> { (cell, indexPath, project) in
+            var content = cell.defaultContentConfiguration()
             content.text = project.title
             content.image = UIImage(systemName: "calendar")
             content.imageProperties.tintColor = .halgoraedoDarkBlue
@@ -130,13 +131,13 @@ private extension MenuViewController {
             content.directionalLayoutMargins = .zero
             cell.contentConfiguration = content
             let taskNum = UILabel()
-            taskNum.text = "\(project.taskNum)"
+            taskNum.text = "\(project.taskCount)"
             cell.accessories.append(.customView(configuration: .init(customView: taskNum, placement: .trailing())))
         }
     }
     
-    func configuredProjectHeaderCell() -> UICollectionView.CellRegistration<UICollectionViewListCell, Project> {
-        return UICollectionView.CellRegistration<UICollectionViewListCell, Project> { (cell, indexPath, project) in
+    func configuredProjectHeaderCell() -> UICollectionView.CellRegistration<UICollectionViewListCell, ProjectVM> {
+        return UICollectionView.CellRegistration<UICollectionViewListCell, ProjectVM> { (cell, indexPath, project) in
             var content = cell.defaultContentConfiguration()
             content.text = project.title
             cell.contentConfiguration = content
@@ -154,62 +155,46 @@ private extension MenuViewController {
         }
     }
     
-    func configuredProjectCell() -> UICollectionView.CellRegistration<UICollectionViewListCell, Project> {
-        return UICollectionView.CellRegistration<UICollectionViewListCell, Project> { (cell, indexPath, project) in
+    func configuredProjectCell() -> UICollectionView.CellRegistration<UICollectionViewListCell, ProjectVM> {
+        return UICollectionView.CellRegistration<UICollectionViewListCell, ProjectVM> { (cell, indexPath, project) in
             var content = cell.defaultContentConfiguration()
             content.text = project.title
             content.textProperties.font = .systemFont(ofSize: 17, weight: .light)
             cell.contentConfiguration = content
             cell.indentationLevel = 0
             let taskNum = UILabel()
-            taskNum.text = "\(project.taskNum)"
+            taskNum.text = "\(project.taskCount)"
             let starAccessory = UIImageView(image: UIImage(systemName: "star.fill"))
-            starAccessory.tintColor = UIColor(hexFromString: project.color!)
+            starAccessory.tintColor = UIColor(hexFromString: project.color)
             cell.accessories.append(.customView(configuration: .init(customView: taskNum, placement: .trailing())))
             cell.accessories.append(.customView(configuration: .init(customView: starAccessory, placement: .leading())))
         }
     }
-
-    func applyInitialSnapshots() {
-        var snapshot = NSDiffableDataSourceSnapshot<Section, Project>()
-        snapshot.appendSections(Section.allCases)
-        dataSource.apply(snapshot, animatingDifferences: false)
-        var normalSnapshot = NSDiffableDataSourceSectionSnapshot<Project>()
-        normalSnapshot.append(normalItem)
-        normalSnapshot.append(Array(heartProjects))
-        dataSource.apply(normalSnapshot, to: .normal, animatingDifferences: false)
-        
-        var sectionSnapshot = NSDiffableDataSourceSectionSnapshot<Project>()
-        sectionSnapshot.append([rootItem])
-        sectionSnapshot.append(projectItem, to: rootItem)
-        sectionSnapshot.expand([rootItem])
-        dataSource.apply(sectionSnapshot, to: .project, animatingDifferences: false)
-    }
     
-    func leadingSwipeAction(_ item: Project) -> UISwipeActionsConfiguration? {
-        var normalSnapshot = self.dataSource.snapshot(for: .normal)
-        var projectSnapshot = self.dataSource.snapshot(for: .project)
-        let isStarred = normalSnapshot.contains(item)
+    func applySnapshot(projects: [Section: [ProjectVM]]) {
+        for (section, projectVMs) in projects.sorted(by: { $0.key.rawValue < $1.key.rawValue }) {
+            guard !projectVMs.isEmpty else { continue }
+            var projectVMs = projectVMs
+            var sectionSnapshot = NSDiffableDataSourceSectionSnapshot<ProjectVM>()
+            
+            let header = projectVMs.removeFirst()
+            sectionSnapshot.append([header])
+            sectionSnapshot.append(projectVMs, to: header)
+            sectionSnapshot.expand([header])
+            DispatchQueue.main.async {
+                self.dataSource.apply(sectionSnapshot, to: section)
+            }
+        }
+        
+    }
+
+    func leadingSwipeAction(_ item: ProjectVM) -> UISwipeActionsConfiguration? {
         let starAction = UIContextualAction(style: .normal, title: nil) {
             [weak self] (_, _, completion) in
-            guard let self = self else {
-                completion(false)
-                return
-            }
-            
-            if isStarred {
-                normalSnapshot.delete([item])
-                projectSnapshot.append([item], to: self.rootItem)
-            } else {
-                projectSnapshot.delete([item])
-                normalSnapshot.append([item])
-            }
-            self.dataSource.apply(normalSnapshot, to: .normal, animatingDifferences: false)
-            self.dataSource.apply(projectSnapshot, to: .project, animatingDifferences: false)
-            
+            self?.interactor?.updateProject(request: .init(project: item))
             completion(true)
         }
-        starAction.image = UIImage(systemName: isStarred ? "heart.slash" : "heart.fill")
+        starAction.image = UIImage(systemName: item.isFavorite ? "heart.slash" : "heart.fill")
         starAction.backgroundColor = .halgoraedoDarkBlue
 
         return UISwipeActionsConfiguration(actions: [starAction])
@@ -229,13 +214,13 @@ extension MenuViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
         
-        let project = dataSource.snapshot().itemIdentifiers[indexPath.item+1]
-        guard let vc = storyboard?.instantiateViewController(identifier: "\(TaskListViewController.self)", creator: { (coder) -> TaskListViewController? in
-            return TaskListViewController(coder: coder)
-        }) else { return }
-        vc.title = project.title
-        vc.projectTitle = project.title ?? ""
-        navigationController?.pushViewController(vc, animated: true)
+        guard let project = dataSource.itemIdentifier(for: indexPath),
+              !project.isHeader
+        else {
+            return
+        }
+        
+        rotuer?.routeToTaskList(for: project)
     }
 }
 
@@ -249,4 +234,35 @@ extension MenuViewController: AddProjectViewControllerDelegate {
         self.dataSource.apply(projectSnapshot, to: .project, animatingDifferences: false)
     }
 }
+// MARK: - Menu DisplayLogic
 
+extension MenuViewController: MenuDisplayLogic {
+    
+    func displayFetchedProjects(viewModel: MenuModels.FetchProjects.ViewModel) {
+        applySnapshot(projects: viewModel.projects)
+    }
+    
+    func displayUpdatedProject(viewModel: MenuModels.UpdateProject.ViewModel) {
+        
+        let favorite = viewModel.favorite
+        if favorite.isFavorite {
+            appendSnapshot(items: [favorite], to: .normal)
+        } else {
+            deleteSnapshot(for: [favorite])
+        }
+        
+        let project = viewModel.project
+        var sectionSnapshot = dataSource.snapshot(for: .project)
+        let originIndex = sectionSnapshot.index(of: project)
+        sectionSnapshot.delete([project])
+        
+        if 0..<sectionSnapshot.items.count ~= originIndex ?? -1 {
+            let nextItem = sectionSnapshot.items[originIndex!]
+            sectionSnapshot.insert([project], before: nextItem)
+        } else {
+            sectionSnapshot.append([project])
+        }
+
+        dataSource.apply(sectionSnapshot, to: .project, animatingDifferences: true, completion: nil)
+    }
+}

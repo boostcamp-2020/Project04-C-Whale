@@ -16,7 +16,7 @@ class TaskListViewController: UIViewController {
     // MARK: - Properties
     
     /// 임시 property
-    var projectTitle = "할고래DO"
+    private let project: Project
     private var interactor: TaskListBusinessLogic?
     private var router: (TaskListRoutingLogic & TaskListDataPassing)?
     private var dataSource: UICollectionViewDiffableDataSource<String, TaskVM>! = nil
@@ -43,9 +43,19 @@ class TaskListViewController: UIViewController {
     
     // MARK: - View Life Cycle
     
+    init?(coder: NSCoder, project: Project) {
+        self.project = project
+        super.init(coder: coder)
+    }
+    
+    required init?(coder: NSCoder) {
+        self.project = Project(title: "")
+        super.init(coder: coder)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = projectTitle
+        title = project.title
         configureLogic()
         configureCollectionView()
         configureDataSource()
@@ -76,7 +86,7 @@ class TaskListViewController: UIViewController {
         if !editingMode {
             selectedTasks.removeAll()
         }
-        title = editingMode ? "\(selectedTasks.count) 개 선택됨" : projectTitle
+        title = editingMode ? "\(selectedTasks.count) 개 선택됨" : project.title
         taskListCollectionView.isEditing = editingMode
         moreButton.title = editingMode ? "취소" : "More"
         editToolBar.isHidden = !editingMode
@@ -118,7 +128,7 @@ class TaskListViewController: UIViewController {
                 return
             }
             
-            vc.title = self.projectTitle
+            vc.title = self.project.title
             let nav = self.navigationController
             nav?.popViewController(animated: false)
             nav?.pushViewController(vc, animated: false)
@@ -246,7 +256,7 @@ private extension TaskListViewController {
 extension TaskListViewController: TaskListDisplayLogic {
     
     func displayFetchTasks(viewModel: TaskListModels.FetchTasks.ViewModel) {
-        let currentSnapshot = dataSource.snapshot(for: projectTitle)
+        let currentSnapshot = dataSource.snapshot(for: project.title)
         displayTasks = filterCompletedIfNeeded(for: viewModel.displayedTasks)
         var snapShot = snapshot(taskItems: displayTasks)
         for item in snapShot.items {
@@ -258,7 +268,7 @@ extension TaskListViewController: TaskListDisplayLogic {
             
             snapShot.expand([item])
         }
-        dataSource.apply(snapShot, to: projectTitle, animatingDifferences: true)
+        dataSource.apply(snapShot, to: project.title, animatingDifferences: true)
     }
     
     func displayDetail(of task: Task) {
@@ -343,7 +353,7 @@ extension TaskListViewController: UICollectionViewDragDelegate {
     
     private func dragItems(at indexPath: IndexPath) -> [UIDragItem] {
         guard let taskObject = taskListCollectionView.cellForItem(at: indexPath) as? TaskCollectionViewListCell else { return [] }
-        let provider = NSItemProvider(object: taskObject.taskViewModel!.id.uuidString as NSString)
+        let provider = NSItemProvider(object: taskObject.taskViewModel!.id as NSString)
         let dragItem = UIDragItem(itemProvider: provider)
         guard let collectionView = taskListCollectionView else { return [dragItem] }
         let cell = collectionView.cellForItem(at: indexPath)
@@ -400,7 +410,7 @@ extension TaskListViewController: UICollectionViewDropDelegate {
                     }
             
                     let snapShot = dropHelper(displayTasks, dataSource.itemIdentifier(for: sourceIndexPath)!, dataSource.itemIdentifier(for: tempIndex)!)
-                    dataSource.apply(snapShot, to: projectTitle, animatingDifferences: true)
+                    dataSource.apply(snapShot, to: project.title, animatingDifferences: true)
                     coordinator.drop(item.dragItem, toItemAt: destinationIndexPath)
                 }
             }
