@@ -13,6 +13,7 @@ class Project: Codable {
     var taskCount: Int?
     var isFavorite: Bool?
     var isList: Bool?
+    var color: String?
     var sections: [Section]?
     
     init(id: String? = UUID().uuidString,
@@ -20,12 +21,14 @@ class Project: Codable {
          taskCount: Int = 0,
          isFavorite: Bool? = false,
          isList: Bool? = false,
+         color: String = "#BDBDBD",
          sections: [Section]? = []) {
         self.id = id
         self.title = title
         self.taskCount = taskCount
         self.isFavorite = isFavorite
         self.isList = isList
+        self.color = color
         self.sections = sections
     }
 }
