@@ -380,7 +380,7 @@ describe('patch task with id', () => {
 
       // then
       expect(res.status).toBe(status.NOT_FOUND.CODE);
-      expect(res.body.message).toBe(status.NOT_FOUND.MSG);
+      expect(res.body.message).toBe(errorMessage.NOT_FOUND_ERROR('task'));
       done();
     } catch (err) {
       done(err);
