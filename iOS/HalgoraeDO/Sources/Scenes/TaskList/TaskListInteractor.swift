@@ -10,6 +10,7 @@ import Foundation
 protocol TaskListBusinessLogic {
     func fetchTasks(request: TaskListModels.FetchTasks.Request)
     func changeFinish(request: TaskListModels.FinishTask.Request)
+    func createTask(request: TaskListModels.CreateTask.Request)
 }
 
 protocol TaskListDataStore {
@@ -50,5 +51,9 @@ extension TaskListInteractor: TaskListBusinessLogic {
             worker.changeFinish(task: task, postion: viewModel.position, parentPosition: viewModel.parentPosition)
         }
         presenter.presentFinshChanged(response: .init(tasks: taskList.tasks))
+    }
+    
+    func createTask(request: TaskListModels.CreateTask.Request) {
+        let taskFields = request.taskFields
     }
 }
