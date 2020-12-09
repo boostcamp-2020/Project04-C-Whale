@@ -62,7 +62,7 @@ class TaskBoardViewController: UIViewController {
     
     private func configureLogic() {
         let presenter = TaskListPresenter(viewController: self)
-        let interactor = TaskListInteractor(presenter: presenter, worker: TaskListWorker())
+        let interactor = TaskListInteractor(presenter: presenter, worker: TaskListWorker(sessionManager: SessionManager(configuration: .default)))
         self.interactor = interactor
     }
     
@@ -89,7 +89,7 @@ class TaskBoardViewController: UIViewController {
         else {
             return
         }
-        let temp = TaskListModels.DisplayedTask(id: UUID(), title: taskTitle, isCompleted: false, tintColor: .red, position: 1, parentPosition: nil, subItems: [])
+        let temp = TaskListModels.DisplayedTask(id: UUID().uuidString, title: taskTitle, isCompleted: false, tintColor: .red, position: 1, parentPosition: nil, subItems: [])
         taskVM.append(temp)
         taskBoardCollectionView.reloadData()
     }
@@ -238,7 +238,9 @@ extension TaskBoardViewController: TaskListDisplayLogic {
     }
     
     func displayFetchTasks(viewModel: TaskListModels.FetchTasks.ViewModel) {
-        taskVM = viewModel.displayedTasks
+        for sectionVM in viewModel.sectionVMs {
+            taskVM = sectionVM.tasks
+        }
     }
     
     func displayDetail(of task: Task) {
