@@ -9,7 +9,7 @@ import Foundation
 
 enum ProjectEndPoint {
     case getAll
-    case get(projectId: Int)
+    case get(projectId: String)
     case create(request: Data)
     case titleUpdate(id: Int, titleData: Data)
     case update(id: Int, project: Data)
