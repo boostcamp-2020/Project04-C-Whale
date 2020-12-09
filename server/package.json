@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node ./src/app.js",
+    "build": "babel src --out-dir dist",
+    "start": "forever ./dist/app.js",
     "dev": "nodemon --exec babel-node ./src/app.js",
     "seed": "npx sequelize-cli db:seed:all",
     "unseed": "npx sequelize-cli db:seed:undo:all",
@@ -50,6 +51,7 @@
     "uuid": "^8.3.1"
   },
   "devDependencies": {
+    "@babel/eslint-parser": "^7.12.1",
     "@babel/plugin-proposal-decorators": "^7.12.1",
     "concurrently": "^5.3.0",
     "eslint": "^7.13.0",

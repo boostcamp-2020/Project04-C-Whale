@@ -12,7 +12,7 @@
           <task-item :task="childTask" />
         </div>
       </div>
-
+      <!-- <AddTask :projectId="managedProject.id" /> -->
       <!-- <add-task :projectId="section.projectId" :sectionId="section.id" /> -->
     </v-list>
     <v-list class="mb-5">
@@ -27,7 +27,7 @@
           <task-item :task="childTask" />
         </div>
       </div>
-      <v-btn color="primary" dark @click.stop="dialog = true"> Open Dialog </v-btn>
+      <!-- <AddTask :projectId="managedProject.id" /> -->
 
       <!-- <add-task :projectId="section.projectId" :sectionId="section.id" /> -->
     </v-list>
@@ -35,8 +35,9 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 import TaskItem from "@/components/project/TaskItem";
+import AddTask from "@/components/project/AddTask";
 
 export default {
   props: {
@@ -46,9 +47,12 @@ export default {
   data() {
     return {};
   },
+  computed: {
+    ...mapGetters(["managedProject"]),
+  },
   methods: {
     ...mapActions(["updateTaskToDone"]),
   },
-  components: { TaskItem },
+  components: { TaskItem, AddTask },
 };
 </script>

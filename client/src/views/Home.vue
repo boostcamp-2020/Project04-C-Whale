@@ -15,6 +15,7 @@
 <script>
 import Header from "@/components/common/Header";
 import Alert from "@/components/common/Alert";
+import ListMixin from "@/mixins/ListMixins.js";
 
 import { mapState } from "vuex";
 
@@ -29,6 +30,7 @@ export default {
       isAuth: (state) => state.auth.isAuth,
     }),
   },
+  mixins: [ListMixin],
 };
 </script>
 

@@ -6,7 +6,7 @@
           <v-list-item-content>
             <v-list-item-title class="font-14">프로젝트</v-list-item-title>
           </v-list-item-content>
-          <v-list-item-icon :class="{ 'd-none ': !hover }" @click="openModalEvent">
+          <v-list-item-icon :class="{ 'd-none ': !hover }" @click.stop="addDialog = true">
             <v-icon>mdi-plus</v-icon>
           </v-list-item-icon>
         </v-list-item>
@@ -24,7 +24,7 @@
           <v-icon small :color="project.color">mdi-circle</v-icon>
         </v-list-item-icon>
         <v-list-item-content class="px-3">
-          <v-list-item-title class="font-14">
+          <v-list-item-title class="font-14 white-space-normal">
             {{ project.title
             }}<span class="d-inline-block ml-1 task-count">{{ project.taskCount }}</span>
           </v-list-item-title>
@@ -101,10 +101,6 @@ export default {
     };
   },
   methods: {
-    openModalEvent(e) {
-      e.stopPropagation();
-      this.AddDialog = true;
-    },
     pushRoute(projectId) {
       this.$router.push("/project/" + projectId);
     },
@@ -135,5 +131,8 @@ export default {
 }
 .v-list-group--sub-group .v-list-item__icon:first-child {
   margin-right: 4px !important;
+}
+.white-space-normal {
+  white-space: normal;
 }
 </style>

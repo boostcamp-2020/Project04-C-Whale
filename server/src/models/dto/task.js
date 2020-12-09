@@ -1,73 +1,70 @@
 const {
-  validate,
-  validateOrReject,
-  Contains,
   IsInt,
-  Length,
-  IsEmail,
-  IsFQDN,
-  IsDate,
-  Min,
-  Max,
   IsString,
-  IsDefined,
-  IsNotEmpty,
   IsBoolean,
-  IsArray,
   MinLength,
   IsDateString,
-  ValidateIf,
   IsUUID,
+  IsOptional,
+  IsEmpty,
 } = require('class-validator');
-const errorMessage = require('@models/dto/error-messages');
+const errorMessage = require('@utils/error-messages');
 const { isAfterToday } = require('@utils/validator');
 
 class TaskDto {
-  @ValidateIf(o => !!o.id)
-  @IsString()
-  @IsUUID('4')
+  @IsEmpty({ groups: ['create', 'patch'], message: errorMessage.UNNECESSARY_INPUT_ERROR('id') })
+  @IsString({ groups: ['retrieve'], message: errorMessage.TYPE_ERROR('id') })
+  @IsUUID('4', { groups: ['retrieve'], message: errorMessage.INVALID_INPUT_ERROR('id') })
   id;
 
-  @IsString({ groups: ['create'] }, { message: errorMessage.wrongProperty('title') })
-  @MinLength(1, { groups: ['create'] }, { message: errorMessage.wrongProperty('title') })
+  @IsOptional({ groups: ['patch'] })
+  @IsString({ groups: ['create', 'patch'], message: errorMessage.TYPE_ERROR('title') })
+  @MinLength(1, { groups: ['create', 'patch'], message: errorMessage.INVALID_INPUT_ERROR('title') })
   title;
 
+  @IsOptional({ groups: ['patch'] })
   @IsDateString(
     { strict: true },
-    { groups: ['create'], message: errorMessage.wrongProperty('dueDate') },
+    { groups: ['create', 'patch'], message: errorMessage.TYPE_ERROR('dueDate') },
   )
-  @isAfterToday('dueDate', { groups: ['create'], message: errorMessage.beforeDueDate })
+  @isAfterToday('dueDate', { groups: ['create', 'patch'], message: errorMessage.DUEDATE_ERROR })
   dueDate;
 
-  @IsInt()
-  @IsNotEmpty()
+  @IsOptional({ groups: ['patch'] })
+  @IsInt({ groups: ['patch'], message: errorMessage.TYPE_ERROR('position') })
   position;
 
-  @IsBoolean()
-  @IsNotEmpty()
+  @IsOptional({ groups: ['patch'] })
+  @IsBoolean({ groups: ['patch'], message: errorMessage.TYPE_ERROR('isDone') })
   isDone;
 
-  @IsString()
-  @IsUUID('4')
+  @IsOptional({ groups: ['create', 'patch'] })
+  @IsString({ groups: ['create', 'patch'], message: errorMessage.TYPE_ERROR('parentId') })
+  @IsUUID('4', {
+    groups: ['create', 'patch'],
+    message: errorMessage.INVALID_INPUT_ERROR('parentId'),
+  })
   parentId;
 
-  @IsString({ groups: ['create'], message: errorMessage.wrongProperty('sectionId') })
-  @IsUUID('4', { groups: ['create'], message: errorMessage.wrongProperty('sectionId') })
+  @IsEmpty({ groups: ['create'], message: errorMessage.UNNECESSARY_INPUT_ERROR('sectionId') })
+  @IsOptional({ groups: ['patch'] })
+  @IsString({ groups: ['patch'], message: errorMessage.TYPE_ERROR('sectionId') })
+  @IsUUID('4', { groups: ['patch'], message: errorMessage.INVALID_INPUT_ERROR('sectionId') })
   sectionId;
 
-  @IsString({ groups: ['create'], message: errorMessage.wrongProperty('projectId') })
-  @IsUUID('4', { groups: ['create'], message: errorMessage.wrongProperty('projectId') })
+  @IsEmpty({ groups: ['create'], message: errorMessage.UNNECESSARY_INPUT_ERROR('projectId') })
+  @IsOptional({ groups: ['patch'] })
+  @IsString({ groups: ['patch'], message: errorMessage.TYPE_ERROR('projectId') })
+  @IsUUID('4', { groups: ['patch'], message: errorMessage.INVALID_INPUT_ERROR('projectId') })
   projectId;
 
-  @IsString()
-  @IsUUID('4')
+  @IsOptional({ groups: ['patch'] })
+  @IsUUID('4', { groups: ['patch'], message: errorMessage.INVALID_INPUT_ERROR('priorityId') })
   priorityId;
 
-  @IsUUID('4')
+  @IsOptional({ groups: ['patch'] })
+  @IsUUID('4', { groups: ['patch'], message: errorMessage.INVALID_INPUT_ERROR('alarmId') })
   alarmId;
-
-  @IsArray
-  orderedTasks;
 }
 
 module.exports = TaskDto;

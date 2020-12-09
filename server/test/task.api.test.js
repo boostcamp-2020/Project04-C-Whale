@@ -4,6 +4,7 @@ const app = require('@root/app');
 const seeder = require('@test/test-seed');
 const status = require('@test/response-status');
 const { createJWT } = require('@utils/auth');
+const errorMessage = require('@utils/error-messages');
 
 beforeAll(async done => {
   await seeder.up();
@@ -35,16 +36,11 @@ describe('get All task', () => {
         .set('Authorization', `Bearer ${createJWT(expectedUser)}`);
 
       const { tasks } = res.body;
+
       // then
       expect(
-        tasks.every(task =>
-          expectedTasks.some(
-            expectedTask =>
-              Object.entries(expectedTask).toString() === Object.entries(task).toString(),
-          ),
-        ),
+        tasks.every(task => expectedTasks.some(expectedTask => expectedTask.id === task.id)),
       ).toBeTruthy();
-      // expect(tasks).toStrictEqual(expectedTasks);
       done();
     } catch (err) {
       done(err);
@@ -68,10 +64,24 @@ describe('get All task', () => {
       done(err);
     }
   });
+  it('토큰 값이 없는 경우 ', async done => {
+    // given
+    try {
+      // when
+      const res = await request(app).get('/api/task');
+
+      // then
+      expect(res.status).toBe(status.UNAUTHORIZED.CODE);
+      expect(res.body.message).toBe(status.UNAUTHORIZED.MSG);
+      done();
+    } catch (err) {
+      done(err);
+    }
+  });
 });
 
 describe('get task by id', () => {
-  it('get task by id 일반', async done => {
+  it('get task by id 성공', async done => {
     // given
     const taskId = seeder.tasks[0].id;
     const expectedChildren = seeder.tasks.filter(task => task.parentId === taskId);
@@ -82,7 +92,9 @@ describe('get task by id', () => {
         .get(`/api/task/${taskId}`)
         .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`);
 
-      const recievedChildren = res.body.tasks.filter(task => task.parentId === taskId);
+      const recievedChildren = res.body.task.tasks.filter(
+        childTask => childTask.parentId === taskId,
+      );
 
       // then
       recievedChildren.forEach(recievedChild => {
@@ -96,15 +108,72 @@ describe('get task by id', () => {
       done(err);
     }
   });
+  it('잘못된 id 값 요청', async done => {
+    // given
+    const taskId = 'invalidId';
+
+    try {
+      // when
+      const res = await request(app)
+        .get(`/api/task/${taskId}`)
+        .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`);
+
+      // then
+      expect(res.status).toBe(status.BAD_REQUEST.CODE);
+      expect(res.body.message).toBe(errorMessage.INVALID_INPUT_ERROR('id'));
+      done();
+    } catch (err) {
+      done(err);
+    }
+  });
+  it('자신의 task id가 아닌 경우', async done => {
+    // given
+    const taskId = seeder.tasks[0].id;
+
+    try {
+      // when
+      const res = await request(app)
+        .get(`/api/task/${taskId}`)
+        .set('Authorization', `Bearer ${createJWT(seeder.users[1])}`);
+
+      // then
+      expect(res.status).toBe(status.FORBIDDEN.CODE);
+      expect(res.body.message).toBe(status.FORBIDDEN.MSG);
+
+      done();
+    } catch (err) {
+      done(err);
+    }
+  });
+  it('존재하지 않는 task id인 경우', async done => {
+    // given
+    const taskId = 'c213d58a-661a-4395-b0da-fb48dc11fa2e';
+
+    try {
+      // when
+      const res = await request(app)
+        .get(`/api/task/${taskId}`)
+        .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`);
+
+      // then
+      expect(res.status).toBe(status.NOT_FOUND.CODE);
+      expect(res.body.message).toBe(status.NOT_FOUND.MSG);
+
+      done();
+    } catch (err) {
+      done(err);
+    }
+  });
 });
 
 describe('patch task with id', () => {
-  it('patch task with id 일반', async done => {
+  it('patch task with id 성공', async done => {
     // given
-    const newTask = {
+    const taskId = seeder.tasks[0].id;
+    const patchTask = {
       title: '할일',
       projectId: seeder.projects[0].id,
-      labelIdList: JSON.stringify(seeder.labels.map(label => label.id)),
+      sectionId: seeder.sections[0].id,
       priorityId: seeder.priorities[0].id,
       dueDate: new Date(),
       parentId: null,
@@ -115,9 +184,29 @@ describe('patch task with id', () => {
     try {
       // when
       const res = await request(app)
-        .patch(`/api/task/${seeder.tasks[1].id}`)
+        .patch(`/api/task/${taskId}`)
         .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
-        .send(newTask);
+        .send(patchTask);
+
+      // then
+      expect(res.status).toBe(status.SUCCESS.CODE);
+      expect(res.body.message).toBe(status.SUCCESS.MSG);
+      done();
+    } catch (err) {
+      done(err);
+    }
+  });
+  it('isDone 성공', async done => {
+    // given
+    const taskId = seeder.tasks[0].id;
+    const patchTask = { isDone: true };
+
+    try {
+      // when
+      const res = await request(app)
+        .patch(`/api/task/${taskId}`)
+        .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
+        .send(patchTask);
 
       // then
       expect(res.status).toBe(status.SUCCESS.CODE);
@@ -128,33 +217,134 @@ describe('patch task with id', () => {
     }
   });
 
-  it('patch task without labels', async done => {
+  it('id값이 포함된 수정', async done => {
     // given
-    const newTask = {
-      title: '할일',
-      projectId: seeder.projects[0].id,
-      labelIdList: JSON.stringify([]),
-      priorityId: seeder.priorities[0].id,
-      dueDate: new Date(),
-      parentId: null,
-      alarmId: seeder.alarms[0].id,
-      position: 1,
-    };
+    const patchTask = { id: seeder.tasks[0].id, title: '졸리다' };
 
-    try {
-      // when
-      const res = await request(app)
-        .patch(`/api/task/${seeder.tasks[2].id}`)
-        .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
-        .send(newTask);
+    // when
+    const res = await request(app)
+      .patch(`/api/task/${patchTask.id}`)
+      .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
+      .send(patchTask);
 
-      // then
-      expect(res.status).toBe(status.SUCCESS.CODE);
-      expect(res.body.message).toBe(status.SUCCESS.MSG);
-      done();
-    } catch (err) {
-      done(err);
-    }
+    // then
+    expect(res.status).toBe(status.BAD_REQUEST.CODE);
+    expect(res.body.message).toBe(errorMessage.UNNECESSARY_INPUT_ERROR('id'));
+    done();
+  });
+  it('잘못된 title 수정', async done => {
+    // given
+    const taskId = seeder.tasks[0].id;
+    const patchTask = { title: '' };
+
+    // when
+    const res = await request(app)
+      .patch(`/api/task/${taskId}`)
+      .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
+      .send(patchTask);
+
+    // then
+    expect(res.status).toBe(status.BAD_REQUEST.CODE);
+    expect(res.body.message).toBe(errorMessage.INVALID_INPUT_ERROR('title'));
+    done();
+  });
+
+  it('잘못된 parentId 수정', async done => {
+    // given
+    const taskId = seeder.tasks[0].id;
+    const patchTask = { parentId: 'invalidId' };
+
+    // when
+    const res = await request(app)
+      .patch(`/api/task/${taskId}`)
+      .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
+      .send(patchTask);
+
+    // then
+    expect(res.status).toBe(status.BAD_REQUEST.CODE);
+    expect(res.body.message).toBe(errorMessage.INVALID_INPUT_ERROR('parentId'));
+    done();
+  });
+
+  it('잘못된 projectId 수정', async done => {
+    // given
+    const taskId = seeder.tasks[0].id;
+    const patchTask = { projectId: 'invalidId' };
+
+    // when
+    const res = await request(app)
+      .patch(`/api/task/${taskId}`)
+      .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
+      .send(patchTask);
+
+    // then
+    expect(res.status).toBe(status.BAD_REQUEST.CODE);
+    expect(res.body.message).toBe(errorMessage.INVALID_INPUT_ERROR('projectId'));
+    done();
+  });
+  it('잘못된 priorityId 수정', async done => {
+    // given
+    const taskId = seeder.tasks[0].id;
+    const patchTask = { priorityId: 'invalidId' };
+
+    // when
+    const res = await request(app)
+      .patch(`/api/task/${taskId}`)
+      .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
+      .send(patchTask);
+
+    // then
+    expect(res.status).toBe(status.BAD_REQUEST.CODE);
+    expect(res.body.message).toBe(errorMessage.INVALID_INPUT_ERROR('priorityId'));
+    done();
+  });
+  it('잘못된 alarmId 수정', async done => {
+    // given
+    const taskId = seeder.tasks[0].id;
+    const patchTask = { alarmId: 'invalidId' };
+
+    // when
+    const res = await request(app)
+      .patch(`/api/task/${taskId}`)
+      .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
+      .send(patchTask);
+
+    // then
+    expect(res.status).toBe(status.BAD_REQUEST.CODE);
+    expect(res.body.message).toBe(errorMessage.INVALID_INPUT_ERROR('alarmId'));
+    done();
+  });
+  it('잘못된 isDone 수정', async done => {
+    // given
+    const taskId = seeder.tasks[0].id;
+    const patchTask = { isDone: 'hi' };
+
+    // when
+    const res = await request(app)
+      .patch(`/api/task/${taskId}`)
+      .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
+      .send(patchTask);
+
+    // then
+    expect(res.status).toBe(status.BAD_REQUEST.CODE);
+    expect(res.body.message).toBe(errorMessage.TYPE_ERROR('isDone'));
+    done();
+  });
+  it('잘못된 duedate 수정', async done => {
+    // given
+    const taskId = seeder.tasks[0].id;
+    const patchTask = { duedate: new Date('2020-11-11') };
+
+    // when
+    const res = await request(app)
+      .patch(`/api/task/${taskId}`)
+      .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
+      .send(patchTask);
+
+    // then
+    expect(res.status).toBe(status.BAD_REQUEST.CODE);
+    expect(res.body.message).toBe(errorMessage.DUEDATE_ERROR);
+    done();
   });
 });
 
