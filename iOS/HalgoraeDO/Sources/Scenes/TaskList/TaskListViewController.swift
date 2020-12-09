@@ -349,6 +349,18 @@ extension TaskListViewController: UICollectionViewDragDelegate {
             startIndex = collectionView.indexPathForItem(at: session.location(in: collectionView))
         }
         
+        if let cell = collectionView.cellForItem(at: indexPath) as? TaskCollectionViewListCell{
+            let section = dataSource.snapshot().sectionIdentifiers[indexPath.section]
+            var currentSnapshot = dataSource.snapshot(for: section)
+    
+            for item in currentSnapshot.items {
+                if item.id == cell.taskViewModel?.id {
+                    currentSnapshot.collapse([item])
+                }
+            }
+            dataSource.apply(currentSnapshot, to: section, animatingDifferences: true)
+        }
+        
         return dragItems(at: indexPath)
     }
     
