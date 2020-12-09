@@ -15,7 +15,7 @@ const getTaskById = asyncTryCatch(async (req, res) => {
     throw err;
   }
 
-  const task = await taskService.retrieveById(id);
+  const task = await taskService.retrieveById({ id, userId: req.user.id });
 
   responseHandler(res, 200, { task });
 });

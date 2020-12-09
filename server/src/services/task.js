@@ -1,9 +1,12 @@
 const sequelize = require('@models');
+const { isTaskOwner } = require('@services/authorization-check');
+const errorMessage = require('@utils/error-messages');
+const errorCode = require('@utils/error-codes');
 
 const { models } = sequelize;
 const taskModel = models.task;
 
-const retrieveById = async id => {
+const retrieveById = async ({ id, userId }) => {
   const task = await taskModel.findByPk(id, {
     include: [
       'labels',
@@ -17,20 +20,20 @@ const retrieveById = async id => {
     ],
     order: [[taskModel, 'position', 'ASC']],
   });
+  if (!task) {
+    const error = new Error(errorMessage.NOT_FOUND_ERROR('작업'));
+    error.status = errorCode.NOT_FOUND_ERROR;
+    throw error;
+  }
+  if (!(await isTaskOwner({ id, userId }))) {
+    const error = new Error(errorMessage.FORBIDDEN_ERROR);
+    error.status = errorCode.FORBIDDEN_ERROR;
+    throw error;
+  }
   return task;
 };
 
 const retrieveAll = async userId => {
-  // const tasks = await taskModel.findAll({
-  //   attributes: ['id', 'title'],
-  //   include: {
-  //     model: models.project,
-  //     attributes: [],
-  //     where: { creatorId: userId },
-  //   },
-  //   // order: [['title', 'ASC']],
-  // });
-
   const task = await taskModel.findAll({
     where: { isDone: false },
     include: [
