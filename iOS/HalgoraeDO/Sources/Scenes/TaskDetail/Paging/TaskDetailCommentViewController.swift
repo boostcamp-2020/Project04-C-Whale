@@ -30,6 +30,13 @@ class TaskDetailCommentViewController: UIViewController {
         super.viewDidLoad()
         configureCollectionView()
         configureDataSource()
+        addObservers()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        guard let id = task?.id else { return }
+        interactor?.fetchComments(request: .init(id: id))
     }
     
     // MARK: - Initialize
@@ -39,6 +46,22 @@ class TaskDetailCommentViewController: UIViewController {
         self.task = task
     }
     
+    private func addObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    @objc private func keyboardWillShow(_ notification: Notification) {
+        guard let keyboardFrame = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else { return }
+        
+        self.commentAddView.transform = CGAffineTransform(translationX: 0, y: -(keyboardFrame.height - (self.view.window?.safeAreaInsets.bottom ?? 0)))
+    }
+    
+    @objc private func keyboardWillHide(_ notification: Notification) {
+        self.commentAddView.transform = .identity
+    }
+}
+
 // MARK: - Configure CollectionView Layout
 
 private extension TaskDetailCommentViewController {
