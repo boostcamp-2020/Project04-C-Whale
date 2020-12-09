@@ -27,15 +27,15 @@ enum TaskDetailModels {
     
     enum FetchComments {
         struct Request {
-            
+            var id: String
         }
         
         struct Response {
-            
+            var comments: [Comment]
         }
         
         struct ViewModel {
-            
+            var commentVMs: [CommentVM]
         }
     }
     
