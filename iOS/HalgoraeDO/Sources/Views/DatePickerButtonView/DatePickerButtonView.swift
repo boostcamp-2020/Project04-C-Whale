@@ -12,9 +12,12 @@ class DatePickerButtonView: UIView {
     // MARK: - Views
     
     @IBOutlet weak private var dateButton: UIButton!
-    @IBOutlet weak private(set) var contentView: UIView!
-    @IBOutlet weak private(set) var datePicker: UIDatePicker!
-    private(set) var dateFormat = "yyyy년 MM월 dd일"
+    @IBOutlet weak private var contentView: UIView!
+    @IBOutlet weak private var datePicker: UIDatePicker!
+    private var dateFormat = "yyyy년 MM월 dd일"
+    var date: Date {
+        return datePicker.date
+    }
     
     // MARK: - Initialize
     
