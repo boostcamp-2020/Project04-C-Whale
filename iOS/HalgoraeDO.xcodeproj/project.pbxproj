@@ -83,6 +83,8 @@
 		AA19EF2F2576835900E59017 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA19EF2E2576835900E59017 /* Colors.xcassets */; };
 		AA19EF332576846100E59017 /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA19EF322576846100E59017 /* UIColor+.swift */; };
 		AA354C2A2570002600072657 /* TaskAddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA354C292570002600072657 /* TaskAddViewController.swift */; };
+		AAA74C74257DAE00004FC883 /* AddProjectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA74C73257DAE00004FC883 /* AddProjectViewController.swift */; };
+		AAA74C9D25805BC3004FC883 /* TaskDetailModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA74C9C25805BC2004FC883 /* TaskDetailModels.swift */; };
 		AAEE20DE2564E4A900668FAD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAEE20DD2564E4A900668FAD /* AppDelegate.swift */; };
 		AAEE20E02564E4A900668FAD /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAEE20DF2564E4A900668FAD /* SceneDelegate.swift */; };
 		AAEE20E52564E4AA00668FAD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AAEE20E32564E4AA00668FAD /* Main.storyboard */; };
@@ -172,6 +174,10 @@
 		AA19EF2E2576835900E59017 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		AA19EF322576846100E59017 /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
 		AA354C292570002600072657 /* TaskAddViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskAddViewController.swift; sourceTree = "<group>"; };
+		AAA74C73257DAE00004FC883 /* AddProjectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProjectViewController.swift; sourceTree = "<group>"; };
+		AAA74C7C257FBA9A004FC883 /* TaskListTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TaskListTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		AAA74C7D257FBA9A004FC883 /* ServiceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ServiceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		AAA74C9C25805BC2004FC883 /* TaskDetailModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskDetailModels.swift; sourceTree = "<group>"; };
 		AAEE20DD2564E4A900668FAD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AAEE20DF2564E4A900668FAD /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		AAEE20E42564E4AA00668FAD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -284,6 +290,7 @@
 				4C4236FD25761AA00068A252 /* TaskDetailViewController.swift */,
 				4C4237162576340D0068A252 /* Paging */,
 				4C42371A25763B080068A252 /* TaskDetailInteractor.swift */,
+				AAA74C9C25805BC2004FC883 /* TaskDetailModels.swift */,
 				4C42371E25763B100068A252 /* TaskDetailWorker.swift */,
 				4C42372225763B1C0068A252 /* TaskDetailPresenter.swift */,
 			);
@@ -376,6 +383,7 @@
 			isa = PBXGroup;
 			children = (
 				4CCD32762570A4EF00A46D10 /* MenuViewController.swift */,
+				AAA74C73257DAE00004FC883 /* AddProjectViewController.swift */,
 			);
 			path = Menu;
 			sourceTree = "<group>";
@@ -410,6 +418,8 @@
 				4CCD31DA256EBC0000A46D10 /* TaskListTests */,
 				4CE91514257CCEFA00BCF398 /* ServiceTests */,
 				4CE91597257D315800BCF398 /* HalgoraeDO.app */,
+				AAA74C7C257FBA9A004FC883 /* TaskListTests.xctest */,
+				AAA74C7D257FBA9A004FC883 /* ServiceTests.xctest */,
 			);
 			sourceTree = "<group>";
 		};
@@ -481,7 +491,7 @@
 			);
 			name = TaskListTests;
 			productName = TaskListTests;
-			productReference = 4CE91598257D315800BCF398 /* TaskListTests.xctest */;
+			productReference = AAA74C7C257FBA9A004FC883 /* TaskListTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		4CE91512257CCEFA00BCF398 /* ServiceTests */ = {
@@ -499,7 +509,7 @@
 			);
 			name = ServiceTests;
 			productName = ServiceTests;
-			productReference = 4CE91599257D315800BCF398 /* ServiceTests.xctest */;
+			productReference = AAA74C7D257FBA9A004FC883 /* ServiceTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		AAEE20D92564E4A900668FAD /* HalgoraeDO */ = {
@@ -650,6 +660,7 @@
 				4C42370D25762FC10068A252 /* TaskDetailCommentViewController.swift in Sources */,
 				4C3F573F256D2263006D7C9F /* RoundButton.swift in Sources */,
 				4C4236F825761A8E0068A252 /* TaskDetailPageViewController.swift in Sources */,
+				AAA74C9D25805BC3004FC883 /* TaskDetailModels.swift in Sources */,
 				4C42370425761CB00068A252 /* TaskDetailSubTasksViewController.swift in Sources */,
 				AAEE20DE2564E4A900668FAD /* AppDelegate.swift in Sources */,
 				4C3F567E256B8CB3006D7C9F /* TaskListModels.swift in Sources */,
@@ -676,6 +687,7 @@
 				4C3F5700256CF8A7006D7C9F /* TaskContentConfigure.swift in Sources */,
 				4C4238742579358A0068A252 /* DataRequest.swift in Sources */,
 				AA19EF1B25756C3200E59017 /* AddSectionViewCell.swift in Sources */,
+				AAA74C74257DAE00004FC883 /* AddProjectViewController.swift in Sources */,
 				4C42371B25763B080068A252 /* TaskDetailInteractor.swift in Sources */,
 				4C423896257A2A560068A252 /* ParameterEncoding.swift in Sources */,
 				4C42387A25794C8C0068A252 /* SessionManager.swift in Sources */,
