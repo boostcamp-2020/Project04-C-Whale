@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-click-outside="clickOutside">
     <div v-if="showForm">
       <form @submit.prevent="submit">
         <div class="title-data">
@@ -39,6 +39,11 @@ export default {
         });
       }
     },
+    clickOutside() {
+      if (this.showForm) {
+        this.toggle();
+      }
+    },
     submit() {
       switch (this.type) {
         case "project":
@@ -58,6 +63,12 @@ export default {
           break;
       }
       this.toggle();
+    },
+  },
+  watch: {
+    originalTitle: function () {
+      this.newTitle = this.originalTitle;
+      this.showForm = false;
     },
   },
 };

@@ -72,6 +72,7 @@ describe('create project', () => {
     // given
     const requestBody = {
       title: '새 프로젝트',
+      color: '#FFA7A7',
       isList: true,
     };
     const expectedUser = seeder.users[0];
@@ -95,6 +96,7 @@ describe('update project', () => {
     const expectedProjectId = seeder.projects[0].id;
     const requestBody = {
       title: 'PUT으로 변경된 프로젝트',
+      color: '#FFA7A7',
       isList: true,
       isFavorite: true,
     };
@@ -233,176 +235,6 @@ describe('delete section', () => {
     // then
     expect(res.status).toBe(status.SUCCESS.CODE);
     expect(res.body.message).toBe(status.SUCCESS.MSG);
-    done();
-  });
-});
-
-describe('post task', () => {
-  it('일반 task 생성', async done => {
-    // given
-    const expectedProjectId = seeder.projects[0].id;
-    const expectedSectionId = seeder.sections[0].id;
-    const newTask = {
-      title: '할일',
-      labelIdList: JSON.stringify(seeder.labels.map(label => label.id)),
-      priorityId: seeder.priorities[0].id,
-      dueDate: new Date(),
-      parentId: null,
-      alarmId: seeder.alarms[0].id,
-      position: 1,
-    };
-
-    // when
-    const res = await request(app)
-      .post(`/api/project/${expectedProjectId}/section/${expectedSectionId}/task`)
-      .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
-      .send(newTask);
-
-    // then
-    expect(res.status).toBe(status.SUCCESS.POST.CODE);
-    expect(res.body.message).toBe(status.SUCCESS.MSG);
-    done();
-  });
-
-  it('project 없이 생성', async done => {
-    // TODO: validation 체크하는 로직 생각해서 테스트 코드 작성해야 합니다.
-    // given
-
-    // when
-
-    // then
-    expect(true).toBeFalsy();
-    done();
-  });
-
-  it('label 없이 생성', async done => {
-    // given
-    const expectedProjectId = seeder.projects[0].id;
-    const expectedSectionId = seeder.sections[0].id;
-    const newTask = {
-      title: '할일',
-      labelIdList: JSON.stringify([]),
-      priorityId: seeder.priorities[1].id,
-      dueDate: new Date(),
-      parentId: null,
-      alarmId: seeder.alarms[0].id,
-      position: 1,
-    };
-
-    // when
-    const res = await request(app)
-      .post(`/api/project/${expectedProjectId}/section/${expectedSectionId}/task`)
-      .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
-      .send(newTask);
-
-    // then
-    expect(res.status).toBe(status.SUCCESS.POST.CODE);
-    expect(res.body.message).toBe(status.SUCCESS.MSG);
-    done();
-  });
-
-  it('priority 없이 생성', async done => {
-    // given
-    const expectedProjectId = seeder.projects[0].id;
-    const expectedSectionId = seeder.sections[0].id;
-    const newTask = {
-      title: '할일',
-      labelIdList: JSON.stringify([]),
-      priorityId: null,
-      dueDate: new Date(),
-      parentId: null,
-      alarmId: seeder.alarms[0].id,
-      position: 1,
-    };
-
-    // when
-    const res = await request(app)
-      .post(`/api/project/${expectedProjectId}/section/${expectedSectionId}/task`)
-      .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
-      .send(newTask);
-
-    // then
-    expect(res.status).toBe(status.SUCCESS.POST.CODE);
-    expect(res.body.message).toBe(status.SUCCESS.MSG);
-    done();
-  });
-
-  it('하위 할일 생성', async done => {
-    // given
-    const expectedProjectId = seeder.projects[0].id;
-    const expectedSectionId = seeder.sections[0].id;
-    const newTask = {
-      title: '할일',
-      labelIdList: JSON.stringify([]),
-      priorityId: seeder.priorities[1].id,
-      dueDate: new Date(),
-      parentId: seeder.tasks[0].id,
-      alarmId: seeder.alarms[0].id,
-      position: 1,
-    };
-
-    // when
-    const res = await request(app)
-      .post(`/api/project/${expectedProjectId}/section/${expectedSectionId}/task`)
-      .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
-      .send(newTask);
-
-    // then
-    expect(res.status).toBe(status.SUCCESS.POST.CODE);
-    expect(res.body.message).toBe(status.SUCCESS.MSG);
-    done();
-  });
-
-  it('alarm 없이 생성', async done => {
-    // given
-    const expectedProjectId = seeder.projects[0].id;
-    const expectedSectionId = seeder.sections[0].id;
-    const newTask = {
-      title: '할일',
-      labelIdList: JSON.stringify([]),
-      priorityId: seeder.priorities[1].id,
-      dueDate: new Date(),
-      parentId: seeder.tasks[0].id,
-      alarmId: null,
-      position: 1,
-    };
-
-    // when
-    const res = await request(app)
-      .post(`/api/project/${expectedProjectId}/section/${expectedSectionId}/task`)
-      .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
-      .send(newTask);
-
-    // then
-    expect(res.status).toBe(status.SUCCESS.POST.CODE);
-    expect(res.body.message).toBe(status.SUCCESS.MSG);
-    done();
-  });
-
-  it('유요하지 않은 duedate 생성', async done => {
-    // given
-    const expectedProjectId = seeder.projects[0].id;
-    const expectedSectionId = seeder.sections[0].id;
-    const newTask = {
-      title: '할일',
-      projectId: seeder.projects[1].id,
-      labelIdList: JSON.stringify([]),
-      priorityId: seeder.priorities[1].id,
-      dueDate: '2020-10-28',
-      parentId: seeder.tasks[0].id,
-      alarmId: seeder.alarms[0].id,
-      position: 1,
-    };
-
-    // when
-    const res = await request(app)
-      .post(`/api/project/${expectedProjectId}/section/${expectedSectionId}/task`)
-      .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
-      .send(newTask);
-
-    // then
-    expect(res.status).toBe(status.BAD_REQUEST.CODE);
-    expect(res.body.message).toBe('유효하지 않은 dueDate');
     done();
   });
 });

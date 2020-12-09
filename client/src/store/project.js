@@ -1,6 +1,6 @@
 import projectAPI from "../api/project";
 import taskAPI from "../api/task";
-import swapArrayItem from "../utils/array-index-swap";
+import router from "@/router";
 
 const state = {
   currentProject: {
@@ -10,17 +10,18 @@ const state = {
     sections: [],
   },
   projectInfos: [],
-  todayProject: {
-    id: "",
-    count: 0,
-  },
+  projectList: {},
 };
 
 const getters = {
   currentProject: (state) => state.currentProject,
   todayProject: (state) => state.todayProject,
-  namedProjectInfos: (state) => state.projectInfos.filter((project) => project.title !== "관리함"),
+  projectInfos: (state) => state.projectInfos,
+  namedProjectInfos: (state) =>
+    state.projectInfos.filter((project) => project.title !== "관리함" && !project.isFavorite),
   managedProject: (state) => state.projectInfos.find((project) => project.title === "관리함"),
+  favoriteProjectInfos: (state) => state.projectInfos.filter((project) => project.isFavorite),
+  projectList: (state) => state.projectList,
 };
 
 const actions = {
@@ -53,6 +54,41 @@ const actions = {
       }
 
       await dispatch("fetchCurrentProject", projectId);
+      await dispatch("fetchAllTasks");
+    } catch (err) {
+      commit("SET_ERROR_ALERT", err.response);
+    }
+  },
+  async updateProject({ dispatch, commit }, { projectId, data }) {
+    try {
+      await projectAPI.updateProject(projectId, data);
+
+      await dispatch("fetchProjectInfos");
+      commit("SET_SUCCESS_ALERT", "프로젝트가 수정되었습니다.");
+    } catch (err) {
+      commit("SET_ERROR_ALERT", err.response);
+    }
+  },
+  async deleteProject({ dispatch, commit }, { projectId }) {
+    try {
+      await projectAPI.deleteProject(projectId);
+      await dispatch("fetchProjectInfos");
+      commit("SET_SUCCESS_ALERT", "프로젝트가 삭제되었습니다.");
+    } catch (err) {
+      commit("SET_ERROR_ALERT", err.response);
+    }
+  },
+  async addSection({ dispatch, commit }, { projectId, section }) {
+    try {
+      const { data } = await projectAPI.createSection(projectId, {
+        title: section.title,
+      });
+
+      if (data.message !== "ok") {
+        throw new Error();
+      }
+
+      await dispatch("fetchCurrentProject", projectId);
     } catch (err) {
       commit("SET_ERROR_ALERT", err.response);
     }
@@ -67,6 +103,7 @@ const actions = {
       }
 
       await dispatch("fetchCurrentProject", projectId);
+      await dispatch("fetchAllTasks");
     } catch (err) {
       commit("SET_ERROR_ALERT", err.response);
     }
@@ -81,6 +118,7 @@ const actions = {
       }
 
       await dispatch("fetchCurrentProject", projectId);
+      await dispatch("fetchAllTasks");
     } catch (err) {
       commit("SET_ERROR_ALERT", err.response);
     }
@@ -95,6 +133,8 @@ const actions = {
       }
 
       await dispatch("fetchCurrentProject", task.projectId);
+      await dispatch("fetchAllTasks");
+      commit("ADD_TASK_COUNT", task.projectId);
     } catch (err) {
       commit("SET_ERROR_ALERT", err.response);
     }
@@ -110,23 +150,32 @@ const actions = {
       // alert("프로젝트 전체 정보 조회 요청 실패");
     }
   },
+  async addProject({ dispatch, commit }, data) {
+    try {
+      const response = await projectAPI.createProject(data);
+      await dispatch("fetchProjectInfos");
 
-  async changeTaskPosition({ dispatch, rootState }, { section, task }) {
-    const taskIds = section.tasks.map((task) => task.id);
-    const draggingTask = rootState.task.draggingTask;
-    console.log(task.position);
-    if (task.sectionId === draggingTask.sectionId) {
-      swapArrayItem(taskIds, draggingTask.position, task.position);
-    } else {
-      taskIds.splice(task.position + 1, 0, task.id);
+      commit("SET_SUCCESS_ALERT", "프로젝트가 생성되었습니다.");
+      router.push("/project/" + response.data.projectId);
+    } catch (err) {
+      commit("SET_ERROR_ALERT", err.response);
     }
+  },
+  async changeTaskPosition({ rootState, dispatch }, { orderedTasks }) {
+    const { draggingTask, dropTargetSection } = rootState.dragAndDrop;
 
     try {
-      await taskAPI.updateTask(draggingTask.id, { sectionId: section.id });
-
-      const { data } = await projectAPI.updateTaskPosition(section.projectId, section.id, {
-        orderedTasks: taskIds,
+      await taskAPI.updateTask(draggingTask.id, {
+        sectionId: dropTargetSection.id,
       });
+
+      const { data } = await projectAPI.updateTaskPosition(
+        dropTargetSection.projectId,
+        dropTargetSection.id,
+        {
+          orderedTasks,
+        }
+      );
 
       if (data.message !== "ok") {
         throw new Error();
@@ -135,16 +184,25 @@ const actions = {
       alert("위치 변경 실패");
     }
 
-    await dispatch("fetchCurrentProject", section.projectId);
+    await dispatch("fetchCurrentProject", dropTargetSection.projectId);
+    await dispatch("fetchAllTasks");
   },
 };
 
 const mutations = {
-  //TODO: function vs arrow-function style-guide 보고 통일하기
-  SET_CURRENT_PROJECT: (state, currentProject) => (state.currentProject = currentProject),
+  SET_CURRENT_PROJECT: (state, currentProject) => {
+    const newlyFetchedProject = {};
+    newlyFetchedProject[currentProject.id] = currentProject;
+    state.projectList = { ...state.projectList, ...newlyFetchedProject };
+    state.currentProject = currentProject;
+  },
   SET_PROJECT_INFOS: (state, projectInfos) => (state.projectInfos = projectInfos),
   SET_TODAY_PROJECT: (state, todayProject) => (state.todayProject = todayProject),
-  // newTodo: (state, todo) => state.todos.unshift(todo),
+  ADD_TASK_COUNT: (state, projectId) => {
+    const copyed = [...state.projectInfos];
+    copyed.find((projectInfo) => projectInfo.id === projectId).taskCount += 1;
+    state.projectInfos = [...copyed];
+  },
 };
 
 export default {

@@ -6,8 +6,18 @@ const sectionModel = models.section;
 
 const create = async ({ projectId, ...data }) => {
   const result = await sequelize.transaction(async t => {
-    const project = await models.project.findByPk(projectId);
-    const section = await sectionModel.create(data, { transaction: t });
+    const project = await models.project.findByPk(projectId, {
+      include: sectionModel,
+    });
+
+    const maxPosition = project.toJSON().sections.reduce((max, section) => {
+      return Math.max(max, section.position);
+    }, 0);
+
+    const section = await sectionModel.create(
+      { ...data, position: maxPosition + 1 },
+      { transaction: t },
+    );
     await section.setProject(project, {
       transaction: t,
     });

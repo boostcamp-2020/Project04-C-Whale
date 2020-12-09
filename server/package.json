@@ -3,8 +3,9 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node ./src/app.js",
-    "dev": "nodemon ./src/app.js",
+    "build": "babel src --out-dir dist",
+    "start": "forever ./dist/app.js",
+    "dev": "nodemon --exec babel-node ./src/app.js",
     "seed": "npx sequelize-cli db:seed:all",
     "unseed": "npx sequelize-cli db:seed:undo:all",
     "test": "jest --detectOpenHandles --forceExit",
@@ -28,6 +29,12 @@
     }
   },
   "dependencies": {
+    "@babel/cli": "^7.12.8",
+    "@babel/core": "^7.12.3",
+    "@babel/node": "^7.12.6",
+    "@babel/plugin-proposal-class-properties": "^7.12.1",
+    "class-transformer": "^0.3.1",
+    "class-validator": "^0.12.2",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "~4.16.1",
@@ -44,6 +51,8 @@
     "uuid": "^8.3.1"
   },
   "devDependencies": {
+    "@babel/eslint-parser": "^7.12.1",
+    "@babel/plugin-proposal-decorators": "^7.12.1",
     "concurrently": "^5.3.0",
     "eslint": "^7.13.0",
     "eslint-config-airbnb-base": "^14.2.0",

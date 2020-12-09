@@ -7,6 +7,7 @@ const state = {
     name: "",
     email: "",
   },
+  isAuth: false,
 };
 
 const mutations = {
@@ -16,6 +17,7 @@ const mutations = {
       name: user.name,
       email: user.email,
     };
+    state.isAuth = true;
   },
   LOGOUT() {
     localStorage.removeItem("token");
@@ -38,7 +40,7 @@ const actions = {
         return;
       }
     } catch (err) {
-      commit("SET_ERROR_ALERT", err.message);
+      commit("SET_ERROR_ALERT", err.response);
       router.replace("/login").catch(() => {});
       return;
     }

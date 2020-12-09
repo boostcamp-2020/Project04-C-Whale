@@ -1,31 +1,30 @@
 import taskAPI from "../api/task";
 import { isToday } from "@/utils/date";
 
+const SUCCESS_MESSAGE = "ok";
+
 const state = {
   newTask: {},
   tasks: [],
-  draggingTask: {},
   currentTask: {},
 };
 
 const getters = {
   currentTask: (state) => state.currentTask,
-  todayTasks: (state) => state.tasks.filter((task) => isToday(task)),
-  expiredTasks: (state) => state.tasks.filter((task) => !isToday(task)),
+  todayTasks: (state) => state.tasks.filter((task) => isToday(task.dueDate)),
+  expiredTasks: (state) => state.tasks.filter((task) => !isToday(task.dueDate)),
   taskCount: (state) => {
     return state.tasks.reduce((acc, task) => acc + task.tasks.length, state.tasks.length);
   },
-  draggingTask: (state) => state.draggingTask,
 };
 
 const actions = {
   async fetchAllTasks({ commit }) {
     try {
-      const { data: tasks } = await taskAPI.getAllTasks();
-      commit("SET_TASKS", tasks);
+      const { data } = await taskAPI.getAllTasks();
+      commit("SET_TASKS", data.tasks);
     } catch (err) {
       commit("SET_ERROR_ALERT", err.response);
-      // alert("작업 전체 조회 요청 실패");
     }
   },
   startDragTask({ commit }, { task }) {
@@ -39,11 +38,21 @@ const actions = {
       commit("SET_ERROR_ALERT", err.response);
     }
   },
+  async updateTask({ commit, dispatch }, task) {
+    try {
+      const { data } = await taskAPI.updateTask(task);
+      if (data.message !== SUCCESS_MESSAGE) {
+        throw Error;
+      }
+      dispatch("fetchAllTasks");
+    } catch (err) {
+      commit("SET_ERROR_ALERT", err.response);
+    }
+  },
 };
 
 const mutations = {
   SET_TASKS: (state, tasks) => (state.tasks = tasks),
-  SET_DRAGGING_TASK: (state, task) => (state.draggingTask = task),
   SET_CURRENT_TASK: (state, currentTask) => (state.currentTask = currentTask),
 };
 

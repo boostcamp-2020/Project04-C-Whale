@@ -7,12 +7,29 @@ const projectModel = models.project;
 
 const retrieveProjects = async () => {
   const projects = await projectModel.findAll({
-    attributes: ['id', 'title', [sequelize.fn('COUNT', sequelize.col('tasks.id')), 'taskCount']],
-    include: {
-      model: models.task,
-      attributes: [],
-    },
-    group: ['project.id'],
+    raw: true,
+    attributes: [
+      'id',
+      'title',
+      'color',
+      'isFavorite',
+      'isList',
+      [sequelize.fn('COUNT', sequelize.col('tasks.id')), 'taskCount'],
+      [sequelize.col('sections.id'), 'defaultSectionId'],
+    ],
+    include: [
+      {
+        model: models.task,
+        attributes: [],
+      },
+      {
+        model: models.section,
+        required: false,
+        where: { position: 0 },
+        attributes: [],
+      },
+    ],
+    group: ['project.id', 'sections.id'],
   });
 
   return projects;
@@ -77,7 +94,7 @@ const create = async data => {
       transaction: t,
     });
     const section = await models.section.create(
-      {},
+      { title: '기본 섹션', position: 0 },
       {
         transaction: t,
       },
@@ -88,7 +105,7 @@ const create = async data => {
     return section.projectId;
   });
 
-  return !!result;
+  return result;
 };
 
 const findOrCreate = async data => {
@@ -98,17 +115,13 @@ const findOrCreate = async data => {
   return await create(data);
 };
 
-const update = async ({ projectId, ...data }) => {
-  const result = await projectModel.update(data, {
-    where: {
-      id: projectId,
-    },
-  });
+const update = async ({ id, ...data }) => {
+  const result = await projectModel.update(data, { where: { id } });
 
   return result === 1;
 };
 
-const remove = async id => {
+const remove = async ({ id }) => {
   const result = await projectModel.destroy({ where: { id } });
 
   return result === 1;

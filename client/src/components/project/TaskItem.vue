@@ -2,11 +2,10 @@
   <v-list-item
     draggable="true"
     @dragstart="handleDragStart"
-    @dragend="handleDragEnd"
     @dragover.prevent="handleDragOver"
-    @dragleave="handleDragLeave"
     @drop.prevent="handleDrop"
-    :class="{ dragging, draggedOver }"
+    :class="{ dragging: task.dragging }"
+    class="task-item text-subtitle"
   >
     <v-list-item-action>
       <v-radio-group>
@@ -20,30 +19,34 @@
 
     <div class="task-div" @click="moveToTaskDetail()">
       <v-list-item-content>
-        <v-list-item-title>{{ task.title }}</v-list-item-title>
+        <v-list-item-title>
+          <vue-markdown class="mark-down">
+            {{ task.title }}
+          </vue-markdown>
+        </v-list-item-title>
       </v-list-item-content>
     </div>
-    <router-view />
+    <router-view :key="$route.params.taskId" />
   </v-list-item>
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions, mapMutations } from "vuex";
+import VueMarkDown from "vue-markdown";
 
 export default {
   props: {
     task: Object,
     section: Object,
     position: Number,
+    dragging: Boolean,
   },
-  data() {
-    return {
-      dragging: false,
-      draggedOver: false,
-    };
+  components: {
+    "vue-markdown": VueMarkDown,
   },
   methods: {
-    ...mapActions(["updateTaskToDone", "startDragTask", "changeTaskPosition"]),
+    ...mapActions(["updateTaskToDone"]),
+    ...mapMutations(["SET_DRAGGING_TASK", "SET_DROP_TARGET_SECTION"]),
 
     moveToTaskDetail() {
       const destinationInfo = this.$route.params.projectId
@@ -55,39 +58,26 @@ export default {
 
       this.$router.push(destinationInfo).catch(() => {});
     },
-    handleDragStart() {
-      this.dragging = true;
-      this.startDragTask({
-        task: {
-          ...this.task,
-          position: this.position,
-        },
-      });
-    },
-    handleDragEnd() {
-      this.dragging = false;
-    },
-    handleDragOver() {
-      this.draggedOver = true;
 
-      // const offset = this.middleY - e.clientY;
-      // if (offset < 0) {
-      //   this.changeTaskPosition({
-      //     targetSection: this.section,
-      //     task: this.task,
-      //     position: this.position + 1,
-      //   });
-      // }
+    handleDragStart() {
+      this.SET_DRAGGING_TASK(this.task);
+      this.$emit("taskDragStart", { ...this.task, $el: this.$el });
     },
-    handleDragLeave() {
-      this.draggedOver = false;
+
+    handleDragOver(e) {
+      if (this.task.id === this.draggingTask.id) {
+        return;
+      }
+
+      this.SET_DROP_TARGET_SECTION(this.section);
+
+      const offset = this.middleY - e.clientY;
+      this.$emit("taskDragOver", {
+        position: offset > 0 ? this.position : this.position + 1,
+      });
     },
     handleDrop() {
-      this.changeTaskPosition({
-        section: this.section,
-        task: this.task,
-      });
-      this.draggedOver = false;
+      this.$emit("taskDrop");
     },
   },
   computed: {
@@ -102,6 +92,10 @@ export default {
 </script>
 
 <style>
+.task-item {
+  height: 1px;
+}
+
 .container {
   min-width: 500px;
 }
@@ -111,20 +105,18 @@ export default {
 }
 
 .dragging {
-  opacity: 0.3;
+  opacity: 0.2;
+  background-color: #ededed;
 }
 
-.draggedOver {
-  border-bottom: 2px solid blue !important;
-}
 .task-div {
   width: 100%;
 }
 .task-div:hover {
-  border-radius: 10px;
+  /* border-radius: 10px; */
   cursor: pointer;
-  background-color: #1c2b82;
+  /* background-color: #1c2b82;
   color: white;
-  padding-left: 10px;
+  padding-left: 10px; */
 }
 </style>
