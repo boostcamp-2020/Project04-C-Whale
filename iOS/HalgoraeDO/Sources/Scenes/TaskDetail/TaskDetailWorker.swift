@@ -16,7 +16,13 @@ class TaskDetailWorker {
         networkManager = NetworkManager(sessionManager: sessionManager)
     }
     
-    func request<T: Decodable>(endPoint: TaskEndPoint, completion: @escaping ((T?, NetworkError?) -> Void)) {
+    func requestTasks<T: Decodable>(endPoint: TaskEndPoint, completion: @escaping ((T?, NetworkError?) -> Void)) {
+        networkManager.fetchData(endPoint) { (result: T?, error: NetworkError?) in
+            completion(result, error)
+        }
+    }
+    
+    func requestComments<T: Decodable>(endPoint: CommentEndPoint, completion: @escaping ((T?, NetworkError?) -> Void)) {
         networkManager.fetchData(endPoint) { (result: T?, error: NetworkError?) in
             completion(result, error)
         }

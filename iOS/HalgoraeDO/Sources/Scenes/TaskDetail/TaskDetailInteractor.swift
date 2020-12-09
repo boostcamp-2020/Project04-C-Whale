@@ -29,7 +29,7 @@ class TaskDetailInteractor: TaskDetailDataStore {
 extension TaskDetailInteractor: TaskDetailBusinessLogic {
     func fetchSubTasks(request: TaskDetailModels.FetchSubTasks.Request) {
         
-        worker.request(endPoint: .get(taskId: request.id)) { [weak self] (tasks: [Task]?, error) in
+        worker.requestTasks(endPoint: .get(taskId: request.id)) { [weak self] (tasks: [Task]?, error) in
             self?.presenter.presentFetchedTasks(response: .init(tasks: tasks ?? []))
         }
     }
