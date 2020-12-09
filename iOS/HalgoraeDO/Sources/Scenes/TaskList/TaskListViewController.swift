@@ -250,7 +250,7 @@ private extension TaskListViewController {
         }
     }
     
-    func snapshot(taskItems: [TaskVM]) -> NSDiffableDataSourceSectionSnapshot<TaskVM> {
+    func generateSnapshot(taskItems: [TaskVM]) -> NSDiffableDataSourceSectionSnapshot<TaskVM> {
         var snapshot = NSDiffableDataSourceSectionSnapshot<TaskVM>()
         func addItems(_ taskItems: [TaskVM], to parent: TaskVM?) {
             snapshot.append(taskItems, to: parent)
@@ -271,13 +271,14 @@ private extension TaskListViewController {
 extension TaskListViewController: TaskListDisplayLogic {
     
     func displayFetchTasks(viewModel: TaskListModels.FetchTasks.ViewModel) {
-        
+        var snapshot = NSDiffableDataSourceSnapshot<TaskListModels.SectionVM, TaskListModels.DisplayedTask>()
+        snapshot.appendSections(viewModel.sectionVMs)
+        dataSource.apply(snapshot, animatingDifferences: false)
         for sectionVM in viewModel.sectionVMs {
-            var sectionSnapshot = NSDiffableDataSourceSectionSnapshot<TaskListModels.DisplayedTask>()
-            sectionSnapshot.append(sectionVM.tasks)
-            DispatchQueue.main.async {
-                self.dataSource.apply(sectionSnapshot, to: sectionVM)
-            }
+            var sectionSnapshot = generateSnapshot(taskItems: sectionVM.tasks)
+         //   DispatchQueue.main.async {
+            dataSource.apply(sectionSnapshot, to: sectionVM)
+           // }
         }
     }
     
