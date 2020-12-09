@@ -1,8 +1,6 @@
 <template>
-  <v-list class="mb-5" v-show="tasks.length > 0">
-    <v-list-item class="font-weight-black text-h6">{{
-      type === "expired" ? "기한이지난" : "오늘"
-    }}</v-list-item>
+  <v-list class="mb-5" v-show="type !== 'expired' || (type === 'expired' && tasks.length > 0)">
+    <v-list-item class="font-weight-black text-h6">{{ typeString[type] }}</v-list-item>
     <div v-for="task in tasks" :key="task.id" class="task-container">
       <TaskItem :task="task" />
       <v-divider />
@@ -22,6 +20,14 @@ export default {
   props: {
     tasks: Array,
     type: String,
+  },
+  data() {
+    return {
+      typeString: {
+        expired: "기한이 지난",
+        today: "오늘",
+      },
+    };
   },
   components: { TaskItem, AddTask },
 };
