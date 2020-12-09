@@ -25,7 +25,7 @@ describe('user api', () => {
     try {
       request(app)
         .get('/api/user/me') // when
-        .set('Authorization', createJWT(seeder.users[0]))
+        .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
         .end((err, res) => {
           if (err) {
             throw err;

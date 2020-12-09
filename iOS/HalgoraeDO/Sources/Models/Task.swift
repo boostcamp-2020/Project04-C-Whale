@@ -15,22 +15,22 @@ class Task {
     var section: String
     var title: String
     var isCompleted: Bool
-    var depth: Int
+    var priority: Priority
     weak var parent: Task?
     private(set) var subTasks: [Task]
     
     init(section: String = "",
          title: String,
          isCompleted: Bool = false,
-         depth: Int = 0,
+         priority: Priority = .four,
          parent: Task? = nil,
          subTasks: [Task] = []) {
         
         self.section = section
         self.title = title
         self.isCompleted = isCompleted
-        self.depth = depth
         self.parent = parent
+        self.priority = priority
         self.subTasks = subTasks
         self.subTasks.forEach { $0.parent = self }
     }
@@ -42,13 +42,11 @@ class Task {
     func insert(_ task: Task, at index: Int) {
         assert(!(0..<subTasks.count ~= index), "Out of Index")
         task.parent = self
-        task.depth = self.depth + 1
         subTasks.insert(task, at: index)
     }
     
     func append(_ task: Task) {
         task.parent = self
-        task.depth = self.depth + 1
         self.subTasks.append(task)
     }
     

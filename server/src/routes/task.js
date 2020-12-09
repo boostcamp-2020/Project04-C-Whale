@@ -1,14 +1,15 @@
 const router = require('express').Router();
 const taskController = require('@controllers/task');
+const commentController = require('@controllers/comment');
 
+router.get('/', taskController.getAllTasks);
 router.get('/:taskId', taskController.getTaskById);
-router.post('/', taskController.createOrUpdateTask);
-router.post('/:taskId', taskController.createOrUpdateTask);
+router.patch('/:taskId', taskController.updateTask);
 router.delete('/:taskId', taskController.deleteTask);
 
-router.get('/:taskId/comment', taskController.getComments);
-router.post('/:taskId/comment', taskController.createComment);
-router.put('/:taskId/comment/:commentId', taskController.updateComment);
-router.delete('/:taskId/comment/:commentId', taskController.deleteComment);
+router.get('/:taskId/comment', commentController.getComments);
+router.post('/:taskId/comment', commentController.createComment);
+router.put('/:taskId/comment/:commentId', commentController.updateComment);
+router.delete('/:taskId/comment/:commentId', commentController.deleteComment);
 
 module.exports = router;

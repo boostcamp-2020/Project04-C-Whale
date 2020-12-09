@@ -1,60 +1,39 @@
-const labelModel = require('@models').models.label;
+const labelService = require('@services/label');
 const { responseHandler } = require('@utils/handler');
+const { asyncTryCatch } = require('@utils/async-try-catch');
 
-const getAllLabels = async (req, res, next) => {
-  try {
-    const labels = await labelModel.findAll({
-      where: { userId: req.user.id },
-      attributes: ['id', 'title', 'color'],
-    });
+const getAllLabels = asyncTryCatch(async (req, res) => {
+  const labels = await labelService.retrieveAll(req.user.id);
 
-    responseHandler(res, 200, { labels });
-  } catch (err) {
-    next(err);
+  responseHandler(res, 200, labels);
+});
+
+const createLabel = asyncTryCatch(async (req, res) => {
+  const isCreated = await labelService.create({ userId: req.user.id, ...req.body });
+
+  if (!isCreated) {
+    throw Error('Internal Server Error');
   }
-};
+  responseHandler(res, 201);
+});
 
-const createLabel = async (req, res, next) => {
-  try {
-    const { title, color } = req.body;
-    const result = await labelModel.create({ title, color, userId: req.user.id });
-    if (result) {
-      responseHandler(res, 201);
-    } else {
-      throw Error('Internal Server Error');
-    }
-  } catch (err) {
-    next(err);
+const updateLabel = asyncTryCatch(async (req, res) => {
+  const isUpdated = await labelService.update({ id: req.params.labelId, ...req.body });
+
+  if (!isUpdated) {
+    throw Error('Internal Server Error');
   }
-};
+  responseHandler(res, 200);
+});
 
-const updateLabel = async (req, res, next) => {
-  const { labelId } = req.params;
-  const { title, color } = req.body;
+const removeLabel = asyncTryCatch(async (req, res) => {
+  const result = await labelService.remove(req.params.labelId);
 
-  try {
-    const result = await labelModel.update({ title, color }, { where: { id: labelId } });
-    if (result[0] !== 1) {
-      throw Error('Internal Server Error');
-    }
-    responseHandler(res, 200);
-  } catch (err) {
-    next(err);
+  if (!result) {
+    throw Error('Internal Server Error');
   }
-};
-
-const removeLabel = async (req, res, next) => {
-  const { labelId } = req.params;
-  try {
-    const result = await labelModel.destroy({ where: { id: labelId } });
-    if (result !== 1) {
-      throw Error('Internal Server Error');
-    }
-    responseHandler(res, 200);
-  } catch (err) {
-    next(err);
-  }
-};
+  responseHandler(res, 200);
+});
 
 const isValidRequestDatas = (req, res, next) => {
   const error = new Error('Bad Request');
@@ -73,40 +52,33 @@ const isValidRequestDatas = (req, res, next) => {
   }
 };
 
-const isOwnLabel = async (req, res, next) => {
+const isOwnLabel = asyncTryCatch(async (req, res, next) => {
   const { labelId } = req.params;
   const { id } = req.user;
-  const error = new Error('Forbidden');
-  error.status = 403;
 
-  try {
-    const label = await labelModel.findByPk(labelId, { attributes: ['userId'] });
-    if (id !== label.userId) {
-      throw error;
-    }
-    next();
-  } catch (err) {
-    next(err);
+  const label = await labelService.retrieveById(labelId);
+  if (id !== label.userId) {
+    const error = new Error('Forbidden');
+    error.status = 403;
+    throw error;
   }
-};
+  next();
+});
 
-const isValidLabelId = async (req, res, next) => {
+const isValidLabelId = asyncTryCatch(async (req, res, next) => {
   const { labelId } = req.params;
   const error = new Error('Not Found');
   error.status = 404;
-  try {
-    if (!labelId || labelId === '') {
-      throw error;
-    }
-    const label = await labelModel.findByPk(labelId);
-    if (!label) {
-      throw error;
-    }
-    next();
-  } catch (err) {
-    next(err);
+
+  if (!labelId || labelId === '') {
+    throw error;
   }
-};
+  const label = await labelService.retrieveById(labelId);
+  if (!label) {
+    throw error;
+  }
+  next();
+});
 
 module.exports = {
   getAllLabels,

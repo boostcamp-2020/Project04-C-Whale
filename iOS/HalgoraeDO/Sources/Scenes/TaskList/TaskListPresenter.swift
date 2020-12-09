@@ -8,10 +8,8 @@
 import Foundation
 
 protocol TaskListPresentLogic {
-    func present(tasks: [Task])
-    func set(editingMode: Bool)
+    func presentFetchTasks(response: TaskListModels.FetchTasks.Response)
     func presentDetail(of task: Task)
-    func present(numberOfSelectedTasks count: Int)
 }
 
 class TaskListPresenter {
@@ -23,19 +21,14 @@ class TaskListPresenter {
 }
 
 extension TaskListPresenter: TaskListPresentLogic {
-    func present(tasks: [Task]) {
-        viewController.display(tasks: tasks)
-    }
-    
-    func set(editingMode: Bool) {
-        viewController.set(editingMode: editingMode)
+    func presentFetchTasks(response: TaskListModels.FetchTasks.Response) {
+        let taskViewModels = response.tasks.enumerated().map { (idx, task) in
+            TaskListModels.DisplayedTask(task: task, position: idx, parentPosition: nil)
+        }
+        viewController.displayFetchTasks(viewModel: TaskListModels.FetchTasks.ViewModel(displayedTasks: taskViewModels))
     }
     
     func presentDetail(of task: Task) {
-        viewController.displayDetail(of: task)
-    }
-    
-    func present(numberOfSelectedTasks count: Int) {
-        viewController.display(numberOfSelectedTasks: count)
+        
     }
 }
