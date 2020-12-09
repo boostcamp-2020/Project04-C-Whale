@@ -14,12 +14,21 @@ const retrieveProjects = async () => {
       'isFavorite',
       'isList',
       [sequelize.fn('COUNT', sequelize.col('tasks.id')), 'taskCount'],
+      [sequelize.col('sections.id'), 'defaultSectionId'],
     ],
-    include: {
-      model: models.task,
-      attributes: [],
-    },
-    group: ['project.id'],
+    include: [
+      {
+        model: models.task,
+        attributes: [],
+      },
+      {
+        model: models.section,
+        required: false,
+        where: { position: 0 },
+        attributes: [],
+      },
+    ],
+    group: ['project.id', 'sections.id'],
   });
 
   return projects;
@@ -84,7 +93,7 @@ const create = async data => {
       transaction: t,
     });
     const section = await models.section.create(
-      {},
+      { title: '기본 섹션', position: 0 },
       {
         transaction: t,
       },
