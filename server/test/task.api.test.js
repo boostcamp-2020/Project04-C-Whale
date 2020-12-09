@@ -147,7 +147,7 @@ describe('get task by id', () => {
   });
   it('존재하지 않는 task id인 경우', async done => {
     // given
-    const taskId = 'c213d58a-661a-4395-b0da-fb48dc11fa2e';
+    const taskId = seeder.sections[0].id;
 
     try {
       // when
@@ -345,6 +345,46 @@ describe('patch task with id', () => {
     expect(res.status).toBe(status.BAD_REQUEST.CODE);
     expect(res.body.message).toBe(errorMessage.DUEDATE_ERROR);
     done();
+  });
+  it('자신의 작업이 아닌 경우', async done => {
+    // given
+    const taskId = seeder.tasks[0].id;
+    const patchTask = { isDone: true };
+
+    try {
+      // when
+      const res = await request(app)
+        .patch(`/api/task/${taskId}`)
+        .set('Authorization', `Bearer ${createJWT(seeder.users[2])}`)
+        .send(patchTask);
+
+      // then
+      expect(res.status).toBe(status.FORBIDDEN.CODE);
+      expect(res.body.message).toBe(status.FORBIDDEN.MSG);
+      done();
+    } catch (err) {
+      done(err);
+    }
+  });
+  it('존재하지 않는 작업인 경우', async done => {
+    // given
+    const taskId = seeder.sections[0].id;
+    const patchTask = { isDone: true };
+
+    try {
+      // when
+      const res = await request(app)
+        .patch(`/api/task/${taskId}`)
+        .set('Authorization', `Bearer ${createJWT(seeder.users[2])}`)
+        .send(patchTask);
+
+      // then
+      expect(res.status).toBe(status.NOT_FOUND.CODE);
+      expect(res.body.message).toBe(status.NOT_FOUND.MSG);
+      done();
+    } catch (err) {
+      done(err);
+    }
   });
 });
 
