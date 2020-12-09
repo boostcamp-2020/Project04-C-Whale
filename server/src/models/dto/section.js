@@ -1,12 +1,12 @@
 const { IsUUID, IsString, IsInt, MinLength } = require('class-validator');
-const errorMessage = require('@models/dto/error-messages');
+const errorMessage = require('@utils/error-messages');
 
 class SectionDto {
   @IsUUID('4')
   id;
 
-  @IsString({ groups: ['create', 'update'] }, { message: errorMessage.wrongProperty('title') })
-  @MinLength(1, { groups: ['create', 'update'] }, { message: errorMessage.wrongProperty('title') })
+  @IsString({ groups: ['create', 'update'] }, { message: errorMessage.TYPE_ERROR('title') })
+  @MinLength(1, { groups: ['create', 'update'] }, { message: errorMessage.TYPE_ERROR('title') })
   title;
 
   @IsInt()
