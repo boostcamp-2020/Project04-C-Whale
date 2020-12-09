@@ -125,6 +125,7 @@ describe('update comment', () => {
     // given
     const requestBody = {
       content: '바뀐 댓글',
+      isImage: false,
     };
     const taskId = seeder.tasks[1].id;
     const commentId = seeder.comments[0].id;
@@ -145,7 +146,7 @@ describe('update comment', () => {
   });
   it('content가 누락된 경우', async done => {
     // given
-    const requestBody = {};
+    const requestBody = { isImage: false };
     const taskId = seeder.tasks[1].id;
     const commentId = seeder.comments[0].id;
     try {
@@ -165,7 +166,7 @@ describe('update comment', () => {
   });
   it('빈 배열 content', async done => {
     // given
-    const requestBody = { content: '' };
+    const requestBody = { content: '', isImage: false };
     const taskId = seeder.tasks[1].id;
     const commentId = seeder.comments[0].id;
     try {
@@ -178,6 +179,26 @@ describe('update comment', () => {
       // then
       expect(res.status).toBe(status.BAD_REQUEST.CODE);
       expect(res.body.message).toBe(errorMessage.INVALID_INPUT_ERROR('content'));
+      done();
+    } catch (err) {
+      done(err);
+    }
+  });
+  it('isImage가 없는 경우', async done => {
+    // given
+    const requestBody = { content: '하이하이' };
+    const taskId = seeder.tasks[1].id;
+    const commentId = seeder.comments[0].id;
+    try {
+      // when
+      const res = await request(app)
+        .put(`/api/task/${taskId}/comment/${commentId}`)
+        .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
+        .send(requestBody);
+
+      // then
+      expect(res.status).toBe(status.BAD_REQUEST.CODE);
+      expect(res.body.message).toBe(errorMessage.NECESSARY_INPUT_ERROR('isImage'));
       done();
     } catch (err) {
       done(err);
@@ -205,7 +226,7 @@ describe('update comment', () => {
   });
   it('id가 포함된 경우', async done => {
     // given
-    const requestBody = { id: seeder.comments[0].id, content: '하이하이' };
+    const requestBody = { id: seeder.comments[0].id, content: '하이하이', isImage: false };
     const taskId = seeder.tasks[1].id;
     const commentId = seeder.comments[0].id;
     try {
@@ -218,26 +239,6 @@ describe('update comment', () => {
       // then
       expect(res.status).toBe(status.BAD_REQUEST.CODE);
       expect(res.body.message).toBe(errorMessage.UNNECESSARY_INPUT_ERROR('id'));
-      done();
-    } catch (err) {
-      done(err);
-    }
-  });
-  it('taskId가 포함된 경우', async done => {
-    // given
-    const requestBody = { taskId: seeder.tasks[1].id, content: '하이하이' };
-    const taskId = seeder.tasks[1].id;
-    const commentId = seeder.comments[0].id;
-    try {
-      // when
-      const res = await request(app)
-        .put(`/api/task/${taskId}/comment/${commentId}`)
-        .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
-        .send(requestBody);
-
-      // then
-      expect(res.status).toBe(status.BAD_REQUEST.CODE);
-      expect(res.body.message).toBe(errorMessage.UNNECESSARY_INPUT_ERROR('taskId'));
       done();
     } catch (err) {
       done(err);
