@@ -6,6 +6,7 @@
           <v-list-item-content>
             <v-list-item-title class="font-14">프로젝트</v-list-item-title>
           </v-list-item-content>
+          <!-- TODO: 이벤트 버블링 오류 고치기 -->
           <v-list-item-icon :class="{ 'd-none ': !hover }" @click.stop="addDialog = true">
             <v-icon>mdi-plus</v-icon>
           </v-list-item-icon>
@@ -102,9 +103,6 @@ export default {
     };
   },
   methods: {
-    pushRoute(projectId) {
-      this.$router.push("/project/" + projectId);
-    },
     openUpdateDialog(projectId) {
       this.projectId = projectId;
       this.updateDialog = true;
