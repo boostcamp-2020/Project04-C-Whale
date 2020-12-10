@@ -34,7 +34,6 @@ const actions = {
       } = await userAPI.authorize();
       commit("SET_USER", user);
 
-      commit("SET_SUCCESS_ALERT", "로그인되었습니다.");
       if (location.pathname === "/" || location.pathname === "/login") {
         router.replace("/today").catch(() => {});
         return;
