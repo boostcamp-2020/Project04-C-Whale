@@ -35,7 +35,9 @@ enum TaskDetailModels {
         }
         
         struct ViewModel {
-            var commentVMs: [CommentVM]
+            var commentVMs: [ContentsVM]
+        }
+    }
     
     enum CreateComment {
         struct Request {
@@ -65,16 +67,16 @@ enum TaskDetailModels {
         }
     }
     
-    struct CommentVM: Hashable {
+    // MARK: ViewModels
+    
+    struct ContentsVM: Hashable {
         
         var id: String
         var contents: String?
-        var isImage: Bool = false
         
         init(comment: Comment) {
             self.id = comment.id
             self.contents = comment.contents
-            self.isImage = comment.isImage
         }
         
         func hash(into hasher: inout Hasher) {
