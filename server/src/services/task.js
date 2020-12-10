@@ -44,13 +44,14 @@ const retrieveById = async ({ id, userId }) => {
 };
 
 const retrieveAll = async userId => {
-  const task = await taskModel.findAll({
+  const tasks = await taskModel.findAll({
     include: [
       'bookmarks',
       {
         model: taskModel,
         include: ['bookmarks'],
         where: { isDone: false },
+        required: false,
       },
       {
         model: models.section,
@@ -62,11 +63,13 @@ const retrieveAll = async userId => {
             where: { creatorId: userId },
           },
         ],
+        required: false,
       },
     ],
     order: [[taskModel, 'position', 'ASC']],
   });
-  return task;
+  console.log(tasks);
+  return tasks;
 };
 
 const create = async ({ projectId, sectionId, userId, ...taskData }) => {
