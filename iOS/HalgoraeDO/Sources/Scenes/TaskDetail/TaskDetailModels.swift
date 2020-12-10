@@ -85,4 +85,9 @@ enum TaskDetailModels {
             return lhs.id == rhs.id
         }
     }
+    
+    struct CommentFields {
+        var taskId: String
+        var text: String
+    }
 }
