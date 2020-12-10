@@ -13,4 +13,17 @@ class Section: Codable {
     var createdAt: String
     var updatedAt: String
     var tasks: [Task]?
+    
+    init(id: String = UUID().uuidString,
+         title: String,
+         createdAt: String = "\(Date())",
+         updatedAt: String = "\(Date())",
+         tasks: [Task] = []
+    ) {
+        self.id = id
+        self.title = title
+        self.createdAt = createdAt
+        self.updatedAt = updatedAt
+        self.tasks = tasks
+    }
 }

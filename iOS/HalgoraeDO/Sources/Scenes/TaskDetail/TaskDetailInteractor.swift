@@ -33,6 +33,7 @@ extension TaskDetailInteractor: TaskDetailBusinessLogic {
         worker.requestTasks(endPoint: .get(taskId: request.id)) { [weak self] (tasks: [Task]?, error) in
             self?.presenter.presentFetchedTasks(response: .init(tasks: tasks ?? []))
         }
+    }
     func fetchComments(request: TaskDetailModels.FetchComments.Request) {
         worker.requestComments(endPoint: .get(taskId: request.id)) { [weak self] (tasks: [Task]?, error) in
             self?.presenter.presentFetchedTasks(response: .init(tasks: tasks ?? []))

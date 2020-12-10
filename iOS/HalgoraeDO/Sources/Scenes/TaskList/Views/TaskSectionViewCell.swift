@@ -91,6 +91,13 @@ private extension TaskSectionViewCell {
         let section = NSCollectionLayoutSection(group: group)
         section.interGroupSpacing = 15
         section.contentInsets = NSDirectionalEdgeInsets(top: 20, leading: 0, bottom: 20, trailing: 0)
+        section.boundarySupplementaryItems = generateSupplementaryItems()
+        let layout = UICollectionViewCompositionalLayout(section: section)
+        
+        return layout
+    }
+    
+    private func generateSupplementaryItems() -> [NSCollectionLayoutBoundarySupplementaryItem] {
         let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(
             layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
                                                heightDimension: .estimated(44)),
@@ -105,10 +112,8 @@ private extension TaskSectionViewCell {
         sectionHeader.zIndex = 2
         sectionFooter.pinToVisibleBounds = true
         sectionFooter.zIndex = 2
-        section.boundarySupplementaryItems = [sectionHeader, sectionFooter]
-        let layout = UICollectionViewCompositionalLayout(section: section)
         
-        return layout
+        return [sectionHeader, sectionFooter]
     }
 }
 

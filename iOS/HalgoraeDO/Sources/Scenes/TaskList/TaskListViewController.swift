@@ -23,7 +23,6 @@ class TaskListViewController: UIViewController {
     private var displayCompleted = false
     private var presentConfirmActionWorkItem: DispatchWorkItem?
     private var childCheck = 0
-    private var displayTasks: [TaskListModels.DisplayedTask] = Array()
     private(set) var selectedTasks = Set<TaskVM>() {
         didSet {
             guard isEditing else { return }
@@ -93,12 +92,12 @@ class TaskListViewController: UIViewController {
     }
     
     private func slideRightConfirmActionViewWillDismiss(targetView: UIView,
-                                                withDuration duration: TimeInterval = 0.5,
-                                                delay: TimeInterval = 0,
-                                                usingSpringWithDamping dampingRatio: CGFloat = 0.7,
-                                                initialSpringVelocity velocity: CGFloat = 0.5,
-                                                options: UIView.AnimationOptions = [.curveEaseIn],
-                                                dismiss deadline: DispatchTime = .now() + 3) {
+                                                        withDuration duration: TimeInterval = 0.5,
+                                                        delay: TimeInterval = 0,
+                                                        usingSpringWithDamping dampingRatio: CGFloat = 0.7,
+                                                        initialSpringVelocity velocity: CGFloat = 0.5,
+                                                        options: UIView.AnimationOptions = [.curveEaseIn],
+                                                        dismiss deadline: DispatchTime = .now() + 3) {
         targetView.transform = .init(translationX: -targetView.frame.maxX, y: 0)
         targetView.isHidden = false
         UIView.animate(withDuration: duration, delay: delay, usingSpringWithDamping: dampingRatio, initialSpringVelocity: velocity, options: options) {
@@ -133,11 +132,11 @@ class TaskListViewController: UIViewController {
             nav?.popViewController(animated: false)
             nav?.pushViewController(vc, animated: false)
         }
-
+        
         let addSectionAction = UIAlertAction(title: "섹션 추가", style: .default) { (_: UIAlertAction) in
             
         }
-
+        
         let selectTaskAction = UIAlertAction(title: "작업 선택", style: .default) { (_: UIAlertAction) in
             self.setEditing(true, animated: true)
         }
@@ -147,7 +146,7 @@ class TaskListViewController: UIViewController {
             self.displayCompleted.toggle()
             self.interactor?.fetchTasks(request: .init(projectId: self.project.id))
         }
-
+        
         let cancelAction = UIAlertAction(title: "취소", style: .cancel) { (_: UIAlertAction) in
             
         }
@@ -201,6 +200,8 @@ private extension TaskListViewController {
             
             return UISwipeActionsConfiguration(actions: [editAction])
         }
+        listConfiguration.headerMode = .supplementary
+        
         let layout = UICollectionViewCompositionalLayout.list(using: listConfiguration)
         
         return layout
@@ -234,9 +235,21 @@ private extension TaskListViewController {
         dataSource = UICollectionViewDiffableDataSource<TaskListModels.SectionVM, TaskVM>(collectionView: taskListCollectionView, cellProvider: { (collectionView, indexPath, task) -> UICollectionViewCell? in
             return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: task)
         })
+        configureDataSourceForHeader(dataSource)
     }
     
-    func snapshot(taskItems: [TaskVM]) -> NSDiffableDataSourceSectionSnapshot<TaskVM> {
+    func configureDataSourceForHeader(_ dataSource: UICollectionViewDiffableDataSource<TaskListModels.SectionVM, TaskListModels.DisplayedTask>) {
+        let headerRegistration = UICollectionView.SupplementaryRegistration
+        <TaskBoardSupplementaryView>(elementKind: "Header") {
+            (supplementaryView, string, indexPath) in
+            supplementaryView.configureHeader(sectionName: dataSource.snapshot().sectionIdentifiers[indexPath.section].title, rowNum: dataSource.snapshot().sectionIdentifiers[indexPath.section].tasks.count)
+        }
+        dataSource.supplementaryViewProvider = { (view, kind, index) in
+            return self.taskListCollectionView.dequeueConfiguredReusableSupplementary(using: headerRegistration, for: index)
+        }
+    }
+    
+    func generateSnapshot(taskItems: [TaskVM]) -> NSDiffableDataSourceSectionSnapshot<TaskVM> {
         var snapshot = NSDiffableDataSourceSectionSnapshot<TaskVM>()
         func addItems(_ taskItems: [TaskVM], to parent: TaskVM?) {
             snapshot.append(taskItems, to: parent)
@@ -257,13 +270,12 @@ private extension TaskListViewController {
 extension TaskListViewController: TaskListDisplayLogic {
     
     func displayFetchTasks(viewModel: TaskListModels.FetchTasks.ViewModel) {
-        
+        var snapshot = NSDiffableDataSourceSnapshot<TaskListModels.SectionVM, TaskListModels.DisplayedTask>()
+        snapshot.appendSections(viewModel.sectionVMs)
+        dataSource.apply(snapshot, animatingDifferences: false)
         for sectionVM in viewModel.sectionVMs {
-            var sectionSnapshot = NSDiffableDataSourceSectionSnapshot<TaskListModels.DisplayedTask>()
-            sectionSnapshot.append(sectionVM.tasks)
-            DispatchQueue.main.async {
-                self.dataSource.apply(sectionSnapshot, to: sectionVM)
-            }
+            let sectionSnapshot = generateSnapshot(taskItems: sectionVM.tasks)
+            dataSource.apply(sectionSnapshot, to: sectionVM)
         }
     }
     
@@ -293,7 +305,7 @@ extension TaskListViewController: TaskListDisplayLogic {
             task.subItems = task.subItems.filter { !$0.isCompleted }
             filteredTasks.append(task)
         }
-
+        
         return filteredTasks
     }
 }
@@ -308,7 +320,7 @@ extension TaskListViewController: UICollectionViewDelegate {
             selectedTasks.insert(taskVM)
             return
         }
-
+        
         collectionView.deselectItem(at: indexPath, animated: true)
         router?.routeToTaskDetail(for: taskVM)
     }
@@ -332,6 +344,18 @@ extension TaskListViewController: UICollectionViewDragDelegate {
         startPoint = session.location(in: collectionView)
         collectionView.performUsingPresentationValues {
             startIndex = collectionView.indexPathForItem(at: session.location(in: collectionView))
+        }
+        
+        if let cell = collectionView.cellForItem(at: indexPath) as? TaskCollectionViewListCell{
+            let section = dataSource.snapshot().sectionIdentifiers[indexPath.section]
+            var currentSnapshot = dataSource.snapshot(for: section)
+            
+            for item in currentSnapshot.items {
+                if item.id == cell.taskViewModel?.id {
+                    currentSnapshot.collapse([item])
+                }
+            }
+            dataSource.apply(currentSnapshot, to: section, animatingDifferences: true)
         }
         
         return dragItems(at: indexPath)
@@ -379,9 +403,8 @@ extension TaskListViewController: UICollectionViewDropDelegate {
                 operation: .cancel, intent: .unspecified
             )
         }
-        setLocation(session.location(in: collectionView), destination)
         
-        return UICollectionViewDropProposal(operation: .move, intent: .insertAtDestinationIndexPath)
+        return UICollectionViewDropProposal(operation: setLocation(session.location(in: collectionView), destination) ? .move : .forbidden, intent: .insertAtDestinationIndexPath)
     }
     
     func collectionView(_ collectionView: UICollectionView, dragSessionDidEnd session: UIDragSession) {
@@ -393,97 +416,133 @@ extension TaskListViewController: UICollectionViewDropDelegate {
         performDropWith coordinator: UICollectionViewDropCoordinator
     ) {
         lineView.removeFromSuperview()
-        
         let destinationIndexPath = coordinator.destinationIndexPath ?? IndexPath(item: 0, section: 0)
+        
         for item in coordinator.items {
-            if let sourceIndexPath = item.sourceIndexPath {//자신으로부터 나왔을 때
-                if (item.dragItem.localObject as? TaskCollectionViewListCell) != nil {
-                    var tempIndex: IndexPath
-                    if destinationIndexPath.section == sourceIndexPath.section && destinationIndexPath.row > sourceIndexPath.row {
-                        tempIndex = IndexPath(row: destinationIndexPath.row, section: destinationIndexPath.section)
-                    } else {
-                        tempIndex = IndexPath(row: destinationIndexPath.row - 1, section: destinationIndexPath.section)
-                    }
+            guard let sourceIndexPath = item.sourceIndexPath else { return }
             
-                    let snapShot = dropHelper(displayTasks, dataSource.itemIdentifier(for: sourceIndexPath)!, dataSource.itemIdentifier(for: tempIndex)!)
-                    let section = dataSource.snapshot().sectionIdentifiers[sourceIndexPath.section]
-                    dataSource.apply(snapShot, to: section, animatingDifferences: true)
-                    coordinator.drop(item.dragItem, toItemAt: destinationIndexPath)
+            if (item.dragItem.localObject as? TaskCollectionViewListCell) != nil {
+                var tempIndex: IndexPath
+                if destinationIndexPath.section == sourceIndexPath.section && destinationIndexPath.row > sourceIndexPath.row {
+                    tempIndex = IndexPath(row: destinationIndexPath.row, section: destinationIndexPath.section)
+                } else {
+                    tempIndex = IndexPath(row: destinationIndexPath.row - 1, section: destinationIndexPath.section)
                 }
+                
+                dropHelper(sourceIndexPath: sourceIndexPath, destinationIndexPath: tempIndex)
+                coordinator.drop(item.dragItem, toItemAt: destinationIndexPath)
             }
         }
     }
     
-    private func dropHelper(_ taskItems1: [TaskVM], _ source: TaskVM, _ destination: TaskVM) -> NSDiffableDataSourceSectionSnapshot<TaskVM> {
-        func configNewItems(_ taskItems: [TaskVM], _ source: TaskVM, _ destination: TaskVM) -> [TaskVM] {
-            var tempItems: [TaskVM] = []
-            for i in 0..<taskItems.count {
-                let tempSubitems =  taskItems[i].subItems.filter {
-                    $0.id != source.id
-                }
-                var tempItem = taskItems[i]
-                tempItem.subItems = tempSubitems
-                if taskItems[i].id != source.id {
-                    tempItems.append(tempItem)
-                }
+    // MARK: Helper Functions
+    
+    private func removeTaskFromTasks(_ taskItems: [TaskVM], _ sourceId: String) -> [TaskVM] {
+        var tempItems: [TaskVM] = []
+        for i in 0..<taskItems.count {
+            let tempSubitems =  taskItems[i].subItems.filter {
+                $0.id != sourceId
             }
             
-            return tempItems
+            var tempItem = taskItems[i]
+            tempItem.subItems = tempSubitems
+            if taskItems[i].id != sourceId {
+                tempItems.append(tempItem)
+            }
+        }
+        return tempItems
+    }
+    
+    private func addTaskAtTasks(_ taskItems: [TaskVM], _ source: TaskVM, _ destinationId: String) -> [TaskVM] {
+        var tempItems: [TaskVM] = []
+        for i in 0..<taskItems.count {
+            tempItems.append(taskItems[i])
+            if !taskItems[i].subItems.isEmpty {
+                tempItems[i].subItems = addTaskAtTasks(taskItems[i].subItems, source, destinationId)
+            }
+            if taskItems[i].id == destinationId {
+                var tempItem = taskItems
+                tempItem.insert(source, at: i + 1)
+                return tempItem
+            }
         }
         
-        func findItem(_ taskItems: [TaskVM], _ source: TaskVM, _ destination: TaskVM) -> [TaskVM] {
-            var tempItems: [TaskVM] = []
-            for i in 0..<taskItems.count {
-                tempItems.append(taskItems[i])
-                if !taskItems[i].subItems.isEmpty {
-                    tempItems[i].subItems = findItem(taskItems[i].subItems, source, destination)
-                }
-                if taskItems[i].id == destination.id {
-                    var tempItem = taskItems
-                    tempItem.insert(source, at: i + 1)
-                    return tempItem
-                }
+        return tempItems
+    }
+    
+    private func addTaskAtFirstOfSubitems(_ taskItems: [TaskVM], _ source: TaskVM, _ destinationId: String) -> [TaskVM] {
+        var tempItems: [TaskVM] = taskItems
+        for i in 0..<tempItems.count {
+            if tempItems[i].id == destinationId {
+                tempItems[i].subItems.insert(source, at: 0)
             }
+        }
+        
+        return tempItems
+    }
+    
+    private func dropHelper(sourceIndexPath: IndexPath, destinationIndexPath: IndexPath) {
+        guard let sourceTask = dataSource.itemIdentifier(for: sourceIndexPath)
+        else {
+            return
+        }
+        let sourceSection = dataSource.snapshot().sectionIdentifiers[sourceIndexPath.section]
+        let destinationSection = dataSource.snapshot().sectionIdentifiers[destinationIndexPath.section]
+        
+        guard let destinationTask = dataSource.itemIdentifier(for: destinationIndexPath)
+        else {//맨 위에 추가할 때 DESTINATIONTASK가 NIL이다.
+            let tasksAfterRemove = removeTaskFromTasks(dataSource.snapshot(for: sourceSection).rootItems, sourceTask.id)
+            let sourceSnapShot = generateSnapshot(taskItems: tasksAfterRemove)
+            dataSource.apply(sourceSnapShot, to: sourceSection)
             
-            return tempItems
+            var items = dataSource.snapshot(for: destinationSection).rootItems
+            items.insert(sourceTask, at: 0)
+            let destinationSnapShot = generateSnapshot(taskItems: items)
+            dataSource.apply(destinationSnapShot, to: destinationSection)
+            
+            return
         }
         
-        var configAfterFilter = configNewItems(taskItems1, source, destination)//source 제외한 items
-        func findItemForParents(_ taskItems: [TaskVM], _ source: TaskVM, _ destination: TaskVM) {
-            for i in 0..<taskItems.count {
-                if taskItems[i].id == destination.id {
-                    configAfterFilter[i].subItems.insert(source, at: 0)
-                }
+        if sourceIndexPath.section == destinationIndexPath.section { //같은 section 일때
+            let tasksAfterRemove = removeTaskFromTasks(dataSource.snapshot(for: sourceSection).rootItems, sourceTask.id)
+            var newItems: [TaskVM]
+            if destinationTask.parentPosition == nil && childCheck == 1 { //부모 작업의 바로 아래에 append
+                newItems = addTaskAtFirstOfSubitems(tasksAfterRemove, sourceTask, destinationTask.id)
+            } else { //child check필요 없이 그냥 넣기
+                newItems = addTaskAtTasks(tasksAfterRemove, sourceTask, destinationTask.id)
             }
+            let snapShot = generateSnapshot(taskItems: newItems)
+            dataSource.apply(snapShot, to: sourceSection)
+            //TODO parentsPoint 바꿔주기, 새로 서브 들어가는곳은 DISCLOSURE추가
+        } else { //다른 section 일때
+            let tasksAfterRemove = removeTaskFromTasks(dataSource.snapshot(for: sourceSection).rootItems, sourceTask.id)
+            var newItems: [TaskVM]
+            if destinationTask.parentPosition == nil && childCheck == 1 { //부모 작업의 바로 아래에 append
+                newItems = addTaskAtFirstOfSubitems(dataSource.snapshot(for: destinationSection).rootItems, sourceTask, destinationTask.id)
+            } else { //child check필요 없이 그냥 넣기
+                newItems = addTaskAtTasks(dataSource.snapshot(for: destinationSection).rootItems, sourceTask, destinationTask.id)
+            }
+            let sourceSnapShot = generateSnapshot(taskItems: tasksAfterRemove)
+            let destinationSnapShot = generateSnapshot(taskItems: newItems)
+            dataSource.apply(sourceSnapShot, to: sourceSection)
+            dataSource.apply(destinationSnapShot, to: destinationSection)
         }
-        
-        var newItemAfterConfig: [TaskVM] = []
-        if destination.parentPosition == nil && childCheck == 1 { //부모 작업의 바로 아래에 append
-            findItemForParents(configAfterFilter, source, destination)
-            newItemAfterConfig = configAfterFilter
-        } else { //child check필요 없이 그냥 넣기
-            newItemAfterConfig = findItem(configAfterFilter, source, destination)
-        }
-        displayTasks = newItemAfterConfig //원본 교체
-        let snapShot = snapshot(taskItems: newItemAfterConfig)
-
-        return snapShot
     }
 }
 
 
 private extension TaskListViewController {
     
-    func setLocation(_ location: CGPoint, _ destination: IndexPath?) {
+    func setLocation(_ location: CGPoint, _ destination: IndexPath?) -> Bool {
         lineView.removeFromSuperview()
         guard let destination = destination,
               let startIndex = startIndex,
               let startPoint = startPoint,
-              let collectionView = taskListCollectionView,
-              destination.row != 0
+              let collectionView = taskListCollectionView
         else {
-            return
+            return false
         }
+        if destination.row == 0 { return true }
         
         /*
          나보다 아래인지 위인지에 따라 destination index를 다르게 설정
@@ -503,16 +562,27 @@ private extension TaskListViewController {
         } else {
             childCheck = 0
         }
-        if let cell = collectionView.cellForItem(at: tempIndex) as? UICollectionViewListCell {
-            if cell.indentationLevel == 1 { childCheck = 0 }
-            print(childCheck)
-            let depthWidth: CGFloat = CGFloat(cell.indentationLevel * 20 + childCheck * 20)
-            lineView = UIView(frame: CGRect(x: 10 + depthWidth, y: cell.frame.height - 2, width: cell.frame.width - depthWidth - 20, height: 5))
-            lineView.backgroundColor = .halgoraedoMint
-            lineView.layer.cornerRadius = 2;
-            lineView.layer.masksToBounds = true;
-            cell.addSubview(lineView)
+        guard let startCell = collectionView.cellForItem(at: startIndex) as? TaskCollectionViewListCell,
+              let destinationCell = collectionView.cellForItem(at: tempIndex) as? TaskCollectionViewListCell,
+              let cellCount = startCell.taskViewModel
+        else {
+            return false
         }
+        if destinationCell.indentationLevel == 1 {
+            childCheck = 0
+            if cellCount.subItems.count != 0 {
+                return false
+            }
+        } else if destinationCell.indentationLevel == 0 && childCheck == 1 && cellCount.subItems.count != 0 {
+            return false
+        }
+        let depthWidth: CGFloat = CGFloat(destinationCell.indentationLevel * 20 + childCheck * 20)
+        lineView = UIView(frame: CGRect(x: 10 + depthWidth, y: destinationCell.frame.height - 2, width: destinationCell.frame.width - depthWidth - 20, height: 5))
+        lineView.backgroundColor = .halgoraedoMint
+        lineView.layer.cornerRadius = 2;
+        lineView.layer.masksToBounds = true;
+        destinationCell.addSubview(lineView)
+        return true
     }
 }
 
