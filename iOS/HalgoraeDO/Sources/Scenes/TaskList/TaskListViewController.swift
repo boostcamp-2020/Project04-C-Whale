@@ -435,7 +435,8 @@ extension TaskListViewController: UICollectionViewDropDelegate {
         }
     }
     
-    //helper function=======================
+    // MARK: Helper Functions
+    
     private func removeTaskFromTasks(_ taskItems: [TaskVM], _ sourceId: String) -> [TaskVM] {
         var tempItems: [TaskVM] = []
         for i in 0..<taskItems.count {
@@ -512,7 +513,7 @@ extension TaskListViewController: UICollectionViewDropDelegate {
             }
             let snapShot = generateSnapshot(taskItems: newItems)
             dataSource.apply(snapShot, to: sourceSection)
-            //TODO parentsPoint 바꿔주기 , 맨 위에 넣는 것 구현하기 , 새로 서브 들어가는곳은 DISCLOSURE추가
+            //TODO parentsPoint 바꿔주기, 새로 서브 들어가는곳은 DISCLOSURE추가
         } else { //다른 section 일때
             let tasksAfterRemove = removeTaskFromTasks(dataSource.snapshot(for: sourceSection).rootItems, sourceTask.id)
             var newItems: [TaskVM]
