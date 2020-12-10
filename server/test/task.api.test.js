@@ -174,7 +174,7 @@ describe('patch task with id', () => {
       title: '할일',
       projectId: seeder.projects[0].id,
       sectionId: seeder.sections[0].id,
-      priorityId: seeder.priorities[0].id,
+      priority: '1',
       dueDate: new Date(),
       parentId: null,
       alarmId: seeder.alarms[0].id,
@@ -282,10 +282,10 @@ describe('patch task with id', () => {
     expect(res.body.message).toBe(errorMessage.INVALID_INPUT_ERROR('projectId'));
     done();
   });
-  it('잘못된 priorityId 수정', async done => {
+  it('잘못된 priority 수정', async done => {
     // given
     const taskId = seeder.tasks[0].id;
-    const patchTask = { priorityId: 'invalidId' };
+    const patchTask = { priority: '5' };
 
     // when
     const res = await request(app)
@@ -295,7 +295,7 @@ describe('patch task with id', () => {
 
     // then
     expect(res.status).toBe(status.BAD_REQUEST.CODE);
-    expect(res.body.message).toBe(errorMessage.INVALID_INPUT_ERROR('priorityId'));
+    expect(res.body.message).toBe(errorMessage.INVALID_INPUT_ERROR('priority'));
     done();
   });
   it('잘못된 alarmId 수정', async done => {
