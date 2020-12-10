@@ -13,7 +13,7 @@ router.delete('/:projectId', projectController.deleteProject);
 router.post('/:projectId/section', sectionController.createSection);
 router.put('/:projectId/section/:sectionId', sectionController.updateSection);
 router.delete('/:projectId/section/:sectionId', sectionController.deleteSection);
-router.patch('/:projectId/section/:sectionId/position', sectionController.updateTaskPositions);
+router.patch('/:projectId/section/:sectionId/task/position', sectionController.updateTaskPositions);
 
 router.post('/:projectId/section/:sectionId/task', taskController.createTask);
 

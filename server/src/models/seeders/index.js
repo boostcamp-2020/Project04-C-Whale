@@ -88,7 +88,6 @@ const sections = [
 const tasks = [
   {
     id: '13502adf-83dd-4e8e-9acf-5c5a0abd5b1b',
-    projectId: projects[0].id,
     sectionId: sections[0].id,
     parentId: null,
     title: '작업 1',
@@ -100,7 +99,6 @@ const tasks = [
   },
   {
     id: 'cd62f93c-9233-46a9-a5cf-ec18ad5a36f4',
-    projectId: projects[0].id,
     sectionId: sections[0].id,
     title: '작업 2',
     dueDate: new Date(),
@@ -111,7 +109,6 @@ const tasks = [
   },
   {
     id: '7d62f93c-9233-46a9-a5cf-ec18ad5a36f4',
-    projectId: projects[0].id,
     sectionId: sections[0].id,
     title: '작업 3',
     dueDate: new Date('2020-10-24T14:23:24.090Z'),
@@ -122,7 +119,6 @@ const tasks = [
   },
   {
     id: '8d62f93c-9233-46a9-a5cf-ec18ad5a36f4',
-    projectId: projects[0].id,
     sectionId: sections[0].id,
     parentId: '13502adf-83dd-4e8e-9acf-5c5a0abd5b1b',
     title: '작업 4',
@@ -134,7 +130,6 @@ const tasks = [
   },
   {
     id: '9d62f93c-9233-46a9-a5cf-ec18ad5a36f4',
-    projectId: projects[0].id,
     sectionId: sections[0].id,
     parentId: '13502adf-83dd-4e8e-9acf-5c5a0abd5b1b',
     title: '작업 5',
@@ -157,7 +152,6 @@ const tasks = [
   },
   {
     id: '1g62f93c-9233-46a9-a5cf-ec18ad5a36f4',
-    projectId: projects[0].id,
     sectionId: sections[1].id,
     title: '작업 7',
     dueDate: new Date('2021-10-24T14:23:24.090Z'),
@@ -168,7 +162,6 @@ const tasks = [
   },
   {
     id: '4a83b457-e67e-43d8-a284-78ea7fc440d5',
-    projectId: projects[2].id,
     sectionId: sections[2].id,
     title: '진영',
     dueDate: new Date(),

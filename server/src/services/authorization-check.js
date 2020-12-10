@@ -1,16 +1,23 @@
 const { models } = require('@models');
 
 const isTaskOwner = async ({ id, userId }) => {
-  const { project } = await models.task.findByPk(id, {
+  const { section } = await models.task.findByPk(id, {
     include: [
       {
-        model: models.project,
-        attributes: ['creatorId'],
+        model: models.section,
+        attribute: [],
+        include: [
+          {
+            model: models.project,
+            attributes: ['creatorId'],
+            where: { creatorId: userId },
+          },
+        ],
       },
     ],
   });
 
-  return project.creatorId === userId;
+  return !!section;
 };
 
 const isProjectOwner = async ({ id, userId }) => {
