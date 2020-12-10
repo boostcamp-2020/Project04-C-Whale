@@ -420,7 +420,7 @@ extension TaskListViewController: UICollectionViewDropDelegate {
         
         for item in coordinator.items {
             guard let sourceIndexPath = item.sourceIndexPath else { return }
-            
+       
             if (item.dragItem.localObject as? TaskCollectionViewListCell) != nil {
                 var tempIndex: IndexPath
                 if destinationIndexPath.section == sourceIndexPath.section && destinationIndexPath.row > sourceIndexPath.row {
