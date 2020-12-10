@@ -13,6 +13,11 @@ module.exports = sequelize => {
         allowNull: false,
         type: DataTypes.STRING,
       },
+      isImage: {
+        allowNull: false,
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+      },
     },
     { tableName: 'comment' },
   );
