@@ -13,15 +13,15 @@ enum TaskDetailModels {
     
     enum FetchSubTasks {
         struct Request {
-            var id: UUID
+            var id: String
         }
         
         struct Response {
-            
+            var tasks: [Task]
         }
         
         struct ViewModel {
-            
+            var taskVMs: [TaskListModels.DisplayedTask]
         }
     }
     

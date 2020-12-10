@@ -8,7 +8,7 @@
 import Foundation
 
 enum TaskEndPoint {
-    case get(taskId: Int)
+    case get(taskId: String)
     case create(request: Data)
     case titleUpdate(id: Int, titleData: Data)
     case update(id: Int, project: Data)
