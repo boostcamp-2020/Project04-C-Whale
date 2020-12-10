@@ -7,19 +7,19 @@ const { validator, getErrorMsg } = require('@utils/validator');
 const getProjects = asyncTryCatch(async (req, res) => {
   const projects = await projectService.retrieveProjects();
 
-  responseHandler(res, 200, projects);
+  responseHandler(res, 200, { projects });
 });
 
 const getTodayProject = asyncTryCatch(async (req, res) => {
   const todayProject = await projectService.retrieveTodayProject();
 
-  responseHandler(res, 200, todayProject);
+  responseHandler(res, 200, { todayProject });
 });
 
 const getProjectById = asyncTryCatch(async (req, res) => {
   const project = await projectService.retrieveById(req.params.projectId);
 
-  responseHandler(res, 200, project);
+  responseHandler(res, 200, { project });
 });
 
 const createProject = asyncTryCatch(async (req, res) => {
