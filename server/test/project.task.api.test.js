@@ -16,6 +16,8 @@ afterAll(async done => {
   done();
 });
 
+const priorities = ['1', '2', '3', '4'];
+
 describe('post task', () => {
   it('성공하는 task 생성', async done => {
     // given
@@ -23,7 +25,7 @@ describe('post task', () => {
     const expectedSectionId = seeder.sections[0].id;
     const newTask = {
       title: '할일',
-      priority: seeder.priorities[0].id,
+      priority: priorities[0],
       dueDate: new Date(),
       parent: null,
       alarmId: seeder.alarms[0].id,
@@ -73,7 +75,7 @@ describe('post task', () => {
     const expectedSectionId = seeder.sections[0].id;
     const newTask = {
       title: '할일',
-      priority: seeder.priorities[1].id,
+      priority: priorities[1],
       dueDate: new Date(),
       parentId: seeder.tasks[0].id,
       alarmId: seeder.alarms[0].id,
@@ -98,7 +100,7 @@ describe('post task', () => {
     const expectedSectionId = seeder.sections[0].id;
     const newTask = {
       title: '할일',
-      priority: seeder.priorities[1].id,
+      priority: priorities[1].id,
       dueDate: new Date(),
       parentId: seeder.tasks[0].id,
       alarmId: null,
@@ -124,7 +126,7 @@ describe('post task', () => {
     const newTask = {
       title: '할일',
       projectId: seeder.projects[1].id,
-      priority: seeder.priorities[1].id,
+      priority: priorities[1].id,
       dueDate: '2020-10-28',
       parentId: seeder.tasks[0].id,
       alarmId: seeder.alarms[0].id,
@@ -149,7 +151,7 @@ describe('post task', () => {
     const expectedParentId = 'wrongId';
     const newTask = {
       title: '할일',
-      priority: seeder.priorities[0].id,
+      priority: priorities[0].id,
       dueDate: new Date(),
       parentId: expectedParentId,
       alarmId: seeder.alarms[0].id,
@@ -174,7 +176,7 @@ describe('post task', () => {
     const newTask = {
       id: expectedId,
       title: '할일',
-      priority: seeder.priorities[0].id,
+      priority: priorities[0].id,
       dueDate: new Date(),
       parentId: null,
       alarmId: seeder.alarms[0].id,
@@ -198,7 +200,7 @@ describe('post task', () => {
     const newTask = {
       title: '할일',
       projectId: expectedProjectId,
-      priority: seeder.priorities[0].id,
+      priority: priorities[0].id,
       dueDate: new Date(),
       parentId: null,
       alarmId: seeder.alarms[0].id,
@@ -222,7 +224,7 @@ describe('post task', () => {
     const newTask = {
       title: '할일',
       sectionId: expectedSectionId,
-      priority: seeder.priorities[0].id,
+      priority: priorities[0].id,
       dueDate: new Date(),
       parentId: null,
       alarmId: seeder.alarms[0].id,
@@ -245,7 +247,7 @@ describe('post task', () => {
     const expectedSectionId = seeder.sections[0].id;
     const newTask = {
       title: '',
-      priority: seeder.priorities[0].id,
+      priority: priorities[0].id,
       dueDate: new Date(),
       parentId: null,
       alarmId: seeder.alarms[0].id,
@@ -268,7 +270,7 @@ describe('post task', () => {
     const expectedSectionId = seeder.sections[0].id;
     const newTask = {
       title: '할일',
-      priority: seeder.priorities[0].id,
+      priority: priorities[0].id,
       dueDate: new Date(),
       parentId: null,
       alarmId: seeder.alarms[0].id,
@@ -291,7 +293,7 @@ describe('post task', () => {
     const expectedSectionId = 'wrongId';
     const newTask = {
       title: '할일',
-      priority: seeder.priorities[0].id,
+      priority: priorities[0].id,
       dueDate: new Date(),
       parentId: null,
       alarmId: seeder.alarms[0].id,
@@ -314,7 +316,7 @@ describe('post task', () => {
     const expectedSectionId = seeder.sections[0].id;
     const newTask = {
       title: '할일',
-      priority: seeder.priorities[0].id,
+      priority: priorities[0].id,
       dueDate: new Date(),
       parentId: null,
       alarmId: seeder.alarms[0].id,
@@ -337,7 +339,7 @@ describe('post task', () => {
     const expectedSectionId = seeder.sections[0].id;
     const newTask = {
       title: '할일',
-      priority: seeder.priorities[0].id,
+      priority: priorities[0].id,
       dueDate: new Date(),
       parentId: null,
       alarmId: seeder.alarms[0].id,
@@ -360,7 +362,7 @@ describe('post task', () => {
     const expectedSectionId = seeder.sections[1].id;
     const newTask = {
       title: '할일',
-      priority: seeder.priorities[0].id,
+      priority: priorities[0].id,
       dueDate: new Date(),
       parentId: null,
       alarmId: seeder.alarms[0].id,
