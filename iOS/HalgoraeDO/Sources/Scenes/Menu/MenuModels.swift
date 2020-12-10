@@ -56,6 +56,20 @@ enum MenuModels {
         }
     }
     
+    enum CreateProject {
+        struct Request {
+            var projectFields: ProjectFields
+        }
+        
+        struct Response {
+            var projects: [Project]
+        }
+        
+        struct ViewModel {
+            var projectVms: [ProjectVM]
+        }
+    }
+    
     enum UpdateProject {
         struct Request {
             var project: ProjectVM
@@ -73,6 +87,13 @@ enum MenuModels {
 }
 
 extension MenuModels {
+    
+    struct ProjectFields: Codable {
+        var title: String
+        var isList: Bool
+        var isFavorite: Bool = false
+        var color: String
+    }
     
     enum ProjectSection: Int, Hashable, CaseIterable, CustomStringConvertible {
         case normal = 0, project

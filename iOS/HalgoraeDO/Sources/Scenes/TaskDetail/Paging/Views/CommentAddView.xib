@@ -14,30 +14,19 @@
             <connections>
                 <outlet property="contentView" destination="iN0-l3-epB" id="Nea-u7-SkQ"/>
                 <outlet property="contentsTextView" destination="nu8-y0-ILr" id="mfg-77-9Wy"/>
+                <outlet property="textViewHeighConstraint" destination="FwZ-Hv-3iZ" id="CEa-0H-Ifm"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB">
-            <rect key="frame" x="0.0" y="0.0" width="499" height="84"/>
+            <rect key="frame" x="0.0" y="0.0" width="491" height="76"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="peZ-kn-WsO">
-                    <rect key="frame" x="8" y="8" width="68" height="68"/>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KIs-JC-Orx">
+                    <rect key="frame" x="449" y="34" width="34" height="34"/>
                     <constraints>
-                        <constraint firstAttribute="width" secondItem="peZ-kn-WsO" secondAttribute="height" multiplier="1:1" id="jj4-U5-7Iv"/>
-                    </constraints>
-                    <color key="tintColor" name="halgoraedoDarkBlue"/>
-                    <state key="normal">
-                        <imageReference key="image" image="plus.app" catalog="system" symbolScale="large" renderingMode="template"/>
-                    </state>
-                    <connections>
-                        <action selector="didTapAddButton:" destination="-1" eventType="touchUpInside" id="s2F-zE-t2m"/>
-                    </connections>
-                </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KIs-JC-Orx">
-                    <rect key="frame" x="423" y="8" width="68" height="68"/>
-                    <constraints>
-                        <constraint firstAttribute="width" secondItem="KIs-JC-Orx" secondAttribute="height" multiplier="1:1" id="ALb-Je-tfY"/>
+                        <constraint firstAttribute="width" constant="34" id="HZx-Uv-rKq"/>
+                        <constraint firstAttribute="width" secondItem="KIs-JC-Orx" secondAttribute="height" multiplier="1:1" id="lZa-Uk-K2e"/>
                     </constraints>
                     <color key="tintColor" name="halgoraedoDarkBlue"/>
                     <state key="normal">
@@ -48,9 +37,12 @@
                         <action selector="didTapDoneButton:" destination="-1" eventType="touchUpInside" id="uJR-J6-VQl"/>
                     </connections>
                 </button>
-                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="nu8-y0-ILr">
-                    <rect key="frame" x="84" y="8" width="331" height="68"/>
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="755" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="nu8-y0-ILr">
+                    <rect key="frame" x="8" y="8" width="433" height="60"/>
                     <color key="backgroundColor" systemColor="systemGray5Color"/>
+                    <constraints>
+                        <constraint firstAttribute="height" priority="750" constant="34" id="FwZ-Hv-3iZ"/>
+                    </constraints>
                     <color key="textColor" systemColor="labelColor"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -59,24 +51,19 @@
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
-                <constraint firstItem="nu8-y0-ILr" firstAttribute="leading" secondItem="peZ-kn-WsO" secondAttribute="trailing" constant="8" id="5YB-UG-O2b"/>
-                <constraint firstItem="KIs-JC-Orx" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="Ehe-JN-s09"/>
                 <constraint firstAttribute="bottom" secondItem="nu8-y0-ILr" secondAttribute="bottom" constant="8" id="JZF-mt-hQS"/>
-                <constraint firstItem="peZ-kn-WsO" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="M4Q-bb-9Yn"/>
+                <constraint firstItem="nu8-y0-ILr" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="8" id="OYu-gy-Hrq"/>
                 <constraint firstItem="nu8-y0-ILr" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="V2e-OM-CBR"/>
-                <constraint firstAttribute="bottom" secondItem="peZ-kn-WsO" secondAttribute="bottom" constant="8" id="Vmu-MC-qZH"/>
+                <constraint firstItem="KIs-JC-Orx" firstAttribute="bottom" secondItem="nu8-y0-ILr" secondAttribute="bottom" id="Xwh-6d-yu5"/>
                 <constraint firstItem="KIs-JC-Orx" firstAttribute="leading" secondItem="nu8-y0-ILr" secondAttribute="trailing" constant="8" id="dmm-PI-6hV"/>
-                <constraint firstItem="peZ-kn-WsO" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="8" id="p76-Mw-cZk"/>
-                <constraint firstAttribute="bottom" secondItem="KIs-JC-Orx" secondAttribute="bottom" constant="8" id="pUW-1J-WUp"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="KIs-JC-Orx" secondAttribute="trailing" constant="8" id="xMl-jl-NsO"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="199.27536231884059" y="-220.98214285714286"/>
+            <point key="canvasLocation" x="193.47826086956522" y="-218.30357142857142"/>
         </view>
     </objects>
     <resources>
         <image name="arrow.up.circle.fill" catalog="system" width="128" height="121"/>
-        <image name="plus.app" catalog="system" width="128" height="114"/>
         <namedColor name="halgoraedoDarkBlue">
             <color red="0.10999999940395355" green="0.17000000178813934" blue="0.50999999046325684" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

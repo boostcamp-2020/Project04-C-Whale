@@ -9,8 +9,16 @@ import UIKit
 
 class CommentAddView: UIView {
     
-    @IBOutlet var contentView: UIView!
-    @IBOutlet weak var contentsTextView: UITextView!
+    // MARK: - Properties
+    
+    var maxHeight: CGFloat = 140
+    var doneHandler: ((String) -> Void)?
+    @IBOutlet weak var textViewHeighConstraint: NSLayoutConstraint!
+    
+    // MARK: - Views
+    
+    @IBOutlet private var contentView: UIView!
+    @IBOutlet weak private(set) var contentsTextView: UITextView!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -31,12 +39,18 @@ class CommentAddView: UIView {
         contentView.layer.shadowColor = UIColor.lightGray.cgColor
         contentView.layer.shadowOffset = .zero
         contentView.layer.shadowOpacity = 0.4
+        contentsTextView.delegate = self
     }
     
-    @IBAction func didTapAddButton(_ sender: UIButton) {
-        
+    @IBAction private func didTapDoneButton(_ sender: UIButton) {
+        doneHandler?(contentsTextView.text)
     }
-    @IBAction func didTapDoneButton(_ sender: UIButton) {
+}
+
+extension CommentAddView: UITextViewDelegate {
+    func textViewDidChange(_ textView: UITextView) {
         
+        guard textView.intrinsicContentSize.height < maxHeight else { return }
+        textViewHeighConstraint.constant = textView.contentSize.height
     }
 }
