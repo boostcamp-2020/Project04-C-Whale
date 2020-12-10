@@ -10,14 +10,12 @@
     <div v-else v-ripple="{ center: true }" class="text-center elevation-2 pa-12 headline">
       데이터를 불러오는 중입니다
     </div>
-    <Alert />
   </v-dialog>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
 import TaskDetailContainer from "@/components/task/TaskDetailContainer.vue";
-import Alert from "@/components/common/Alert";
 
 export default {
   name: "Task",
@@ -27,7 +25,7 @@ export default {
       projectTitle: undefined,
     };
   },
-  components: { TaskDetailContainer, Alert },
+  components: { TaskDetailContainer },
   methods: {
     ...mapActions(["fetchCurrentTask", "fetchComments"]),
     hideTaskModal() {
