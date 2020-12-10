@@ -25,33 +25,6 @@ const users = [
   },
 ];
 
-const priorities = [
-  {
-    id: 'c3bb8b39-cdad-4db4-ac02-ae506d30ba2a',
-    title: '우선순위1',
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-  {
-    id: '248d7dd6-9f9b-4bff-b47d-43a8b07c9093',
-    title: '우선순위2',
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-  {
-    id: 'ac7ac13c-53df-49a3-8617-654e23f3d043',
-    title: '우선순위3',
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-  {
-    id: '936f1c1d-e169-47c4-b544-1f8a0aff0a8d',
-    title: '우선순위4',
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-];
-
 const projects = [
   {
     id: 'b7f253e5-7b6b-4ee2-b94e-369ffcdffb5f',
@@ -118,7 +91,6 @@ const tasks = [
     projectId: projects[0].id,
     sectionId: sections[0].id,
     parentId: null,
-    priorityId: priorities[0].id,
     title: '작업 1',
     dueDate: new Date(),
     position: 0,
@@ -217,25 +189,6 @@ const comments = [
   },
 ];
 
-const labels = [
-  {
-    id: '54eefed3-3652-443f-85c9-7dfe87b23f82',
-    color: 'red',
-    title: '라벨 1',
-    userId: 'ff4dd832-1567-4d74-b41d-bd85e96ce329',
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-  {
-    id: 'f77c5c11-d753-4e76-9a73-7cf89a3fd569',
-    color: '#FFFFFF',
-    title: '라벨 2',
-    userId: 'd0325b52-b8d2-4623-b537-79b0d01cee1d',
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-];
-
 const bookmarks = [
   {
     id: 'cb8eb131-ad2e-4677-a4e5-c8ec078b28e8',
@@ -256,23 +209,19 @@ const alarms = [
 module.exports = {
   up: async queryInterface => {
     await queryInterface.bulkInsert('user', users, {});
-    await queryInterface.bulkInsert('priority', priorities, {});
     await queryInterface.bulkInsert('project', projects, {});
     await queryInterface.bulkInsert('section', sections, {});
     await queryInterface.bulkInsert('task', tasks, {});
     await queryInterface.bulkInsert('comment', comments, {});
-    await queryInterface.bulkInsert('label', labels, {});
     await queryInterface.bulkInsert('bookmark', bookmarks, {});
     await queryInterface.bulkInsert('alarm', alarms, {});
   },
   down: async queryInterface => {
     await queryInterface.bulkDelete('user', null, {});
-    await queryInterface.bulkDelete('priority', null, {});
     await queryInterface.bulkDelete('project', null, {});
     await queryInterface.bulkDelete('task', null, {});
     await queryInterface.bulkDelete('section', null, {});
     await queryInterface.bulkDelete('comment', null, {});
-    await queryInterface.bulkDelete('label', null, {});
     await queryInterface.bulkDelete('bookmark', null, {});
     await queryInterface.bulkDelete('alarm', null, {});
   },
