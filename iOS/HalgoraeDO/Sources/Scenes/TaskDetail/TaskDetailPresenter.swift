@@ -9,6 +9,7 @@ import Foundation
 
 protocol TaskDetailPresentLogic {
     func presentFetchedTasks(response: TaskDetailModels.FetchSubTasks.Response)
+    func presentFetchedComments(response: TaskDetailModels.FetchComments.Response)
 }
 
 class TaskDetailPresenter {
@@ -37,3 +38,8 @@ extension TaskDetailPresenter: TaskDetailPresentLogic {
         subTaskViewController?.displaySubTasks(viewModel: .init(taskVMs: taskVMs))
     }
     
+    func presentFetchedComments(response: TaskDetailModels.FetchComments.Response) {
+        let comemntVMs = response.comments.compactMap { TaskDetailModels.CommentVM(comment: $0) }
+        subTaskCommentViewController?.displayFetchedComments(viewModel: .init(commentVMs: comemntVMs))
+    }
+}
