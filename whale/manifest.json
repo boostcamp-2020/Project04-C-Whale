@@ -19,7 +19,8 @@
 
   "permissions": [
     "tabs",
-    "contextMenus"
+    "contextMenus",
+    "bookmarks"
   ],
 
   "externally_connectable": {

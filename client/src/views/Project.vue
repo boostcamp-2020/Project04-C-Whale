@@ -1,25 +1,24 @@
 <template>
   <div>
-    <project-container v-if="projectList[projectId]" :project="projectList[projectId]" />
-    <alert></alert>
+    <project-container
+      v-if="projectList[$route.params.projectId]"
+      :project="projectList[$route.params.projectId]"
+    />
   </div>
 </template>
 
 <script>
 import { mapActions, mapGetters } from "vuex";
 import ProjectContainer from "../components/project/ProjectContainer";
-import Alert from "@/components/common/Alert";
 import ListMixin from "@/mixins/ListMixins.js";
 
 export default {
-  components: { ProjectContainer, Alert },
+  components: { ProjectContainer },
   methods: {
     ...mapActions(["fetchCurrentProject"]),
   },
   data() {
-    return {
-      projectId: this.$route.params.projectId,
-    };
+    return {};
   },
   computed: {
     ...mapGetters(["projectList"]),

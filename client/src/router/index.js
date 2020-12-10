@@ -11,7 +11,6 @@ import bus from "@/utils/bus.js";
 Vue.use(VueRouter);
 
 const requireAuth = () => (from, to, next) => {
-  bus.$emit("start:spinner");
   if (localStorage.getItem("token")) {
     return next();
   }

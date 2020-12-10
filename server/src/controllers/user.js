@@ -13,7 +13,7 @@ const naverLogin = asyncTryCatch(async (req, res) => {
 
 const getOwnInfo = asyncTryCatch(async (req, res) => {
   const { user } = req;
-  responseHandler(res, 200, user);
+  responseHandler(res, 200, { user });
 });
 
 module.exports = { naverLogin, getOwnInfo };
