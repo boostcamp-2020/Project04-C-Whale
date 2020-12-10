@@ -2,7 +2,9 @@
   <v-list class="mb-5" v-show="type !== 'expired' || (type === 'expired' && tasks.length > 0)">
     <v-list-item class="font-weight-black text-h6"
       >{{ typeString[type] }}
-      <span class="font-14 d-inline-block ml-2">{{ todayString }}</span></v-list-item
+      <span v-show="type === 'today'" class="font-14 d-inline-block ml-2">{{
+        todayString
+      }}</span></v-list-item
     >
     <div v-for="task in tasks" :key="task.id" class="task-container">
       <TaskItem :task="task" />
