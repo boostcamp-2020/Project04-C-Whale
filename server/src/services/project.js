@@ -25,6 +25,7 @@ const retrieveProjects = async () => {
             model: models.task,
             attributes: [],
             where: { isDone: false },
+            required: false,
           },
         ],
       },
