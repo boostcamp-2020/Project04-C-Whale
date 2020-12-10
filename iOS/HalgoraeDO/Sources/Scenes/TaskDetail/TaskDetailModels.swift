@@ -36,6 +36,18 @@ enum TaskDetailModels {
         
         struct ViewModel {
             var commentVMs: [CommentVM]
+    
+    enum CreateComment {
+        struct Request {
+            var commentFields: CommentFields
+        }
+        
+        struct Response {
+            var comments: [Comment]
+        }
+        
+        struct ViewModel {
+            var comments: [ContentsVM]
         }
     }
     

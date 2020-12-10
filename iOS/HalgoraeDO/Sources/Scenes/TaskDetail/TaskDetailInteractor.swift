@@ -10,6 +10,7 @@ import Foundation
 protocol TaskDetailBusinessLogic {
     func fetchSubTasks(request: TaskDetailModels.FetchSubTasks.Request)
     func fetchComments(request: TaskDetailModels.FetchComments.Request)
+    func createComment(request: TaskDetailModels.CreateComment.Request)
 }
 
 protocol TaskDetailDataStore {
@@ -40,6 +41,13 @@ extension TaskDetailInteractor: TaskDetailBusinessLogic {
             self?.presenter.presentFetchedTasks(response: .init(tasks: tasks ?? []))
         }
         
+    func createComment(request: TaskDetailModels.CreateComment.Request) {
+        let fields = request.commentFields
+        guard let data = fields.text.encodeData else { return }
+        worker.requestPostAndGet(post: CommentEndPoint.create(taskId: fields.taskId, request: data),
+                                 get: CommentEndPoint.get(taskId: fields.taskId)) { [weak self] (comments: [Comment]?) in
+            self?.presenter.presentFetchedComments(response: .init(comments: comments ?? []))
+        }
     }
     
 }
