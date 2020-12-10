@@ -74,6 +74,13 @@ enum MenuModels {
 
 extension MenuModels {
     
+    struct ProjectFields: Codable {
+        var title: String
+        var isList: Bool
+        var isFavorite: Bool = false
+        var color: String
+    }
+    
     enum ProjectSection: Int, Hashable, CaseIterable, CustomStringConvertible {
         case normal = 0, project
         var description: String {
