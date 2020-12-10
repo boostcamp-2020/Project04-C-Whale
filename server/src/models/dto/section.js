@@ -6,7 +6,11 @@ class SectionDto {
   id;
 
   @IsString({ groups: ['create', 'update'] }, { message: errorMessage.TYPE_ERROR('title') })
-  @MinLength(1, { groups: ['create', 'update'] }, { message: errorMessage.TYPE_ERROR('title') })
+  @MinLength(
+    1,
+    { groups: ['create', 'update'] },
+    { message: errorMessage.INVALID_INPUT_ERROR('title') },
+  )
   title;
 
   @IsInt()
