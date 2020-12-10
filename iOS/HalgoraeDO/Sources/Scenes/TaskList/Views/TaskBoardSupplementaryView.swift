@@ -21,7 +21,7 @@ class TaskBoardSupplementaryView: UICollectionReusableView {
         NSLayoutConstraint.activate([
             view.leadingAnchor.constraint(equalTo: leadingAnchor),
             view.trailingAnchor.constraint(equalTo: trailingAnchor),
-            view.topAnchor.constraint(equalTo: topAnchor),
+            view.topAnchor.constraint(equalTo: topAnchor, constant: 50),
             view.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
         layer.backgroundColor = UIColor.white.cgColor
@@ -85,9 +85,5 @@ class TaskBoardSupplementaryView: UICollectionReusableView {
     
     @objc private func priorityPopover(_ sender: UIButton) {
         NotificationCenter.default.post(name: Notification.Name(rawValue: "displayAddTask"), object: section)
-        #if DEBUG
-        print("작업 추가 TODO")
-        #endif
     }
-    
 }
