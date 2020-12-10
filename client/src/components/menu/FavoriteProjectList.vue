@@ -38,14 +38,12 @@
         <v-menu :offset-y="true">
           <template v-slot:activator="{ on }">
             <v-list-item-action class="my-0">
-              <v-btn icon v-on.prevent="on">
+              <v-btn icon v-on="on" @click.prevent.stop="">
                 <v-icon>mdi-dots-horizontal</v-icon>
               </v-btn>
             </v-list-item-action>
           </template>
           <v-list>
-            <!-- TODO: 클릭했을때 라우팅이동하는 문제 해결 -->
-            <!-- TODO: 프로젝트 title 길어질때 설정 버튼 사라지는 문제 해결 -->
             <v-list-item @click.stop="openUpdateDialog(favoriteProjectInfo.id)">
               <v-list-item-title class="font-14">프로젝트 수정 </v-list-item-title>
             </v-list-item>
@@ -96,6 +94,11 @@ export default {
     openDeleteDialog(projectId) {
       this.projectId = projectId;
       this.deleteDialog = true;
+    },
+    prevent(e) {
+      console.log(e);
+      e.preventDefault();
+      e.stopPropagation();
     },
   },
 };

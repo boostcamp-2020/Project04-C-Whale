@@ -8,8 +8,6 @@ const getters = {
   dropTargetSection: (state) => state.dropTargetSection,
 };
 
-const actions = {};
-
 const mutations = {
   SET_DRAGGING_TASK: (state, task) => {
     state.draggingTask = task;
@@ -22,6 +20,5 @@ const mutations = {
 export default {
   state,
   getters,
-  actions,
   mutations,
 };

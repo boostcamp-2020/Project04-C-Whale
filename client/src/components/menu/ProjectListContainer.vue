@@ -6,6 +6,7 @@
           <v-list-item-content>
             <v-list-item-title class="font-14">프로젝트</v-list-item-title>
           </v-list-item-content>
+          <!-- TODO: 이벤트 버블링 오류 고치기 -->
           <v-list-item-icon :class="{ 'd-none ': !hover }" @click.stop="addDialog = true">
             <v-icon>mdi-plus</v-icon>
           </v-list-item-icon>
@@ -16,7 +17,7 @@
       <v-list-item
         v-for="project in projectInfos"
         :key="project.id"
-        @click="pushRoute(project.id)"
+        :to="`/project/${project.id}`"
         class="pl-4"
         active-class="font-weight-bold list-active"
       >
@@ -32,7 +33,7 @@
         <v-menu :offset-y="true">
           <template v-slot:activator="{ on }">
             <v-list-item-action class="my-0">
-              <v-btn icon v-on.prevent="on">
+              <v-btn icon v-on="on" @click.prevent.stop>
                 <v-icon>mdi-dots-horizontal</v-icon>
               </v-btn>
             </v-list-item-action>
@@ -47,6 +48,7 @@
           </v-list>
         </v-menu>
       </v-list-item>
+
       <v-list-item
         @click.stop="addDialog = true"
         inactive
@@ -101,9 +103,6 @@ export default {
     };
   },
   methods: {
-    pushRoute(projectId) {
-      this.$router.push("/project/" + projectId);
-    },
     openUpdateDialog(projectId) {
       this.projectId = projectId;
       this.updateDialog = true;

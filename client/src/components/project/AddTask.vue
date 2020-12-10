@@ -8,8 +8,8 @@
             <div class="task-info">
               <v-menu :offset-y="true">
                 <template v-slot:activator="{ on }">
-                  <v-btn depressed color="normal" v-on="on" width="100" class="mr-3">
-                    {{ task.dueDate }}
+                  <v-btn depressed color="normal" v-on="on" width="120" class="mr-3">
+                    기한:{{ todayStringToKorean(task.dueDate) }}
                   </v-btn>
                 </template>
                 <v-date-picker v-model="task.dueDate" />
@@ -17,7 +17,7 @@
 
               <v-menu :offset-y="true">
                 <template v-slot:activator="{ on }">
-                  <v-btn depressed color="normal" v-on="on">
+                  <v-btn depressed color="normal" v-on="on" class="mr-3">
                     <v-icon color="blue">mdi-inbox</v-icon>
                     {{ projectTitle }}
                   </v-btn>
@@ -35,10 +35,29 @@
                   </v-list-item>
                 </v-list>
               </v-menu>
+
+              <v-menu :offset-y="true">
+                <template v-slot:activator="{ on }">
+                  <v-btn depressed color="normal" v-on="on">
+                    <v-icon color="red">mdi-alarm</v-icon>
+                    알람:
+                  </v-btn>
+                </template>
+                <v-list>
+                  <v-list-item @click="selectAlarm(5)">
+                    <v-list-item-title>5초 후</v-list-item-title>
+                  </v-list-item>
+                  <v-list-item>
+                    <v-list-item-title>10초 후</v-list-item-title>
+                  </v-list-item>
+                </v-list>
+              </v-menu>
             </div>
           </div>
           <v-flex>
-            <v-btn type="submit" depressed color="primary">+ 작업 추가</v-btn>
+            <v-btn type="submit" depressed color="primary" :disabled="task.title.length === 0"
+              >+ 작업 추가</v-btn
+            >
             <v-btn @click="closeForm" text color="primary">취소</v-btn>
           </v-flex>
         </form>
@@ -62,38 +81,57 @@
 import { mapGetters, mapActions } from "vuex";
 import { getTodayString } from "../../utils/date";
 import whaleApi from "../../utils/whaleApi";
+import {getMarkDownUrl} from "../../utils/markdown"
+import {createAlarm} from "../../utils/whaleApi";
 
 export default {
+  props: {
+    project: Object,
+    section: Object,
+    parentId: String,
+  },
   data() {
     return {
       show: false,
       projectTitle: "",
       task: {
-        projectId: this.parentProjectId,
-        sectionId: this.parentSectionId,
-        parentId: this.parentId,
+        projectId: "",
+        sectionId: "",
+        parentId: this.parentId || null,
         title: "",
         dueDate: getTodayString(),
       },
+      alarmTime: 0,
     };
+  },
+  computed: {
+    ...mapGetters(["projectInfos"]),
+    ...mapGetters(["managedProject"]),
   },
   methods: {
     ...mapActions(["addTask"]),
     submit() {
       this.addTask(this.task);
+      createAlarm({
+        taskId: '??',
+        taskTitle: this.task.title,
+        fireTime: this.alarmTime,
+      })
       this.task = {
-        projectId: this.section.projectId,
-        sectionId: this.section.id,
-        parentId: this.parentId,
+        projectId: this.section?.projectId || this.managedProject.id,
+        sectionId: this.section?.id || this.managedProject.defaultSectionId,
+        parentId: this.parentId || null,
         title: "",
         dueDate: getTodayString(),
       };
+
+      this.projectTitle = this.managedProject.title;
       this.show = !this.show;
     },
     showForm(target) {
       if (target === "url") {
         whaleApi.getCurrentTabUrl(({ title, url }) => {
-          this.task.title = `[${title}](${url})`;
+          this.task.title = getMarkDownUrl(title, url);
         });
       }
       this.show = !this.show;
@@ -104,33 +142,32 @@ export default {
     },
     selectProject(projectInfo) {
       // TO DO : 에러 처리
-      if (this.project) {
-        return;
-      }
       this.task.projectId = projectInfo.id;
+      this.task.sectionId = projectInfo.defaultSectionId;
       this.projectTitle = projectInfo.title;
     },
-  },
-  props: {
-    project: Object,
-    section: Object,
-    projectId: String,
-    sectionId: String,
-    parentId: String,
-  },
-  computed: {
-    ...mapGetters(["projectInfos"]),
-    ...mapGetters(["managedProject"]),
-  },
-  created: function () {
-    if (this.project === undefined || this.section === undefined) {
-      const { title, id } = this.managedProject;
-      this.projectTitle = title;
-      this.task.projectId = id;
+    todayStringToKorean(todayString) {
+      const today = new Date(todayString);
+      return `${today.getMonth()}월 ${today.getDate()}일`;
+    },
+    selectAlarm(time) {
+      this.alarmTime = Date.now() + 1000 * time;
     }
-    this.projectTitle = this.project.title;
-    this.task.projectId = this.project.id;
-    this.task.sectionId = this.section.id;
+  },
+
+  watch: {
+    managedProject() {
+      if (this.project === undefined || this.section === undefined) {
+        const { title, id, defaultSectionId } = this.managedProject;
+        this.projectTitle = title;
+        this.task.projectId = id;
+        this.task.sectionId = defaultSectionId;
+        return;
+      }
+      this.projectTitle = this.project.title;
+      this.task.projectId = this.project.id;
+      this.task.sectionId = this.section.id;
+    },
   },
 };
 </script>

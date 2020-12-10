@@ -7,6 +7,7 @@ const {
   IsUUID,
   IsOptional,
   IsEmpty,
+  IsEnum,
 } = require('class-validator');
 const errorMessage = require('@utils/error-messages');
 const { isAfterToday } = require('@utils/validator');
@@ -52,18 +53,18 @@ class TaskDto {
   @IsUUID('4', { groups: ['patch'], message: errorMessage.INVALID_INPUT_ERROR('sectionId') })
   sectionId;
 
-  @IsEmpty({ groups: ['create'], message: errorMessage.UNNECESSARY_INPUT_ERROR('projectId') })
-  @IsOptional({ groups: ['patch'] })
-  @IsString({ groups: ['patch'], message: errorMessage.TYPE_ERROR('projectId') })
-  @IsUUID('4', { groups: ['patch'], message: errorMessage.INVALID_INPUT_ERROR('projectId') })
-  projectId;
+  @IsOptional({ groups: ['patch', 'create'] })
+  @IsEnum(['1', '2', '3', '4'], {
+    groups: ['patch', 'create'],
+    message: errorMessage.INVALID_INPUT_ERROR('priority'),
+  })
+  priority;
 
-  @IsOptional({ groups: ['patch'] })
-  @IsUUID('4', { groups: ['patch'], message: errorMessage.INVALID_INPUT_ERROR('priorityId') })
-  priorityId;
-
-  @IsOptional({ groups: ['patch'] })
-  @IsUUID('4', { groups: ['patch'], message: errorMessage.INVALID_INPUT_ERROR('alarmId') })
+  @IsOptional({ groups: ['patch', 'create'] })
+  @IsUUID('4', {
+    groups: ['patch', 'create'],
+    message: errorMessage.INVALID_INPUT_ERROR('alarmId'),
+  })
   alarmId;
 }
 

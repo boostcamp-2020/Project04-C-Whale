@@ -19,7 +19,11 @@
 
   "permissions": [
     "tabs",
-    "contextMenus"
+    "alarms",
+    "contextMenus",
+    "notifications",
+    "storage"
+    "bookmarks"
   ],
 
   "externally_connectable": {
