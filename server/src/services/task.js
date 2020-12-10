@@ -58,11 +58,10 @@ const retrieveAll = async userId => {
         include: [
           {
             model: models.project,
-            attributes: [],
+            attributes: ['creatorId'],
             where: { creatorId: userId },
           },
         ],
-        required: true,
       },
     ],
     order: [[taskModel, 'position', 'ASC']],

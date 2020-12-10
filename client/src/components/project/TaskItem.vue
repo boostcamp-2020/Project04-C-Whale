@@ -11,7 +11,7 @@
       <v-radio-group>
         <v-radio
           dense
-          @click="updateTaskToDone({ projectId: task.projectId, taskId: task.id })"
+          @click="updateTaskToDone({ projectId: section.projectId, taskId: task.id })"
           class="done-checkbox"
         ></v-radio>
       </v-radio-group>
@@ -52,7 +52,7 @@ export default {
       const destinationInfo = this.$route.params.projectId
         ? {
             name: "ProjectTaskDetail",
-            params: { projectId: this.task.projectId, taskId: this.task.id },
+            params: { projectId: this.$route.params.projectId, taskId: this.task.id },
           }
         : { name: "TodayTaskDetail", params: { taskId: this.task.id } };
 

@@ -36,6 +36,7 @@ const actions = {
       const {
         data: { task },
       } = await taskAPI.getTaskById(taskId);
+      console.log(task);
       commit("SET_CURRENT_TASK", task);
     } catch (err) {
       commit("SET_ERROR_ALERT", err.response);

@@ -81,8 +81,8 @@
 import { mapGetters, mapActions } from "vuex";
 import { getTodayString } from "../../utils/date";
 import whaleApi from "../../utils/whaleApi";
-import {getMarkDownUrl} from "../../utils/markdown"
-import {createAlarm} from "../../utils/whaleApi";
+import { getMarkDownUrl } from "../../utils/markdown";
+import { createAlarm } from "../../utils/whaleApi";
 
 export default {
   props: {
@@ -105,18 +105,17 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["projectInfos"]),
-    ...mapGetters(["managedProject"]),
+    ...mapGetters(["projectInfos", "managedProject"]),
   },
   methods: {
     ...mapActions(["addTask"]),
     submit() {
       this.addTask(this.task);
-      createAlarm({
-        taskId: '??',
-        taskTitle: this.task.title,
-        fireTime: this.alarmTime,
-      })
+      // createAlarm({
+      //   taskId: '??',
+      //   taskTitle: this.task.title,
+      //   fireTime: this.alarmTime,
+      // });
       this.task = {
         projectId: this.section?.projectId || this.managedProject.id,
         sectionId: this.section?.id || this.managedProject.defaultSectionId,
@@ -152,23 +151,34 @@ export default {
     },
     selectAlarm(time) {
       this.alarmTime = Date.now() + 1000 * time;
-    }
-  },
-
-  watch: {
-    managedProject() {
-      if (this.project === undefined || this.section === undefined) {
-        const { title, id, defaultSectionId } = this.managedProject;
-        this.projectTitle = title;
-        this.task.projectId = id;
-        this.task.sectionId = defaultSectionId;
-        return;
-      }
-      this.projectTitle = this.project.title;
-      this.task.projectId = this.project.id;
-      this.task.sectionId = this.section.id;
     },
   },
+  created() {
+    if (this.project === undefined || this.section === undefined) {
+      const { title, id, defaultSectionId } = this.managedProject;
+      this.projectTitle = title;
+      this.task.projectId = id;
+      this.task.sectionId = defaultSectionId;
+      return;
+    }
+    this.projectTitle = this.project.title;
+    this.task.projectId = this.project.id;
+    this.task.sectionId = this.section.id;
+  },
+  // watch: {
+  //   managedProject() {
+  //     if (this.project === undefined || this.section === undefined) {
+  //       const { title, id, defaultSectionId } = this.managedProject;
+  //       this.projectTitle = title;
+  //       this.task.projectId = id;
+  //       this.task.sectionId = defaultSectionId;
+  //       return;
+  //     }
+  //     this.projectTitle = this.project.title;
+  //     this.task.projectId = this.project.id;
+  //     this.task.sectionId = this.section.id;
+  //   },
+  // },
 };
 </script>
 

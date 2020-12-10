@@ -35,17 +35,17 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(["currentTask", "namedProjectInfos", "comments"]),
+    ...mapGetters(["currentTask", "projectInfos", "comments"]),
   },
 
   async created() {
-    Promise.all([
-      await this.fetchCurrentTask(this.$route.params.taskId),
-      await this.fetchComments(this.$route.params.taskId),
+    await Promise.all([
+      this.fetchCurrentTask(this.$route.params.taskId),
+      this.fetchComments(this.$route.params.taskId),
     ]);
 
-    this.projectTitle = this.namedProjectInfos.find(
-      (project) => project.id === this.currentTask.projectId
+    this.projectTitle = this.projectInfos.find(
+      (project) => project.id === this.$route.params.projectId
     ).title;
   },
 };
