@@ -22,7 +22,13 @@ class TaskDetailCommentViewController: UIViewController {
     // MARK: - Views
     
     @IBOutlet weak var commentCollectionView: UICollectionView!
-    @IBOutlet weak var commentAddView: CommentAddView!
+    @IBOutlet weak var commentAddView: CommentAddView! {
+        didSet {
+            commentAddView.doneHandler = { [weak self] text in
+                self?.createComment(text: text)
+            }
+        }
+    }
     
     // MARK: - View Life Cycle
 
@@ -59,6 +65,11 @@ class TaskDetailCommentViewController: UIViewController {
     
     @objc private func keyboardWillHide(_ notification: Notification) {
         self.commentAddView.transform = .identity
+    }
+    
+    func createComment(text: String) {
+        guard let task = task else { return }
+        interactor?.createComment(request: .init(commentFields: .init(taskId: task.id, text: text)))
     }
 }
 
