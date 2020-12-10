@@ -86,7 +86,7 @@ class AddProjectViewController: UIViewController {
             return
         }
         
-        addProjectViewControllerDelegate?.addProjectViewControllerDidDone(self, MenuModels.ProjectFields(title: projectName, isList: isList, color: color))
+        addProjectViewControllerDelegate?.addProjectViewController(self, didDoneFor: .init(title: projectName, isList: isList, color: color))
         dismiss(animated: true, completion: nil)
     }
     
