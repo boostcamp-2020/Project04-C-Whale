@@ -135,6 +135,7 @@ const actions = {
       await dispatch("fetchCurrentProject", task.projectId);
       await dispatch("fetchAllTasks");
       commit("ADD_TASK_COUNT", task.projectId);
+      return 'SUCCESS';
     } catch (err) {
       commit("SET_ERROR_ALERT", err.response);
     }
@@ -150,6 +151,7 @@ const actions = {
       // alert("프로젝트 전체 정보 조회 요청 실패");
     }
   },
+  
   async addProject({ dispatch, commit }, data) {
     try {
       const response = await projectAPI.createProject(data);

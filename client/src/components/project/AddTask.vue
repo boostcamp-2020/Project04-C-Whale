@@ -8,8 +8,8 @@
             <div class="task-info">
               <v-menu :offset-y="true">
                 <template v-slot:activator="{ on }">
-                  <v-btn depressed color="normal" v-on="on" width="100" class="mr-3">
-                    {{ task.dueDate }}
+                  <v-btn depressed color="normal" v-on="on" width="120" class="mr-3">
+                    기한:{{ todayStringToKorean(task.dueDate) }}
                   </v-btn>
                 </template>
                 <v-date-picker v-model="task.dueDate" />
@@ -17,7 +17,7 @@
 
               <v-menu :offset-y="true">
                 <template v-slot:activator="{ on }">
-                  <v-btn depressed color="normal" v-on="on">
+                  <v-btn depressed color="normal" v-on="on" class="mr-3">
                     <v-icon color="blue">mdi-inbox</v-icon>
                     {{ projectTitle }}
                   </v-btn>
@@ -32,6 +32,23 @@
                       <v-icon color="blue">mdi-inbox</v-icon>
                     </v-list-item-icon>
                     <v-list-item-title>{{ projectInfo.title }}</v-list-item-title>
+                  </v-list-item>
+                </v-list>
+              </v-menu>
+
+              <v-menu :offset-y="true">
+                <template v-slot:activator="{ on }">
+                  <v-btn depressed color="normal" v-on="on">
+                    <v-icon color="red">mdi-alarm</v-icon>
+                    알람:
+                  </v-btn>
+                </template>
+                <v-list>
+                  <v-list-item @click="selectAlarm(5)">
+                    <v-list-item-title>5초 후</v-list-item-title>
+                  </v-list-item>
+                  <v-list-item>
+                    <v-list-item-title>10초 후</v-list-item-title>
                   </v-list-item>
                 </v-list>
               </v-menu>
@@ -62,6 +79,8 @@
 import { mapGetters, mapActions } from "vuex";
 import { getTodayString } from "../../utils/date";
 import whaleApi from "../../utils/whaleApi";
+import {getMarkDownUrl} from "../../utils/markdown"
+import {createAlarm} from "../../utils/whaleApi";
 
 export default {
   data() {
@@ -75,12 +94,18 @@ export default {
         title: "",
         dueDate: getTodayString(),
       },
+      alarmTime: 0,
     };
   },
   methods: {
     ...mapActions(["addTask"]),
     submit() {
       this.addTask(this.task);
+      createAlarm({
+        taskId: '??',
+        taskTitle: this.task.title,
+        fireTime: this.alarmTime,
+      })
       this.task = {
         projectId: this.section.projectId,
         sectionId: this.section.id,
@@ -88,12 +113,13 @@ export default {
         title: "",
         dueDate: getTodayString(),
       };
+
       this.show = !this.show;
     },
     showForm(target) {
       if (target === "url") {
         whaleApi.getCurrentTabUrl(({ title, url }) => {
-          this.task.title = `[${title}](${url})`;
+          this.task.title = getMarkDownUrl(title, url);
         });
       }
       this.show = !this.show;
@@ -110,6 +136,13 @@ export default {
       this.task.projectId = projectInfo.id;
       this.projectTitle = projectInfo.title;
     },
+    todayStringToKorean(todayString) {
+      const today = new Date(todayString);
+      return `${today.getMonth()}월 ${today.getDate()}일`;
+    },
+    selectAlarm(time) {
+      this.alarmTime = Date.now() + 1000 * time;
+    }
   },
   props: {
     project: Object,
