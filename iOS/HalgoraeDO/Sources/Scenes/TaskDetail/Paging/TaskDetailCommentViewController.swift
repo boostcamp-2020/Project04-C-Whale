@@ -93,8 +93,8 @@ private extension TaskDetailCommentViewController {
                                                          subitems: [item])
         
         let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = .init(top: 8, leading: 16, bottom: 8, trailing: 16)
-        section.interGroupSpacing = 20
+        section.contentInsets = .init(top: 8, leading: 16, bottom: 0, trailing: 16)
+        section.interGroupSpacing = 8
         let layout = UICollectionViewCompositionalLayout(section: section)
         return layout
     }
