@@ -186,7 +186,7 @@ describe('update section task positions', () => {
 
     // when
     const res = await request(app)
-      .post(`/api/project/${expectedProjectId}/section/${expectedSectionId}/task/position`)
+      .patch(`/api/project/${expectedProjectId}/section/${expectedSectionId}/task/position`)
       .set('Authorization', `Bearer ${createJWT(expectedUser)}`)
       .send(requestBody);
 

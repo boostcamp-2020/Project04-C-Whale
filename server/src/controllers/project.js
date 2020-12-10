@@ -13,7 +13,7 @@ const getProjects = asyncTryCatch(async (req, res) => {
 const getTodayProject = asyncTryCatch(async (req, res) => {
   const todayProject = await projectService.retrieveTodayProject();
 
-  responseHandler(res, 200, todayProject);
+  responseHandler(res, 200, { todayProject });
 });
 
 const getProjectById = asyncTryCatch(async (req, res) => {

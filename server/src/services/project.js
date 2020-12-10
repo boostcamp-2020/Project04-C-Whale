@@ -1,6 +1,4 @@
-const Op = require('sequelize');
 const sequelize = require('@models');
-const getTodayStartEnd = require('@utils/today-start-end');
 
 const { models } = sequelize;
 const projectModel = models.project;
@@ -14,50 +12,28 @@ const retrieveProjects = async () => {
       'color',
       'isFavorite',
       'isList',
-      [sequelize.fn('COUNT', sequelize.col('tasks.id')), 'taskCount'],
+      [sequelize.fn('COUNT', sequelize.col('sections.tasks.id')), 'taskCount'],
       [sequelize.col('sections.id'), 'defaultSectionId'],
     ],
     include: [
-      {
-        model: models.task,
-        required: false,
-        where: { isDone: false },
-        attributes: [],
-      },
       {
         model: models.section,
         required: false,
         where: { position: 0 },
         attributes: [],
+        include: [
+          {
+            model: models.task,
+            attributes: [],
+            where: { isDone: false },
+          },
+        ],
       },
     ],
     group: ['project.id', 'sections.id'],
   });
 
   return projects;
-};
-
-const retrieveTodayProject = async () => {
-  const TODAY = '오늘';
-
-  const { todayStart, todayEnd } = getTodayStartEnd();
-
-  const todayProject = {
-    title: TODAY,
-  };
-
-  todayProject.taskCount = await models.task.count({
-    where: {
-      dueDate: {
-        [Op.and]: {
-          [Op.gt]: todayStart,
-          [Op.lt]: todayEnd,
-        },
-      },
-    },
-  });
-
-  return todayProject;
 };
 
 const retrieveById = async id => {
@@ -67,15 +43,10 @@ const retrieveById = async id => {
       model: models.section,
       include: {
         model: models.task,
-        where: { isDone: false, parentId: null },
+        where: { parentId: null },
         include: [
-          'priority',
-          'labels',
-          'alarm',
           {
             model: models.task,
-            where: { isDone: false },
-            required: false,
           },
         ],
         required: false,
@@ -114,7 +85,8 @@ const findOrCreate = async data => {
   const [result] = await projectModel.findAll({ where: data });
   if (result) return true;
 
-  return await create(data);
+  const createResult = await create(data);
+  return createResult;
 };
 
 const update = async ({ id, ...data }) => {
@@ -131,7 +103,6 @@ const remove = async ({ id }) => {
 
 module.exports = {
   retrieveProjects,
-  retrieveTodayProject,
   retrieveById,
   create,
   findOrCreate,

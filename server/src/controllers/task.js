@@ -15,7 +15,7 @@ const getTaskById = asyncTryCatch(async (req, res) => {
     throw err;
   }
 
-  const task = await taskService.retrieveById(id);
+  const task = await taskService.retrieveById({ id, userId: req.user.id });
 
   responseHandler(res, 200, { task });
 });
@@ -36,7 +36,7 @@ const createTask = asyncTryCatch(async (req, res) => {
     throw err;
   }
   const { projectId, sectionId } = req.params;
-  const task = { ...req.body, projectId, sectionId };
+  const task = { ...req.body, projectId, sectionId, userId: req.user.id };
 
   await taskService.create(task);
   responseHandler(res, 201, { message: 'ok' });
@@ -55,7 +55,7 @@ const updateTask = asyncTryCatch(async (req, res) => {
     throw err;
   }
 
-  await taskService.update({ id: taskId, ...task });
+  await taskService.update({ id: taskId, userId: req.user.id, ...task });
   responseHandler(res, 200, { message: 'ok' });
 });
 

@@ -23,7 +23,11 @@ describe('get All task', () => {
     const expectedTasks = seeder.tasks
       .filter(task => {
         const projects = seeder.projects.filter(project => project.creatorId === expectedUser.id);
-        return projects.some(project => project.id === task.projectId);
+        const sections = seeder.sections.filter(section =>
+          projects.some(project => section.projectId === project.id),
+        );
+
+        return sections.some(section => section.id === task.sectionId);
       })
       .map(task => {
         const { id, title } = task;
@@ -138,7 +142,7 @@ describe('get task by id', () => {
 
       // then
       expect(res.status).toBe(status.FORBIDDEN.CODE);
-      expect(res.body.message).toBe(status.FORBIDDEN.MSG);
+      expect(res.body.message).toBe(errorMessage.FORBIDDEN_ERROR('task'));
 
       done();
     } catch (err) {
@@ -147,7 +151,7 @@ describe('get task by id', () => {
   });
   it('존재하지 않는 task id인 경우', async done => {
     // given
-    const taskId = 'c213d58a-661a-4395-b0da-fb48dc11fa2e';
+    const taskId = seeder.sections[0].id;
 
     try {
       // when
@@ -157,7 +161,7 @@ describe('get task by id', () => {
 
       // then
       expect(res.status).toBe(status.NOT_FOUND.CODE);
-      expect(res.body.message).toBe(status.NOT_FOUND.MSG);
+      expect(res.body.message).toBe(errorMessage.NOT_FOUND_ERROR('task'));
 
       done();
     } catch (err) {
@@ -174,7 +178,7 @@ describe('patch task with id', () => {
       title: '할일',
       projectId: seeder.projects[0].id,
       sectionId: seeder.sections[0].id,
-      priorityId: seeder.priorities[0].id,
+      priority: '1',
       dueDate: new Date(),
       parentId: null,
       alarmId: seeder.alarms[0].id,
@@ -266,10 +270,10 @@ describe('patch task with id', () => {
     done();
   });
 
-  it('잘못된 projectId 수정', async done => {
+  it('잘못된 priority 수정', async done => {
     // given
     const taskId = seeder.tasks[0].id;
-    const patchTask = { projectId: 'invalidId' };
+    const patchTask = { priority: '5' };
 
     // when
     const res = await request(app)
@@ -279,23 +283,7 @@ describe('patch task with id', () => {
 
     // then
     expect(res.status).toBe(status.BAD_REQUEST.CODE);
-    expect(res.body.message).toBe(errorMessage.INVALID_INPUT_ERROR('projectId'));
-    done();
-  });
-  it('잘못된 priorityId 수정', async done => {
-    // given
-    const taskId = seeder.tasks[0].id;
-    const patchTask = { priorityId: 'invalidId' };
-
-    // when
-    const res = await request(app)
-      .patch(`/api/task/${taskId}`)
-      .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
-      .send(patchTask);
-
-    // then
-    expect(res.status).toBe(status.BAD_REQUEST.CODE);
-    expect(res.body.message).toBe(errorMessage.INVALID_INPUT_ERROR('priorityId'));
+    expect(res.body.message).toBe(errorMessage.INVALID_INPUT_ERROR('priority'));
     done();
   });
   it('잘못된 alarmId 수정', async done => {
@@ -346,6 +334,46 @@ describe('patch task with id', () => {
     expect(res.body.message).toBe(errorMessage.DUEDATE_ERROR);
     done();
   });
+  it('자신의 작업이 아닌 경우', async done => {
+    // given
+    const taskId = seeder.tasks[0].id;
+    const patchTask = { isDone: true };
+
+    try {
+      // when
+      const res = await request(app)
+        .patch(`/api/task/${taskId}`)
+        .set('Authorization', `Bearer ${createJWT(seeder.users[2])}`)
+        .send(patchTask);
+
+      // then
+      expect(res.status).toBe(status.FORBIDDEN.CODE);
+      expect(res.body.message).toBe(errorMessage.FORBIDDEN_ERROR('task'));
+      done();
+    } catch (err) {
+      done(err);
+    }
+  });
+  it('존재하지 않는 작업인 경우', async done => {
+    // given
+    const taskId = seeder.sections[0].id;
+    const patchTask = { isDone: true };
+
+    try {
+      // when
+      const res = await request(app)
+        .patch(`/api/task/${taskId}`)
+        .set('Authorization', `Bearer ${createJWT(seeder.users[2])}`)
+        .send(patchTask);
+
+      // then
+      expect(res.status).toBe(status.NOT_FOUND.CODE);
+      expect(res.body.message).toBe(errorMessage.NOT_FOUND_ERROR('task'));
+      done();
+    } catch (err) {
+      done(err);
+    }
+  });
 });
 
 describe('delete task', () => {
@@ -361,6 +389,23 @@ describe('delete task', () => {
       // then
       expect(res.status).toBe(status.SUCCESS.CODE);
       expect(res.body.message).toBe(status.SUCCESS.MSG);
+      done();
+    } catch (err) {
+      done(err);
+    }
+  });
+  it('없는 id', async done => {
+    // given
+    const taskId = seeder.sections[0].id;
+    try {
+      // when
+      const res = await request(app)
+        .delete(`/api/task/${taskId}`)
+        .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`);
+
+      // then
+      expect(res.status).toBe(status.NOT_FOUND.CODE);
+      expect(res.body.message).toBe(errorMessage.NOT_FOUND_ERROR('task'));
       done();
     } catch (err) {
       done(err);
