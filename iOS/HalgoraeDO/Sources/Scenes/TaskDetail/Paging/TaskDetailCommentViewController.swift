@@ -17,7 +17,7 @@ class TaskDetailCommentViewController: UIViewController {
 
     private var task: Task?
     private var interactor: TaskDetailBusinessLogic?
-    private var dataSource: UICollectionViewDiffableDataSource<String, TaskDetailModels.CommentVM>!
+    private var dataSource: UICollectionViewDiffableDataSource<String, TaskDetailModels.ContentsVM>!
     
     // MARK: - Views
     
@@ -95,27 +95,18 @@ private extension TaskDetailCommentViewController {
     
     func configureDataSource() {
         
-        let cellRegistration = UICollectionView.CellRegistration<TaskCommentCell, TaskDetailModels.CommentVM> { (cell, _: IndexPath, taskItem) in
+        let cellRegistration = UICollectionView.CellRegistration<TaskDetailContentsCellCollectionViewCell, TaskDetailModels.ContentsVM> { (cell, _: IndexPath, taskItem) in
             cell.viewModel = taskItem
         }
         
-        let imageCellRegistration = UICollectionView.CellRegistration<TaskCommentImageCell, TaskDetailModels.CommentVM> { (cell, _: IndexPath, taskItem) in
-            cell.viewModel = taskItem
-        }
-        
-        dataSource = UICollectionViewDiffableDataSource<String, TaskDetailModels.CommentVM>(collectionView: commentCollectionView, cellProvider: { (collectionView, indexPath, task) -> UICollectionViewCell? in
+        dataSource = UICollectionViewDiffableDataSource<String, TaskDetailModels.ContentsVM>(collectionView: commentCollectionView, cellProvider: { (collectionView, indexPath, task) -> UICollectionViewCell? in
             
-            if task.isImage {
-                return collectionView.dequeueConfiguredReusableCell(using: imageCellRegistration, for: indexPath, item: task)
-            } else {
-                return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: task)
-            }
-            
+            return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: task)
         })
     }
     
-    func snapshot(taskItems: [TaskDetailModels.CommentVM]) -> NSDiffableDataSourceSectionSnapshot<TaskDetailModels.CommentVM> {
-        var snapshot = NSDiffableDataSourceSectionSnapshot<TaskDetailModels.CommentVM>()
+    func snapshot(taskItems: [TaskDetailModels.ContentsVM]) -> NSDiffableDataSourceSectionSnapshot<TaskDetailModels.ContentsVM> {
+        var snapshot = NSDiffableDataSourceSectionSnapshot<TaskDetailModels.ContentsVM>()
         snapshot.append(taskItems)
         
         return snapshot
