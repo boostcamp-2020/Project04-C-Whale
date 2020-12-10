@@ -204,6 +204,8 @@
 		4CE9160E257F81C500BCF398 /* MenuPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuPresenter.swift; sourceTree = "<group>"; };
 		4CE91613257F82A100BCF398 /* MenuModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuModels.swift; sourceTree = "<group>"; };
 		4CE91618257F83AD00BCF398 /* MenuRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuRouter.swift; sourceTree = "<group>"; };
+		4CE9161F257FECE500BCF398 /* TaskListTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = TaskListTests.xctest; path = "/Users/os/woong/iOS/Boostcamp2020/group_final/Project04-C-Whale/iOS/build/Debug-iphoneos/TaskListTests.xctest"; sourceTree = "<absolute>"; };
+		4CE91620257FECE500BCF398 /* ServiceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = ServiceTests.xctest; path = "/Users/os/woong/iOS/Boostcamp2020/group_final/Project04-C-Whale/iOS/build/Debug-iphoneos/ServiceTests.xctest"; sourceTree = "<absolute>"; };
 		AA19EF162575680500E59017 /* TaskSectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskSectionViewCell.swift; sourceTree = "<group>"; };
 		AA19EF1A25756C3200E59017 /* AddSectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSectionViewCell.swift; sourceTree = "<group>"; };
 		AA19EF242576488B00E59017 /* TaskBoardSupplementaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskBoardSupplementaryView.swift; sourceTree = "<group>"; };
