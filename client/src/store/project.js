@@ -1,6 +1,7 @@
 import projectAPI from "../api/project";
-import taskAPI from "../api/task";
 import router from "@/router";
+
+const DEFAULT_PROJECT_TITLE = "관리함";
 
 const state = {
   currentProject: {
@@ -15,11 +16,13 @@ const state = {
 
 const getters = {
   currentProject: (state) => state.currentProject,
-  todayProject: (state) => state.todayProject,
   projectInfos: (state) => state.projectInfos,
   namedProjectInfos: (state) =>
-    state.projectInfos.filter((project) => project.title !== "관리함" && !project.isFavorite),
-  managedProject: (state) => state.projectInfos.find((project) => project.title === "관리함"),
+    state.projectInfos.filter(
+      (project) => project.title !== DEFAULT_PROJECT_TITLE && !project.isFavorite
+    ),
+  managedProject: (state) =>
+    state.projectInfos.find((project) => project.title === DEFAULT_PROJECT_TITLE),
   favoriteProjectInfos: (state) => state.projectInfos.filter((project) => project.isFavorite),
   projectList: (state) => state.projectList,
 };
@@ -32,7 +35,6 @@ const mutations = {
     state.currentProject = currentProject;
   },
   SET_PROJECT_INFOS: (state, projectInfos) => (state.projectInfos = projectInfos),
-  SET_TODAY_PROJECT: (state, todayProject) => (state.todayProject = todayProject),
   ADD_TASK_COUNT: (state, projectId) => {
     const copyed = [...state.projectInfos];
     copyed.find((projectInfo) => projectInfo.id === projectId).taskCount += 1;
@@ -106,28 +108,6 @@ const actions = {
       commit("SET_ERROR_ALERT", err.response);
     }
   },
-  async updateTaskToDone({ dispatch, commit }, { projectId, taskId }) {
-    try {
-      await taskAPI.updateTask(taskId, { isDone: true });
-      await dispatch("fetchCurrentProject", projectId);
-      await dispatch("fetchAllTasks");
-
-      commit("SET_SUCCESS_ALERT", "작업을 완료했습니다.");
-    } catch (err) {
-      commit("SET_ERROR_ALERT", err.response);
-    }
-  },
-  async addTask({ dispatch, commit }, task) {
-    try {
-      await taskAPI.createTask(task);
-      await dispatch("fetchCurrentProject", task.projectId);
-      await dispatch("fetchAllTasks");
-
-      commit("ADD_TASK_COUNT", task.projectId);
-    } catch (err) {
-      commit("SET_ERROR_ALERT", err.response);
-    }
-  },
   async fetchProjectInfos({ commit }) {
     try {
       const {
@@ -146,24 +126,6 @@ const actions = {
 
       commit("SET_SUCCESS_ALERT", "프로젝트가 생성되었습니다.");
       router.push("/project/" + response.data.projectId);
-    } catch (err) {
-      commit("SET_ERROR_ALERT", err.response);
-    }
-  },
-  async changeTaskPosition({ rootState, dispatch, commit }, { orderedTasks }) {
-    const { draggingTask, dropTargetSection } = rootState.dragAndDrop;
-
-    try {
-      await taskAPI.updateTask(draggingTask.id, {
-        sectionId: dropTargetSection.id,
-      });
-      await projectAPI.updateTaskPosition(dropTargetSection.projectId, dropTargetSection.id, {
-        orderedTasks,
-      });
-      await dispatch("fetchCurrentProject", dropTargetSection.projectId);
-      await dispatch("fetchAllTasks");
-
-      commit("SET_SUCCESS_ALERT", "작업 위치가 변경되었습니다.");
     } catch (err) {
       commit("SET_ERROR_ALERT", err.response);
     }
