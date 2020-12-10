@@ -6,6 +6,7 @@
 
     <div v-for="(task, index) in tasks" :key="task.id" class="task-container">
       <TaskItem
+        v-if="!task.isDone"
         :section="section"
         :task="task"
         :position="index"
@@ -13,12 +14,14 @@
         @taskDrop="taskDrop"
       />
       <v-divider />
-      <TaskItem
-        v-for="childTask in task.tasks"
-        :key="childTask.id"
-        :task="childTask"
-        class="ml-10"
-      />
+      <div v-if="!task.isDone">
+        <TaskItem
+          v-for="childTask in task.tasks"
+          :key="childTask.id"
+          :task="childTask"
+          class="ml-10"
+        />
+      </div>
     </div>
 
     <AddTask :project="project" :section="section" />
@@ -63,10 +66,10 @@ export default {
     ...mapGetters(["draggingTask", "dropTargetSection"]),
   },
   watch: {
-    section: function (updatedSection) {
+    section(updatedSection) {
       this.tasks = _.cloneDeep(updatedSection.tasks);
     },
-    dropTargetSection: function (dropTargetSection) {
+    dropTargetSection(dropTargetSection) {
       if (dropTargetSection.id !== this.section.id) {
         this.tasks = this.tasks.filter((task) => task.id !== this.draggingTask.id);
       }

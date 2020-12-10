@@ -119,7 +119,7 @@ const actions = {
       commit("SET_ERROR_ALERT", err.response);
     }
   },
-  
+
   async addProject({ dispatch, commit }, data) {
     try {
       const response = await projectAPI.createProject(data);
