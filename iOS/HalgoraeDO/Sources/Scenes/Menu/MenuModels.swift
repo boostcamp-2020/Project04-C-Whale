@@ -56,6 +56,20 @@ enum MenuModels {
         }
     }
     
+    enum CreateProject {
+        struct Request {
+            var projectFields: ProjectFields
+        }
+        
+        struct Response {
+            var projects: [Project]
+        }
+        
+        struct ViewModel {
+            var projectVms: [ProjectVM]
+        }
+    }
+    
     enum UpdateProject {
         struct Request {
             var project: ProjectVM
