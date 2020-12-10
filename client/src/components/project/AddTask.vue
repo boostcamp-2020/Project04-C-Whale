@@ -86,8 +86,8 @@ import { createAlarm } from "../../utils/whaleApi";
 
 export default {
   props: {
-    project: Object,
-    section: Object,
+    projectId: String,
+    sectionId: String,
     parentId: String,
   },
   data() {
@@ -95,8 +95,8 @@ export default {
       show: false,
       projectTitle: "",
       task: {
-        projectId: "",
-        sectionId: "",
+        projectId: this.projectId,
+        sectionId: this.sectionId,
         parentId: this.parentId || null,
         title: "",
         dueDate: getTodayString(),
@@ -117,8 +117,8 @@ export default {
       //   fireTime: this.alarmTime,
       // });
       this.task = {
-        projectId: this.section?.projectId || this.managedProject.id,
-        sectionId: this.section?.id || this.managedProject.defaultSectionId,
+        projectId: this.projectId ? this.projectId : this.managedProject.id,
+        sectionId: this.sectionId ? this.sectionId : this.managedProject.defaultSectionId,
         parentId: this.parentId || null,
         title: "",
         dueDate: getTodayString(),
@@ -154,31 +154,17 @@ export default {
     },
   },
   created() {
-    if (this.project === undefined || this.section === undefined) {
+    if (this.projectId === undefined || this.sectionId === undefined) {
       const { title, id, defaultSectionId } = this.managedProject;
       this.projectTitle = title;
       this.task.projectId = id;
       this.task.sectionId = defaultSectionId;
       return;
     }
-    this.projectTitle = this.project.title;
-    this.task.projectId = this.project.id;
-    this.task.sectionId = this.section.id;
+    this.projectTitle = this.projectInfos.find((project) => project.id === this.projectId).title;
+    this.task.projectId = this.projectId;
+    this.task.sectionId = this.sectionId;
   },
-  // watch: {
-  //   managedProject() {
-  //     if (this.project === undefined || this.section === undefined) {
-  //       const { title, id, defaultSectionId } = this.managedProject;
-  //       this.projectTitle = title;
-  //       this.task.projectId = id;
-  //       this.task.sectionId = defaultSectionId;
-  //       return;
-  //     }
-  //     this.projectTitle = this.project.title;
-  //     this.task.projectId = this.project.id;
-  //     this.task.sectionId = this.section.id;
-  //   },
-  // },
 };
 </script>
 

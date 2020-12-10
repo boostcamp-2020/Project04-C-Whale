@@ -17,7 +17,7 @@
         :tasks="this.task.tasks"
         :tabList="this.tabList"
         :comments="this.comments"
-        :projectId="this.task.projectId"
+        :projectId="this.$route.params.projectId"
         :sectionId="this.task.sectionId"
       />
     </v-list-item>
