@@ -8,13 +8,10 @@
 import Foundation
 
 final class Task {
-
-    // MARK:  - Constatns
-    
-    var id: String = UUID().uuidString
     
     // MARK: - Properties
     
+    var id: String
     var tasks: [Task]?
     weak var parent: Task?
     var title: String
@@ -27,7 +24,8 @@ final class Task {
     var comments: [Comment]?
     var bookmarks: [Bookmark]?
     
-    init(title: String,
+    init(id: String = UUID().uuidString,
+        title: String,
          isCompleted: Bool = false,
          dueDate: String = "\(Date())",
          position: Int,
@@ -39,7 +37,7 @@ final class Task {
          comments: [Comment] = [],
          bookmarks: [Bookmark] = []
     ) {
-        
+        self.id = id
         self.title = title
         self.isDone = isCompleted
         self.dueDate = dueDate
