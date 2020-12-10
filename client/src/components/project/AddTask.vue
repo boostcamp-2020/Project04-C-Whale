@@ -88,6 +88,8 @@ export default {
   props: {
     project: Object,
     section: Object,
+    projectId: String,
+    sectionId: String,
     parentId: String,
   },
   data() {
@@ -95,8 +97,8 @@ export default {
       show: false,
       projectTitle: "",
       task: {
-        projectId: "",
-        sectionId: "",
+        projectId: this.projectId,
+        sectionId: this.sectionId,
         parentId: this.parentId || null,
         title: "",
         dueDate: getTodayString(),
@@ -161,9 +163,11 @@ export default {
       this.task.sectionId = defaultSectionId;
       return;
     }
-    this.projectTitle = this.project.title;
-    this.task.projectId = this.project.id;
-    this.task.sectionId = this.section.id;
+    this.projectTitle =
+      this.project?.title ||
+      this.projectInfos.find((projectInfo) => projectInfo.id === this.projectId).title;
+    this.task.projectId = this.project?.id || this.projectId;
+    this.task.sectionId = this.section?.id || this.sectionId;
   },
   // watch: {
   //   managedProject() {

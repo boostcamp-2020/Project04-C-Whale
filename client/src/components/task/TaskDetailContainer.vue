@@ -14,11 +14,11 @@
         <TaskItem :task="task" />
       </div>
       <TaskDetailTabs
-        :tasks="this.task.tasks"
-        :tabList="this.tabList"
-        :comments="this.comments"
-        :projectId="this.task.projectId"
-        :sectionId="this.task.sectionId"
+        :tasks="task.tasks"
+        :tabList="tabList"
+        :comments="comments"
+        :projectId="task.projectId"
+        :sectionId="task.sectionId"
       />
     </v-list-item>
   </v-flex>

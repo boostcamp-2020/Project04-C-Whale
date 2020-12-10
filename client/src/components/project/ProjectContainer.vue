@@ -22,6 +22,8 @@
       :show="showAddSection"
       :projectId="project.id"
     />
+
+    <router-view :key="$route.params.taskId"></router-view>
   </div>
 </template>
 
@@ -30,6 +32,7 @@ import { mapActions } from "vuex";
 import ProjectContainerHeader from "./ProjectContainerHeader";
 import SectionContainer from "@/components/project/SectionContainer";
 import AddSection from "@/components/project/AddSection";
+import bus from "@/utils/bus";
 
 export default {
   props: {
@@ -57,6 +60,11 @@ export default {
     SectionContainer,
     ProjectContainerHeader,
     AddSection,
+  },
+  created() {
+    bus.$on("moveToTaskDetail", (destinationInfo) => {
+      this.$router.push(destinationInfo).catch(() => {});
+    });
   },
 };
 </script>
