@@ -23,6 +23,7 @@
     "contextMenus",
     "notifications",
     "storage"
+    "bookmarks"
   ],
 
   "externally_connectable": {

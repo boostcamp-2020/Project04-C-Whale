@@ -24,7 +24,7 @@ whale.runtime.onConnectExternal.addListener((port) => {
     if (info.menuItemId == 'ADD_TASK') {
       port.postMessage(info);
     }
-  }
+  };
 
   whale.contextMenus.onClicked.removeListener(handlerToRemove);
   whale.contextMenus.onClicked.addListener(handleOnClicked);
@@ -39,6 +39,7 @@ whale.runtime.onMessageExternal.addListener((message, sendResponse) => {
         sendResponse({ url: currentTab.url, title: currentTab.title });
       });
       break;
+
     case 'createAlarm':
       const {taskId, taskTitle, fireTime} = message.data;
       console.log(fireTime);
@@ -46,5 +47,10 @@ whale.runtime.onMessageExternal.addListener((message, sendResponse) => {
       whale.alarms.create(taskTitle, {
         when: fireTime,
       })
+
+    case "createBookmark":
+      whale.bookmarks.create({ title: data.title, url: data.url });
+      sendResponse("북마크가 추가되었습니다.");
+      break;
   }
 });

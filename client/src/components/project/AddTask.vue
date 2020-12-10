@@ -55,7 +55,9 @@
             </div>
           </div>
           <v-flex>
-            <v-btn type="submit" depressed color="primary">+ 작업 추가</v-btn>
+            <v-btn type="submit" depressed color="primary" :disabled="task.title.length === 0"
+              >+ 작업 추가</v-btn
+            >
             <v-btn @click="closeForm" text color="primary">취소</v-btn>
           </v-flex>
         </form>
@@ -83,19 +85,28 @@ import {getMarkDownUrl} from "../../utils/markdown"
 import {createAlarm} from "../../utils/whaleApi";
 
 export default {
+  props: {
+    project: Object,
+    section: Object,
+    parentId: String,
+  },
   data() {
     return {
       show: false,
       projectTitle: "",
       task: {
-        projectId: this.parentProjectId,
-        sectionId: this.parentSectionId,
-        parentId: this.parentId,
+        projectId: "",
+        sectionId: "",
+        parentId: this.parentId || null,
         title: "",
         dueDate: getTodayString(),
       },
       alarmTime: 0,
     };
+  },
+  computed: {
+    ...mapGetters(["projectInfos"]),
+    ...mapGetters(["managedProject"]),
   },
   methods: {
     ...mapActions(["addTask"]),
@@ -107,13 +118,14 @@ export default {
         fireTime: this.alarmTime,
       })
       this.task = {
-        projectId: this.section.projectId,
-        sectionId: this.section.id,
-        parentId: this.parentId,
+        projectId: this.section?.projectId || this.managedProject.id,
+        sectionId: this.section?.id || this.managedProject.defaultSectionId,
+        parentId: this.parentId || null,
         title: "",
         dueDate: getTodayString(),
       };
 
+      this.projectTitle = this.managedProject.title;
       this.show = !this.show;
     },
     showForm(target) {
@@ -130,10 +142,8 @@ export default {
     },
     selectProject(projectInfo) {
       // TO DO : 에러 처리
-      if (this.project) {
-        return;
-      }
       this.task.projectId = projectInfo.id;
+      this.task.sectionId = projectInfo.defaultSectionId;
       this.projectTitle = projectInfo.title;
     },
     todayStringToKorean(todayString) {
@@ -144,26 +154,20 @@ export default {
       this.alarmTime = Date.now() + 1000 * time;
     }
   },
-  props: {
-    project: Object,
-    section: Object,
-    projectId: String,
-    sectionId: String,
-    parentId: String,
-  },
-  computed: {
-    ...mapGetters(["projectInfos"]),
-    ...mapGetters(["managedProject"]),
-  },
-  created: function () {
-    if (this.project === undefined || this.section === undefined) {
-      const { title, id } = this.managedProject;
-      this.projectTitle = title;
-      this.task.projectId = id;
-    }
-    this.projectTitle = this.project.title;
-    this.task.projectId = this.project.id;
-    this.task.sectionId = this.section.id;
+
+  watch: {
+    managedProject() {
+      if (this.project === undefined || this.section === undefined) {
+        const { title, id, defaultSectionId } = this.managedProject;
+        this.projectTitle = title;
+        this.task.projectId = id;
+        this.task.sectionId = defaultSectionId;
+        return;
+      }
+      this.projectTitle = this.project.title;
+      this.task.projectId = this.project.id;
+      this.task.sectionId = this.section.id;
+    },
   },
 };
 </script>
