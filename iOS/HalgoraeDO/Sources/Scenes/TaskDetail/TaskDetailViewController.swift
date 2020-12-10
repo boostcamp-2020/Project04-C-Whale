@@ -48,11 +48,11 @@ class TaskDetailViewController: UIViewController {
     @IBOutlet weak private var taskTitleTextView: UITextView!
     @IBOutlet weak private var finishButton: UIButton!
     @IBOutlet weak private var priorityButton: UIButton!
-    @IBOutlet weak var subTaskTabButton: UIButton!
-    @IBOutlet weak var commentTabButton: UIButton!
-    @IBOutlet weak var bookmarkTabButton: UIButton!
-    @IBOutlet weak var subTabStackView: UIStackView!
-    weak var pageViewController: UIPageViewController?
+    @IBOutlet weak private var subTaskTabButton: UIButton!
+    @IBOutlet weak private var commentTabButton: UIButton!
+    @IBOutlet weak private var bookmarkTabButton: UIButton!
+    @IBOutlet weak private var subTabStackView: UIStackView!
+    weak private var pageViewController: UIPageViewController?
     
     // MARK: View Life Cycle
     
@@ -69,6 +69,7 @@ class TaskDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
+        configureLogic()
     }
     
     // MARK: - Initialize
@@ -82,9 +83,9 @@ class TaskDetailViewController: UIViewController {
                                             subTaskCommentViewController: taskDetailCommentViewController,
                                             subTaskBookmarkViewController: taskDetailBookmarkViewController)
         let interactor = TaskDetailInteractor(presenter: presenter, worker: TaskDetailWorker(sessionManager: SessionManager(configuration: .default)))
-        taskDetailSubTasksViewController?.configure(interactor: interactor)
-        taskDetailCommentViewController?.configure(interactor: interactor)
-        taskDetailBookmarkViewController?.configure(interactor: interactor)
+        taskDetailSubTasksViewController?.configure(interactor: interactor, task: task)
+        taskDetailCommentViewController?.configure(interactor: interactor, task: task)
+        taskDetailBookmarkViewController?.configure(interactor: interactor, task: task)
         self.interactor = interactor
     }
     

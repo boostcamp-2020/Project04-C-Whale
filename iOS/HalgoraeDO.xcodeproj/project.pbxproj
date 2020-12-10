@@ -46,6 +46,11 @@
 		4C42387A25794C8C0068A252 /* SessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C42387925794C8C0068A252 /* SessionManager.swift */; };
 		4C423896257A2A560068A252 /* ParameterEncoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C423895257A2A560068A252 /* ParameterEncoding.swift */; };
 		4C4238A2257A2D800068A252 /* URLParameterEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4238A1257A2D800068A252 /* URLParameterEncoder.swift */; };
+		4C9A028C2581025600727F88 /* TaskCommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9A028B2581025600727F88 /* TaskCommentCell.swift */; };
+		4C9A029125810CBE00727F88 /* TaskCommentImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9A029025810CBE00727F88 /* TaskCommentImageCell.swift */; };
+		4C9A02B72581542E00727F88 /* CommentAddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9A02B62581542E00727F88 /* CommentAddView.swift */; };
+		4C9A02BC2581543600727F88 /* CommentAddView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4C9A02BB2581543600727F88 /* CommentAddView.xib */; };
+		4C9A02C92581725100727F88 /* CommentEndPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9A02C82581725100727F88 /* CommentEndPoint.swift */; };
 		4CCD31E8256EBC0C00A46D10 /* TaskListWorkerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0CA5F0256E9AF100E66045 /* TaskListWorkerTests.swift */; };
 		4CCD31E9256EBC0C00A46D10 /* TaskListInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0CA60C256EAA7300E66045 /* TaskListInteractorTests.swift */; };
 		4CCD31EA256EBC0C00A46D10 /* TaskListPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0CA629256EABF700E66045 /* TaskListPresenterTests.swift */; };
@@ -161,6 +166,13 @@
 		4C42387925794C8C0068A252 /* SessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionManager.swift; sourceTree = "<group>"; };
 		4C423895257A2A560068A252 /* ParameterEncoding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParameterEncoding.swift; sourceTree = "<group>"; };
 		4C4238A1257A2D800068A252 /* URLParameterEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLParameterEncoder.swift; sourceTree = "<group>"; };
+		4C9A028B2581025600727F88 /* TaskCommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCommentCell.swift; sourceTree = "<group>"; };
+		4C9A029025810CBE00727F88 /* TaskCommentImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCommentImageCell.swift; sourceTree = "<group>"; };
+		4C9A02A0258148DE00727F88 /* TaskListTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TaskListTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		4C9A02A1258148DE00727F88 /* ServiceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ServiceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		4C9A02B62581542E00727F88 /* CommentAddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentAddView.swift; sourceTree = "<group>"; };
+		4C9A02BB2581543600727F88 /* CommentAddView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CommentAddView.xib; sourceTree = "<group>"; };
+		4C9A02C82581725100727F88 /* CommentEndPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentEndPoint.swift; sourceTree = "<group>"; };
 		4CCD31DD256EBC0000A46D10 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4CCD31F8256EBC8000A46D10 /* TaskListDisplaySpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListDisplaySpy.swift; sourceTree = "<group>"; };
 		4CCD31FE256EBCEF00A46D10 /* TaskListPresenterSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListPresenterSpy.swift; sourceTree = "<group>"; };
@@ -179,7 +191,6 @@
 		4CE91583257D190900BCF398 /* DataRequestMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataRequestMock.swift; sourceTree = "<group>"; };
 		4CE91597257D315800BCF398 /* HalgoraeDO.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HalgoraeDO.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4CE915C0257E1D5700BCF398 /* ProjectEndPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectEndPoint.swift; sourceTree = "<group>"; };
-		4CE915C5257E205500BCF398 /* JSONParameterEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONParameterEncoder.swift; sourceTree = "<group>"; };
 		4CE915D0257E5D2B00BCF398 /* TaskDetailModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDetailModels.swift; sourceTree = "<group>"; };
 		4CE915D8257F228400BCF398 /* TaskEndPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskEndPoint.swift; sourceTree = "<group>"; };
 		4CE915EA257F61DA00BCF398 /* Project.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Project.swift; sourceTree = "<group>"; };
@@ -320,6 +331,7 @@
 				4C42371A25763B080068A252 /* TaskDetailInteractor.swift */,
 				AAA74C9C25805BC2004FC883 /* TaskDetailModels.swift */,
 				4C42371E25763B100068A252 /* TaskDetailWorker.swift */,
+				4C42372225763B1C0068A252 /* TaskDetailPresenter.swift */,
 				4CE915D0257E5D2B00BCF398 /* TaskDetailModels.swift */,
 			);
 			path = TaskDetail;
@@ -328,6 +340,7 @@
 		4C4237162576340D0068A252 /* Paging */ = {
 			isa = PBXGroup;
 			children = (
+				4C9A028A2581022F00727F88 /* Views */,
 				4C4236F725761A8D0068A252 /* TaskDetailPageViewController.swift */,
 				4C42370325761CB00068A252 /* TaskDetailSubTasksViewController.swift */,
 				4C42370C25762FC10068A252 /* TaskDetailCommentViewController.swift */,
@@ -366,6 +379,17 @@
 				4CE915C5257E205500BCF398 /* JSONParameterEncoder.swift */,
 			);
 			path = Encoding;
+			sourceTree = "<group>";
+		};
+		4C9A028A2581022F00727F88 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				4C9A028B2581025600727F88 /* TaskCommentCell.swift */,
+				4C9A029025810CBE00727F88 /* TaskCommentImageCell.swift */,
+				4C9A02B62581542E00727F88 /* CommentAddView.swift */,
+				4C9A02BB2581543600727F88 /* CommentAddView.xib */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		4CCD31DA256EBC0000A46D10 /* TaskListTests */ = {
@@ -451,6 +475,7 @@
 			children = (
 				4CE915C0257E1D5700BCF398 /* ProjectEndPoint.swift */,
 				4CE915D8257F228400BCF398 /* TaskEndPoint.swift */,
+				4C9A02C82581725100727F88 /* CommentEndPoint.swift */,
 			);
 			path = EndPoints;
 			sourceTree = "<group>";
@@ -462,8 +487,8 @@
 				4CCD31DA256EBC0000A46D10 /* TaskListTests */,
 				4CE91514257CCEFA00BCF398 /* ServiceTests */,
 				4CE91597257D315800BCF398 /* HalgoraeDO.app */,
-				AAA74CBB2580D757004FC883 /* TaskListTests.xctest */,
-				AAA74CBC2580D757004FC883 /* ServiceTests.xctest */,
+				4C9A02A0258148DE00727F88 /* TaskListTests.xctest */,
+				4C9A02A1258148DE00727F88 /* ServiceTests.xctest */,
 			);
 			sourceTree = "<group>";
 		};
@@ -535,7 +560,7 @@
 			);
 			name = TaskListTests;
 			productName = TaskListTests;
-			productReference = AAA74CBB2580D757004FC883 /* TaskListTests.xctest */;
+			productReference = 4C9A02A0258148DE00727F88 /* TaskListTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		4CE91512257CCEFA00BCF398 /* ServiceTests */ = {
@@ -553,7 +578,7 @@
 			);
 			name = ServiceTests;
 			productName = ServiceTests;
-			productReference = AAA74CBC2580D757004FC883 /* ServiceTests.xctest */;
+			productReference = 4C9A02A1258148DE00727F88 /* ServiceTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		AAEE20D92564E4A900668FAD /* HalgoraeDO */ = {
@@ -635,6 +660,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4C42374725771BAE0068A252 /* DatePickerButtonView.xib in Resources */,
+				4C9A02BC2581543600727F88 /* CommentAddView.xib in Resources */,
 				AA19EF2F2576835900E59017 /* Colors.xcassets in Resources */,
 				AAEE20EA2564E4AC00668FAD /* LaunchScreen.storyboard in Resources */,
 				4C4236DC2574DF6B0068A252 /* ConfirmActionView.xib in Resources */,
@@ -724,11 +750,13 @@
 				4CCD32772570A4EF00A46D10 /* MenuViewController.swift in Sources */,
 				4C4238A2257A2D800068A252 /* URLParameterEncoder.swift in Sources */,
 				4CE915C1257E1D5700BCF398 /* ProjectEndPoint.swift in Sources */,
+				4C9A029125810CBE00727F88 /* TaskCommentImageCell.swift in Sources */,
 				4C0CA636256EAC5200E66045 /* TaskListDisplayLogic.swift in Sources */,
 				4CE915EB257F61DA00BCF398 /* Project.swift in Sources */,
 				4C4238602578D70D0068A252 /* EndPointType.swift in Sources */,
 				4C423751257792690068A252 /* BorderRadiusButton.swift in Sources */,
 				4C42372325763B1C0068A252 /* TaskDetailPresenter.swift in Sources */,
+				4C9A02B72581542E00727F88 /* CommentAddView.swift in Sources */,
 				4C4236B12573B4C90068A252 /* Priority+PopoverViewModelType.swift in Sources */,
 				AAEE20E02564E4A900668FAD /* SceneDelegate.swift in Sources */,
 				4C3F5683256B8F4B006D7C9F /* TaskListRouter.swift in Sources */,
@@ -742,11 +770,13 @@
 				AA19EF1B25756C3200E59017 /* AddSectionViewCell.swift in Sources */,
 				AAA74C74257DAE00004FC883 /* AddProjectViewController.swift in Sources */,
 				4CE915D1257E5D2B00BCF398 /* TaskDetailModels.swift in Sources */,
+				4C9A02C92581725100727F88 /* CommentEndPoint.swift in Sources */,
 				4C42371B25763B080068A252 /* TaskDetailInteractor.swift in Sources */,
 				4CE915FA257F662800BCF398 /* Bookmark.swift in Sources */,
 				4C423896257A2A560068A252 /* ParameterEncoding.swift in Sources */,
 				4C42387A25794C8C0068A252 /* SessionManager.swift in Sources */,
 				4CE91619257F83AD00BCF398 /* MenuRouter.swift in Sources */,
+				4C9A028C2581025600727F88 /* TaskCommentCell.swift in Sources */,
 				4C42374125771BA40068A252 /* DatePickerButtonView.swift in Sources */,
 				4C4236FE25761AA00068A252 /* TaskDetailViewController.swift in Sources */,
 				4C3F5674256B8C63006D7C9F /* TaskListWorker.swift in Sources */,

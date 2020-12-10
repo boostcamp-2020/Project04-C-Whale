@@ -1,21 +1,20 @@
 //
-//  TaskEndPoint.swift
+//  CommentEndPoint.swift
 //  HalgoraeDO
 //
-//  Created by woong on 2020/12/08.
+//  Created by woong on 2020/12/10.
 //
 
 import Foundation
 
-enum TaskEndPoint {
+enum CommentEndPoint {
     case get(taskId: String)
-    case create(request: Data)
-    case titleUpdate(id: Int, titleData: Data)
-    case update(id: Int, project: Data)
-    case delete(id: Int)
+    case create(taskId: String, request: Data)
+    case update(id: String, commentId: String, titleData: Data)
+    case delete(id: String, commentId: String)
 }
 
-extension TaskEndPoint: EndPointType {
+extension CommentEndPoint: EndPointType {
 
     var baseURL: URL {
         return URL(string: "http://101.101.210.222:3000/api")!
@@ -23,11 +22,10 @@ extension TaskEndPoint: EndPointType {
 
     var path: String {
         switch self {
-            case .get(let id): return "task/\(id)"
-            case .create: return "task"
-            case .titleUpdate(let id, _): return "\(id)"
-            case .update(let id, _): return "\(id)"
-            case .delete(let id): return "\(id)"
+            case .get(let id): return "task/\(id)/comment"
+            case .create(let id, _): return "task/\(id)/comment"
+            case .update(let id, let commentId, _): return "task/\(id)/comment/\(commentId)"
+            case .delete(let id, let commentId): return "task/\(id)/comment/\(commentId)"
         }
     }
 
@@ -35,7 +33,6 @@ extension TaskEndPoint: EndPointType {
         switch self {
             case .get: return .get
             case .create: return .post
-            case .titleUpdate: return .patch
             case .update: return .put
             case .delete: return .delete
         }
@@ -44,9 +41,8 @@ extension TaskEndPoint: EndPointType {
     var httpTask: HTTPTask {
         switch self {
             case .get: return (nil, nil)
-            case .create(let body): return (body, nil)
-            case .titleUpdate(_, let titleData): return (titleData, nil)
-            case .update(_, let project): return (project, nil)
+            case .create(_, let body): return (body, nil)
+            case .update(_, _, let comment): return (comment, nil)
             case .delete: return (nil, nil)
         }
     }
