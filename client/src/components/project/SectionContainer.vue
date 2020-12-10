@@ -59,7 +59,9 @@ export default {
     TaskItem,
     UpdatableTitle,
   },
-  computed: mapGetters(["draggingTask", "dropTargetSection"]),
+  computed: {
+    ...mapGetters(["draggingTask", "dropTargetSection"]),
+  },
   watch: {
     section: function (updatedSection) {
       this.tasks = _.cloneDeep(updatedSection.tasks);
