@@ -3,8 +3,6 @@ const projectController = require('@controllers/project');
 const sectionController = require('@controllers/section');
 const taskController = require('@controllers/task');
 
-// TODO: today 반환하는 라우터, validation check
-router.get('/today', projectController.getTodayProject);
 router.get('/', projectController.getProjects);
 router.post('/', projectController.createProject);
 router.get('/:projectId', projectController.getProjectById);
