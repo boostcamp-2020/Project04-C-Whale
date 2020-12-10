@@ -193,30 +193,6 @@ describe('post task', () => {
     expect(res.body.message).toBe(errorMessage.UNNECESSARY_INPUT_ERROR('id'));
     done();
   });
-  it('프로젝트 id가 포함된 생성', async done => {
-    // given
-    const expectedProjectId = seeder.projects[0].id;
-    const expectedSectionId = seeder.sections[0].id;
-    const newTask = {
-      title: '할일',
-      projectId: expectedProjectId,
-      priority: priorities[0].id,
-      dueDate: new Date(),
-      parentId: null,
-      alarmId: seeder.alarms[0].id,
-      position: 1,
-    };
-    // when
-    const res = await request(app)
-      .post(`/api/project/${expectedProjectId}/section/${expectedSectionId}/task`)
-      .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
-      .send(newTask);
-
-    // then
-    expect(res.status).toBe(status.BAD_REQUEST.CODE);
-    expect(res.body.message).toBe(errorMessage.UNNECESSARY_INPUT_ERROR('projectId'));
-    done();
-  });
   it('섹션 id가 포함된 생성', async done => {
     // given
     const expectedProjectId = seeder.projects[0].id;
