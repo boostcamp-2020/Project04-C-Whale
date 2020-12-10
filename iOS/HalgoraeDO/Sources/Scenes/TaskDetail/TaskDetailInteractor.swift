@@ -30,14 +30,16 @@ class TaskDetailInteractor: TaskDetailDataStore {
 extension TaskDetailInteractor: TaskDetailBusinessLogic {
     func fetchSubTasks(request: TaskDetailModels.FetchSubTasks.Request) {
         
-        worker.requestTasks(endPoint: .get(taskId: request.id)) { [weak self] (tasks: [Task]?, error) in
+        worker.request(endPoint: TaskEndPoint.get(taskId: request.id)) { [weak self] (tasks: [Task]?) in
             self?.presenter.presentFetchedTasks(response: .init(tasks: tasks ?? []))
         }
     }
     func fetchComments(request: TaskDetailModels.FetchComments.Request) {
         worker.requestComments(endPoint: .get(taskId: request.id)) { [weak self] (tasks: [Task]?, error) in
+        worker.request(endPoint: CommentEndPoint.get(taskId: request.id)) { [weak self] (tasks: [Task]?) in
             self?.presenter.presentFetchedTasks(response: .init(tasks: tasks ?? []))
         }
         
     }
+    
 }
