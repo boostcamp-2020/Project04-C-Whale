@@ -23,7 +23,6 @@ class TaskListViewController: UIViewController {
     private var displayCompleted = false
     private var presentConfirmActionWorkItem: DispatchWorkItem?
     private var childCheck = 0
-    private var displayTasks: [TaskListModels.DisplayedTask] = Array()
     private(set) var selectedTasks = Set<TaskVM>() {
         didSet {
             guard isEditing else { return }
@@ -93,12 +92,12 @@ class TaskListViewController: UIViewController {
     }
     
     private func slideRightConfirmActionViewWillDismiss(targetView: UIView,
-                                                withDuration duration: TimeInterval = 0.5,
-                                                delay: TimeInterval = 0,
-                                                usingSpringWithDamping dampingRatio: CGFloat = 0.7,
-                                                initialSpringVelocity velocity: CGFloat = 0.5,
-                                                options: UIView.AnimationOptions = [.curveEaseIn],
-                                                dismiss deadline: DispatchTime = .now() + 3) {
+                                                        withDuration duration: TimeInterval = 0.5,
+                                                        delay: TimeInterval = 0,
+                                                        usingSpringWithDamping dampingRatio: CGFloat = 0.7,
+                                                        initialSpringVelocity velocity: CGFloat = 0.5,
+                                                        options: UIView.AnimationOptions = [.curveEaseIn],
+                                                        dismiss deadline: DispatchTime = .now() + 3) {
         targetView.transform = .init(translationX: -targetView.frame.maxX, y: 0)
         targetView.isHidden = false
         UIView.animate(withDuration: duration, delay: delay, usingSpringWithDamping: dampingRatio, initialSpringVelocity: velocity, options: options) {
@@ -133,11 +132,11 @@ class TaskListViewController: UIViewController {
             nav?.popViewController(animated: false)
             nav?.pushViewController(vc, animated: false)
         }
-
+        
         let addSectionAction = UIAlertAction(title: "섹션 추가", style: .default) { (_: UIAlertAction) in
             
         }
-
+        
         let selectTaskAction = UIAlertAction(title: "작업 선택", style: .default) { (_: UIAlertAction) in
             self.setEditing(true, animated: true)
         }
@@ -147,7 +146,7 @@ class TaskListViewController: UIViewController {
             self.displayCompleted.toggle()
             self.interactor?.fetchTasks(request: .init(projectId: self.project.id))
         }
-
+        
         let cancelAction = UIAlertAction(title: "취소", style: .cancel) { (_: UIAlertAction) in
             
         }
@@ -275,10 +274,8 @@ extension TaskListViewController: TaskListDisplayLogic {
         snapshot.appendSections(viewModel.sectionVMs)
         dataSource.apply(snapshot, animatingDifferences: false)
         for sectionVM in viewModel.sectionVMs {
-            var sectionSnapshot = generateSnapshot(taskItems: sectionVM.tasks)
-         //   DispatchQueue.main.async {
+            let sectionSnapshot = generateSnapshot(taskItems: sectionVM.tasks)
             dataSource.apply(sectionSnapshot, to: sectionVM)
-           // }
         }
     }
     
@@ -308,7 +305,7 @@ extension TaskListViewController: TaskListDisplayLogic {
             task.subItems = task.subItems.filter { !$0.isCompleted }
             filteredTasks.append(task)
         }
-
+        
         return filteredTasks
     }
 }
@@ -323,7 +320,7 @@ extension TaskListViewController: UICollectionViewDelegate {
             selectedTasks.insert(taskVM)
             return
         }
-
+        
         collectionView.deselectItem(at: indexPath, animated: true)
         router?.routeToTaskDetail(for: taskVM)
     }
@@ -352,7 +349,7 @@ extension TaskListViewController: UICollectionViewDragDelegate {
         if let cell = collectionView.cellForItem(at: indexPath) as? TaskCollectionViewListCell{
             let section = dataSource.snapshot().sectionIdentifiers[indexPath.section]
             var currentSnapshot = dataSource.snapshot(for: section)
-    
+            
             for item in currentSnapshot.items {
                 if item.id == cell.taskViewModel?.id {
                     currentSnapshot.collapse([item])
