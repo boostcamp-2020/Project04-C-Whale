@@ -23,7 +23,11 @@ describe('get All task', () => {
     const expectedTasks = seeder.tasks
       .filter(task => {
         const projects = seeder.projects.filter(project => project.creatorId === expectedUser.id);
-        return projects.some(project => project.id === task.projectId);
+        const sections = seeder.sections.filter(section =>
+          projects.some(project => section.projectId === project.id),
+        );
+
+        return sections.some(section => section.id === task.sectionId);
       })
       .map(task => {
         const { id, title } = task;
@@ -138,7 +142,7 @@ describe('get task by id', () => {
 
       // then
       expect(res.status).toBe(status.FORBIDDEN.CODE);
-      expect(res.body.message).toBe(status.FORBIDDEN.MSG);
+      expect(res.body.message).toBe(errorMessage.FORBIDDEN_ERROR('task'));
 
       done();
     } catch (err) {
@@ -266,22 +270,6 @@ describe('patch task with id', () => {
     done();
   });
 
-  it('잘못된 projectId 수정', async done => {
-    // given
-    const taskId = seeder.tasks[0].id;
-    const patchTask = { projectId: 'invalidId' };
-
-    // when
-    const res = await request(app)
-      .patch(`/api/task/${taskId}`)
-      .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
-      .send(patchTask);
-
-    // then
-    expect(res.status).toBe(status.BAD_REQUEST.CODE);
-    expect(res.body.message).toBe(errorMessage.INVALID_INPUT_ERROR('projectId'));
-    done();
-  });
   it('잘못된 priority 수정', async done => {
     // given
     const taskId = seeder.tasks[0].id;
@@ -360,7 +348,7 @@ describe('patch task with id', () => {
 
       // then
       expect(res.status).toBe(status.FORBIDDEN.CODE);
-      expect(res.body.message).toBe(status.FORBIDDEN.MSG);
+      expect(res.body.message).toBe(errorMessage.FORBIDDEN_ERROR('task'));
       done();
     } catch (err) {
       done(err);
@@ -416,8 +404,8 @@ describe('delete task', () => {
         .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`);
 
       // then
-      expect(res.status).toBe(status.BAD_REQUEST.CODE);
-      expect(res.body.message).toBe(errorMessage.BAD_REQUEST_ERROR('id'));
+      expect(res.status).toBe(status.NOT_FOUND.CODE);
+      expect(res.body.message).toBe(errorMessage.NOT_FOUND_ERROR('task'));
       done();
     } catch (err) {
       done(err);
