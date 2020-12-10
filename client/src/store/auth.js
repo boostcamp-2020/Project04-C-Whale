@@ -29,9 +29,12 @@ const mutations = {
 const actions = {
   async checkUser({ commit }) {
     try {
-      const { data: user } = await userAPI.authorize();
+      const {
+        data: { user },
+      } = await userAPI.authorize();
       commit("SET_USER", user);
 
+      commit("SET_SUCCESS_ALERT", "로그인되었습니다.");
       if (location.pathname === "/" || location.pathname === "/login") {
         router.replace("/today").catch(() => {});
         return;
@@ -53,6 +56,6 @@ const actions = {
 
 export default {
   state,
-  actions,
   mutations,
+  actions,
 };

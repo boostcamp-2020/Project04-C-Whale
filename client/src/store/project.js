@@ -24,35 +24,37 @@ const getters = {
   projectList: (state) => state.projectList,
 };
 
+const mutations = {
+  SET_CURRENT_PROJECT: (state, currentProject) => {
+    const newlyFetchedProject = {};
+    newlyFetchedProject[currentProject.id] = currentProject;
+    state.projectList = { ...state.projectList, ...newlyFetchedProject };
+    state.currentProject = currentProject;
+  },
+  SET_PROJECT_INFOS: (state, projectInfos) => (state.projectInfos = projectInfos),
+  SET_TODAY_PROJECT: (state, todayProject) => (state.todayProject = todayProject),
+  ADD_TASK_COUNT: (state, projectId) => {
+    const copyed = [...state.projectInfos];
+    copyed.find((projectInfo) => projectInfo.id === projectId).taskCount += 1;
+    state.projectInfos = [...copyed];
+  },
+};
+
 const actions = {
   async fetchCurrentProject({ commit }, projectId) {
     try {
-      const { data: project } = await projectAPI.getProjectById(projectId);
+      const {
+        data: { project },
+      } = await projectAPI.getProjectById(projectId);
 
       commit("SET_CURRENT_PROJECT", project);
     } catch (err) {
       commit("SET_ERROR_ALERT", err.response);
     }
   },
-
-  async fetchTodayProject({ commit }) {
-    try {
-      const { data: todayProject } = await projectAPI.getTodayProject();
-
-      commit("SET_TODAY_PROJECT", todayProject);
-    } catch (err) {
-      commit("SET_ERROR_ALERT", err.response);
-    }
-  },
-
   async updateProjectTitle({ dispatch, commit }, { projectId, title }) {
     try {
-      const { data } = await projectAPI.updateProject(projectId, { title });
-
-      if (data.message !== "ok") {
-        throw new Error();
-      }
-
+      await projectAPI.updateProject(projectId, { title });
       await dispatch("fetchCurrentProject", projectId);
       await dispatch("fetchAllTasks");
     } catch (err) {
@@ -83,74 +85,58 @@ const actions = {
   },
   async addSection({ dispatch, commit }, { projectId, section }) {
     try {
-      const { data } = await projectAPI.createSection(projectId, {
+      await projectAPI.createSection(projectId, {
         title: section.title,
       });
-
-      if (data.message !== "ok") {
-        throw new Error();
-      }
-
       await dispatch("fetchCurrentProject", projectId);
+
+      commit("SET_SUCCESS_ALERT", "섹션이 추가되었습니다.");
     } catch (err) {
       commit("SET_ERROR_ALERT", err.response);
     }
   },
-
   async updateSectionTitle({ dispatch, commit }, { projectId, sectionId, title }) {
     try {
-      const { data } = await projectAPI.updateSection(projectId, sectionId, { title });
-
-      if (data.message !== "ok") {
-        throw new Error();
-      }
-
+      await projectAPI.updateSection(projectId, sectionId, { title });
       await dispatch("fetchCurrentProject", projectId);
       await dispatch("fetchAllTasks");
+
+      commit("SET_SUCCESS_ALERT", "섹션이 수정되었습니다.");
     } catch (err) {
       commit("SET_ERROR_ALERT", err.response);
     }
   },
-
   async updateTaskToDone({ dispatch, commit }, { projectId, taskId }) {
     try {
-      const { data } = await taskAPI.updateTask(taskId, { isDone: true });
-
-      if (data.message !== "ok") {
-        throw new Error();
-      }
-
+      await taskAPI.updateTask(taskId, { isDone: true });
       await dispatch("fetchCurrentProject", projectId);
       await dispatch("fetchAllTasks");
+
+      commit("SET_SUCCESS_ALERT", "작업을 완료했습니다.");
     } catch (err) {
       commit("SET_ERROR_ALERT", err.response);
     }
   },
-
   async addTask({ dispatch, commit }, task) {
     try {
-      const { data } = await taskAPI.createTask(task);
-
-      if (data.message !== "ok") {
-        throw new Error();
-      }
-
+      await taskAPI.createTask(task);
       await dispatch("fetchCurrentProject", task.projectId);
       await dispatch("fetchAllTasks");
+
       commit("ADD_TASK_COUNT", task.projectId);
     } catch (err) {
       commit("SET_ERROR_ALERT", err.response);
     }
   },
-
   async fetchProjectInfos({ commit }) {
     try {
-      const { data: projectInfos } = await projectAPI.getProjects();
+      const {
+        data: { projectInfos },
+      } = await projectAPI.getProjects();
 
       commit("SET_PROJECT_INFOS", projectInfos);
     } catch (err) {
       commit("SET_ERROR_ALERT", err.response);
-      // alert("프로젝트 전체 정보 조회 요청 실패");
     }
   },
   async addProject({ dispatch, commit }, data) {
@@ -164,53 +150,29 @@ const actions = {
       commit("SET_ERROR_ALERT", err.response);
     }
   },
-  async changeTaskPosition({ rootState, dispatch }, { orderedTasks }) {
+  async changeTaskPosition({ rootState, dispatch, commit }, { orderedTasks }) {
     const { draggingTask, dropTargetSection } = rootState.dragAndDrop;
 
     try {
       await taskAPI.updateTask(draggingTask.id, {
         sectionId: dropTargetSection.id,
       });
+      await projectAPI.updateTaskPosition(dropTargetSection.projectId, dropTargetSection.id, {
+        orderedTasks,
+      });
+      await dispatch("fetchCurrentProject", dropTargetSection.projectId);
+      await dispatch("fetchAllTasks");
 
-      const { data } = await projectAPI.updateTaskPosition(
-        dropTargetSection.projectId,
-        dropTargetSection.id,
-        {
-          orderedTasks,
-        }
-      );
-
-      if (data.message !== "ok") {
-        throw new Error();
-      }
+      commit("SET_SUCCESS_ALERT", "작업 위치가 변경되었습니다.");
     } catch (err) {
-      alert("위치 변경 실패");
+      commit("SET_ERROR_ALERT", err.response);
     }
-
-    await dispatch("fetchCurrentProject", dropTargetSection.projectId);
-    await dispatch("fetchAllTasks");
-  },
-};
-
-const mutations = {
-  SET_CURRENT_PROJECT: (state, currentProject) => {
-    const newlyFetchedProject = {};
-    newlyFetchedProject[currentProject.id] = currentProject;
-    state.projectList = { ...state.projectList, ...newlyFetchedProject };
-    state.currentProject = currentProject;
-  },
-  SET_PROJECT_INFOS: (state, projectInfos) => (state.projectInfos = projectInfos),
-  SET_TODAY_PROJECT: (state, todayProject) => (state.todayProject = todayProject),
-  ADD_TASK_COUNT: (state, projectId) => {
-    const copyed = [...state.projectInfos];
-    copyed.find((projectInfo) => projectInfo.id === projectId).taskCount += 1;
-    state.projectInfos = [...copyed];
   },
 };
 
 export default {
   state,
   getters,
-  actions,
   mutations,
+  actions,
 };
