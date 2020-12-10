@@ -110,6 +110,9 @@ export default {
   methods: {
     ...mapActions(["addTask"]),
     submit() {
+      // 오늘 페이지 첫 렌더링 시, projectId, sectionId가 없는 상황을 위한 초기화
+      this.task.projectId = this.projectId ? this.projectId : this.managedProject.id;
+      this.sectionId = this.sectionId ? this.sectionId : this.managedProject.defaultSectionId;
       this.addTask(this.task);
       // createAlarm({
       //   taskId: '??',
