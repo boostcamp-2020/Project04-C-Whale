@@ -1,4 +1,4 @@
-import projectAPI from "../api/project";
+import projectAPI from "@/api/project";
 import router from "@/router";
 
 const DEFAULT_PROJECT_TITLE = "관리함";
@@ -119,6 +119,7 @@ const actions = {
       commit("SET_ERROR_ALERT", err.response);
     }
   },
+  
   async addProject({ dispatch, commit }, data) {
     try {
       const response = await projectAPI.createProject(data);

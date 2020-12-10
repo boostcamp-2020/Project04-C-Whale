@@ -19,7 +19,10 @@
 
   "permissions": [
     "tabs",
+    "alarms",
     "contextMenus",
+    "notifications",
+    "storage"
     "bookmarks"
   ],
 
