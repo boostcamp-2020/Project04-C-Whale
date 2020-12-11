@@ -514,33 +514,27 @@ extension TaskListViewController: UICollectionViewDropDelegate {
             
             return
         }
-        
+        var newItems: [TaskVM]
+        var tempItem = sourceTask
+        tempItem.parentPosition = destinationTask.parentPosition
         if sourceIndexPath.section == destinationIndexPath.section { //같은 section 일때
-            var newItems: [TaskVM]
             if destinationTask.parentPosition == nil && childCheck == 1 { //부모 작업의 바로 아래에 append
                 newItems = addTaskAtFirstOfSubitems(tasksAfterRemove, sourceTask, destinationTask, destinationIndexPath)
             } else { //child check필요 없이 그냥 넣기
-                var tempItem = sourceTask
-                tempItem.parentPosition = destinationTask.parentPosition
                 newItems = addTaskAtTasks(tasksAfterRemove, tempItem, destinationTask.id)
             }
             let snapShot = generateSnapshot(taskItems: newItems)
             dataSource.apply(snapShot, to: sourceSection)
-            
         } else { //다른 section 일때
-            var newItems: [TaskVM]
             if destinationTask.parentPosition == nil && childCheck == 1 { //부모 작업의 바로 아래에 append
                 newItems = addTaskAtFirstOfSubitems(dataSource.snapshot(for: destinationSection).rootItems, sourceTask, destinationTask, destinationIndexPath)
             } else { //child check필요 없이 그냥 넣기
-                var tempItem = sourceTask
-                tempItem.parentPosition = destinationTask.parentPosition
                 newItems = addTaskAtTasks(dataSource.snapshot(for: destinationSection).rootItems, tempItem, destinationTask.id)
             }
             let sourceSnapShot = generateSnapshot(taskItems: tasksAfterRemove)
             let destinationSnapShot = generateSnapshot(taskItems: newItems)
             dataSource.apply(sourceSnapShot, to: sourceSection)
             dataSource.apply(destinationSnapShot, to: destinationSection)
-            
         }
     }
 }
@@ -548,10 +542,9 @@ extension TaskListViewController: UICollectionViewDropDelegate {
 
 private extension TaskListViewController {
     
-    func setLocation(_ location: CGPoint, _ destination: IndexPath?) -> Bool {
+    func setLocation(_ location: CGPoint, _ destination: IndexPath) -> Bool {
         lineView.removeFromSuperview()
-        guard let destination = destination,
-              let startIndex = startIndex,
+        guard let startIndex = startIndex,
               let startPoint = startPoint,
               let collectionView = taskListCollectionView
         else {
@@ -559,11 +552,11 @@ private extension TaskListViewController {
         }
         if destination.row == 0 { return true }
         
-        var tempIndex: IndexPath
+        var tempDestinationIndex: IndexPath
         if destination.section == startIndex.section && destination.row > startIndex.row {
-            tempIndex = IndexPath(row: destination.row, section: destination.section)
+            tempDestinationIndex = IndexPath(row: destination.row, section: destination.section)
         } else {
-            tempIndex = IndexPath(row: destination.row - 1, section: destination.section)
+            tempDestinationIndex = IndexPath(row: destination.row - 1, section: destination.section)
         }
         
         if startPoint.x <= location.x - 50 {
@@ -572,9 +565,8 @@ private extension TaskListViewController {
             childCheck = 0
         }
         
-        guard let startCell = collectionView.cellForItem(at: startIndex) as? TaskCollectionViewListCell,
-              let destinationCell = collectionView.cellForItem(at: tempIndex) as? TaskCollectionViewListCell,
-              let sourceTask = startCell.taskViewModel
+        guard let sourceTask = (collectionView.cellForItem(at: startIndex) as? TaskCollectionViewListCell)?.taskViewModel,
+              let destinationCell = collectionView.cellForItem(at: tempDestinationIndex) as? TaskCollectionViewListCell
         else {
             return false
         }
@@ -588,10 +580,14 @@ private extension TaskListViewController {
             return false
         }
         let depthWidth: CGFloat = CGFloat(destinationCell.indentationLevel * 20 + childCheck * 20)
-        lineView.frame = CGRect(x: 10 + depthWidth, y: destinationCell.frame.height - 2, width: destinationCell.frame.width - depthWidth - 20, height: 5)
-        destinationCell.addSubview(lineView)
+        drawLineView(depthWidth, destinationCell)
         
         return true
+    }
+    
+    func drawLineView(_ depthWidth: CGFloat, _ cell: TaskCollectionViewListCell) {
+        lineView.frame = CGRect(x: 10 + depthWidth, y: cell.frame.height - 2, width: cell.frame.width - depthWidth - 20, height: 5)
+        cell.addSubview(lineView)
     }
 }
 
