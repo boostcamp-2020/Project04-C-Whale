@@ -10,7 +10,6 @@ import UIKit
 class TaskBoardViewController: UIViewController {
     
     typealias TaskVM = TaskListModels.DisplayedTask
-    var sections = ["할고래두 TODO List", "할고라니까?? Todo!!", "진짜할고래DO???"]
     
     // MARK: - Properties
     
@@ -20,7 +19,7 @@ class TaskBoardViewController: UIViewController {
     private var dataSource: UICollectionViewDiffableDataSource<String, TaskVM>! = nil
     private let visualEffectView = UIVisualEffectView()
     private var taskAddViewController: TaskAddViewController = TaskAddViewController()
-    private var taskVM: [TaskVM] = []
+    private var sectionVM: [TaskListModels.SectionVM] = []
     
     // MARK: - Views
     
@@ -90,7 +89,7 @@ class TaskBoardViewController: UIViewController {
             return
         }
         let temp = TaskListModels.DisplayedTask(id: UUID().uuidString, title: taskTitle, isCompleted: false, tintColor: .red, position: 1, parentPosition: nil, subItems: [])
-        taskVM.append(temp)
+       // taskVM.append(temp)
         taskBoardCollectionView.reloadData()
     }
     
@@ -101,7 +100,7 @@ class TaskBoardViewController: UIViewController {
             if sectionName == "" {
                 return
             }
-            self.sections.append(sectionName)
+            self.sectionVM.append(TaskListModels.SectionVM(id: UUID().uuidString, title: sectionName, tasks: []))
             self.taskBoardCollectionView.reloadData()
         }
         let cancel = UIAlertAction(title: "cancel", style: .cancel)
@@ -208,7 +207,7 @@ private extension TaskBoardViewController {
 extension TaskBoardViewController: UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return sections.count + 1 //Section 갯수 + 1
+        return sectionVM.count + 1 //Section 갯수 + 1
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -216,9 +215,11 @@ extension TaskBoardViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if indexPath.section < sections.count {
+        if indexPath.section < sectionVM.count {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "section-reuse-identifier", for: indexPath) as! TaskSectionViewCell
-            cell.configure(sectionName: sections[indexPath.section], task: taskVM, sectionNum: indexPath.section)
+            cell.configure(section: sectionVM[indexPath.section])
+            cell.taskSectionViewCellDelegate = self
+            
             return cell
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "section-add-reuse-identifier", for: indexPath) as! AddSectionViewCell
@@ -238,12 +239,98 @@ extension TaskBoardViewController: TaskListDisplayLogic {
     }
     
     func displayFetchTasks(viewModel: TaskListModels.FetchTasks.ViewModel) {
-        for sectionVM in viewModel.sectionVMs {
-            taskVM = sectionVM.tasks
-        }
+        sectionVM = viewModel.sectionVMs
     }
     
     func displayDetail(of task: Task) {
         
     }
 }
+
+// MARK: - Move Cell Delegate Logic
+
+extension TaskBoardViewController: TaskSectionViewCellDelegate {
+    
+    func taskSectionViewCell(_ taskSectionViewCell: TaskSectionViewCell, _ sourceSection: TaskListModels.SectionVM, _ destinationSection: TaskListModels.SectionVM, _ sourceTask: TaskListModels.DisplayedTask, _ destinationTask: TaskListModels.DisplayedTask?) {
+        guard let destinationTask = destinationTask else { //맨 위에 insert
+            if sourceSection == destinationSection { //같은 collectionview
+                for i in 0..<sectionVM.count where sectionVM[i].id == sourceSection.id {
+                    var newTasks = removeTaskFromTasks(sourceSection.tasks, sourceTask.id)
+                    newTasks.insert(sourceTask, at: 0)
+                    sectionVM[i].tasks = newTasks
+                    taskBoardCollectionView.reloadItems(at: [IndexPath(row: 0, section: i)])
+                }
+                
+                return
+            }
+            for i in 0..<sectionVM.count { //다른 collectionview
+                if sectionVM[i].id == sourceSection.id {
+                    sectionVM[i].tasks = removeTaskFromTasks(sourceSection.tasks, sourceTask.id)
+                    taskBoardCollectionView.reloadItems(at: [IndexPath(row: 0, section: i)])
+                } else if sectionVM[i].id == destinationSection.id {
+                    var newItems = destinationSection.tasks
+                    newItems.insert(sourceTask, at: 0)
+                    sectionVM[i].tasks = newItems
+                    taskBoardCollectionView.reloadItems(at: [IndexPath(row: 0, section: i)])
+                }
+            }
+            
+            return
+        }
+        
+        if sourceSection == destinationSection { //같은 collectionview
+            for i in 0..<sectionVM.count where sectionVM[i].id == sourceSection.id {
+                let newTasks = removeTaskFromTasks(sourceSection.tasks, sourceTask.id)
+                sectionVM[i].tasks = addTaskAtTasks(newTasks, sourceTask, destinationTask.id)
+                taskBoardCollectionView.reloadItems(at: [IndexPath(row: 0, section: i)])
+            }
+            
+            return
+        }
+        for i in 0..<sectionVM.count  { //다른 collectionview
+            if sectionVM[i].id == sourceSection.id {
+                sectionVM[i].tasks = removeTaskFromTasks(sourceSection.tasks, sourceTask.id)
+                taskBoardCollectionView.reloadItems(at: [IndexPath(row: 0, section: i)])
+            } else if sectionVM[i].id == destinationSection.id {
+                sectionVM[i].tasks = addTaskAtTasks(destinationSection.tasks, sourceTask, destinationTask.id)
+                taskBoardCollectionView.reloadItems(at: [IndexPath(row: 0, section: i)])
+            }
+        }
+    }
+    
+    private func removeTaskFromTasks(_ taskItems: [TaskVM], _ sourceId: String) -> [TaskVM] {
+        var tempItems: [TaskVM] = []
+        for i in 0..<taskItems.count {
+            let tempSubitems =  taskItems[i].subItems.filter {
+                $0.id != sourceId
+            }
+            
+            var tempItem = taskItems[i]
+            tempItem.subItems = tempSubitems
+            if taskItems[i].id != sourceId {
+                tempItems.append(tempItem)
+            }
+        }
+        
+        return tempItems
+    }
+    
+    private func addTaskAtTasks(_ taskItems: [TaskVM], _ source: TaskVM, _ destinationId: String) -> [TaskVM] {
+        var tempItems: [TaskVM] = []
+        for i in 0..<taskItems.count {
+            tempItems.append(taskItems[i])
+            if !taskItems[i].subItems.isEmpty {
+                tempItems[i].subItems = addTaskAtTasks(taskItems[i].subItems, source, destinationId)
+            }
+            if taskItems[i].id == destinationId {
+                var tempItem = taskItems
+                tempItem.insert(source, at: i + 1)
+                return tempItem
+            }
+        }
+        
+        return tempItems
+    }
+    
+}
+

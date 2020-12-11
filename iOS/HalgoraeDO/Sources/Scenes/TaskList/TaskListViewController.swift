@@ -36,7 +36,14 @@ class TaskListViewController: UIViewController {
     @IBOutlet weak private var moreButton: UIBarButtonItem!
     @IBOutlet weak private var editToolBar: UIToolbar!
     @IBOutlet weak private var confirmActionView: ConfirmActionView!
-    private var lineView: UIView = UIView()
+    private var lineView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .halgoraedoMint
+        view.layer.cornerRadius = 2
+        view.layer.masksToBounds = true
+        
+        return view
+    }()
     private var startIndex: IndexPath?
     private var startPoint: CGPoint?
     
@@ -338,7 +345,6 @@ extension TaskListViewController: UICollectionViewDelegate {
 
 extension TaskListViewController: UICollectionViewDragDelegate {
     
-    /* Drag가 시작되었을 때 start point 기록*/
     func collectionView(_ collectionView: UICollectionView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
         session.localContext = collectionView
         startPoint = session.location(in: collectionView)
@@ -419,19 +425,21 @@ extension TaskListViewController: UICollectionViewDropDelegate {
         let destinationIndexPath = coordinator.destinationIndexPath ?? IndexPath(item: 0, section: 0)
         
         for item in coordinator.items {
-            guard let sourceIndexPath = item.sourceIndexPath else { return }
-            
-            if (item.dragItem.localObject as? TaskCollectionViewListCell) != nil {
-                var tempIndex: IndexPath
-                if destinationIndexPath.section == sourceIndexPath.section && destinationIndexPath.row > sourceIndexPath.row {
-                    tempIndex = IndexPath(row: destinationIndexPath.row, section: destinationIndexPath.section)
-                } else {
-                    tempIndex = IndexPath(row: destinationIndexPath.row - 1, section: destinationIndexPath.section)
-                }
-                
-                dropHelper(sourceIndexPath: sourceIndexPath, destinationIndexPath: tempIndex)
-                coordinator.drop(item.dragItem, toItemAt: destinationIndexPath)
+            guard let sourceIndexPath = item.sourceIndexPath,
+                  ((item.dragItem.localObject as? TaskCollectionViewListCell) != nil)
+            else {
+                return
             }
+            
+            var tempDestinationIndex: IndexPath
+            if destinationIndexPath.section == sourceIndexPath.section && destinationIndexPath.row > sourceIndexPath.row {
+                tempDestinationIndex = IndexPath(row: destinationIndexPath.row, section: destinationIndexPath.section)
+            } else {
+                tempDestinationIndex = IndexPath(row: destinationIndexPath.row - 1, section: destinationIndexPath.section)
+            }
+            
+            dropHelper(sourceIndexPath: sourceIndexPath, destinationIndexPath: tempDestinationIndex)
+            coordinator.drop(item.dragItem, toItemAt: destinationIndexPath)
         }
     }
     
@@ -443,26 +451,26 @@ extension TaskListViewController: UICollectionViewDropDelegate {
             let tempSubitems =  taskItems[i].subItems.filter {
                 $0.id != sourceId
             }
-            
             var tempItem = taskItems[i]
             tempItem.subItems = tempSubitems
             if taskItems[i].id != sourceId {
                 tempItems.append(tempItem)
             }
         }
+
         return tempItems
     }
     
-    private func addTaskAtTasks(_ taskItems: [TaskVM], _ source: TaskVM, _ destinationId: String) -> [TaskVM] {
+    private func addTaskAtTasks(_ taskItems: [TaskVM], _ sourceTask: TaskVM, _ destinationId: String) -> [TaskVM] {
         var tempItems: [TaskVM] = []
         for i in 0..<taskItems.count {
             tempItems.append(taskItems[i])
             if !taskItems[i].subItems.isEmpty {
-                tempItems[i].subItems = addTaskAtTasks(taskItems[i].subItems, source, destinationId)
+                tempItems[i].subItems = addTaskAtTasks(taskItems[i].subItems, sourceTask, destinationId)
             }
             if taskItems[i].id == destinationId {
                 var tempItem = taskItems
-                tempItem.insert(source, at: i + 1)
+                tempItem.insert(sourceTask, at: i + 1)
                 return tempItem
             }
         }
@@ -470,13 +478,17 @@ extension TaskListViewController: UICollectionViewDropDelegate {
         return tempItems
     }
     
-    private func addTaskAtFirstOfSubitems(_ taskItems: [TaskVM], _ source: TaskVM, _ destinationId: String) -> [TaskVM] {
+    private func addTaskAtFirstOfSubitems(_ taskItems: [TaskVM], _ sourceTask: TaskVM, _ destinationTask: TaskVM, _ destinationIndexPath: IndexPath) -> [TaskVM] {
         var tempItems: [TaskVM] = taskItems
         for i in 0..<tempItems.count {
-            if tempItems[i].id == destinationId {
-                tempItems[i].subItems.insert(source, at: 0)
+            if tempItems[i].id == destinationTask.id {
+                tempItems[i].subItems.insert(sourceTask, at: 0)
             }
         }
+        let parentCell = taskListCollectionView.cellForItem(at: destinationIndexPath) as? TaskCollectionViewListCell
+        parentCell?.taskViewModel?.subItems.insert(destinationTask, at: 0)
+        let disclosureOptions = UICellAccessory.OutlineDisclosureOptions(style: .automatic)
+        parentCell?.accessories = [.outlineDisclosure(options: disclosureOptions)]
         
         return tempItems
     }
@@ -488,39 +500,35 @@ extension TaskListViewController: UICollectionViewDropDelegate {
         }
         let sourceSection = dataSource.snapshot().sectionIdentifiers[sourceIndexPath.section]
         let destinationSection = dataSource.snapshot().sectionIdentifiers[destinationIndexPath.section]
+        let tasksAfterRemove = removeTaskFromTasks(dataSource.snapshot(for: sourceSection).rootItems, sourceTask.id)
         
         guard let destinationTask = dataSource.itemIdentifier(for: destinationIndexPath)
-        else {//맨 위에 추가할 때 DESTINATIONTASK가 NIL이다.
-            let tasksAfterRemove = removeTaskFromTasks(dataSource.snapshot(for: sourceSection).rootItems, sourceTask.id)
+        else {//섹션 상단에 추가시
             let sourceSnapShot = generateSnapshot(taskItems: tasksAfterRemove)
             dataSource.apply(sourceSnapShot, to: sourceSection)
-            
-            var items = dataSource.snapshot(for: destinationSection).rootItems
-            items.insert(sourceTask, at: 0)
-            let destinationSnapShot = generateSnapshot(taskItems: items)
+            var newItems = dataSource.snapshot(for: destinationSection).rootItems
+            newItems.insert(sourceTask, at: 0)
+            let destinationSnapShot = generateSnapshot(taskItems: newItems)
             dataSource.apply(destinationSnapShot, to: destinationSection)
             
             return
         }
-        
+        var newItems: [TaskVM]
+        var tempItem = sourceTask
+        tempItem.parentPosition = destinationTask.parentPosition
         if sourceIndexPath.section == destinationIndexPath.section { //같은 section 일때
-            let tasksAfterRemove = removeTaskFromTasks(dataSource.snapshot(for: sourceSection).rootItems, sourceTask.id)
-            var newItems: [TaskVM]
             if destinationTask.parentPosition == nil && childCheck == 1 { //부모 작업의 바로 아래에 append
-                newItems = addTaskAtFirstOfSubitems(tasksAfterRemove, sourceTask, destinationTask.id)
+                newItems = addTaskAtFirstOfSubitems(tasksAfterRemove, sourceTask, destinationTask, destinationIndexPath)
             } else { //child check필요 없이 그냥 넣기
-                newItems = addTaskAtTasks(tasksAfterRemove, sourceTask, destinationTask.id)
+                newItems = addTaskAtTasks(tasksAfterRemove, tempItem, destinationTask.id)
             }
             let snapShot = generateSnapshot(taskItems: newItems)
             dataSource.apply(snapShot, to: sourceSection)
-            //TODO parentsPoint 바꿔주기, 새로 서브 들어가는곳은 DISCLOSURE추가
         } else { //다른 section 일때
-            let tasksAfterRemove = removeTaskFromTasks(dataSource.snapshot(for: sourceSection).rootItems, sourceTask.id)
-            var newItems: [TaskVM]
             if destinationTask.parentPosition == nil && childCheck == 1 { //부모 작업의 바로 아래에 append
-                newItems = addTaskAtFirstOfSubitems(dataSource.snapshot(for: destinationSection).rootItems, sourceTask, destinationTask.id)
+                newItems = addTaskAtFirstOfSubitems(dataSource.snapshot(for: destinationSection).rootItems, sourceTask, destinationTask, destinationIndexPath)
             } else { //child check필요 없이 그냥 넣기
-                newItems = addTaskAtTasks(dataSource.snapshot(for: destinationSection).rootItems, sourceTask, destinationTask.id)
+                newItems = addTaskAtTasks(dataSource.snapshot(for: destinationSection).rootItems, tempItem, destinationTask.id)
             }
             let sourceSnapShot = generateSnapshot(taskItems: tasksAfterRemove)
             let destinationSnapShot = generateSnapshot(taskItems: newItems)
@@ -533,10 +541,9 @@ extension TaskListViewController: UICollectionViewDropDelegate {
 
 private extension TaskListViewController {
     
-    func setLocation(_ location: CGPoint, _ destination: IndexPath?) -> Bool {
+    func setLocation(_ location: CGPoint, _ destination: IndexPath) -> Bool {
         lineView.removeFromSuperview()
-        guard let destination = destination,
-              let startIndex = startIndex,
+        guard let startIndex = startIndex,
               let startPoint = startPoint,
               let collectionView = taskListCollectionView
         else {
@@ -544,45 +551,43 @@ private extension TaskListViewController {
         }
         if destination.row == 0 { return true }
         
-        /*
-         나보다 아래인지 위인지에 따라 destination index를 다르게 설정
-         */
-        var tempIndex: IndexPath
+        var tempDestinationIndex: IndexPath
         if destination.section == startIndex.section && destination.row > startIndex.row {
-            tempIndex = IndexPath(row: destination.row, section: destination.section)
+            tempDestinationIndex = IndexPath(row: destination.row, section: destination.section)
         } else {
-            tempIndex = IndexPath(row: destination.row - 1, section: destination.section)
+            tempDestinationIndex = IndexPath(row: destination.row - 1, section: destination.section)
         }
         
-        /*
-         터치 위치에 따라 같은level 혹은 한단계 하위 level에 line 표시
-         */
         if startPoint.x <= location.x - 50 {
             childCheck = 1
         } else {
             childCheck = 0
         }
-        guard let startCell = collectionView.cellForItem(at: startIndex) as? TaskCollectionViewListCell,
-              let destinationCell = collectionView.cellForItem(at: tempIndex) as? TaskCollectionViewListCell,
-              let cellCount = startCell.taskViewModel
+        
+        guard let sourceTask = (collectionView.cellForItem(at: startIndex) as? TaskCollectionViewListCell)?.taskViewModel,
+              let destinationCell = collectionView.cellForItem(at: tempDestinationIndex) as? TaskCollectionViewListCell
         else {
             return false
         }
+        
         if destinationCell.indentationLevel == 1 {
             childCheck = 0
-            if cellCount.subItems.count != 0 {
+            if sourceTask.subItems.count != 0 {
                 return false
             }
-        } else if destinationCell.indentationLevel == 0 && childCheck == 1 && cellCount.subItems.count != 0 {
+        } else if childCheck == 1 && sourceTask.subItems.count != 0 {
             return false
         }
+        
         let depthWidth: CGFloat = CGFloat(destinationCell.indentationLevel * 20 + childCheck * 20)
-        lineView = UIView(frame: CGRect(x: 10 + depthWidth, y: destinationCell.frame.height - 2, width: destinationCell.frame.width - depthWidth - 20, height: 5))
-        lineView.backgroundColor = .halgoraedoMint
-        lineView.layer.cornerRadius = 2;
-        lineView.layer.masksToBounds = true;
-        destinationCell.addSubview(lineView)
+        drawLineView(depthWidth, destinationCell)
+        
         return true
+    }
+    
+    func drawLineView(_ depthWidth: CGFloat, _ cell: TaskCollectionViewListCell) {
+        lineView.frame = CGRect(x: 10 + depthWidth, y: cell.frame.height - 2, width: cell.frame.width - depthWidth - 20, height: 5)
+        cell.addSubview(lineView)
     }
 }
 
