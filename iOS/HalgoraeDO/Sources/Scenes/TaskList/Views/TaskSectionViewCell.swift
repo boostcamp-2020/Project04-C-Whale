@@ -50,29 +50,27 @@ class TaskSectionViewCell: UICollectionViewCell {
     }
     
     override func prepareForReuse() {
+        super.prepareForReuse()
         configureForReuse()
     }
-    
     
     // MARK: - Initialize
     
     func configureForReuse() {
-        dataSource = nil
         taskVM = []
         collectionView?.removeFromSuperview()
         configureCollectionView()
         configureDataSource()
     }
     
-    func configure(sectionName: String, task: [TaskVM], sectionNum: Int) {
-        taskVM = task
-        self.sectionNum = sectionNum
-        self.sectionName = sectionName
-        let snapShot = snapshot(taskItems: task)
-        dataSource.apply(snapShot, to: sectionName, animatingDifferences: true)
+    func configure(section: TaskListModels.SectionVM) {
+        taskVM = section.tasks
+        sectionNum = section.tasks.count
+        sectionName = section.title
+        let snapShot = snapshot(taskItems: section.tasks)
+        dataSource.apply(snapShot, to: section, animatingDifferences: true)
     }
 }
-
 
 // MARK: - Configure CollectionView Layout
 
@@ -96,12 +94,8 @@ private extension TaskSectionViewCell {
     }
     
     func generateLayout() -> UICollectionViewLayout {
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                              heightDimension: .estimated(50))
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                               heightDimension: .estimated(50))
-        let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
+        let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(50)))
+        let group = NSCollectionLayoutGroup.vertical(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(50)), subitems: [item])
         group.contentInsets = NSDirectionalEdgeInsets(top: 20, leading: 10, bottom: 20, trailing: 10)
         
         let section = NSCollectionLayoutSection(group: group)
@@ -113,19 +107,19 @@ private extension TaskSectionViewCell {
         return layout
     }
     
-    private func generateSupplementaryItems() -> [NSCollectionLayoutBoundarySupplementaryItem] {
+    func generateSupplementaryItems() -> [NSCollectionLayoutBoundarySupplementaryItem] {
         let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(
             layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                               heightDimension: .estimated(44)),
-            elementKind: "section-header-element-kind",
-            alignment: .top)
-        let sectionFooter = NSCollectionLayoutBoundarySupplementaryItem(
-            layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                               heightDimension: .estimated(44)),
-            elementKind: "section-footer-element-kind",
-            alignment: .bottom)
+                                                heightDimension: .estimated(44)),
+                                                elementKind: "section-header-element-kind",
+                                                alignment: .top)
         sectionHeader.pinToVisibleBounds = true
         sectionHeader.zIndex = 2
+        let sectionFooter = NSCollectionLayoutBoundarySupplementaryItem(
+            layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                                heightDimension: .estimated(44)),
+                                                elementKind: "section-footer-element-kind",
+                                                alignment: .bottom)
         sectionFooter.pinToVisibleBounds = true
         sectionFooter.zIndex = 2
         
@@ -159,10 +153,14 @@ private extension TaskSectionViewCell {
             cell.layer.shadowOpacity = 0.2
             cell.layer.masksToBounds = false
         }
-        dataSource = UICollectionViewDiffableDataSource<String, TaskVM>(collectionView: collectionView!, cellProvider: { (collectionview, indexPath, task) -> UICollectionViewCell? in
+        guard let collectionView = collectionView else { return }
+        dataSource = UICollectionViewDiffableDataSource<TaskListModels.SectionVM, TaskVM>(collectionView: collectionView, cellProvider: { (collectionview, indexPath, task) -> UICollectionViewCell? in
             return collectionview.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: task)
         })
-        
+        configureDataSource(dataSource)
+    }
+    
+    func configureDataSource(_ dataSource: UICollectionViewDiffableDataSource<TaskListModels.SectionVM, TaskVM>) {
         let headerRegistration = UICollectionView.SupplementaryRegistration
         <TaskBoardSupplementaryView>(elementKind: "Header") {
             (supplementaryView, string, indexPath) in
@@ -191,7 +189,6 @@ private extension TaskSectionViewCell {
 
 extension TaskSectionViewCell: UICollectionViewDragDelegate {
     
-    /* Drag가 시작되었을 때 start point 기록*/
     func collectionView(_ collectionView: UICollectionView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
         session.localContext = collectionView
         startPoint = session.location(in: collectionView)
