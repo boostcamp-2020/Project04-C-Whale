@@ -5,7 +5,6 @@ const projectModel = models.project;
 
 const retrieveProjects = async userId => {
   const projects = await projectModel.findAll({
-    raw: true,
     attributes: [
       'id',
       'title',
@@ -34,7 +33,6 @@ const retrieveProjects = async userId => {
     where: { creatorId: userId },
     group: ['project.id'],
   });
-  console.log(projects);
   return projects;
 };
 
