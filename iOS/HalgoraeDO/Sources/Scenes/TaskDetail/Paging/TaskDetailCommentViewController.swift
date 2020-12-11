@@ -17,12 +17,18 @@ class TaskDetailCommentViewController: UIViewController {
 
     private var task: Task?
     private var interactor: TaskDetailBusinessLogic?
-    private var dataSource: UICollectionViewDiffableDataSource<String, TaskDetailModels.CommentVM>!
+    private var dataSource: UICollectionViewDiffableDataSource<String, TaskDetailModels.ContentsVM>!
     
     // MARK: - Views
     
     @IBOutlet weak var commentCollectionView: UICollectionView!
-    @IBOutlet weak var commentAddView: CommentAddView!
+    @IBOutlet weak var commentAddView: CommentAddView! {
+        didSet {
+            commentAddView.doneHandler = { [weak self] text in
+                self?.createComment(text: text)
+            }
+        }
+    }
     
     // MARK: - View Life Cycle
 
@@ -60,6 +66,11 @@ class TaskDetailCommentViewController: UIViewController {
     @objc private func keyboardWillHide(_ notification: Notification) {
         self.commentAddView.transform = .identity
     }
+    
+    func createComment(text: String) {
+        guard let task = task else { return }
+        interactor?.createComment(request: .init(commentFields: .init(taskId: task.id, text: text)))
+    }
 }
 
 // MARK: - Configure CollectionView Layout
@@ -82,8 +93,8 @@ private extension TaskDetailCommentViewController {
                                                          subitems: [item])
         
         let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = .init(top: 8, leading: 16, bottom: 8, trailing: 16)
-        section.interGroupSpacing = 20
+        section.contentInsets = .init(top: 8, leading: 16, bottom: 0, trailing: 16)
+        section.interGroupSpacing = 8
         let layout = UICollectionViewCompositionalLayout(section: section)
         return layout
     }
@@ -95,27 +106,18 @@ private extension TaskDetailCommentViewController {
     
     func configureDataSource() {
         
-        let cellRegistration = UICollectionView.CellRegistration<TaskCommentCell, TaskDetailModels.CommentVM> { (cell, _: IndexPath, taskItem) in
+        let cellRegistration = UICollectionView.CellRegistration<TaskDetailContentsCellCollectionViewCell, TaskDetailModels.ContentsVM> { (cell, _: IndexPath, taskItem) in
             cell.viewModel = taskItem
         }
         
-        let imageCellRegistration = UICollectionView.CellRegistration<TaskCommentImageCell, TaskDetailModels.CommentVM> { (cell, _: IndexPath, taskItem) in
-            cell.viewModel = taskItem
-        }
-        
-        dataSource = UICollectionViewDiffableDataSource<String, TaskDetailModels.CommentVM>(collectionView: commentCollectionView, cellProvider: { (collectionView, indexPath, task) -> UICollectionViewCell? in
+        dataSource = UICollectionViewDiffableDataSource<String, TaskDetailModels.ContentsVM>(collectionView: commentCollectionView, cellProvider: { (collectionView, indexPath, task) -> UICollectionViewCell? in
             
-            if task.isImage {
-                return collectionView.dequeueConfiguredReusableCell(using: imageCellRegistration, for: indexPath, item: task)
-            } else {
-                return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: task)
-            }
-            
+            return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: task)
         })
     }
     
-    func snapshot(taskItems: [TaskDetailModels.CommentVM]) -> NSDiffableDataSourceSectionSnapshot<TaskDetailModels.CommentVM> {
-        var snapshot = NSDiffableDataSourceSectionSnapshot<TaskDetailModels.CommentVM>()
+    func generateSnapshot(taskItems: [TaskDetailModels.ContentsVM]) -> NSDiffableDataSourceSectionSnapshot<TaskDetailModels.ContentsVM> {
+        var snapshot = NSDiffableDataSourceSectionSnapshot<TaskDetailModels.ContentsVM>()
         snapshot.append(taskItems)
         
         return snapshot
@@ -127,7 +129,7 @@ private extension TaskDetailCommentViewController {
 extension TaskDetailCommentViewController: TaskDetailCommentDisplayLogic {
     
     func displayFetchedComments(viewModel: TaskDetailModels.FetchComments.ViewModel) {
-        let sectionSnapshot = snapshot(taskItems: viewModel.commentVMs)
+        let sectionSnapshot = generateSnapshot(taskItems: viewModel.commentVMs)
         dataSource.apply(sectionSnapshot, to: "")
     }
 }
