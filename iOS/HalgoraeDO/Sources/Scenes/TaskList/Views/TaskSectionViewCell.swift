@@ -208,12 +208,12 @@ extension TaskSectionViewCell: UICollectionViewDragDelegate {
     }
     
     private func dragItems(at indexPath: IndexPath) -> [UIDragItem] {
-        let taskObject = NSString(string: "_")
-        let provider = NSItemProvider(object: taskObject)
+        guard let collectionView = collectionView,
+            let taskObject = collectionView.cellForItem(at: indexPath) as? TaskCollectionViewListCell else { return [] }
+        let provider = NSItemProvider(object: taskObject.taskViewModel!.id as NSString)
         let dragItem = UIDragItem(itemProvider: provider)
-        guard let collectionView = collectionView else { return [dragItem] }
         let cell = collectionView.cellForItem(at: indexPath)
-        dragItem.localObject = cell
+        dragItem.localObject = [cell, dataSource]
         
         return [dragItem]
     }
@@ -223,6 +223,7 @@ extension TaskSectionViewCell: UICollectionViewDragDelegate {
 extension TaskSectionViewCell: UICollectionViewDropDelegate {
     
     func collectionView(_ collectionView: UICollectionView, canHandle session: UIDropSession) -> Bool {
+        
         return session.canLoadObjects(ofClass: NSAttributedString.self)
     }
     
@@ -238,13 +239,13 @@ extension TaskSectionViewCell: UICollectionViewDropDelegate {
             )
         }
         setLocation(session.location(in: collectionView), destination)
-        let isSelf = (session.localDragSession?.localContext as? UICollectionView) == collectionView
         
-        return UICollectionViewDropProposal(operation: isSelf ? .move : .copy, intent: .insertAtDestinationIndexPath)
+        return UICollectionViewDropProposal(operation: .move, intent: .insertAtDestinationIndexPath)
     }
     
     func collectionView(_ collectionView: UICollectionView, dragSessionDidEnd session: UIDragSession) {
         lineView.removeFromSuperview()
+        startIndex = nil
     }
     
     func collectionView(
@@ -252,52 +253,61 @@ extension TaskSectionViewCell: UICollectionViewDropDelegate {
         performDropWith coordinator: UICollectionViewDropCoordinator
     ) {
         lineView.removeFromSuperview()
-        #if DEBUG
-        print("destination path:", coordinator.destinationIndexPath ?? "Not found")
-        #endif
+        
+        let destinationIndexPath = coordinator.destinationIndexPath ?? IndexPath(item: 0, section: 0)
+        for item in coordinator.items {
+            guard let sourceTask = ((item.dragItem.localObject as? [Any])?.first as? TaskCollectionViewListCell)?.taskViewModel else { return }
+            if let sourceIndexPath = item.sourceIndexPath {//자신으로부터 나왔을 때
+                var tempDestinationIndex: IndexPath
+                if destinationIndexPath.section == sourceIndexPath.section && destinationIndexPath.row > sourceIndexPath.row {
+                    tempDestinationIndex = IndexPath(row: destinationIndexPath.row, section: destinationIndexPath.section)
+                } else {
+                    tempDestinationIndex = IndexPath(row: destinationIndexPath.row - 1, section: destinationIndexPath.section)
+                }
+                let sourceSection = dataSource.snapshot().sectionIdentifiers[tempDestinationIndex.section]
+                
+                if tempDestinationIndex.row == -1 {
+                    taskSectionViewCellDelegate?.taskSectionViewCell(self, sourceSection, sourceSection, sourceTask, nil)
+                } else {
+                    taskSectionViewCellDelegate?.taskSectionViewCell(self, sourceSection, sourceSection, sourceTask, sourceSection.tasks[tempDestinationIndex.row])
+                }
+                
+            } else {
+                let destinationIndexPath = IndexPath(row: destinationIndexPath.row - 1, section: destinationIndexPath.section)
+                let collLocalDragSession = coordinator.session.localDragSession?.localContext as? UICollectionView
+                let sourceDataSource = collLocalDragSession?.dataSource as? UICollectionViewDiffableDataSource<TaskListModels.SectionVM, TaskVM>
+                let destinationSection = dataSource.snapshot().sectionIdentifiers[destinationIndexPath.section]
+                
+                if destinationIndexPath.row == -1 {
+                    taskSectionViewCellDelegate?.taskSectionViewCell(self, (sourceDataSource?.snapshot().sectionIdentifier(containingItem: sourceTask))!, destinationSection, sourceTask, nil)
+                } else {
+                    taskSectionViewCellDelegate?.taskSectionViewCell(self, (sourceDataSource?.snapshot().sectionIdentifier(containingItem: sourceTask))!, destinationSection, sourceTask, destinationSection.tasks[destinationIndexPath.row])
+                }
+            }
+        }
     }
 }
 
 private extension TaskSectionViewCell {
     
-    func setLocation(_ location: CGPoint, _ destination: IndexPath?) {
-        #if DEBUG
-        print("location:", location)
-        print("start:", startPoint ?? "Not found")
-        #endif
-        
+    func setLocation(_ location: CGPoint, _ destination: IndexPath) {
         lineView.removeFromSuperview()
-        guard let destination = destination,
-              let startIndex = startIndex,
-              let _ = startPoint,
-              let collectionView = collectionView
-        else {
-            return
-        }
-        if destination.row == 0 {
-            return
-        }
+        guard let collectionView = collectionView else { return }
 
-        /*
-         나보다 아래인지 위인지에 따라 destination index를 다르게 설정
-         */
-        var tempIndex: IndexPath
-        if destination.section == startIndex.section && destination.row > startIndex.row {
-            tempIndex = IndexPath(row: destination.row, section: destination.section)
+        var tempDestinationIndex: IndexPath = destination
+        if let startIndex = startIndex {
+            if destination.section == startIndex.section && destination.row > startIndex.row {
+                tempDestinationIndex = IndexPath(row: destination.row, section: destination.section)
+            } else {
+                tempDestinationIndex = IndexPath(row: destination.row - 1, section: destination.section)
+            }
         } else {
-            tempIndex = IndexPath(row: destination.row - 1, section: destination.section)
+            tempDestinationIndex = IndexPath(row: destination.row - 1, section: destination.section)
         }
         
-        /*
-         터치 위치에 따라 같은level 혹은 한단계 하위 level에 line 표시
-         */
-        if let cell = collectionView.cellForItem(at: tempIndex) as? UICollectionViewListCell {
-            lineView = UIView(frame: CGRect(x: 10, y: cell.frame.height - 2, width: cell.frame.width - 20, height: 5))
-            lineView.backgroundColor = .blue
-            lineView.layer.cornerRadius = 5;
-            lineView.layer.masksToBounds = true;
+        if let cell = collectionView.cellForItem(at: tempDestinationIndex) as? UICollectionViewListCell {
+            lineView.frame = CGRect(x: 10, y: cell.frame.height - 2, width: cell.frame.width - 20, height: 5)
             cell.addSubview(lineView)
         }
     }
 }
-
