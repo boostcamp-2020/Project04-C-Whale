@@ -4,7 +4,7 @@ const { errorHandler } = require('@utils/handler');
 
 const createJWT = user => {
   return `${jwt.sign(user, process.env.JWT_SECRET, {
-    expiresIn: '1h',
+    // expiresIn: '1h',
   })}`;
 };
 
