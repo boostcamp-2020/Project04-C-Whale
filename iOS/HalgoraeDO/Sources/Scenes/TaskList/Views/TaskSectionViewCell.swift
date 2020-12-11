@@ -7,6 +7,13 @@
 
 import UIKit
 
+protocol TaskSectionViewCellDelegate {
+    func taskSectionViewCell(_ startSection: TaskListModels.SectionVM,
+                       _ destinationSection: TaskListModels.SectionVM,
+                       _ sourceTaskIdentifier: TaskListModels.DisplayedTask,
+                       _ destinationTaskIdentifier: TaskListModels.DisplayedTask?)
+}
+
 class TaskSectionViewCell: UICollectionViewCell {
     
     typealias TaskVM = TaskListModels.DisplayedTask

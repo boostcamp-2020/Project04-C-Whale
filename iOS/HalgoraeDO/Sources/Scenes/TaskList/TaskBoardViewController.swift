@@ -218,6 +218,8 @@ extension TaskBoardViewController: UICollectionViewDataSource {
         if indexPath.section < sectionVM.count {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "section-reuse-identifier", for: indexPath) as! TaskSectionViewCell
             cell.configure(section: sectionVM[indexPath.section])
+            cell.taskSectionViewCellDelegate = self
+            
             return cell
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "section-add-reuse-identifier", for: indexPath) as! AddSectionViewCell

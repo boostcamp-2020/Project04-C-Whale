@@ -44,7 +44,6 @@ class TaskListViewController: UIViewController {
         
         return view
     }()
-    
     private var startIndex: IndexPath?
     private var startPoint: CGPoint?
     
