@@ -462,16 +462,16 @@ extension TaskListViewController: UICollectionViewDropDelegate {
         return tempItems
     }
     
-    private func addTaskAtTasks(_ taskItems: [TaskVM], _ source: TaskVM, _ destinationId: String) -> [TaskVM] {
+    private func addTaskAtTasks(_ taskItems: [TaskVM], _ sourceTask: TaskVM, _ destinationId: String) -> [TaskVM] {
         var tempItems: [TaskVM] = []
         for i in 0..<taskItems.count {
             tempItems.append(taskItems[i])
             if !taskItems[i].subItems.isEmpty {
-                tempItems[i].subItems = addTaskAtTasks(taskItems[i].subItems, source, destinationId)
+                tempItems[i].subItems = addTaskAtTasks(taskItems[i].subItems, sourceTask, destinationId)
             }
             if taskItems[i].id == destinationId {
                 var tempItem = taskItems
-                tempItem.insert(source, at: i + 1)
+                tempItem.insert(sourceTask, at: i + 1)
                 return tempItem
             }
         }
@@ -479,11 +479,11 @@ extension TaskListViewController: UICollectionViewDropDelegate {
         return tempItems
     }
     
-    private func addTaskAtFirstOfSubitems(_ taskItems: [TaskVM], _ source: TaskVM, _ destinationTask: TaskVM, _ destinationIndexPath: IndexPath) -> [TaskVM] {
+    private func addTaskAtFirstOfSubitems(_ taskItems: [TaskVM], _ sourceTask: TaskVM, _ destinationTask: TaskVM, _ destinationIndexPath: IndexPath) -> [TaskVM] {
         var tempItems: [TaskVM] = taskItems
         for i in 0..<tempItems.count {
             if tempItems[i].id == destinationTask.id {
-                tempItems[i].subItems.insert(source, at: 0)
+                tempItems[i].subItems.insert(sourceTask, at: 0)
             }
         }
         let parentCell = taskListCollectionView.cellForItem(at: destinationIndexPath) as? TaskCollectionViewListCell
@@ -501,12 +501,12 @@ extension TaskListViewController: UICollectionViewDropDelegate {
         }
         let sourceSection = dataSource.snapshot().sectionIdentifiers[sourceIndexPath.section]
         let destinationSection = dataSource.snapshot().sectionIdentifiers[destinationIndexPath.section]
+        let tasksAfterRemove = removeTaskFromTasks(dataSource.snapshot(for: sourceSection).rootItems, sourceTask.id)
+        
         guard let destinationTask = dataSource.itemIdentifier(for: destinationIndexPath)
         else {//섹션 상단에 추가시
-            let tasksAfterRemove = removeTaskFromTasks(dataSource.snapshot(for: sourceSection).rootItems, sourceTask.id)
             let sourceSnapShot = generateSnapshot(taskItems: tasksAfterRemove)
             dataSource.apply(sourceSnapShot, to: sourceSection)
-            
             var newItems = dataSource.snapshot(for: destinationSection).rootItems
             newItems.insert(sourceTask, at: 0)
             let destinationSnapShot = generateSnapshot(taskItems: newItems)
@@ -516,7 +516,6 @@ extension TaskListViewController: UICollectionViewDropDelegate {
         }
         
         if sourceIndexPath.section == destinationIndexPath.section { //같은 section 일때
-            let tasksAfterRemove = removeTaskFromTasks(dataSource.snapshot(for: sourceSection).rootItems, sourceTask.id)
             var newItems: [TaskVM]
             if destinationTask.parentPosition == nil && childCheck == 1 { //부모 작업의 바로 아래에 append
                 newItems = addTaskAtFirstOfSubitems(tasksAfterRemove, sourceTask, destinationTask, destinationIndexPath)
@@ -525,11 +524,10 @@ extension TaskListViewController: UICollectionViewDropDelegate {
                 tempItem.parentPosition = destinationTask.parentPosition
                 newItems = addTaskAtTasks(tasksAfterRemove, tempItem, destinationTask.id)
             }
-            
             let snapShot = generateSnapshot(taskItems: newItems)
             dataSource.apply(snapShot, to: sourceSection)
+            
         } else { //다른 section 일때
-            let tasksAfterRemove = removeTaskFromTasks(dataSource.snapshot(for: sourceSection).rootItems, sourceTask.id)
             var newItems: [TaskVM]
             if destinationTask.parentPosition == nil && childCheck == 1 { //부모 작업의 바로 아래에 append
                 newItems = addTaskAtFirstOfSubitems(dataSource.snapshot(for: destinationSection).rootItems, sourceTask, destinationTask, destinationIndexPath)
@@ -538,11 +536,11 @@ extension TaskListViewController: UICollectionViewDropDelegate {
                 tempItem.parentPosition = destinationTask.parentPosition
                 newItems = addTaskAtTasks(dataSource.snapshot(for: destinationSection).rootItems, tempItem, destinationTask.id)
             }
-            
             let sourceSnapShot = generateSnapshot(taskItems: tasksAfterRemove)
             let destinationSnapShot = generateSnapshot(taskItems: newItems)
             dataSource.apply(sourceSnapShot, to: sourceSection)
             dataSource.apply(destinationSnapShot, to: destinationSection)
+            
         }
     }
 }
