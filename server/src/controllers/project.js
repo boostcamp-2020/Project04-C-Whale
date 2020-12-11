@@ -5,7 +5,7 @@ const { asyncTryCatch } = require('@utils/async-try-catch');
 const { validator, getErrorMsg } = require('@utils/validator');
 
 const getProjects = asyncTryCatch(async (req, res) => {
-  const projectInfos = await projectService.retrieveProjects();
+  const projectInfos = await projectService.retrieveProjects(req.user.id);
 
   responseHandler(res, 200, { projectInfos });
 });

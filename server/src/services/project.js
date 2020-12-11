@@ -3,7 +3,7 @@ const sequelize = require('@models');
 const { models } = sequelize;
 const projectModel = models.project;
 
-const retrieveProjects = async () => {
+const retrieveProjects = async userId => {
   const projects = await projectModel.findAll({
     raw: true,
     attributes: [
@@ -26,12 +26,15 @@ const retrieveProjects = async () => {
             attributes: [],
             where: { isDone: false },
             required: false,
+            group: ['sections.id'],
           },
         ],
       },
     ],
+    where: { creatorId: userId },
     group: ['project.id'],
   });
+  console.log(projects);
   return projects;
 };
 
