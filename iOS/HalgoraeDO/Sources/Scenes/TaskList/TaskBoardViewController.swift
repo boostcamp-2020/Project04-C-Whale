@@ -249,5 +249,88 @@ extension TaskBoardViewController: TaskListDisplayLogic {
 
 // MARK: - Move Cell Delegate Logic
 
+extension TaskBoardViewController: TaskSectionViewCellDelegate {
+    
+    func taskSectionViewCell(_ taskSectionViewCell: TaskSectionViewCell, _ sourceSection: TaskListModels.SectionVM, _ destinationSection: TaskListModels.SectionVM, _ sourceTask: TaskListModels.DisplayedTask, _ destinationTask: TaskListModels.DisplayedTask?) {
+        guard let destinationTask = destinationTask else { //맨 위에 insert
+            if sourceSection == destinationSection { //같은 collectionview
+                for i in 0..<sectionVM.count where sectionVM[i].id == sourceSection.id {
+                    var newTasks = removeTaskFromTasks(sourceSection.tasks, sourceTask.id)
+                    newTasks.insert(sourceTask, at: 0)
+                    sectionVM[i].tasks = newTasks
+                    taskBoardCollectionView.reloadItems(at: [IndexPath(row: 0, section: i)])
+                }
+                
+                return
+            }
+            for i in 0..<sectionVM.count { //다른 collectionview
+                if sectionVM[i].id == sourceSection.id {
+                    sectionVM[i].tasks = removeTaskFromTasks(sourceSection.tasks, sourceTask.id)
+                    taskBoardCollectionView.reloadItems(at: [IndexPath(row: 0, section: i)])
+                } else if sectionVM[i].id == destinationSection.id {
+                    var newItems = destinationSection.tasks
+                    newItems.insert(sourceTask, at: 0)
+                    sectionVM[i].tasks = newItems
+                    taskBoardCollectionView.reloadItems(at: [IndexPath(row: 0, section: i)])
+                }
+            }
+            
+            return
+        }
+        
+        if sourceSection == destinationSection { //같은 collectionview
+            for i in 0..<sectionVM.count where sectionVM[i].id == sourceSection.id {
+                let newTasks = removeTaskFromTasks(sourceSection.tasks, sourceTask.id)
+                sectionVM[i].tasks = addTaskAtTasks(newTasks, sourceTask, destinationTask.id)
+                taskBoardCollectionView.reloadItems(at: [IndexPath(row: 0, section: i)])
+            }
+            
+            return
+        }
+        for i in 0..<sectionVM.count  { //다른 collectionview
+            if sectionVM[i].id == sourceSection.id {
+                sectionVM[i].tasks = removeTaskFromTasks(sourceSection.tasks, sourceTask.id)
+                taskBoardCollectionView.reloadItems(at: [IndexPath(row: 0, section: i)])
+            } else if sectionVM[i].id == destinationSection.id {
+                sectionVM[i].tasks = addTaskAtTasks(destinationSection.tasks, sourceTask, destinationTask.id)
+                taskBoardCollectionView.reloadItems(at: [IndexPath(row: 0, section: i)])
+            }
+        }
     }
+    
+    private func removeTaskFromTasks(_ taskItems: [TaskVM], _ sourceId: String) -> [TaskVM] {
+        var tempItems: [TaskVM] = []
+        for i in 0..<taskItems.count {
+            let tempSubitems =  taskItems[i].subItems.filter {
+                $0.id != sourceId
+            }
+            
+            var tempItem = taskItems[i]
+            tempItem.subItems = tempSubitems
+            if taskItems[i].id != sourceId {
+                tempItems.append(tempItem)
+            }
+        }
+        
+        return tempItems
+    }
+    
+    private func addTaskAtTasks(_ taskItems: [TaskVM], _ source: TaskVM, _ destinationId: String) -> [TaskVM] {
+        var tempItems: [TaskVM] = []
+        for i in 0..<taskItems.count {
+            tempItems.append(taskItems[i])
+            if !taskItems[i].subItems.isEmpty {
+                tempItems[i].subItems = addTaskAtTasks(taskItems[i].subItems, source, destinationId)
+            }
+            if taskItems[i].id == destinationId {
+                var tempItem = taskItems
+                tempItem.insert(source, at: i + 1)
+                return tempItem
+            }
+        }
+        
+        return tempItems
+    }
+    
 }
+
