@@ -11,7 +11,7 @@
       <SectionContainer
         v-for="section in project.sections"
         :key="section.id"
-        :project="project"
+        :projectId="project.id"
         :section="section"
         class="mb-3 section-container"
       />

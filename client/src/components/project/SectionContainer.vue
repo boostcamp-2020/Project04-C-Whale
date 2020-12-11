@@ -24,7 +24,7 @@
       </div>
     </div>
 
-    <AddTask :project="project" :section="section" />
+    <AddTask :projectId="projectId" :sectionId="section.id" />
   </v-list>
 </template>
 
@@ -37,7 +37,7 @@ import _ from "lodash";
 
 export default {
   props: {
-    project: Object,
+    projectId: String,
     section: Object,
   },
   data: function () {

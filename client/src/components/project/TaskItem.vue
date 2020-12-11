@@ -11,7 +11,7 @@
       <v-radio-group>
         <v-radio
           dense
-          @click="updateTaskToDone({ projectId: section.projectId, taskId: task.id })"
+          @click="updateTaskToDone({ projectId: $route.params.projectId, taskId: task.id })"
           class="done-checkbox"
         ></v-radio>
       </v-radio-group>
