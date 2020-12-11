@@ -10,7 +10,6 @@ import UIKit
 class TaskBoardViewController: UIViewController {
     
     typealias TaskVM = TaskListModels.DisplayedTask
-    var sections = ["할고래두 TODO List", "할고라니까?? Todo!!", "진짜할고래DO???"]
     
     // MARK: - Properties
     
@@ -20,7 +19,7 @@ class TaskBoardViewController: UIViewController {
     private var dataSource: UICollectionViewDiffableDataSource<String, TaskVM>! = nil
     private let visualEffectView = UIVisualEffectView()
     private var taskAddViewController: TaskAddViewController = TaskAddViewController()
-    private var taskVM: [TaskVM] = []
+    private var sectionVM: [TaskListModels.SectionVM] = []
     
     // MARK: - Views
     
@@ -90,7 +89,7 @@ class TaskBoardViewController: UIViewController {
             return
         }
         let temp = TaskListModels.DisplayedTask(id: UUID().uuidString, title: taskTitle, isCompleted: false, tintColor: .red, position: 1, parentPosition: nil, subItems: [])
-        taskVM.append(temp)
+       // taskVM.append(temp)
         taskBoardCollectionView.reloadData()
     }
     
@@ -101,7 +100,7 @@ class TaskBoardViewController: UIViewController {
             if sectionName == "" {
                 return
             }
-            self.sections.append(sectionName)
+            self.sectionVM.append(TaskListModels.SectionVM(id: UUID().uuidString, title: sectionName, tasks: []))
             self.taskBoardCollectionView.reloadData()
         }
         let cancel = UIAlertAction(title: "cancel", style: .cancel)
@@ -208,7 +207,7 @@ private extension TaskBoardViewController {
 extension TaskBoardViewController: UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return sections.count + 1 //Section 갯수 + 1
+        return sectionVM.count + 1 //Section 갯수 + 1
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -216,9 +215,9 @@ extension TaskBoardViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if indexPath.section < sections.count {
+        if indexPath.section < sectionVM.count {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "section-reuse-identifier", for: indexPath) as! TaskSectionViewCell
-            cell.configure(sectionName: sections[indexPath.section], task: taskVM, sectionNum: indexPath.section)
+            cell.configure(section: sectionVM[indexPath.section])
             return cell
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "section-add-reuse-identifier", for: indexPath) as! AddSectionViewCell
@@ -238,12 +237,15 @@ extension TaskBoardViewController: TaskListDisplayLogic {
     }
     
     func displayFetchTasks(viewModel: TaskListModels.FetchTasks.ViewModel) {
-        for sectionVM in viewModel.sectionVMs {
-            taskVM = sectionVM.tasks
-        }
+        sectionVM = viewModel.sectionVMs
     }
     
     func displayDetail(of task: Task) {
         
+    }
+}
+
+// MARK: - Move Cell Delegate Logic
+
     }
 }
