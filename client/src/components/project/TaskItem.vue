@@ -26,13 +26,13 @@
         </v-list-item-title>
       </v-list-item-content>
     </div>
-    <router-view :key="$route.params.taskId" />
   </v-list-item>
 </template>
 
 <script>
 import { mapGetters, mapActions, mapMutations } from "vuex";
 import VueMarkDown from "vue-markdown";
+import bus from "@/utils/bus";
 
 export default {
   props: {
@@ -40,6 +40,11 @@ export default {
     section: Object,
     position: Number,
     dragging: Boolean,
+  },
+  data() {
+    return {
+      dialog: false,
+    };
   },
   components: {
     "vue-markdown": VueMarkDown,
@@ -49,14 +54,15 @@ export default {
     ...mapMutations(["SET_DRAGGING_TASK", "SET_DROP_TARGET_SECTION"]),
 
     moveToTaskDetail() {
+      console.log(this.$route);
       const destinationInfo = this.$route.params.projectId
         ? {
             name: "ProjectTaskDetail",
             params: { projectId: this.$route.params.projectId, taskId: this.task.id },
           }
         : { name: "TodayTaskDetail", params: { taskId: this.task.id } };
-
-      this.$router.push(destinationInfo).catch(() => {});
+      bus.$emit("moveToTaskDetail", destinationInfo);
+      // this.$router.push(destinationInfo).catch(() => {});
     },
 
     handleDragStart() {
