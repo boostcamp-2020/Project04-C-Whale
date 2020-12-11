@@ -21,14 +21,22 @@ class TaskSectionViewCell: UICollectionViewCell {
     
     // MARK: - Properties
     
+    var taskSectionViewCellDelegate: TaskSectionViewCellDelegate?
     private var sectionNum: Int = -1
-    private var lineView: UIView = UIView()
     private var startIndex: IndexPath?
     private var startPoint: CGPoint?
     private var collectionView: UICollectionView?
-    private var dataSource: UICollectionViewDiffableDataSource<String, TaskVM>! = nil
+    private var dataSource: UICollectionViewDiffableDataSource<TaskListModels.SectionVM, TaskVM>! = nil
     private var sectionName: String = ""
     private var taskVM: [TaskVM] = []
+    private var lineView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .halgoraedoMint
+        view.layer.cornerRadius = 2
+        view.layer.masksToBounds = true
+        
+        return view
+    }()
     
     // MARK: - View Life Cycle
     
