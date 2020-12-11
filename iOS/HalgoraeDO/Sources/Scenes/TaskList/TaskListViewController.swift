@@ -36,7 +36,15 @@ class TaskListViewController: UIViewController {
     @IBOutlet weak private var moreButton: UIBarButtonItem!
     @IBOutlet weak private var editToolBar: UIToolbar!
     @IBOutlet weak private var confirmActionView: ConfirmActionView!
-    private var lineView: UIView = UIView()
+    private var lineView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .halgoraedoMint
+        view.layer.cornerRadius = 2
+        view.layer.masksToBounds = true
+        
+        return view
+    }()
+    
     private var startIndex: IndexPath?
     private var startPoint: CGPoint?
     
