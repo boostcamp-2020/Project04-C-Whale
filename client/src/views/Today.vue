@@ -5,7 +5,7 @@
 <script>
 import TodayTasksContainer from "@/components/today/TodayTasksContainer";
 import { mapGetters } from "vuex";
-import ListMixin from "@/mixins/ListMixins.js";
+import SpinnerMixin from "@/mixins/SpinnerMixins.js";
 
 export default {
   name: "Today",
@@ -13,6 +13,6 @@ export default {
     TodayTasksContainer,
   },
   computed: mapGetters(["todayTasks", "expiredTasks"]),
-  mixins: [ListMixin],
+  mixins: [SpinnerMixin],
 };
 </script>

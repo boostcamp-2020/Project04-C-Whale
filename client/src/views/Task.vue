@@ -16,6 +16,7 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import TaskDetailContainer from "@/components/task/TaskDetailContainer.vue";
+import SpinnerMixin from "@/mixins/SpinnerMixins.js";
 
 export default {
   name: "Task",
@@ -46,6 +47,7 @@ export default {
       (project) => project.id === this.$route.params.projectId
     ).title;
   },
+  mixins: [SpinnerMixin],
 };
 </script>
 <style>
