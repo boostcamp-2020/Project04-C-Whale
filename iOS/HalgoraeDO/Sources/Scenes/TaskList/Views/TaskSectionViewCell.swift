@@ -8,7 +8,8 @@
 import UIKit
 
 protocol TaskSectionViewCellDelegate {
-    func taskSectionViewCell(_ startSection: TaskListModels.SectionVM,
+    func taskSectionViewCell(_ taskSectionViewCell: TaskSectionViewCell,
+                             _ sourceSection: TaskListModels.SectionVM,
                        _ destinationSection: TaskListModels.SectionVM,
                        _ sourceTaskIdentifier: TaskListModels.DisplayedTask,
                        _ destinationTaskIdentifier: TaskListModels.DisplayedTask?)
