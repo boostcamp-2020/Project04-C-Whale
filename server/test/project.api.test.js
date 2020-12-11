@@ -24,14 +24,15 @@ describe('get all projects', () => {
         task => project.creatorId === expectedUser.id && task.projectId === project.id,
       );
       const { id, title } = project;
-      return { id, title, taskCount: tasks.length };
+      const defaultSectionId = seeder.sections.find(section => section.projectId === project.id);
+      return { id, title, taskCount: tasks.length, defaultSectionId };
     });
 
     // when
     const res = await request(app)
       .get('/api/project')
       .set('Authorization', `Bearer ${createJWT(expectedUser)}`);
-    const recievedProjects = res.body;
+    const recievedProjects = res.body.projectInfos;
 
     // then
     expect(
@@ -59,8 +60,7 @@ describe('get project by id', () => {
       .get(`/api/project/${expectedProjectId}`)
       .set('Authorization', `Bearer ${createJWT(expectedUser)}`);
 
-    const childTask = res.body.sections[0].tasks[0].tasks[0];
-
+    const childTask = res.body.project.sections[0].tasks[0].tasks[0];
     // then
     expect(childTask.id).toEqual(expectedChildTaskId);
     done();

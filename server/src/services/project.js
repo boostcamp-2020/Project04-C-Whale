@@ -18,7 +18,7 @@ const retrieveProjects = async userId => {
       {
         model: models.section,
         required: false,
-        attributes: ['id', 'position'],
+        attributes: [],
         include: [
           {
             model: models.task,
@@ -31,7 +31,7 @@ const retrieveProjects = async userId => {
       },
     ],
     where: { creatorId: userId },
-    group: ['project.id'],
+    group: ['project.id', 'sections.id'],
   });
   return projects;
 };
