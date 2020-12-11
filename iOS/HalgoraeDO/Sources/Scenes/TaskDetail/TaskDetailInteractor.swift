@@ -29,6 +29,7 @@ class TaskDetailInteractor: TaskDetailDataStore {
 }
 
 extension TaskDetailInteractor: TaskDetailBusinessLogic {
+    
     func fetchSubTasks(request: TaskDetailModels.FetchSubTasks.Request) {
         
         worker.request(endPoint: TaskEndPoint.get(taskId: request.id)) { [weak self] (tasks: [Task]?) in
@@ -49,5 +50,4 @@ extension TaskDetailInteractor: TaskDetailBusinessLogic {
             self?.presenter.presentFetchedComments(response: .init(comments: comments ?? []))
         }
     }
-    
 }

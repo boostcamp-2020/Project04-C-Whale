@@ -116,7 +116,7 @@ private extension TaskDetailCommentViewController {
         })
     }
     
-    func snapshot(taskItems: [TaskDetailModels.ContentsVM]) -> NSDiffableDataSourceSectionSnapshot<TaskDetailModels.ContentsVM> {
+    func generateSnapshot(taskItems: [TaskDetailModels.ContentsVM]) -> NSDiffableDataSourceSectionSnapshot<TaskDetailModels.ContentsVM> {
         var snapshot = NSDiffableDataSourceSectionSnapshot<TaskDetailModels.ContentsVM>()
         snapshot.append(taskItems)
         
@@ -129,7 +129,7 @@ private extension TaskDetailCommentViewController {
 extension TaskDetailCommentViewController: TaskDetailCommentDisplayLogic {
     
     func displayFetchedComments(viewModel: TaskDetailModels.FetchComments.ViewModel) {
-        let sectionSnapshot = snapshot(taskItems: viewModel.commentVMs)
+        let sectionSnapshot = generateSnapshot(taskItems: viewModel.commentVMs)
         dataSource.apply(sectionSnapshot, to: "")
     }
 }
