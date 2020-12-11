@@ -68,7 +68,6 @@ const retrieveAll = async userId => {
     ],
     order: [[taskModel, 'position', 'ASC']],
   });
-  console.log(tasks);
   return tasks;
 };
 

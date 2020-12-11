@@ -26,12 +26,14 @@ const retrieveProjects = async () => {
             attributes: [],
             where: { isDone: false },
             required: false,
+            group: ['sections.id'],
           },
         ],
       },
     ],
     group: ['project.id'],
   });
+  console.log(projects);
   return projects;
 };
 
