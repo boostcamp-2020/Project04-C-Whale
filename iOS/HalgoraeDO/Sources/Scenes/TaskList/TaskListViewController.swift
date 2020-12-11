@@ -576,9 +576,10 @@ private extension TaskListViewController {
             if sourceTask.subItems.count != 0 {
                 return false
             }
-        } else if destinationCell.indentationLevel == 0 && childCheck == 1 && sourceTask.subItems.count != 0 {
+        } else if childCheck == 1 && sourceTask.subItems.count != 0 {
             return false
         }
+        
         let depthWidth: CGFloat = CGFloat(destinationCell.indentationLevel * 20 + childCheck * 20)
         drawLineView(depthWidth, destinationCell)
         
