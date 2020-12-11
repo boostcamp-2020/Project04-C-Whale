@@ -10,7 +10,7 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 import ProjectContainer from "../components/project/ProjectContainer";
-import ListMixin from "@/mixins/ListMixins.js";
+import SpinnerMixin from "@/mixins/SpinnerMixins.js";
 
 export default {
   components: { ProjectContainer },
@@ -26,6 +26,6 @@ export default {
   created() {
     this.fetchCurrentProject(this.$route.params.projectId);
   },
-  mixins: [ListMixin],
+  mixins: [SpinnerMixin],
 };
 </script>
