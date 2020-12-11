@@ -508,8 +508,15 @@ extension TaskListViewController: UICollectionViewDropDelegate {
             var newItems: [TaskVM]
             if destinationTask.parentPosition == nil && childCheck == 1 { //부모 작업의 바로 아래에 append
                 newItems = addTaskAtFirstOfSubitems(tasksAfterRemove, sourceTask, destinationTask.id)
+                let parentCell = taskListCollectionView.cellForItem(at: destinationIndexPath) as? TaskCollectionViewListCell
+                parentCell?.taskViewModel?.subItems.insert(destinationTask, at: 0)
+                let disclosureOptions = UICellAccessory.OutlineDisclosureOptions(style: .automatic)
+                parentCell?.accessories = [.outlineDisclosure(options: disclosureOptions)]
+                
             } else { //child check필요 없이 그냥 넣기
-                newItems = addTaskAtTasks(tasksAfterRemove, sourceTask, destinationTask.id)
+                var tempItem = sourceTask
+                tempItem.parentPosition = destinationTask.parentPosition
+                newItems = addTaskAtTasks(tasksAfterRemove, tempItem, destinationTask.id)
             }
             let snapShot = generateSnapshot(taskItems: newItems)
             dataSource.apply(snapShot, to: sourceSection)
@@ -519,8 +526,15 @@ extension TaskListViewController: UICollectionViewDropDelegate {
             var newItems: [TaskVM]
             if destinationTask.parentPosition == nil && childCheck == 1 { //부모 작업의 바로 아래에 append
                 newItems = addTaskAtFirstOfSubitems(dataSource.snapshot(for: destinationSection).rootItems, sourceTask, destinationTask.id)
+                let parentCell = taskListCollectionView.cellForItem(at: destinationIndexPath) as? TaskCollectionViewListCell
+                parentCell?.taskViewModel?.subItems.insert(destinationTask, at: 0)
+                let disclosureOptions = UICellAccessory.OutlineDisclosureOptions(style: .automatic)
+                parentCell?.accessories = [.outlineDisclosure(options: disclosureOptions)]
+                
             } else { //child check필요 없이 그냥 넣기
-                newItems = addTaskAtTasks(dataSource.snapshot(for: destinationSection).rootItems, sourceTask, destinationTask.id)
+                var tempItem = sourceTask
+                tempItem.parentPosition = destinationTask.parentPosition
+                newItems = addTaskAtTasks(dataSource.snapshot(for: destinationSection).rootItems, tempItem, destinationTask.id)
             }
             let sourceSnapShot = generateSnapshot(taskItems: tasksAfterRemove)
             let destinationSnapShot = generateSnapshot(taskItems: newItems)
@@ -568,6 +582,7 @@ private extension TaskListViewController {
         else {
             return false
         }
+        
         if destinationCell.indentationLevel == 1 {
             childCheck = 0
             if cellCount.subItems.count != 0 {
