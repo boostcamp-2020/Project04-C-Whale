@@ -19,20 +19,19 @@ const retrieveProjects = async () => {
       {
         model: models.section,
         required: false,
-        where: { position: 0 },
-        attributes: [],
+        attributes: ['id', 'position'],
         include: [
           {
             model: models.task,
             attributes: [],
             where: { isDone: false },
+            required: false,
           },
         ],
       },
     ],
-    group: ['project.id', 'sections.id'],
+    group: ['project.id'],
   });
-
   return projects;
 };
 
