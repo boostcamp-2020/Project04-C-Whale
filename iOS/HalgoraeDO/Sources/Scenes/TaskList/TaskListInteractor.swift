@@ -54,6 +54,11 @@ extension TaskListInteractor: TaskListBusinessLogic {
     }
     
     func createTask(request: TaskListModels.CreateTask.Request) {
-        let taskFields = request.taskFields
+        guard let data = request.taskFields.encodeData else { return }
+        
+        worker.requestPostAndGet(post: TaskEndPoint.create(projectId: "", sectionId: "", request: data), get: ProjectEndPoint.getAll) { [weak self] (project: Project?) in
+            self?.taskList.sections = project?.sections ?? []
+            self?.presenter.presentFetchTasks(response: TaskListModels.FetchTasks.Response(sections: self?.taskList.sections ?? []))
+        }
     }
 }
