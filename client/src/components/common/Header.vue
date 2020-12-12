@@ -3,14 +3,17 @@
     <v-navigation-drawer class="left-menu px-4 py-4 grey lighten-5" v-model="drawer" app>
       <left-menu></left-menu>
     </v-navigation-drawer>
-    <v-app-bar class="header whaleGreen" dense flat app>
+    <v-app-bar class="header" dense flat app>
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-toolbar-title>할고래DO</v-toolbar-title>
-      <Search />
+      <v-app-bar-nav-icon @click="goHome" text>
+        <v-icon>mdi-home</v-icon>
+      </v-app-bar-nav-icon>
 
-      <v-btn @click="toggleQuickAdd" text>
-        <v-icon color="white" class="icon"> mdi-plus </v-icon>
-      </v-btn>
+      <Search />
+      <v-spacer></v-spacer>
+      <v-app-bar-nav-icon @click="toggleQuickAdd" text>
+        <v-icon> mdi-plus </v-icon>
+      </v-app-bar-nav-icon>
 
       <v-dialog v-model="showQuickAdd">
         <v-card>
@@ -20,9 +23,9 @@
 
       <v-menu :offset-y="true">
         <template v-slot:activator="{ on }">
-          <v-btn text v-on="on">
-            <v-icon color="white"> mdi-account </v-icon>
-          </v-btn>
+          <v-app-bar-nav-icon v-on="on" text>
+            <v-icon> mdi-account </v-icon>
+          </v-app-bar-nav-icon>
         </template>
         <v-list>
           <v-list-item @click="logout">
@@ -57,6 +60,9 @@ export default {
     ...mapActions(["logout"]),
     toggleQuickAdd() {
       this.showQuickAdd = !this.showQuickAdd;
+    },
+    goHome() {
+      this.$router.push("/today").catch(() => {});
     },
   },
 };
