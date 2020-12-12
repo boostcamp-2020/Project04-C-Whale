@@ -22,8 +22,9 @@
       :show="showAddSection"
       :projectId="project.id"
     />
-
-    <router-view :key="$route.params.taskId"></router-view>
+    <keep-alive>
+      <router-view :key="$route.params.taskId"></router-view>
+    </keep-alive>
   </div>
 </template>
 
@@ -65,6 +66,9 @@ export default {
     bus.$on("moveToTaskDetail", (destinationInfo) => {
       this.$router.push(destinationInfo).catch(() => {});
     });
+  },
+  beforeDestroy() {
+    bus.$off("moveToTaskDetail");
   },
 };
 </script>

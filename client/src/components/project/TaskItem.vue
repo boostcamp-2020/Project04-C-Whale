@@ -54,7 +54,6 @@ export default {
     ...mapMutations(["SET_DRAGGING_TASK", "SET_DROP_TARGET_SECTION"]),
 
     moveToTaskDetail() {
-      console.log(this.$route);
       const destinationInfo = this.$route.params.projectId
         ? {
             name: "ProjectTaskDetail",

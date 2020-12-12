@@ -36,7 +36,6 @@ const actions = {
       const {
         data: { task },
       } = await taskAPI.getTaskById(taskId);
-      console.log(task);
       commit("SET_CURRENT_TASK", task);
     } catch (err) {
       commit("SET_ERROR_ALERT", err.response);
@@ -48,7 +47,6 @@ const actions = {
       await dispatch("fetchCurrentProject", task.projectId);
       await dispatch("fetchAllTasks");
       await dispatch("fetchProjectInfos");
-      //commit("ADD_TASK_COUNT", task.projectId);
     } catch (err) {
       commit("SET_ERROR_ALERT", err.response);
     }

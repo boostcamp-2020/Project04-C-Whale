@@ -53,8 +53,8 @@ export default {
   },
   computed: {},
   created() {
-    this.tabList.childTask.count = this.task.tasks.length;
-    this.tabList.comment.count = this.comments.length;
+    this.tabList.childTask.count = this.task ? this.task.tasks.length : 0;
+    this.tabList.comment.count = this.comments ? this.comments.length : 0;
     this.tabList.bookmark.count = 3;
   },
   mounted() {},
