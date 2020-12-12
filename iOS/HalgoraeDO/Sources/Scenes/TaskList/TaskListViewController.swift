@@ -174,7 +174,7 @@ class TaskListViewController: UIViewController {
         let taskAddViewController = TaskAddViewController()
         taskAddViewController.modalPresentationStyle = .overCurrentContext
         taskAddViewController.delegate = self
-        present(taskAddViewController, animated: true, completion: nil)
+        present(taskAddViewController, animated: false, completion: nil)
     }
 }
 
@@ -329,7 +329,7 @@ extension TaskListViewController: UICollectionViewDelegate {
         }
         
         collectionView.deselectItem(at: indexPath, animated: true)
-        router?.routeToTaskDetail(for: taskVM)
+        router?.routeToTaskDetail(for: taskVM, at: indexPath)
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
@@ -600,5 +600,6 @@ extension TaskListViewController: TaskAddViewControllerDelegate {
                                                   date: taskAddViewController.date,
                                                   priority: taskAddViewController.priority)
         interactor?.createTask(request: .init(taskFields: taskFields))
+        taskAddViewController.dismiss(animated: false, completion: nil)
     }
 }

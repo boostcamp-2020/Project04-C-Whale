@@ -9,7 +9,7 @@ import Foundation
 
 enum TaskEndPoint {
     case get(taskId: String)
-    case create(request: Data)
+    case create(projectId: String, sectionId: String, request: Data)
     case titleUpdate(id: Int, titleData: Data)
     case update(id: Int, project: Data)
     case delete(id: Int)
@@ -24,7 +24,7 @@ extension TaskEndPoint: EndPointType {
     var path: String {
         switch self {
             case .get(let id): return "task/\(id)"
-            case .create: return "task"
+            case .create(let projectId, let sectionId, _): return "project/\(projectId)/section/\(sectionId)"
             case .titleUpdate(let id, _): return "\(id)"
             case .update(let id, _): return "\(id)"
             case .delete(let id): return "\(id)"
@@ -44,7 +44,7 @@ extension TaskEndPoint: EndPointType {
     var httpTask: HTTPTask {
         switch self {
             case .get: return (nil, nil)
-            case .create(let body): return (body, nil)
+            case .create(_, _, let body): return (body, nil)
             case .titleUpdate(_, let titleData): return (titleData, nil)
             case .update(_, let project): return (project, nil)
             case .delete: return (nil, nil)

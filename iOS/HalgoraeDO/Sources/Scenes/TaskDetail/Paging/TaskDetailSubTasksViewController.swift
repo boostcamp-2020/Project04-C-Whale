@@ -64,6 +64,7 @@ private extension TaskDetailSubTasksViewController {
 // MARK: - Configure CollectionView Data Source
 
 private extension TaskDetailSubTasksViewController {
+    
     func configureDataSource() {
         let cellRegistration = UICollectionView.CellRegistration<TaskCollectionViewListCell, TaskListModels.DisplayedTask> { (cell, _: IndexPath, taskItem) in
             cell.taskViewModel = taskItem
@@ -78,7 +79,7 @@ private extension TaskDetailSubTasksViewController {
         })
     }
     
-    func snapshot(taskItems: [TaskListModels.DisplayedTask]) -> NSDiffableDataSourceSectionSnapshot<TaskListModels.DisplayedTask> {
+    func generateSnapshot(taskItems: [TaskListModels.DisplayedTask]) -> NSDiffableDataSourceSectionSnapshot<TaskListModels.DisplayedTask> {
         var snapshot = NSDiffableDataSourceSectionSnapshot<TaskListModels.DisplayedTask>()
         func addItems(_ taskItems: [TaskListModels.DisplayedTask], to parent: TaskListModels.DisplayedTask?) {
             snapshot.append(taskItems, to: parent)
@@ -95,7 +96,7 @@ private extension TaskDetailSubTasksViewController {
 
 extension TaskDetailSubTasksViewController: TaskDetailSubTasksDisplayLogic {
     func displaySubTasks(viewModel: TaskDetailModels.FetchSubTasks.ViewModel) {
-        let sectionSnapshot = snapshot(taskItems: viewModel.taskVMs)
+        let sectionSnapshot = generateSnapshot(taskItems: viewModel.taskVMs)
         dataSource.apply(sectionSnapshot, to: "")
     }
 }
