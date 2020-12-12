@@ -97,13 +97,14 @@ class TaskAddViewController: UIViewController {
         return priorityButton
     }()
     
-    private let submitButton: UIButton = {
+    private lazy var submitButton: UIButton = {
         let submitButton = UIButton()
         submitButton.translatesAutoresizingMaskIntoConstraints = false
         let submitImage = UIImage(systemName: "arrow.up.circle.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 28, weight: .bold, scale: .large))
         submitButton.setImage(submitImage, for: .normal)
         submitButton.tintColor = .halgoraedoDarkBlue
         submitButton.isEnabled = false
+        submitButton.addTarget(self, action: #selector(tabSubmitButton(_:)), for: .touchUpInside)
         
         return submitButton
     }()
@@ -226,19 +227,19 @@ class TaskAddViewController: UIViewController {
     
     @objc private func tabSubmitButton(_ sender: UIButton) {
         guard let text = textView.text,
-              text.isEmpty
+              !text.isEmpty
         else {
             return
         }
         
         delegate?.taskAddViewControllerDidDone(self)
         
-        var object: [String: Any] = [:]
-        object.updateValue(text, forKey: "taskTitle")
-        // object.updateValue(dueDate, forKey: "dueDate")
-        object.updateValue(priority, forKey: "priority")
-        object.updateValue(section, forKey: "section")
-        NotificationCenter.default.post(name: Notification.Name(rawValue: "addTask"), object: object)
+//        var object: [String: Any] = [:]
+//        object.updateValue(text, forKey: "taskTitle")
+//        // object.updateValue(dueDate, forKey: "dueDate")
+//        object.updateValue(priority, forKey: "priority")
+//        object.updateValue(section, forKey: "section")
+//        NotificationCenter.default.post(name: Notification.Name(rawValue: "addTask"), object: object)
     }
 }
 
