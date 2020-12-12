@@ -72,6 +72,11 @@ class TaskDetailViewController: UIViewController {
         configureLogic()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        interactor?.fetchSubTasks(request: .init(id: task.id))
+    }
+    
     // MARK: - Initialize
     
     private func configureLogic() {

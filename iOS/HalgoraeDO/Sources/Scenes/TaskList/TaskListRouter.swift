@@ -8,7 +8,7 @@
 import UIKit
 
 protocol TaskListRoutingLogic {
-    func routeToTaskDetail(for taskVM: TaskListModels.DisplayedTask)
+    func routeToTaskDetail(for taskVM: TaskListModels.DisplayedTask, at indexPath: IndexPath)
 }
 
 protocol TaskListDataPassing {
@@ -27,9 +27,9 @@ class TaskListRouter: TaskListDataPassing {
 
 extension TaskListRouter: TaskListRoutingLogic {
     
-    func routeToTaskDetail(for taskVM: TaskListModels.DisplayedTask) {
+    func routeToTaskDetail(for taskVM: TaskListModels.DisplayedTask, at indexPath: IndexPath) {
         guard let sourceVC = viewController,
-            let task = dataStore.taskList.task(identifier: taskVM.id, postion: taskVM.position, parentPosition: taskVM.parentPosition),
+            let task = dataStore.taskList.task(taskVM: taskVM, indexPath: indexPath),
             let destinationVC = viewController?.storyboard?.instantiateViewController(identifier: "\(TaskDetailViewController.self)",
                                                                                 creator: { (coder) -> TaskDetailViewController? in
                 return TaskDetailViewController(coder: coder, task: task)

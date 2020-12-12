@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="U6H-lf-q4a">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="pcJ-NH-hpV">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -413,7 +413,8 @@
                                 <rect key="frame" x="0.0" y="812" width="414" height="50"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="umh-xS-3r3"/>
+                                    <constraint firstAttribute="height" relation="lessThanOrEqual" constant="120" id="dd5-Rc-QFv"/>
+                                    <constraint firstAttribute="height" priority="750" constant="50" id="umh-xS-3r3"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -445,9 +446,31 @@
                     <view key="view" contentMode="scaleToFill" id="d1x-Xh-hjD">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="qwn-gP-3KP">
+                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="NDs-oE-tAt">
+                                    <size key="itemSize" width="128" height="128"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells/>
+                            </collectionView>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="Erb-Iy-Ah7"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="qwn-gP-3KP" firstAttribute="top" secondItem="Erb-Iy-Ah7" secondAttribute="top" id="9FS-u7-CBl"/>
+                            <constraint firstItem="Erb-Iy-Ah7" firstAttribute="trailing" secondItem="qwn-gP-3KP" secondAttribute="trailing" id="H0q-fn-iTv"/>
+                            <constraint firstItem="Erb-Iy-Ah7" firstAttribute="bottom" secondItem="qwn-gP-3KP" secondAttribute="bottom" id="NMT-lW-Xwg"/>
+                            <constraint firstItem="qwn-gP-3KP" firstAttribute="leading" secondItem="Erb-Iy-Ah7" secondAttribute="leading" id="iBG-ar-XHf"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="bookmarkCollectionView" destination="qwn-gP-3KP" id="K9Z-7g-9FY"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NV1-4G-WS4" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

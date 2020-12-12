@@ -12,7 +12,20 @@ class TaskList {
     var sections: [Section] = []
     var tasks: [Task] = []
     
+    func task(taskVM: TaskListModels.DisplayedTask, indexPath: IndexPath) -> Task? {
+        guard 0..<sections.count ~= indexPath.section else { return nil }
+        
+        var superTasks = sections[indexPath.section].tasks
+        if let parentPosition = taskVM.parentPosition,
+           0..<(superTasks?.count ?? 0) ~= parentPosition {
+            superTasks = superTasks?[parentPosition].tasks
+        }
+        
+        return superTasks?[taskVM.position]
+    }
+    
     func task(identifier: String, postion: Int, parentPosition: Int?) -> Task? {
+        
         var superTasks = tasks
         if let parentPosition = parentPosition  {
             superTasks = tasks[parentPosition].tasks ?? []
