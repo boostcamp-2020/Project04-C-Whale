@@ -12,7 +12,6 @@ const retrieveProjects = async userId => {
       'isFavorite',
       'isList',
       [sequelize.fn('COUNT', sequelize.col('sections.tasks.id')), 'taskCount'],
-      [sequelize.col('sections.id'), 'defaultSectionId'],
     ],
     include: [
       {
@@ -31,7 +30,7 @@ const retrieveProjects = async userId => {
       },
     ],
     where: { creatorId: userId },
-    group: ['project.id', 'sections.id'],
+    group: ['project.id'],
   });
   return projects;
 };
