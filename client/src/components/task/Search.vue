@@ -5,7 +5,6 @@
       :items="items"
       :loading="isLoading"
       :search-input.sync="search"
-      allow-overflow="false"
       hide-no-data
       hide-selected
       hide-details
