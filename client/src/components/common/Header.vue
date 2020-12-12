@@ -60,7 +60,7 @@ export default {
   data: () => ({
     drawer: null,
     showQuickAdd: false,
-    darkMode: localStorage.getItem("darkMode") || false,
+    darkMode: JSON.parse(localStorage.getItem("darkMode")) || false,
   }),
   components: {
     Search,
