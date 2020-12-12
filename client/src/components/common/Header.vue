@@ -60,7 +60,7 @@ export default {
   data: () => ({
     drawer: null,
     showQuickAdd: false,
-    darkMode: false,
+    darkMode: localStorage.getItem("darkMode") || false,
   }),
   components: {
     Search,
@@ -82,7 +82,11 @@ export default {
   watch: {
     darkMode() {
       this.$vuetify.theme.dark = this.darkMode;
+      localStorage.setItem("darkMode", this.darkMode);
     },
+  },
+  created() {
+    this.$vuetify.theme.dark = this.darkMode;
   },
 };
 </script>
