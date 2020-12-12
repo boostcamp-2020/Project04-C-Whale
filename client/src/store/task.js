@@ -51,14 +51,15 @@ const actions = {
       commit("SET_ERROR_ALERT", err.response);
     }
   },
-  async updateTaskToDone({ dispatch, commit }, { projectId, taskId }) {
+  async updateTaskToDone({ dispatch, commit }, { projectId, taskId, isDone }) {
     try {
-      await taskAPI.updateTask(taskId, { isDone: true });
+      await taskAPI.updateTask(taskId, { isDone });
       await dispatch("fetchCurrentProject", projectId);
       await dispatch("fetchAllTasks");
       await dispatch("fetchProjectInfos");
-
-      commit("SET_SUCCESS_ALERT", "작업을 완료했습니다.");
+      if (isDone) {
+        commit("SET_SUCCESS_ALERT", "작업을 완료했습니다.");
+      }
     } catch (err) {
       commit("SET_ERROR_ALERT", err.response);
     }
