@@ -32,7 +32,11 @@
             <v-list-item-title class="font-14">{{ user.email }}</v-list-item-title>
           </v-list-item>
           <v-list-item>
-            <v-switch v-model="darkMode" label="다크모드 변경"></v-switch>
+            <v-switch
+              @click.stop
+              v-model="darkMode"
+              :label="darkMode ? '다크모드 해제' : '다크모드 설정'"
+            ></v-switch>
           </v-list-item>
           <v-list-item @click="logout">
             <v-list-item-icon>
