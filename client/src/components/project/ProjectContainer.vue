@@ -22,6 +22,7 @@
       :show="showAddSection"
       :projectId="project.id"
     />
+
     <keep-alive>
       <router-view :key="$route.params.taskId"></router-view>
     </keep-alive>

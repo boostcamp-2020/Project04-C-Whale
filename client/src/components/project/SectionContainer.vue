@@ -4,9 +4,12 @@
       <UpdatableTitle :originalTitle="section.title" :parent="section" type="section" />
     </v-list-item>
 
-    <div v-for="(task, index) in tasks" :key="task.id" class="task-container">
+    <div
+      v-for="(task, index) in showDoneTasks ? tasks : todoTasks"
+      :key="task.id"
+      class="task-container"
+    >
       <TaskItem
-        v-if="!task.isDone"
         :section="section"
         :task="task"
         :position="index"
@@ -14,7 +17,7 @@
         @taskDrop="taskDrop"
       />
       <v-divider />
-      <div v-if="!task.isDone">
+      <div>
         <TaskItem
           v-for="childTask in task.tasks"
           :key="childTask.id"
@@ -34,6 +37,7 @@ import AddTask from "@/components/project/AddTask";
 import TaskItem from "@/components/project/TaskItem";
 import UpdatableTitle from "@/components/common/UpdatableTitle";
 import _ from "lodash";
+import bus from "@/utils/bus";
 
 export default {
   props: {
@@ -43,6 +47,7 @@ export default {
   data: function () {
     return {
       tasks: _.cloneDeep(this.section.tasks),
+      showDoneTasks: false,
     };
   },
   methods: {
@@ -64,6 +69,9 @@ export default {
   },
   computed: {
     ...mapGetters(["draggingTask", "dropTargetSection"]),
+    todoTasks() {
+      return this.tasks.filter((task) => !task.isDone);
+    },
   },
   watch: {
     section(updatedSection) {
@@ -74,6 +82,14 @@ export default {
         this.tasks = this.tasks.filter((task) => task.id !== this.draggingTask.id);
       }
     },
+  },
+  created() {
+    bus.$on("toggleDoneTasks", (showDoneTasks) => {
+      this.showDoneTasks = showDoneTasks;
+    });
+  },
+  beforeDestroy() {
+    bus.$off("toggleDoneTasks");
   },
 };
 </script>

@@ -8,19 +8,15 @@
     class="task-item text-subtitle"
   >
     <v-list-item-action>
-      <v-radio-group>
-        <v-radio
-          dense
-          @click="updateTaskToDone({ projectId: $route.params.projectId, taskId: task.id })"
-          class="done-checkbox"
-        ></v-radio>
-      </v-radio-group>
+      <v-checkbox v-model="checkBox" @click="updateTaskStatus"></v-checkbox>
     </v-list-item-action>
 
     <div class="task-div d-flex" @click="moveToTaskDetail()">
       <v-list-item-content>
         <v-list-item-title>
-          <vue-markdown class="mark-down">
+          <vue-markdown
+            :class="task.isDone ? 'mark-down text-decoration-line-through' : 'mark-down'"
+          >
             {{ task.title }}
           </vue-markdown>
         </v-list-item-title>
@@ -44,6 +40,7 @@ export default {
   data() {
     return {
       dialog: false,
+      checkBox: this.task.isDone,
     };
   },
   components: {
@@ -52,7 +49,13 @@ export default {
   methods: {
     ...mapActions(["updateTaskToDone"]),
     ...mapMutations(["SET_DRAGGING_TASK", "SET_DROP_TARGET_SECTION"]),
-
+    updateTaskStatus() {
+      this.updateTaskToDone({
+        projectId: this.$route.params.projectId,
+        taskId: this.task.id,
+        isDone: !this.task.isDone,
+      });
+    },
     moveToTaskDetail() {
       const destinationInfo = this.$route.params.projectId
         ? {
