@@ -3,7 +3,7 @@
     <v-navigation-drawer class="left-menu px-4 py-4" v-model="drawer" app>
       <left-menu></left-menu>
     </v-navigation-drawer>
-    <v-app-bar class="header" dense flat app>
+    <v-app-bar class="header whaleGreen" dense flat app>
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       <v-app-bar-nav-icon @click="goHome" text>
         <v-icon>mdi-home</v-icon>
