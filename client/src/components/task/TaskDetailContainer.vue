@@ -1,5 +1,5 @@
 <template>
-  <v-flex>
+  <v-card>
     <v-list-item>
       <v-list-item-icon class="mr-1 py-3">
         <v-icon small :color="task.section.project.color">mdi-circle</v-icon>
@@ -28,7 +28,7 @@
         :isParent="this.task.parentId === null"
       />
     </div>
-  </v-flex>
+  </v-card>
 </template>
 
 <script>
