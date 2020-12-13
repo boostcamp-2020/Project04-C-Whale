@@ -55,6 +55,10 @@ extension MenuInteractor: MenuBusinessLogic {
             projects[index].isFavorite = !vm.isFavorite
             presenter.presentUpdatedProject(response: .init(project: projects[index]))
         }
+
+        let vmForFavorite = MenuModels.ProjectVM(projectVM: request.project)
+        guard let requestData = vmForFavorite.encodeData else { return }
+        worker.request(endPoint: .update(id: vmForFavorite.id, project: requestData)) { (projects: [Project]?) in return }
     }
 }
 
