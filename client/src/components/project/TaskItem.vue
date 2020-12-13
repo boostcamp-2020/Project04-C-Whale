@@ -14,11 +14,11 @@
     <div class="task-div d-flex" @click="moveToTaskDetail()">
       <v-list-item-content>
         <v-list-item-title>
-          <vue-markdown
+          <vue-mark-down
             :class="task.isDone ? 'mark-down text-decoration-line-through' : 'mark-down'"
           >
             {{ task.title }}
-          </vue-markdown>
+          </vue-mark-down>
         </v-list-item-title>
       </v-list-item-content>
     </div>
@@ -44,7 +44,7 @@ export default {
     };
   },
   components: {
-    "vue-markdown": VueMarkDown,
+    VueMarkDown,
   },
   methods: {
     ...mapActions(["updateTaskToDone"]),
@@ -64,10 +64,9 @@ export default {
           }
         : { name: "TodayTaskDetail", params: { taskId: this.task.id } };
       bus.$emit("moveToTaskDetail", destinationInfo);
-      // this.$router.push(destinationInfo).catch(() => {});
     },
 
-    handleDragStart() {
+    handleDragStart(e) {
       this.SET_DRAGGING_TASK(this.task);
       this.$emit("taskDragStart", { ...this.task, $el: this.$el });
     },

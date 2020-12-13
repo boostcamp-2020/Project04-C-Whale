@@ -9,10 +9,14 @@
 
     <div :class="{ 'board-view': boardView }" class="section-container">
       <SectionContainer
-        v-for="section in project.sections"
+        v-for="(section, index) in project.sections"
         :key="section.id"
+        :id="section.id"
+        :position="index"
         :projectId="project.id"
         :section="section"
+        @sectionDragOver="sectionDragOver"
+        @sectionDrop="sectionDrop"
         class="mb-3 section-container"
       />
     </div>
@@ -30,7 +34,7 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 import ProjectContainerHeader from "./ProjectContainerHeader";
 import SectionContainer from "@/components/project/SectionContainer";
 import AddSection from "@/components/project/AddSection";
@@ -39,23 +43,39 @@ import bus from "@/utils/bus";
 export default {
   props: {
     project: Object,
+    sections: Array,
   },
   data() {
     return {
-      boardView: false,
+      boardView: !this.project.isList,
       showAddSection: false,
     };
   },
+  computed: {
+    ...mapGetters(["draggingSection"]),
+  },
   methods: {
-    ...mapActions(["updateTaskToDone"]),
+    ...mapActions(["updateTaskToDone", "updateProject"]),
     changeToListView() {
+      this.updateProject({ projectId: this.project.id, data: { isList: true } });
       this.boardView = false;
     },
     changeToBoardView() {
+      this.updateProject({ projectId: this.project.id, data: { isList: false } });
       this.boardView = true;
     },
     toggleAddSection() {
       this.showAddSection = !this.showAddSection;
+    },
+    sectionDragOver({ position }) {
+      this.sections = this.sections.filter((section) => section.id !== this.draggingSection.id);
+      this.sections.splice(position, 0, { ...this.draggingSection, dragging: true });
+    },
+    sectionDrop(e) {
+      this.changeSectionPosition({
+        projectId: this.project.id,
+        orderedSections: this.sections.map((section) => section.id),
+      });
     },
   },
   components: {
@@ -80,10 +100,14 @@ export default {
   display: flex;
   flex-direction: column;
   /* align-items: flex-start; */
-  max-width: 700px;
   overflow-x: scroll;
 }
 
+@media screen and (max-width: 512px) {
+  .project-container {
+    width: 90vw;
+  }
+}
 .v-dialog {
   max-width: 80%;
   min-height: 80%;
@@ -97,6 +121,5 @@ export default {
   overflow-x: auto; */
 }
 .section-container {
-  max-width: 700px;
 }
 </style>

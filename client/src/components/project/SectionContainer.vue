@@ -1,5 +1,11 @@
 <template>
-  <v-list class="mr-10">
+  <v-list
+    class="mr-10"
+    draggable="false"
+    @dragstart="sectionDragStart"
+    @dragover.prevent="sectionDragOver"
+    @drop.prevent="sectionDrop"
+  >
     <v-list-item class="font-weight-black text-h6">
       <UpdatableTitle :originalTitle="section.title" :parent="section" type="section" />
     </v-list-item>
@@ -13,6 +19,7 @@
         :section="section"
         :task="task"
         :position="index"
+        :id="task.id"
         @taskDragOver="taskDragOver"
         @taskDrop="taskDrop"
       />
@@ -21,6 +28,7 @@
         <TaskItem
           v-for="childTask in task.tasks"
           :key="childTask.id"
+          :id="childTask.id"
           :task="childTask"
           class="ml-10"
         />
@@ -32,7 +40,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions, mapMutations } from "vuex";
 import AddTask from "@/components/project/AddTask";
 import TaskItem from "@/components/project/TaskItem";
 import UpdatableTitle from "@/components/common/UpdatableTitle";
@@ -43,6 +51,7 @@ export default {
   props: {
     projectId: String,
     section: Object,
+    position: Number,
   },
   data: function () {
     return {
@@ -52,6 +61,7 @@ export default {
   },
   methods: {
     ...mapActions(["changeTaskPosition"]),
+    ...mapMutations(["SET_DRAGGING_SECTION"]),
     taskDragOver({ position }) {
       this.tasks = this.tasks.filter((task) => task.id !== this.draggingTask.id);
       this.tasks.splice(position, 0, { ...this.draggingTask, dragging: true });
@@ -61,6 +71,24 @@ export default {
         orderedTasks: this.tasks.map((task) => task.id),
       });
     },
+    sectionDragStart(e) {
+      this.SET_DRAGGING_SECTION(this.section);
+      e.target.style.display = "none";
+    },
+
+    sectionDragOver(e) {
+      if (this.section.id === this.draggingSection.id) {
+        return;
+      }
+      const offset = this.middelY - e.clientY;
+
+      this.$emit("sectionDragOver", {
+        position: offset > 0 ? this.position : this.position + 1,
+      });
+    },
+    sectionDrop() {
+      this.$emit("sectionDrop");
+    },
   },
   components: {
     AddTask,
@@ -68,9 +96,14 @@ export default {
     UpdatableTitle,
   },
   computed: {
-    ...mapGetters(["draggingTask", "dropTargetSection"]),
+    ...mapGetters(["draggingTask", "dropTargetSection", "draggingSection"]),
     todoTasks() {
       return this.tasks.filter((task) => !task.isDone);
+    },
+    middleY() {
+      const box = this.$el.getBoundingClientRect();
+      const middle = box.top + box.height / 2;
+      return middle;
     },
   },
   watch: {
@@ -95,7 +128,7 @@ export default {
 </script>
 
 <style scoped>
-.task-container {
-  min-width: 450px;
-}
+/* .task-container {
+  width: 80%;
+} */
 </style>
