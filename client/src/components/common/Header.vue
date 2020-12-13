@@ -12,9 +12,9 @@
         <v-icon color="white" class="icon"> mdi-plus </v-icon>
       </v-btn>
 
-      <v-dialog v-model="showQuickAdd">
-        <v-card>
-          <AddTask />
+      <v-dialog v-model="showQuickAdd" width="500">
+        <v-card class="pa-3">
+          <AddTask initialShow="true"/>
         </v-card>
       </v-dialog>
 
@@ -76,6 +76,10 @@ export default {
 .v-btn {
   padding: 10px 10px !important;
   min-width: 0 !important;
+}
+
+.add-task-quick {
+  max-width: 400px !important;
 }
 
 $navigation-drawer-border-width: 0px;
