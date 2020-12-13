@@ -16,7 +16,7 @@ class Project: Codable {
     var color: String?
     var sections: [Section]?
     
-    init(id: String? = UUID().uuidString,
+    init(id: String = UUID().uuidString,
          title: String,
          taskCount: Int = 0,
          isFavorite: Bool? = false,

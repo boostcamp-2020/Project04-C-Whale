@@ -16,7 +16,7 @@ final class Task {
     weak var parent: Task?
     var title: String
     var isDone: Bool
-    var dueDate: String
+    var dueDate: String?
     var position: Int
     var createdAt: String
     var updatedAt: String
@@ -90,6 +90,7 @@ extension Task: Codable {
 // MARK: - Hashable
 
 extension Task: Hashable {
+    
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }
