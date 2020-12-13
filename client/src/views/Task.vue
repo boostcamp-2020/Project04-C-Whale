@@ -1,5 +1,11 @@
 <template>
-  <v-dialog v-show="dialog" v-model="dialog" :retain-focus="false" @click:outside="hideTaskModal()">
+  <v-dialog
+    class="task-detail"
+    v-show="dialog"
+    v-model="dialog"
+    :retain-focus="false"
+    @click:outside="hideTaskModal()"
+  >
     <task-detail-container
       v-if="tasks && tasks.length !== 0"
       @hideTaskModal="hideTaskModal"
@@ -53,5 +59,17 @@ export default {
 <style>
 .v-dialog {
   max-height: 80% !important;
+  width: 50%;
+}
+@media screen and (max-width: 720px) {
+  .v-dialog {
+    width: 80%;
+  }
+}
+
+@media screen and(max-width: 512px) {
+  .v-dialog {
+    width: 100%;
+  }
 }
 </style>
