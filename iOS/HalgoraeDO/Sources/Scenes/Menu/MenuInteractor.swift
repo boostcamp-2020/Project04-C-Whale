@@ -41,7 +41,8 @@ extension MenuInteractor: MenuBusinessLogic {
     
     func createProject(request: MenuModels.CreateProject.Request) {
         guard let requestData = request.projectFields.encodeData else { return }
-        worker.request(endPoint: .create(request: requestData)) { [weak self] (projects: [Project]?) in
+        
+        worker.requestPostAndGet(post: ProjectEndPoint.create(request: requestData), get: ProjectEndPoint.getAll) { [weak self] (projects: [Project]?) in
             let projects = projects ?? []
             self?.projects = projects
             self?.presenter.presentProjects(response: .init(projects: projects))
@@ -49,16 +50,12 @@ extension MenuInteractor: MenuBusinessLogic {
     }
     
     func updateProject(request: MenuModels.UpdateProject.Request) {
-        let vm = request.project
-        let vmId = vm.id.replacingOccurrences(of: "+", with: "")
-        if let index = projects.firstIndex(where: { $0.id == vmId }) {
-            projects[index].isFavorite = !vm.isFavorite
-            presenter.presentUpdatedProject(response: .init(project: projects[index]))
-        }
-
         let vmForFavorite = MenuModels.ProjectVM(projectVM: request.project)
         guard let requestData = vmForFavorite.encodeData else { return }
-        worker.request(endPoint: .update(id: vmForFavorite.id, project: requestData)) { (projects: [Project]?) in return }
+        
+        worker.requestPostAndGet(post: ProjectEndPoint.update(id: vmForFavorite.id, project: requestData), get: ProjectEndPoint.getAll) { [weak self] (projects: [Project]?) in
+            self?.presenter.presentProjects(response: .init(projects: projects ?? []))
+        }
     }
 }
 
