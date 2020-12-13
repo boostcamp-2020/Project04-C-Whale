@@ -59,7 +59,7 @@ const retrieveAll = async userId => {
         include: [
           {
             model: models.project,
-            attributes: ['creatorId', 'title'],
+            attributes: ['creatorId', 'title', 'color'],
             where: { creatorId: userId },
           },
         ],
