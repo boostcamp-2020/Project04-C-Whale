@@ -47,6 +47,7 @@ const retrieveAll = async userId => {
   const tasks = await taskModel.findAll({
     include: [
       'bookmarks',
+      'comments',
       {
         model: taskModel,
         include: ['bookmarks', 'comments'],
