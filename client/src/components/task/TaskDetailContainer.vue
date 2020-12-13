@@ -25,6 +25,7 @@
         :comments="this.comments"
         :projectId="this.$route.params.projectId"
         :sectionId="this.task.sectionId"
+        :isParent="this.task.parentId === null"
       />
     </div>
   </v-flex>
