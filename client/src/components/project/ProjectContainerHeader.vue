@@ -75,6 +75,5 @@ export default {
 
 <style>
 .project-header {
-  min-width: 440px;
 }
 </style>
