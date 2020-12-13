@@ -2,7 +2,7 @@
 //  AppDelegate.swift
 //  HalgoraeDO
 //
-//  Created by 이지원 on 2020/11/18.
+//  Created by 이상윤 on 2020/11/18.
 //
 
 import UIKit

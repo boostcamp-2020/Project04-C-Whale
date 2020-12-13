@@ -108,6 +108,7 @@
 		AAEE20E52564E4AA00668FAD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AAEE20E32564E4AA00668FAD /* Main.storyboard */; };
 		AAEE20E72564E4AC00668FAD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AAEE20E62564E4AC00668FAD /* Assets.xcassets */; };
 		AAEE20EA2564E4AC00668FAD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AAEE20E82564E4AC00668FAD /* LaunchScreen.storyboard */; };
+		AAFAD175258328B600ED6624 /* TaskDetailContentsCellCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAFAD174258328B600ED6624 /* TaskDetailContentsCellCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -218,6 +219,7 @@
 		AAEE20E62564E4AC00668FAD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AAEE20E92564E4AC00668FAD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		AAEE20EB2564E4AC00668FAD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AAFAD174258328B600ED6624 /* TaskDetailContentsCellCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TaskDetailContentsCellCollectionViewCell.swift; path = Paging/Views/TaskDetailContentsCellCollectionViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -326,6 +328,7 @@
 		4C4236F625761A410068A252 /* TaskDetail */ = {
 			isa = PBXGroup;
 			children = (
+				AAFAD174258328B600ED6624 /* TaskDetailContentsCellCollectionViewCell.swift */,
 				4C4237162576340D0068A252 /* Paging */,
 				4C4236FD25761AA00068A252 /* TaskDetailViewController.swift */,
 				4C42371A25763B080068A252 /* TaskDetailInteractor.swift */,
@@ -768,6 +771,7 @@
 				4C4236B12573B4C90068A252 /* Priority+PopoverViewModelType.swift in Sources */,
 				AAEE20E02564E4A900668FAD /* SceneDelegate.swift in Sources */,
 				4C3F5683256B8F4B006D7C9F /* TaskListRouter.swift in Sources */,
+				AAFAD175258328B600ED6624 /* TaskDetailContentsCellCollectionViewCell.swift in Sources */,
 				4CE9160F257F81C500BCF398 /* MenuPresenter.swift in Sources */,
 				4C3F566A256B82F2006D7C9F /* TaskBoardViewController.swift in Sources */,
 				4C3F5665256B8117006D7C9F /* TaskListViewController.swift in Sources */,
