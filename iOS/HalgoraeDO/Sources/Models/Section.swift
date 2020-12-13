@@ -9,10 +9,11 @@ import Foundation
 
 class Section: Codable {
     var id: String
-    var title: String
-    var createdAt: String
-    var updatedAt: String
+    var title: String?
+    var createdAt: String?
+    var updatedAt: String?
     var tasks: [Task]?
+    var position: Int?
     
     init(id: String = UUID().uuidString,
          title: String,

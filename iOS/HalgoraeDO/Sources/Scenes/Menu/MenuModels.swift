@@ -105,20 +105,22 @@ extension MenuModels {
         }
     }
     
-    struct ProjectVM: Hashable {
+    struct ProjectVM: Hashable, Codable {
         var id: String
         var title: String
         var color: String
         var taskCount: Int
         var isFavorite: Bool
-        var isHeader: Bool = false
+        var isHeader: Bool = false 
+        var isList: Bool = true
         
         init(id: String = UUID().uuidString,
             title: String = "",
             color: String = "#BDBDBD",
             taskCount: Int = 0,
             isFavorite: Bool = false,
-            isHeader: Bool = false) {
+            isHeader: Bool = false,
+            isList: Bool = true) {
             
             self.id = id
             self.title = title
@@ -126,18 +128,29 @@ extension MenuModels {
             self.taskCount = taskCount
             self.isFavorite = isFavorite
             self.isHeader = isHeader
+            self.isList = isList
         }
         
         init(project: Project, makeFavorite: Bool = false) {
             self.id = project.id ?? UUID().uuidString
             self.title = project.title
-            self.color = "#BDBDBD"
+            self.color = project.color ?? "#BDBDBD"
             self.taskCount = project.taskCount ?? 0
             self.isFavorite = project.isFavorite ?? false
+            self.isList = project.isList ?? true
             
             if makeFavorite {
                 self.id += "+"
             }
+        }
+        
+        init(projectVM: ProjectVM) {
+            self.id = projectVM.id.replacingOccurrences(of: "+", with: "")
+            self.title = projectVM.title
+            self.color = projectVM.color
+            self.taskCount = projectVM.taskCount
+            self.isFavorite = !projectVM.isFavorite
+            self.isList = projectVM.isList
         }
         
         func hash(into hasher: inout Hasher) {

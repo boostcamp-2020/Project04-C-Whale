@@ -12,8 +12,8 @@ enum ProjectEndPoint {
     case get(projectId: String)
     case create(request: Data)
     case titleUpdate(id: Int, titleData: Data)
-    case update(id: Int, project: Data)
-    case delete(id: Int)
+    case update(id: String, project: Data)
+    case delete(id: String)
 }
 
 extension ProjectEndPoint: EndPointType {

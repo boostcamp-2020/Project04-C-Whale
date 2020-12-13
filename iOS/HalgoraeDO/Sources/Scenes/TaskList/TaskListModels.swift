@@ -55,6 +55,8 @@ enum TaskListModels {
     
     enum CreateTask {
         struct Request {
+            var projectId: String
+            var sectionId: String
             var taskFields: TaskFields
         }
         
@@ -67,12 +69,23 @@ enum TaskListModels {
         }
     }
     
+    enum CreateSection {
+        struct Request {
+            var projectId: String
+            var sectionFields: SectionFields
+        }
+    }
+    
     // MARK:  - Models
     
-    struct TaskFields {
+    struct SectionFields: Encodable {
+        var title: String
+    }
+    
+    struct TaskFields: Encodable {
         var title: String
         var date: Date?
-        var priority: Priority
+        var priority: String
     }
     
     struct SectionVM {
@@ -90,7 +103,7 @@ enum TaskListModels {
         
         init(section: Section) {
             self.id = section.id
-            self.title = section.title
+            self.title = section.title ?? ""
             self.tasks = section.tasks?.compactMap { DisplayedTask(task: $0) } ?? []
         }
     }

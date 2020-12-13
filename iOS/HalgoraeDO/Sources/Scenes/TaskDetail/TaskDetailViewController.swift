@@ -96,7 +96,7 @@ class TaskDetailViewController: UIViewController {
     
     private func setup() {
         taskTitleTextView.delegate = self
-        titleLabel.text = "Project"
+        titleLabel.text = "할일 수정하기"
         taskTitleTextView.text = task.title
         priority = task.priority ?? .four
     }
