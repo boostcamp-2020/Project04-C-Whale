@@ -22,7 +22,7 @@
                     {{ projectTitle }}
                   </v-btn>
                 </template>
-                <v-list>
+                <v-list v-if="projectInfos.length > 0">
                   <v-list-item
                     v-for="projectInfo in projectInfos"
                     :key="projectInfo.id"
@@ -156,6 +156,7 @@ export default {
       this.alarmTime = Date.now() + 1000 * time;
     },
   },
+  // TODO: 오늘 화면에서 추가로직 해결
   created() {
     if (this.projectId === undefined || this.sectionId === undefined) {
       const { title, id, defaultSectionId } = this.managedProject;
