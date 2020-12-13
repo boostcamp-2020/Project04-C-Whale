@@ -55,10 +55,15 @@
             </div>
           </div>
           <v-flex>
-            <v-btn type="submit" depressed color="primary" :disabled="task.title.length === 0"
+            <v-btn
+              type="submit"
+              depressed
+              color="whaleGreen"
+              class="text--white"
+              :disabled="task.title.length === 0"
               >+ 작업 추가</v-btn
             >
-            <v-btn @click="closeForm" text color="primary">취소</v-btn>
+            <v-btn @click="closeForm" text color="whaleGreen">취소</v-btn>
           </v-flex>
         </form>
       </div>
