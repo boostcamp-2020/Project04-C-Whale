@@ -18,20 +18,25 @@
       </form>
     </v-list-item-group>
 
-    <v-list-item-group v-else class="flex-grow-1">
-      <v-list-item-title> {{ comment.updatedAt }} </v-list-item-title>
-      <v-list-item-content> {{ comment.content }} </v-list-item-content>
-    </v-list-item-group>
+    <v-list-item v-else class="flex-grow-1">
+      <v-list-item-content>
+        <v-list-item-title class="font-14">
+          {{ comment.content }} <span class="d-inline-block ml-2">{{ timeDateString }}</span>
+        </v-list-item-title>
+      </v-list-item-content>
+    </v-list-item>
 
     <div v-if="isVisibleEditUtils">
-      <v-btn class="ma-2" outlined x-small color="indigo" @click="showCommentEdit">
-        <v-icon>mdi-pencil</v-icon>
-        수정
-      </v-btn>
-      <v-btn class="ma-2" outlined x-small color="indigo" @click="remove(comment.id)">
-        <v-icon>mdi-delete</v-icon>
-        삭제
-      </v-btn>
+      <v-flex>
+        <v-btn class="ma-2" outlined x-small color="whaleGreen" @click="showCommentEdit">
+          <v-icon>mdi-pencil</v-icon>
+          수정
+        </v-btn>
+        <v-btn class="ma-2" outlined x-small color="whaleGreen" @click="remove(comment.id)">
+          <v-icon>mdi-delete</v-icon>
+          삭제
+        </v-btn>
+      </v-flex>
     </div>
   </div>
 </template>
@@ -47,6 +52,11 @@ export default {
       isVisibleEditUtils: false,
       newContent: this.comment.content,
     };
+  },
+  computed: {
+    timeDateString() {
+      return new Date(this.comment.updatedAt).toLocaleString();
+    },
   },
   methods: {
     ...mapActions(["updateComment", "deleteComment"]),
