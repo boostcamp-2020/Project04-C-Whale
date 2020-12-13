@@ -1,7 +1,7 @@
 <template>
   <div class="project-header">
     <v-list-item>
-      <v-list-item-content class="text-h5">
+      <v-list-item-content class="text-h5 font-weight-bold">
         <UpdatableTitle
           v-if="project.title"
           :originalTitle="project.title"

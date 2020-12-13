@@ -1,17 +1,11 @@
 <template>
   <v-list-group small :value="false" sub-group active-class="list-active px-3">
     <template v-slot:activator>
-      <v-hover v-slot="{ hover }">
-        <v-list-item>
-          <v-list-item-content>
-            <v-list-item-title class="font-14">프로젝트</v-list-item-title>
-          </v-list-item-content>
-          <!-- TODO: 이벤트 버블링 오류 고치기
-          <v-list-item-icon :class="{ 'd-none ': !hover }" @click.stop.prevent="addDialog = true">
-            <v-icon>mdi-plus</v-icon>
-          </v-list-item-icon> -->
-        </v-list-item>
-      </v-hover>
+      <v-list-item>
+        <v-list-item-content>
+          <v-list-item-title class="font-14">프로젝트</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
     </template>
     <v-list-item-group active-class="list-active">
       <v-list-item
