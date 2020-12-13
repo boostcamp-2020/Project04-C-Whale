@@ -48,7 +48,6 @@ const actions = {
       await dispatch("fetchCurrentProject", task.projectId);
       await dispatch("fetchAllTasks");
       await dispatch("fetchProjectInfos");
-      //commit("ADD_TASK_COUNT", task.projectId);
     } catch (err) {
       commit("SET_ERROR_ALERT", err.response);
     }
@@ -56,7 +55,12 @@ const actions = {
   async updateTaskToDone({ dispatch, commit }, { projectId, taskId }) {
     try {
       await taskAPI.updateTask(taskId, { isDone: true });
-      await dispatch("fetchCurrentProject", projectId);
+
+      // '오늘' 화면에서 호출되었을 경우
+      if (projectId !== undefined) {
+        await dispatch("fetchCurrentProject", projectId);
+      }
+      
       await dispatch("fetchAllTasks");
       await dispatch("fetchProjectInfos");
 

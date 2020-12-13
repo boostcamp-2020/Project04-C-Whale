@@ -89,10 +89,11 @@ export default {
     projectId: String,
     sectionId: String,
     parentId: String,
+    initialShow: Boolean,
   },
   data() {
     return {
-      show: false,
+      show: this.initialShow || false,
       projectTitle: "",
       task: {
         projectId: this.projectId,
@@ -111,14 +112,14 @@ export default {
     ...mapActions(["addTask"]),
     submit() {
       // 오늘 페이지 첫 렌더링 시, projectId, sectionId가 없는 상황을 위한 초기화
-      this.task.projectId = this.projectId ? this.projectId : this.managedProject.id;
-      this.sectionId = this.sectionId ? this.sectionId : this.managedProject.defaultSectionId;
+      // this.task.projectId = this.projectId ? this.projectId : this.managedProject.id;
+      // this.sectionId = this.sectionId ? this.sectionId : this.managedProject.defaultSectionId;
       this.addTask(this.task);
-      // createAlarm({
-      //   taskId: '??',
-      //   taskTitle: this.task.title,
-      //   fireTime: this.alarmTime,
-      // });
+      whaleApi.createAlarm({
+        taskId: '??',
+        taskTitle: this.task.title,
+        fireTime: this.alarmTime,
+      });
       this.task = {
         projectId: this.projectId ? this.projectId : this.managedProject.id,
         sectionId: this.sectionId ? this.sectionId : this.managedProject.defaultSectionId,

@@ -11,7 +11,7 @@
       <v-radio-group>
         <v-radio
           dense
-          @click="updateTaskToDone({ projectId: $route.params.projectId, taskId: task.id })"
+          @click="finishTask"
           class="done-checkbox"
         ></v-radio>
       </v-radio-group>
@@ -54,7 +54,6 @@ export default {
     ...mapMutations(["SET_DRAGGING_TASK", "SET_DROP_TARGET_SECTION"]),
 
     moveToTaskDetail() {
-      console.log(this.$route);
       const destinationInfo = this.$route.params.projectId
         ? {
             name: "ProjectTaskDetail",
@@ -85,6 +84,12 @@ export default {
     handleDrop() {
       this.$emit("taskDrop");
     },
+    finishTask() {
+      this.updateTaskToDone({ 
+        projectId: this.$route.params.projectId, 
+        taskId: this.task.id 
+      });
+    }
   },
   computed: {
     ...mapGetters(["draggingTask"]),
