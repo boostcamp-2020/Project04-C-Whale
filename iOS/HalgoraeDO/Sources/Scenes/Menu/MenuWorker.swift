@@ -16,14 +16,6 @@ class MenuWorker {
     }
     
     func request<T: Decodable>(endPoint: ProjectEndPoint, completion: @escaping (T?) -> Void) {
-        
-        if case ProjectEndPoint.create(_) = endPoint {
-            requestCreate(endPoint: endPoint) { (result: T?) in
-                completion(result)
-            }
-            return
-        }
-        
         networkManager.fetchData(endPoint) { (result: ResponseProject<T>?, error: NetworkError?) in
             guard error == nil else {
                 #if DEBUG
@@ -36,8 +28,8 @@ class MenuWorker {
         }
     }
     
-    private func requestCreate<T: Decodable>(endPoint: ProjectEndPoint, completion: @escaping ((T?) -> Void)) {
-        networkManager.fetchData(endPoint) { [weak self] (response: ResponseMessage?, error) in
+    func requestPostAndGet<T: Decodable>(post postEndPoint: EndPointType, get getEndPoint: EndPointType, completion: @escaping (T?) -> Void) {
+        networkManager.fetchData(postEndPoint) { [weak self] (response: ResponseMessage?, error) in
             guard error == nil else {
                 #if DEBUG
                 print("response msg: \(String(describing: response))")
@@ -46,7 +38,15 @@ class MenuWorker {
                 completion(nil)
                 return
             }
-            self?.networkManager.fetchData(ProjectEndPoint.getAll) { (result: ResponseProject<T>?, error) in
+            self?.networkManager.fetchData(getEndPoint) { (result: ResponseProject<T>?, error) in
+                guard error == nil else {
+                    #if DEBUG
+                    print("response msg: \(String(describing: response))")
+                    print(error ?? "error is null")
+                    #endif
+                    completion(nil)
+                    return
+                }
                 completion(result?.projectInfos)
             }
         }
