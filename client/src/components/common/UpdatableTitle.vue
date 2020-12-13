@@ -12,7 +12,7 @@
       </form>
     </div>
     <div v-else @click="toggle">
-      <p>{{ originalTitle }}</p>
+      <p class="mb-0">{{ originalTitle }}</p>
     </div>
   </div>
 </template>
