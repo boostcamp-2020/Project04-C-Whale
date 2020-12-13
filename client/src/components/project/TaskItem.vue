@@ -61,7 +61,6 @@ export default {
           }
         : { name: "TodayTaskDetail", params: { taskId: this.task.id } };
       bus.$emit("moveToTaskDetail", destinationInfo);
-      // this.$router.push(destinationInfo).catch(() => {});
     },
 
     handleDragStart() {
