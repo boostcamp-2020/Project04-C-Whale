@@ -16,7 +16,13 @@
       color="black"
     >
       <template v-slot:item="{ item }">
-        <v-list-item-title v-text="item.title"></v-list-item-title>
+        <!-- TODO: 라우팅 -->
+        <v-list-item :to="`/project/${item.section.projectId}/task/${item.id}`">
+          <v-list-item-title
+            class="font-14"
+            v-text="`${item.title} - ${item.section.project.title}`"
+          ></v-list-item-title>
+        </v-list-item>
       </template>
     </v-autocomplete>
   </v-col>
@@ -68,17 +74,14 @@ export default {
       });
     },
     async search() {
-      // Items have already been loaded
-      // or Items have already been requested
       if (this.tasks.length > 0 || this.isLoading) {
         return;
       }
 
       this.isLoading = true;
 
-      // Lazily load input items,
       const res = await taskAPI.getAllTasks();
-      this.tasks = res.data.tasks;
+      this.tasks = res.data.tasks.filter((task) => !task.isDone);
       this.isLoading = false;
     },
   },
