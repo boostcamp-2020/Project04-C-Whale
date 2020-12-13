@@ -16,7 +16,7 @@ class TaskListViewController: UIViewController {
     // MARK: - Properties
     
     /// 임시 property
-    private let project: Project
+    var project: Project
     private var interactor: TaskListBusinessLogic?
     private var router: (TaskListRoutingLogic & TaskListDataPassing)?
     private var dataSource: UICollectionViewDiffableDataSource<TaskListModels.SectionVM, TaskVM>! = nil
@@ -69,6 +69,7 @@ class TaskListViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        print("project id = ", project.id)
         interactor?.fetchTasks(request: .init(projectId: project.id ?? ""))
     }
     
@@ -133,7 +134,7 @@ class TaskListViewController: UIViewController {
             }) else {
                 return
             }
-            
+            vc.project = self.project
             vc.title = self.project.title
             let nav = self.navigationController
             nav?.popViewController(animated: false)
@@ -141,7 +142,7 @@ class TaskListViewController: UIViewController {
         }
         
         let addSectionAction = UIAlertAction(title: "섹션 추가", style: .default) { (_: UIAlertAction) in
-            
+            self.addSectionAlert()
         }
         
         let selectTaskAction = UIAlertAction(title: "작업 선택", style: .default) { (_: UIAlertAction) in
@@ -175,6 +176,28 @@ class TaskListViewController: UIViewController {
         taskAddViewController.modalPresentationStyle = .overCurrentContext
         taskAddViewController.delegate = self
         present(taskAddViewController, animated: false, completion: nil)
+    }
+    
+    private func addSectionAlert() {
+        let alert = UIAlertController(title: "섹션 추가", message: "예. 3주차 할일", preferredStyle: .alert)
+        let ok = UIAlertAction(title: "OK", style: .default) { (ok) in
+            guard let sectionName = alert.textFields?[0].text,
+                  let projectId = self.project.id,
+                  sectionName != ""
+            else {
+                return
+            }
+            
+            let sectionFields = TaskListModels.SectionFields(title: sectionName)
+            self.interactor?.createSection(request: .init(projectId: projectId, sectionFields: sectionFields))
+        }
+        let cancel = UIAlertAction(title: "cancel", style: .cancel)
+        alert.addTextField { (textField) in
+            textField.placeholder = "섹션 이름을 입력해주세요."
+        }
+        alert.addAction(cancel)
+        alert.addAction(ok)
+        self.present(alert, animated: true, completion: nil)
     }
 }
 
@@ -596,10 +619,18 @@ private extension TaskListViewController {
 extension TaskListViewController: TaskAddViewControllerDelegate {
     
     func taskAddViewControllerDidDone(_ taskAddViewController: TaskAddViewController) {
+        guard let projectId = project.id,
+              dataSource.snapshot().sectionIdentifiers.count != 0
+        else {
+            return
+        }
+        
+        let sectionId = dataSource.snapshot().sectionIdentifiers[0].id
         let taskFields = TaskListModels.TaskFields(title: taskAddViewController.text,
                                                   date: taskAddViewController.date,
-                                                  priority: taskAddViewController.priority)
-        interactor?.createTask(request: .init(taskFields: taskFields))
+                                                  priority: "\(taskAddViewController.priority.rawValue)")
+    
+        interactor?.createTask(request: .init(projectId: projectId, sectionId: sectionId, taskFields: taskFields))
         taskAddViewController.dismiss(animated: false, completion: nil)
     }
 }

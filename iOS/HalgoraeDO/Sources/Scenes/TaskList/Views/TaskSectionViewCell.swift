@@ -63,9 +63,9 @@ class TaskSectionViewCell: UICollectionViewCell {
         configureDataSource()
     }
     
-    func configure(section: TaskListModels.SectionVM) {
+    func configure(section: TaskListModels.SectionVM, sectionNum: Int) {
         taskVM = section.tasks
-        sectionNum = section.tasks.count
+        self.sectionNum = sectionNum
         sectionName = section.title
         let snapShot = snapshot(taskItems: section.tasks)
         dataSource.apply(snapShot, to: section, animatingDifferences: true)
