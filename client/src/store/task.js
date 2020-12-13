@@ -10,8 +10,8 @@ const state = {
 
 const getters = {
   currentTask: (state) => state.currentTask,
-  todayTasks: (state) => state.tasks.filter((task) => isToday(task.dueDate)),
-  expiredTasks: (state) => state.tasks.filter((task) => !isToday(task.dueDate)),
+  todayTasks: (state) => state.tasks.filter((task) => isToday(task.dueDate) && !task.isDone),
+  expiredTasks: (state) => state.tasks.filter((task) => !isToday(task.dueDate) && !task.isDone),
   taskCount: (state) => state.tasks.length,
 };
 
