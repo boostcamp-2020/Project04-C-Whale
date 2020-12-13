@@ -11,7 +11,7 @@
       <v-checkbox v-model="checkBox" @click="updateTaskStatus"></v-checkbox>
     </v-list-item-action>
 
-    <div class="task-div d-flex" @click="moveToTaskDetail()">
+    <v-flex class="task-div d-flex" @click.prevent="moveToTaskDetail()">
       <v-list-item-content>
         <v-list-item-title>
           <vue-mark-down
@@ -21,7 +21,7 @@
           </vue-mark-down>
         </v-list-item-title>
       </v-list-item-content>
-    </div>
+    </v-flex>
   </v-list-item>
 </template>
 
@@ -51,7 +51,7 @@ export default {
     ...mapMutations(["SET_DRAGGING_TASK", "SET_DROP_TARGET_SECTION"]),
     updateTaskStatus() {
       this.updateTaskToDone({
-        projectId: this.$route.params.projectId,
+        projectId: this.task.section.projectId,
         taskId: this.task.id,
         isDone: !this.task.isDone,
       });

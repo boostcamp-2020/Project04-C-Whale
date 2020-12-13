@@ -4,7 +4,13 @@
       <div v-if="show" class="task-form-container">
         <form @submit.prevent="submit">
           <div class="task-form-data">
-            <input type="text" v-model="task.title" placeholder="할일을 입력하세요" />
+            <v-text-field
+              class="pt-0 mt-0 mb-2"
+              hide-details
+              type="text"
+              v-model="task.title"
+              placeholder="할일을 입력하세요"
+            />
             <div class="task-info">
               <v-menu :offset-y="true">
                 <template v-slot:activator="{ on }">
