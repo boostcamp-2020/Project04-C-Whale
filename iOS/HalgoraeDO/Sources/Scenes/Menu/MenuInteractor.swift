@@ -62,8 +62,3 @@ extension MenuInteractor: MenuBusinessLogic {
     }
 }
 
-extension Encodable {
-    var encodeData: Data? {
-        return try? JSONEncoder().encode(self)
-    }
-}
