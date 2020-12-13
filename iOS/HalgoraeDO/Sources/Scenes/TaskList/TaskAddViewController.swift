@@ -18,6 +18,7 @@ class TaskAddViewController: UIViewController {
     // MARK: - Properties
     
     weak var delegate: TaskAddViewControllerDelegate?
+    var sectionNum: Int? = 0
     private var viewUpCheck: Bool = false
     private var keyboardHeight: CGFloat = 0
     private var textViewHeight: CGFloat = 0
