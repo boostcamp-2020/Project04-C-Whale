@@ -3,7 +3,7 @@ import { getTodayString } from "@/utils/date";
 import { getMarkDownUrl } from "@/utils/markdown";
 
 const extensionId = process.env.VUE_APP_EXTENSION_ID;
-const port = whale.runtime?.connect(extensionId, { name: "addTask" });
+const port = whale.runtime?.connect(extensionId, { name: "Halgoraedo" });
 
 const getCurrentTabUrl = (cb) => {
   whale.runtime.sendMessage(extensionId, { type: "getCurrentTabUrl" }, cb);
