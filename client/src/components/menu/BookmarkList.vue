@@ -30,7 +30,7 @@
                 </v-list-item-action>
               </template>
               <v-list>
-                <v-list-item @click.stop="uploadBookmarks(task)">
+                <v-list-item v-if="isWhale" @click.stop="uploadBookmarks(task)">
                   <v-list-item-title class="font-14">브라우저 북마크로 등록</v-list-item-title>
                 </v-list-item>
               </v-list>
@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import whaleApi from "@/utils/whaleApi";
+import whaleApi, { isWhale } from "@/utils/whaleApi";
 import { mapMutations } from "vuex";
 
 export default {
@@ -68,6 +68,7 @@ export default {
   components: {},
   data() {
     return {
+      isWhale: isWhale,
       tasks: [
         {
           id: 0,
@@ -111,11 +112,13 @@ export default {
   methods: {
     ...mapMutations(["SET_SUCCESS_ALERT", "SET_ERROR_ALERT"]),
     uploadBookmarks(task) {
-      try {
-        whaleApi.createBookmark({ folderTitle: task.title, bookmarks: task.bookmarks });
-        this.SET_SUCCESS_ALERT("북마크가 등록되었습니다");
-      } catch (err) {
-        this.SET_ERROR_ALERT(err);
+      if (isWhale) {
+        try {
+          whaleApi.createBookmark({ folderTitle: task.title, bookmarks: task.bookmarks });
+          this.SET_SUCCESS_ALERT("북마크가 등록되었습니다");
+        } catch (err) {
+          this.SET_ERROR_ALERT(err);
+        }
       }
     },
   },

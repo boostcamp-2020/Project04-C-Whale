@@ -79,7 +79,7 @@
           <v-icon color="primary" dense class="mr-1"> mdi-plus </v-icon>
           작업 추가
         </v-btn>
-        <v-btn @click="showForm('url')" text color="#777777">
+        <v-btn v-if="isWhale" @click="showForm('url')" text color="#777777">
           <v-icon color="primary" dense class="mr-1"> mdi-plus </v-icon>
           웹사이트를 작업으로 추가
         </v-btn>
@@ -93,7 +93,7 @@ import { mapGetters, mapActions } from "vuex";
 import { getTodayString } from "../../utils/date";
 import whaleApi from "../../utils/whaleApi";
 import { getMarkDownUrl } from "../../utils/markdown";
-import { createAlarm } from "../../utils/whaleApi";
+import { createAlarm, isWhale } from "../../utils/whaleApi";
 
 export default {
   props: {
@@ -113,6 +113,7 @@ export default {
         dueDate: getTodayString(),
       },
       alarmTime: 0,
+      isWhale: isWhale,
     };
   },
   computed: {

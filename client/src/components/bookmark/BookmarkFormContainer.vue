@@ -10,7 +10,7 @@
       <v-btn color="primary" class="text--white" :disabled="bookmark.length <= 0">
         북마크추가
       </v-btn>
-      <v-btn @click="setBookmark" text color="#777777">
+      <v-btn v-if="isWhale" @click="setBookmark" text color="#777777">
         <v-icon color="primary" dense class="mr-1"> mdi-plus </v-icon>
         현재 웹사이트를 북마크로 추가
       </v-btn>
@@ -19,20 +19,23 @@
 </template>
 
 <script>
-import whaleApi from "@/utils/whaleApi";
+import whaleApi, { isWhale } from "@/utils/whaleApi";
 import { getMarkDownUrl } from "@/utils/markdown";
 
 export default {
   data() {
     return {
       bookmark: "",
+      isWhale: isWhale,
     };
   },
   methods: {
     setBookmark() {
-      whaleApi.getCurrentTabUrl(({ title, url }) => {
-        this.bookmark = getMarkDownUrl(title, url);
-      });
+      if (isWhale) {
+        whaleApi.getCurrentTabUrl(({ title, url }) => {
+          this.bookmark = getMarkDownUrl(title, url);
+        });
+      }
     },
     copyURL(e) {
       if (!e.key === "v") {
