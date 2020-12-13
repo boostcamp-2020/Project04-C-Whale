@@ -13,7 +13,7 @@ class TaskBoardViewController: UIViewController {
     
     // MARK: - Properties
     
-    private let project: Project
+    var project: Project
     private var interactor: TaskListBusinessLogic?
     private var router: (TaskListRoutingLogic & TaskListDataPassing)?
     private var dataSource: UICollectionViewDiffableDataSource<String, TaskVM>! = nil
@@ -41,7 +41,6 @@ class TaskBoardViewController: UIViewController {
         super.viewDidLoad()
         NotificationCenter.default.addObserver(self, selector: #selector(displayAddTask), name: NSNotification.Name(rawValue: "displayAddTask"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(addSection), name: NSNotification.Name(rawValue: "addSection"), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(addTask), name: NSNotification.Name(rawValue: "addTask"), object: nil)
         configureLogic()
         configureCollectionView()
     }
@@ -77,31 +76,17 @@ class TaskBoardViewController: UIViewController {
         addSectionAlert()
     }
     
-    @objc private func addTask(_ notification: Notification) {
-        taskAddViewController.view.removeFromSuperview()
-        visualEffectView.removeFromSuperview()
-        guard let object = notification.object as? [String:Any],
-              let dueDate = object["dueDate"] as? Date,
-              let taskTitle = object["taskTitle"] as? String,
-              let priority = object["priority"] as? Int,
-              let section = object["section"] as? Int
-        else {
-            return
-        }
-        let temp = TaskListModels.DisplayedTask(id: UUID().uuidString, title: taskTitle, isCompleted: false, tintColor: .red, position: 1, parentPosition: nil, subItems: [])
-       // taskVM.append(temp)
-        taskBoardCollectionView.reloadData()
-    }
-    
     private func addSectionAlert() {
         let alert = UIAlertController(title: "섹션 추가", message: "예. 3주차 할일", preferredStyle: .alert)
         let ok = UIAlertAction(title: "OK", style: .default) { (ok) in
-            guard let sectionName = alert.textFields?[0].text else { return }
-            if sectionName == "" {
+            guard let sectionName = alert.textFields?[0].text,
+                  let projectId = self.project.id,
+                  sectionName != ""
+            else {
                 return
             }
-            self.sectionVM.append(TaskListModels.SectionVM(id: UUID().uuidString, title: sectionName, tasks: []))
-            self.taskBoardCollectionView.reloadData()
+            let sectionFields = TaskListModels.SectionFields(title: sectionName)
+            self.interactor?.createSection(request: .init(projectId: projectId, sectionFields: sectionFields))
         }
         let cancel = UIAlertAction(title: "cancel", style: .cancel)
         alert.addTextField { (textField) in
@@ -127,7 +112,7 @@ class TaskBoardViewController: UIViewController {
             }) else {
                 return
             }
-            
+            vc.project = self.project
             let nav = self.navigationController
             nav?.popViewController(animated: false)
             nav?.pushViewController(vc, animated: false)
@@ -166,7 +151,6 @@ private extension TaskBoardViewController {
         taskBoardCollectionView.register(TaskSectionViewCell.self, forCellWithReuseIdentifier: "section-reuse-identifier")
         taskBoardCollectionView.register(AddSectionViewCell.self, forCellWithReuseIdentifier: "section-add-reuse-identifier")
         taskBoardCollectionView.isPagingEnabled = true
-        taskBoardCollectionView.reloadData()
     }
     
     func createCompositionalLayout() -> UICollectionViewCompositionalLayout {
@@ -197,10 +181,31 @@ private extension TaskBoardViewController {
     
     func showAddTaskView(sectionNum: Int) {
         let taskAddViewController = TaskAddViewController()
+        taskAddViewController.delegate = self
+        taskAddViewController.sectionNum = sectionNum
         taskAddViewController.modalPresentationStyle = .overCurrentContext
         present(taskAddViewController, animated: true, completion: nil)
     }
 }
+
+// MARK: - TaskAddViewController Delegate
+
+extension TaskBoardViewController: TaskAddViewControllerDelegate {
+    
+    func taskAddViewControllerDidDone(_ taskAddViewController: TaskAddViewController) {
+        guard let projectId = project.id,
+              let sectionNum = taskAddViewController.sectionNum,
+              let sectionId = sectionVM[sectionNum].id as? String
+        else { return }
+        let taskFields = TaskListModels.TaskFields(title: taskAddViewController.text,
+                                                  date: taskAddViewController.date,
+                                                  priority: "\(taskAddViewController.priority.rawValue)")
+    
+        interactor?.createTask(request: .init(projectId: projectId, sectionId: sectionId, taskFields: taskFields))
+        taskAddViewController.dismiss(animated: false, completion: nil)
+    }
+}
+
 
 // MARK: - UICollectionView DataSource
 
@@ -217,7 +222,7 @@ extension TaskBoardViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if indexPath.section < sectionVM.count {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "section-reuse-identifier", for: indexPath) as! TaskSectionViewCell
-            cell.configure(section: sectionVM[indexPath.section])
+            cell.configure(section: sectionVM[indexPath.section], sectionNum: indexPath.section)
             cell.taskSectionViewCellDelegate = self
             
             return cell
@@ -240,6 +245,9 @@ extension TaskBoardViewController: TaskListDisplayLogic {
     
     func displayFetchTasks(viewModel: TaskListModels.FetchTasks.ViewModel) {
         sectionVM = viewModel.sectionVMs
+        DispatchQueue.main.async {
+            self.taskBoardCollectionView.reloadData()
+        }
     }
     
     func displayDetail(of task: Task) {
