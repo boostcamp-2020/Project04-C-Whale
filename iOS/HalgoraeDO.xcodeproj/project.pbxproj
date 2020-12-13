@@ -52,6 +52,7 @@
 		4C9A02D12581C50400727F88 /* ResponseMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9A02D02581C50400727F88 /* ResponseMessage.swift */; };
 		4C9A02DF2582214800727F88 /* TaskDetailContentsCellCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9A02DE2582214800727F88 /* TaskDetailContentsCellCollectionViewCell.swift */; };
 		4C9A02F325826CCA00727F88 /* ResponseProject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9A02F225826CCA00727F88 /* ResponseProject.swift */; };
+		4C9A03422584E1FF00727F88 /* HalgoraeDO.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4C9A03402584E1FF00727F88 /* HalgoraeDO.xcdatamodeld */; };
 		4CCD31E8256EBC0C00A46D10 /* TaskListWorkerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0CA5F0256E9AF100E66045 /* TaskListWorkerTests.swift */; };
 		4CCD31E9256EBC0C00A46D10 /* TaskListInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0CA60C256EAA7300E66045 /* TaskListInteractorTests.swift */; };
 		4CCD31EA256EBC0C00A46D10 /* TaskListPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0CA629256EABF700E66045 /* TaskListPresenterTests.swift */; };
@@ -176,6 +177,7 @@
 		4C9A02D02581C50400727F88 /* ResponseMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseMessage.swift; sourceTree = "<group>"; };
 		4C9A02DE2582214800727F88 /* TaskDetailContentsCellCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDetailContentsCellCollectionViewCell.swift; sourceTree = "<group>"; };
 		4C9A02F225826CCA00727F88 /* ResponseProject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseProject.swift; sourceTree = "<group>"; };
+		4C9A03412584E1FF00727F88 /* HalgoraeDO.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = HalgoraeDO.xcdatamodel; sourceTree = "<group>"; };
 		4CCD31DD256EBC0000A46D10 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4CCD31F8256EBC8000A46D10 /* TaskListDisplaySpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListDisplaySpy.swift; sourceTree = "<group>"; };
 		4CCD31FE256EBCEF00A46D10 /* TaskListPresenterSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListPresenterSpy.swift; sourceTree = "<group>"; };
@@ -370,6 +372,7 @@
 				4C42386D257917790068A252 /* NetworkManager.swift */,
 				4C42387925794C8C0068A252 /* SessionManager.swift */,
 				4C4238732579358A0068A252 /* DataRequest.swift */,
+				4C9A03402584E1FF00727F88 /* HalgoraeDO.xcdatamodeld */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -779,6 +782,7 @@
 				4C3F5700256CF8A7006D7C9F /* TaskContentConfigure.swift in Sources */,
 				4CE91614257F82A100BCF398 /* MenuModels.swift in Sources */,
 				4C4238742579358A0068A252 /* DataRequest.swift in Sources */,
+				4C9A03422584E1FF00727F88 /* HalgoraeDO.xcdatamodeld in Sources */,
 				AA19EF1B25756C3200E59017 /* AddSectionViewCell.swift in Sources */,
 				AAA74C74257DAE00004FC883 /* AddProjectViewController.swift in Sources */,
 				4CE915D1257E5D2B00BCF398 /* TaskDetailModels.swift in Sources */,
@@ -1103,6 +1107,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		4C9A03402584E1FF00727F88 /* HalgoraeDO.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				4C9A03412584E1FF00727F88 /* HalgoraeDO.xcdatamodel */,
+			);
+			currentVersion = 4C9A03412584E1FF00727F88 /* HalgoraeDO.xcdatamodel */;
+			path = HalgoraeDO.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = AAEE20D22564E4A900668FAD /* Project object */;
 }
