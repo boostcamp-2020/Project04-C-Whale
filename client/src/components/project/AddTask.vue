@@ -159,10 +159,10 @@ export default {
   // TODO: 오늘 화면에서 추가로직 해결
   created() {
     if (this.projectId === undefined || this.sectionId === undefined) {
-      const { title, id, defaultSectionId } = this.managedProject;
-      this.projectTitle = title;
-      this.task.projectId = id;
-      this.task.sectionId = defaultSectionId;
+      //const { title, id, defaultSectionId } = this.managedProject;
+      this.projectTitle = this.managedProject?.title;
+      this.task.projectId = this.managedProject?.id;
+      this.task.sectionId = this.managedProject?.defaultSectionId;
       return;
     }
     this.projectTitle = this.projectInfos.find((project) => project.id === this.projectId).title;

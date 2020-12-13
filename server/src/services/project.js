@@ -12,6 +12,7 @@ const retrieveProjects = async userId => {
       'isFavorite',
       'isList',
       [sequelize.fn('COUNT', sequelize.col('sections.tasks.id')), 'taskCount'],
+      [sequelize.col('sections.id'), 'defaultSectionId'],
     ],
     include: [
       {
