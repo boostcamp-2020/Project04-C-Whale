@@ -31,7 +31,7 @@ whale.runtime.onConnectExternal.addListener((port) => {
   handlerToRemove = handleOnClicked;
 });
 
-whale.runtime.onMessageExternal.addListener((message, sendResponse) => {
+whale.runtime.onMessageExternal.addListener((message, _sender, sendResponse) => {
   switch (message.type) {
     case 'getCurrentTabUrl':
       whale.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
@@ -39,7 +39,6 @@ whale.runtime.onMessageExternal.addListener((message, sendResponse) => {
         sendResponse({ url: currentTab.url, title: currentTab.title });
       });
       break;
-
     case 'createAlarm':
       const {taskId, taskTitle, fireTime} = message.data;
       console.log(fireTime);
@@ -47,10 +46,6 @@ whale.runtime.onMessageExternal.addListener((message, sendResponse) => {
       whale.alarms.create(taskTitle, {
         when: fireTime,
       })
-
-    case "createBookmark":
-      whale.bookmarks.create({ title: data.title, url: data.url });
-      sendResponse("북마크가 추가되었습니다.");
-      break;
   }
 });
+
