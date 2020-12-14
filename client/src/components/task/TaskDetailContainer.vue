@@ -35,7 +35,7 @@
 import TaskItem from "@/components/project/TaskItem";
 import TaskDetailTabs from "@/components/task/TaskDetailTabs";
 import SpinnerMixin from "@/mixins/SpinnerMixins";
-import { mapState, mapActions } from "vuex";
+import { mapState } from "vuex";
 
 export default {
   components: { TaskItem, TaskDetailTabs },
@@ -54,7 +54,6 @@ export default {
     }),
   },
   methods: {
-    ...mapActions(["fetchComments", "fetchBookmarks"]),
     hideTaskModal() {
       this.$emit("hideTaskModal");
     },

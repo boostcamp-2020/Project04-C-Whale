@@ -8,7 +8,7 @@ const bookmarkAPI = {
     return myAxios.post(`/task/${taskId}/bookmark`, data);
   },
   deleteBookmark(taskId, bookmarkId) {
-    return myAxios.delete(`/task/${taskId}/comment/${bookmarkId}`);
+    return myAxios.delete(`/task/${taskId}/bookmark/${bookmarkId}`);
   },
 };
 

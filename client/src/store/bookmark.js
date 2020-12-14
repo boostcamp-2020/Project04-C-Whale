@@ -25,19 +25,19 @@ const actions = {
       commit("SET_ERROR_ALERT", err.response);
     }
   },
-  async addBookmark({ commit, dispatch }, bookmark) {
+  async createBookmark({ commit, dispatch }, { bookmark, taskId }) {
     try {
-      await bookmarkAPI.createBookmark(bookmark);
-      await dispatch("fetchBookmarks", bookmark.taskId);
+      await bookmarkAPI.createBookmark(taskId, bookmark);
+      await dispatch("fetchBookmarks", taskId);
       commit("SET_SUCCESS_ALERT", "북마크가 생성되었습니다.");
     } catch (err) {
       commit("SET_ERROR_ALERT", err.response);
     }
   },
-  async deleteBookmark({ commit, dispatch }, bookmark) {
+  async deleteBookmark({ commit, dispatch }, { taskId, bookmarkId }) {
     try {
-      await bookmarkAPI.deleteBookmark(bookmark);
-      await dispatch("fetchComments", bookmark.taskId);
+      await bookmarkAPI.deleteBookmark(taskId, bookmarkId);
+      await dispatch("fetchBookmarks", taskId);
       commit("SET_SUCCESS_ALERT", "북마크가 삭제되었습니다.");
     } catch (err) {
       commit("SET_ERROR_ALERT", err.response);
