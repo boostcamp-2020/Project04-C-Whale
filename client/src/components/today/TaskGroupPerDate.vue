@@ -3,7 +3,7 @@
     <v-list-item class="font-weight-black text-h6"
       >{{ typeString[type] }}
       <!--TODO: 기한이 지난 날짜 없애기 -->
-      <span v-show="type === 'today'" class="font-14 d-inline-block ml-2">{{ todayString }}</span>
+      <span v-if="type === 'today'" class="font-14 d-inline-block ml-2">{{ todayString }}</span>
     </v-list-item>
     <div v-for="task in tasks" :key="task.id" class="task-container">
       <TaskItem :task="task" />
@@ -18,15 +18,12 @@
         />
       </div>
     </div>
-    <AddTask 
-      :projectId="managedProject.id" 
-      :sectionId="managedProject.defaultSectionId"
-    />
+    <AddTask :projectId="managedProject.id" :sectionId="managedProject.defaultSectionId" />
   </v-list>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters } from "vuex";
 import TaskItem from "@/components/project/TaskItem";
 import AddTask from "@/components/project/AddTask";
 import { getTodayString } from "@/utils/date";
@@ -45,7 +42,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['managedProject']),
+    ...mapGetters(["managedProject"]),
     todayString() {
       return getTodayString();
     },
