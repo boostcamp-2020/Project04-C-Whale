@@ -82,7 +82,6 @@ import { mapGetters, mapActions } from "vuex";
 import { getTodayString } from "../../utils/date";
 import whaleApi from "../../utils/whaleApi";
 import { getMarkDownUrl } from "../../utils/markdown";
-import { createAlarm } from "../../utils/whaleApi";
 
 export default {
   props: {
@@ -116,7 +115,6 @@ export default {
       // this.sectionId = this.sectionId ? this.sectionId : this.managedProject.defaultSectionId;
       this.addTask(this.task);
       whaleApi.createAlarm({
-        taskId: '??',
         taskTitle: this.task.title,
         fireTime: this.alarmTime,
       });
@@ -151,7 +149,7 @@ export default {
     },
     todayStringToKorean(todayString) {
       const today = new Date(todayString);
-      return `${today.getMonth()}월 ${today.getDate()}일`;
+      return `${today.getMonth() + 1}월 ${today.getDate()}일`;
     },
     selectAlarm(time) {
       this.alarmTime = Date.now() + 1000 * time;
