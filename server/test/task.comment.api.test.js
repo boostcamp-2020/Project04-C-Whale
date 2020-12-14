@@ -515,7 +515,7 @@ describe('delete comment', () => {
     // given
     const taskId = seeder.tasks[1].id;
     const commentId = seeder.sections[0].id;
-    const expectedError = customError.NOT_FOUND_ERROR('commentId');
+    const expectedError = customError.NOT_FOUND_ERROR('comment');
 
     try {
       // when
@@ -536,7 +536,7 @@ describe('delete comment', () => {
     // given
     const taskId = seeder.tasks[1].id;
     const commentId = seeder.comments[1].id;
-    const expectedError = customError.FORBIDDEN_ERROR('commentId');
+    const expectedError = customError.FORBIDDEN_ERROR('comment');
 
     try {
       // when
@@ -557,7 +557,7 @@ describe('delete comment', () => {
     // given
     const taskId = seeder.tasks[0].id;
     const commentId = seeder.comments[1].id;
-    const expectedError = customError.WRONG_RELATION_ERROR('commentId');
+    const expectedError = customError.WRONG_RELATION_ERROR('task, comment');
 
     try {
       // when
