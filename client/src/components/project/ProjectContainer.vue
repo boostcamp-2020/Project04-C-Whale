@@ -94,7 +94,7 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
 .project-container {
   height: 100%;
   display: flex;
@@ -117,9 +117,11 @@ export default {
 .board-view {
   display: flex;
 
+  &.section-container {
+    flex: 1 1 0;
+    width: 0;
+  }
   /* flex-wrap: nowrap;
   overflow-x: auto; */
-}
-.section-container {
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <v-col cols="12" sm="12" lg="8" md="10">
+  <v-col cols="12" sm="12" lg="10" md="10">
     <project-container
       v-if="projectList[$route.params.projectId]"
       :project="projectList[$route.params.projectId]"
