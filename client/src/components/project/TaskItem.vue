@@ -27,6 +27,8 @@
 
 <script>
 import { mapGetters, mapActions, mapMutations } from "vuex";
+import { ref } from "@vue/composition-api";
+import useDragDropItem from "@/composables/useDragDropItem";
 import VueMarkDown from "vue-markdown";
 import bus from "@/utils/bus";
 
@@ -49,10 +51,10 @@ export default {
   },
   methods: {
     ...mapActions(["updateTaskToDone"]),
-    ...mapMutations(["SET_DRAGGING_TASK", "SET_DROP_TARGET_SECTION"]),
+    ...mapMutations(["SET_DRAGGING_TASK", "SET_DROP_TARGET_CONTAINER"]),
     updateTaskStatus() {
       this.updateTaskToDone({
-        projectId: this.task.section.projectId,
+        projectId: this.section.projectId,
         taskId: this.task.id,
         isDone: !this.task.isDone,
       });
@@ -108,6 +110,18 @@ export default {
       return middle;
     },
   },
+  // setup(props, context) {
+  //   const { handleDragStart, handleDragOver, handleDrop, taskItem } = useDragDropItem(
+  //     props,
+  //     context
+  //   );
+  //   return {
+  //     handleDragStart,
+  //     handleDragOver,
+  //     handleDrop,
+  //     taskItem,
+  //   };
+  // },
 };
 </script>
 
