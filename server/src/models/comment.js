@@ -19,6 +19,6 @@ module.exports = sequelize => {
         defaultValue: false,
       },
     },
-    { tableName: 'comment' },
+    { charset: 'utf8', collate: 'utf8_unicode_ci', tableName: 'comment' },
   );
 };
