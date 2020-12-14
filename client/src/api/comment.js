@@ -1,6 +1,6 @@
 import myAxios from "./myAxios";
 
-const labelAPI = {
+const commentAPI = {
   getAllComments(taskId) {
     return myAxios.get(`/task/${taskId}/comment`);
   },
@@ -17,4 +17,4 @@ const labelAPI = {
   },
 };
 
-export default labelAPI;
+export default commentAPI;
