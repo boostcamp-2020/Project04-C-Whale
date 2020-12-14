@@ -9,11 +9,7 @@
   >
     <v-list-item-action>
       <v-radio-group>
-        <v-radio
-          dense
-          @click="finishTask"
-          class="done-checkbox"
-        ></v-radio>
+        <v-radio dense @click="finishTask" class="done-checkbox"></v-radio>
       </v-radio-group>
     </v-list-item-action>
 
@@ -37,6 +33,7 @@ import bus from "@/utils/bus";
 export default {
   props: {
     task: Object,
+    parentTask: Object,
     section: Object,
     position: Number,
     dragging: Boolean,
@@ -51,7 +48,7 @@ export default {
   },
   methods: {
     ...mapActions(["updateTaskToDone"]),
-    ...mapMutations(["SET_DRAGGING_TASK", "SET_DROP_TARGET_SECTION"]),
+    ...mapMutations(["SET_DRAGGING_TASK", "SET_DROP_TARGET_CONTAINER"]),
 
     moveToTaskDetail() {
       const destinationInfo = this.$route.params.projectId
@@ -73,7 +70,19 @@ export default {
         return;
       }
 
-      this.SET_DROP_TARGET_SECTION(this.section);
+      if (this.task.parentId) {
+        if (this.task.parentId !== this.dropTargetContainer.id) {
+          this.SET_DROP_TARGET_CONTAINER({
+            ...this.parentTask,
+            type: "TASK",
+            projectId: this.section.projectId,
+          });
+        }
+      } else {
+        if (this.section.id !== this.dropTargetContainer.id) {
+          this.SET_DROP_TARGET_CONTAINER({ ...this.section, type: "SECTION" });
+        }
+      }
 
       const offset = this.middleY - e.clientY;
       this.$emit("taskDragOver", {
@@ -84,14 +93,14 @@ export default {
       this.$emit("taskDrop");
     },
     finishTask() {
-      this.updateTaskToDone({ 
-        projectId: this.$route.params.projectId, 
-        taskId: this.task.id 
+      this.updateTaskToDone({
+        projectId: this.$route.params.projectId,
+        taskId: this.task.id,
       });
-    }
+    },
   },
   computed: {
-    ...mapGetters(["draggingTask"]),
+    ...mapGetters(["draggingTask", "dropTargetContainer"]),
     middleY() {
       const box = this.$el.getBoundingClientRect();
       const middle = box.top + box.height / 2;
