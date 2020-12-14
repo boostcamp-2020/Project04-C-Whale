@@ -1,5 +1,5 @@
 const sequelize = require('@models');
-const { isTaskOwner } = require('@services/authority-check');
+const { isTaskOwner, isBookmarkOwner } = require('@services/authority-check');
 const { customError } = require('@utils/custom-error');
 
 const { models } = sequelize;
@@ -36,24 +36,37 @@ const create = async ({ userId, taskId, ...bookmarkData }) => {
   return result;
 };
 
-// const remove = async ({ id, taskId, userId }) => {
-//   const comment = await commentModel.findByPk(id);
-//   if (!comment) {
-//     const error = customError.NOT_FOUND_ERROR('comment');
-//     throw error;
-//   }
-//   if (!(await isCommentOwner({ id, userId }))) {
-//     const error = customError.FORBIDDEN_ERROR('comment');
-//     throw error;
-//   }
-//   if (comment.taskId !== taskId) {
-//     const error = customError.WRONG_RELATION_ERROR('task, comment');
-//     throw error;
-//   }
-//   const result = await comment.destroy();
-//   result.save();
-//   return true;
+const remove = async ({ id, taskId, userId }) => {
+  const task = await taskModel.findByPk(taskId);
+  if (!task) {
+    const error = customError.NOT_FOUND_ERROR('task');
+    throw error;
+  }
+  if (!(await isTaskOwner({ id: taskId, userId }))) {
+    const error = customError.FORBIDDEN_ERROR('task');
+    throw error;
+  }
 
-// };
+  const bookmark = await bookmarkModel.findByPk(id);
 
-module.exports = { retrieveAllByTaskId, create };
+  if (!bookmark) {
+    const error = customError.NOT_FOUND_ERROR('bookmark');
+    throw error;
+  }
+  if (!(await isBookmarkOwner({ id, userId }))) {
+    const error = customError.FORBIDDEN_ERROR('bookmark');
+    throw error;
+  }
+
+  if (bookmark.taskId !== taskId) {
+    const error = customError.WRONG_RELATION_ERROR('task, bookmark');
+    throw error;
+  }
+
+  bookmark.destroy();
+  bookmark.save();
+
+  return true;
+};
+
+module.exports = { retrieveAllByTaskId, create, remove };
