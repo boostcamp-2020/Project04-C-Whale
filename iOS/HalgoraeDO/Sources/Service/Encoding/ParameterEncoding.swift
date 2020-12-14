@@ -7,7 +7,7 @@
 
 import Foundation
 
-typealias Parameters = [String:Any]
+typealias Parameters = [String: Any]
 
 enum EncodingError : String, Error {
     case parametersNil = "Parameters were nil."

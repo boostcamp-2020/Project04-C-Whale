@@ -56,10 +56,10 @@ extension TaskDetailInteractor: TaskDetailBusinessLogic {
 //        }
         //TODO 임시 데이터 변경하기!
         let tasks = [
-            Task(title: "1111", position: 0),
-            Task(title: "1111", position: 1),
-            Task(title: "1111", position: 2),
-            Task(title: "1111", position: 0)
+            Task(fields: .init(title: "1111", date: Date(), priority: "4"), context: Storage().childContext),
+            Task(fields: .init(title: "1111", date: Date(), priority: "4"), context: Storage().childContext),
+            Task(fields: .init(title: "1111", date: Date(), priority: "4"), context: Storage().childContext),
+            Task(fields: .init(title: "1111", date: Date(), priority: "4"), context: Storage().childContext),
         ]
         presenter.presentFetchedTasks(response: .init(tasks: tasks))
     }

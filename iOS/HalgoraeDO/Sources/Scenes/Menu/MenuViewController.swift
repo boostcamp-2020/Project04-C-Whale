@@ -26,6 +26,12 @@ class MenuViewController: UIViewController {
     // MARK: Views
     
     @IBOutlet weak private var menuCollectionView: UICollectionView!
+    private var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.tintColor = .halgoraedoMint
+        
+        return refreshControl
+    }()
     
     // MARK: - View Life Cycle
     
@@ -48,7 +54,9 @@ class MenuViewController: UIViewController {
     
     func configureLogic() {
         let presenter = MenuPresenter(viewController: self)
-        let interactor = MenuInteractor(presenter: presenter, worker: MenuWorker(sessionManager: SessionManager(configuration: .default)))
+        let interactor = MenuInteractor(presenter: presenter,
+                                        worker: MenuWorker(sessionManager: SessionManager(configuration: .default),
+                                                           storage: Storage()))
         self.interactor = interactor
         self.rotuer = MenuRouter(dataStore: interactor, viewController: self)
     }
@@ -58,6 +66,13 @@ class MenuViewController: UIViewController {
     }
     
     // MARK: - Methods
+    
+    @objc private func didChangeRefersh(_ sender: UIRefreshControl) {
+        interactor?.fetchProjects()
+        DispatchQueue.main.async {
+            self.refreshControl.endRefreshing()
+        }
+    }
     
     private func deleteSnapshot(for items: [ProjectVM]) {
         var snapshot = dataSource.snapshot()
@@ -81,6 +96,8 @@ private extension MenuViewController {
         menuCollectionView.delegate = self
         menuCollectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         menuCollectionView.collectionViewLayout = createLayout()
+        refreshControl.addTarget(self, action: #selector(didChangeRefersh(_:)), for: .valueChanged)
+        menuCollectionView.refreshControl = refreshControl
     }
     
     func createLayout() -> UICollectionViewLayout {
@@ -185,7 +202,6 @@ private extension MenuViewController {
                 self.dataSource.apply(sectionSnapshot, to: section)
             }
         }
-        
     }
 
     func leadingSwipeAction(_ item: ProjectVM) -> UISwipeActionsConfiguration? {
@@ -261,6 +277,6 @@ extension MenuViewController: MenuDisplayLogic {
             sectionSnapshot.append([project])
         }
 
-        dataSource.apply(sectionSnapshot, to: .project, animatingDifferences: true, completion: nil)
+        dataSource.apply(sectionSnapshot, to: .project)
     }
 }

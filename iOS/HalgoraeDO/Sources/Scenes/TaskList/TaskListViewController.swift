@@ -55,7 +55,7 @@ class TaskListViewController: UIViewController {
     }
     
     required init?(coder: NSCoder) {
-        self.project = Project(title: "")
+        self.project = Project(context: Storage().childContext)
         super.init(coder: coder)
     }
     
@@ -109,7 +109,8 @@ class TaskListViewController: UIViewController {
             tempSelectItem.isCompleted = true
             selectItemTemp.append(tempSelectItem)
         }
-        guard let projectId = project.id else { return }
+
+        let projectId = project.id
         selectedTasks.removeAll()
         set(editingMode: false)
         self.interactor?.changeFinishForAll(request: .init(displayedTasks: selectItemTemp), projectId: projectId)
@@ -202,12 +203,11 @@ class TaskListViewController: UIViewController {
         let alert = UIAlertController(title: "섹션 추가", message: "예. 3주차 할일", preferredStyle: .alert)
         let ok = UIAlertAction(title: "OK", style: .default) { (ok) in
             guard let sectionName = alert.textFields?[0].text,
-                  let projectId = self.project.id,
                   sectionName != ""
             else {
                 return
             }
-            
+            let projectId = self.project.id
             let sectionFields = TaskListModels.SectionFields(title: sectionName)
             self.interactor?.createSection(request: .init(projectId: projectId, sectionFields: sectionFields))
         }
@@ -323,10 +323,14 @@ extension TaskListViewController: TaskListDisplayLogic {
     func displayFetchTasks(viewModel: TaskListModels.FetchTasks.ViewModel) {
         var snapshot = NSDiffableDataSourceSnapshot<TaskListModels.SectionVM, TaskListModels.DisplayedTask>()
         snapshot.appendSections(viewModel.sectionVMs)
-        dataSource.apply(snapshot)
+        DispatchQueue.main.async {
+            self.dataSource.apply(snapshot)
+        }
         for sectionVM in viewModel.sectionVMs {
             let sectionSnapshot = generateSnapshot(taskItems: sectionVM.tasks)
-            dataSource.apply(sectionSnapshot, to: sectionVM)
+            DispatchQueue.main.async {
+                self.dataSource.apply(sectionSnapshot, to: sectionVM)
+            }
         }
     }
     
@@ -640,12 +644,8 @@ private extension TaskListViewController {
 extension TaskListViewController: TaskAddViewControllerDelegate {
     
     func taskAddViewControllerDidDone(_ taskAddViewController: TaskAddViewController) {
-        guard let projectId = project.id,
-              dataSource.snapshot().sectionIdentifiers.count != 0
-        else {
-            return
-        }
-        
+        guard dataSource.snapshot().sectionIdentifiers.count != 0 else { return }
+        let projectId = project.id
         let sectionId = dataSource.snapshot().sectionIdentifiers[0].id
         let taskFields = TaskListModels.TaskFields(title: taskAddViewController.text,
                                                   date: taskAddViewController.date,

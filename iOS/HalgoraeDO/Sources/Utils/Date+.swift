@@ -9,7 +9,13 @@ import Foundation
 
 extension Date {
     
-    func toString(format: String) -> String {
+    mutating func fromString(format time: String = "yyyy-MM-dd hh:mm:ss") {
+        let df = DateFormatter()
+        df.dateFormat = time
+        self = df.date(from: time) ?? Date()
+    }
+    
+    func toString(format: String = "yyyy-MM-dd hh:mm:ss") -> String {
         let df = DateFormatter()
         df.dateFormat = format
         
