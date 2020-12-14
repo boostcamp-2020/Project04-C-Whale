@@ -9,18 +9,14 @@ const taskModel = models.task;
 const retrieveById = async ({ id, userId }) => {
   const task = await taskModel.findByPk(id, {
     include: [
-      'bookmarks',
-      {
-        model: taskModel,
-        include: ['bookmarks'],
-      },
+      'tasks',
       {
         model: models.section,
         attribute: [],
         include: [
           {
             model: models.project,
-            attributes: ['creatorId'],
+            attributes: ['creatorId', 'title', 'id'],
           },
         ],
       },

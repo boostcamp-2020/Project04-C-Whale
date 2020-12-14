@@ -9,7 +9,7 @@
     <task-detail-container
       v-if="tasks && tasks.length !== 0"
       @hideTaskModal="hideTaskModal"
-      :task="tasks.find((task) => task.id === $route.params.taskId)"
+      :task="task"
     ></task-detail-container>
   </v-dialog>
 </template>
@@ -18,12 +18,14 @@
 import { mapActions, mapState } from "vuex";
 import TaskDetailContainer from "@/components/task/TaskDetailContainer.vue";
 import SpinnerMixin from "@/mixins/SpinnerMixins.js";
+import taskAPI from "@/api/task";
 
 export default {
   name: "Task",
   data() {
     return {
       dialog: true,
+      task: {},
     };
   },
   computed: {
@@ -36,7 +38,6 @@ export default {
       this.$router.go(-1);
     },
   },
-
   watch: {
     tasks() {
       this.task = this.tasks.find((task) => task.id === this.$route.params.taskId);
@@ -47,6 +48,16 @@ export default {
   },
   deactivated() {
     this.dialog = false;
+  },
+  created: async function () {
+    // 루트 할일 일 경우
+    this.task = this.tasks.find((task) => task.id === this.$route.params.taskId);
+
+    // let targetTask;
+    if (this.task === undefined) {
+      const result = await taskAPI.getTaskById(this.$route.params.taskId);
+      this.task = result.data.task;
+    }
   },
   mixins: [SpinnerMixin],
 };
