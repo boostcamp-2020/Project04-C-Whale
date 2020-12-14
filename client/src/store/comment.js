@@ -20,7 +20,6 @@ const actions = {
       const {
         data: { comments },
       } = await commentAPI.getAllComments(taskId);
-      console.log(comments);
       commit("SET_COMMENTS", { comments, taskId });
     } catch (err) {
       commit("SET_ERROR_ALERT", err.response);
@@ -29,7 +28,7 @@ const actions = {
   async addComment({ commit, dispatch }, comment) {
     try {
       await commentAPI.createComment(comment);
-      await dispatch("fetchAllComments");
+      await dispatch("fetchAllComments", comment.taskId);
 
       commit("SET_SUCCESS_ALERT", "댓글이 생성되었습니다.");
     } catch (err) {
@@ -38,8 +37,10 @@ const actions = {
   },
   async updateComment({ commit, dispatch }, comment) {
     try {
+      console.log(comment);
+
       await commentAPI.updateComment(comment);
-      await dispatch("fetchAllComments");
+      await dispatch("fetchAllComments", comment.taskId);
       commit("SET_SUCCESS_ALERT", "댓글이 수정되었습니다.");
     } catch (err) {
       commit("SET_ERROR_ALERT", err.response);
@@ -48,7 +49,7 @@ const actions = {
   async deleteComment({ commit, dispatch }, comment) {
     try {
       await commentAPI.deleteComment(comment);
-      await dispatch("fetchAllComments");
+      await dispatch("fetchAllComments", comment.taskId);
       commit("SET_SUCCESS_ALERT", "댓글이 삭제되었습니다.");
     } catch (err) {
       commit("SET_ERROR_ALERT", err.response);

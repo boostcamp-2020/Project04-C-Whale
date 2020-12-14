@@ -37,13 +37,17 @@ export default {
   props: {
     tasks: Array,
     comments: Array,
-    tabList: Object,
     projectId: String,
     sectionId: String,
     isParent: Boolean,
   },
   data() {
     return {
+      tabList: {
+        childTask: { title: "하위 작업", count: 0 },
+        comment: { title: "댓글", count: 0 },
+        bookmark: { title: "북마크", count: 0 },
+      },
       active: null,
       parentId: this.$route.params.taskId,
     };
@@ -55,6 +59,10 @@ export default {
     },
   },
   created() {},
+  beforeUpdate() {
+    this.tabList.childTask.count = this.task ? this.tasks.length : 0;
+    this.tabList.comment.count = this.comments ? this.comments.length : 0;
+  },
   components: { ChildTaskList, CommentList, BookmarkList },
 };
 </script>

@@ -20,12 +20,11 @@
     </div>
     <div class="px-4 task-detail-tabs">
       <TaskDetailTabs
-        :tasks="this.task.tasks"
-        :tabList="this.tabList"
-        :comments="this.comments"
-        :projectId="this.$route.params.projectId"
-        :sectionId="this.task.sectionId"
-        :isParent="this.task.parentId === null"
+        :tasks="task.tasks"
+        :comments="commentsMap[this.$route.params.taskId]"
+        :projectId="$route.params.projectId"
+        :sectionId="task.sectionId"
+        :isParent="task.parentId === null"
       />
     </div>
   </v-card>
@@ -45,11 +44,6 @@ export default {
   data() {
     return {
       comments: [],
-      tabList: {
-        childTask: { title: "하위 작업", count: 0 },
-        comment: { title: "댓글", count: 0 },
-        bookmark: { title: "북마크", count: 0 },
-      },
     };
   },
   computed: {
@@ -61,12 +55,7 @@ export default {
       this.$emit("hideTaskModal");
     },
   },
-  created() {
-    this.comments = this.commentsMap[this.$route.params.taskId];
-    this.tabList.childTask.count = this.task ? this.task.tasks.length : 0;
-    this.tabList.comment.count = this.comments ? this.comments.length : 0;
-    this.tabList.bookmark.count = this.bookmarks ? this.bookmarks.length : 0;
-  },
+  created() {},
   mixins: [SpinnerMixin],
 };
 </script>
