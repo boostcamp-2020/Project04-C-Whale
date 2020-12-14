@@ -2,7 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="pcJ-NH-hpV">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -128,6 +128,9 @@
                                                 <state key="normal">
                                                     <imageReference key="image" image="xmark.circle.fill" catalog="system" renderingMode="template"/>
                                                 </state>
+                                                <connections>
+                                                    <action selector="didTabCancelButton:" destination="JAU-4d-7Yj" eventType="touchUpInside" id="8mt-um-jHr"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                         <constraints>
@@ -338,6 +341,7 @@
                     <connections>
                         <outlet property="bookmarkTabButton" destination="vZE-sc-veY" id="XYD-CQ-nWw"/>
                         <outlet property="commentTabButton" destination="xTE-Ce-ANu" id="tM0-Um-KhB"/>
+                        <outlet property="datePickerButtonView" destination="ISU-Dn-Rec" id="Dcr-mz-MPh"/>
                         <outlet property="finishButton" destination="ovW-bp-nsn" id="agw-B9-7KS"/>
                         <outlet property="navigationBar" destination="hbn-2h-nDV" id="biM-Sq-vCa"/>
                         <outlet property="navigationView" destination="sZF-UA-ODh" id="xlH-sk-POR"/>
@@ -431,7 +435,7 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="commentAddView" destination="sTO-pV-NIA" id="2ib-6Y-lM9"/>
+                        <outlet property="commentAddView" destination="sTO-pV-NIA" id="u9r-Qm-rEq"/>
                         <outlet property="commentCollectionView" destination="N6x-UB-fM9" id="vzs-X2-Lf6"/>
                     </connections>
                 </viewController>
@@ -448,8 +452,8 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="qwn-gP-3KP">
-                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <rect key="frame" x="0.0" y="44" width="414" height="768"/>
+                                <color key="backgroundColor" systemColor="systemGroupedBackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="NDs-oE-tAt">
                                     <size key="itemSize" width="128" height="128"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -458,23 +462,34 @@
                                 </collectionViewFlowLayout>
                                 <cells/>
                             </collectionView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OYq-bx-oDZ" customClass="CommentAddView" customModule="HalgoraeDO" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="812" width="414" height="50"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="1Qz-NO-6Mz"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Erb-Iy-Ah7"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="Erb-Iy-Ah7" firstAttribute="trailing" secondItem="OYq-bx-oDZ" secondAttribute="trailing" id="54i-s1-7yC"/>
+                            <constraint firstItem="Erb-Iy-Ah7" firstAttribute="bottom" secondItem="OYq-bx-oDZ" secondAttribute="bottom" id="8yR-ms-AjZ"/>
                             <constraint firstItem="qwn-gP-3KP" firstAttribute="top" secondItem="Erb-Iy-Ah7" secondAttribute="top" id="9FS-u7-CBl"/>
                             <constraint firstItem="Erb-Iy-Ah7" firstAttribute="trailing" secondItem="qwn-gP-3KP" secondAttribute="trailing" id="H0q-fn-iTv"/>
-                            <constraint firstItem="Erb-Iy-Ah7" firstAttribute="bottom" secondItem="qwn-gP-3KP" secondAttribute="bottom" id="NMT-lW-Xwg"/>
+                            <constraint firstItem="OYq-bx-oDZ" firstAttribute="top" secondItem="qwn-gP-3KP" secondAttribute="bottom" id="IZX-FW-8K7"/>
+                            <constraint firstItem="OYq-bx-oDZ" firstAttribute="leading" secondItem="Erb-Iy-Ah7" secondAttribute="leading" id="WZi-TB-Vi3"/>
                             <constraint firstItem="qwn-gP-3KP" firstAttribute="leading" secondItem="Erb-Iy-Ah7" secondAttribute="leading" id="iBG-ar-XHf"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="bookmarkAddView" destination="OYq-bx-oDZ" id="Yg7-bE-5gY"/>
                         <outlet property="bookmarkCollectionView" destination="qwn-gP-3KP" id="K9Z-7g-9FY"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NV1-4G-WS4" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3830" y="798"/>
+            <point key="canvasLocation" x="3828.985507246377" y="797.54464285714278"/>
         </scene>
         <!--Add Project View Controller-->
         <scene sceneID="o35-4p-4qT">
