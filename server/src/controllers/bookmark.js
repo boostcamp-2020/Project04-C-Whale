@@ -36,19 +36,19 @@ const createBookmark = asyncTryCatch(async (req, res) => {
   responseHandler(res, 201, { message: 'ok' });
 });
 
-// const deleteComment = asyncTryCatch(async (req, res) => {
-//   try {
-//     await validator(ParamsValidator, req.params);
-//   } catch (errs) {
-//     const validationError = getTypeError(errs);
-//     throw validationError;
-//   }
+const deleteBookmark = asyncTryCatch(async (req, res) => {
+  try {
+    await validator(ParamsValidator, req.params);
+  } catch (errs) {
+    const validationError = getTypeError(errs);
+    throw validationError;
+  }
 
-//   const { commentId, taskId } = req.params;
-//   const userId = req.user.id;
-//   await commentService.remove({ id: commentId, taskId, userId });
+  const { taskId, bookmarkId } = req.params;
+  const userId = req.user.id;
+  await bookmarkService.remove({ id: bookmarkId, taskId, userId });
 
-//   responseHandler(res, 200, { message: 'ok' });
-// });
+  responseHandler(res, 200, { message: 'ok' });
+});
 
-module.exports = { getBookmarks, createBookmark };
+module.exports = { getBookmarks, createBookmark, deleteBookmark };
