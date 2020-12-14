@@ -41,12 +41,21 @@ const retrieveById = async ({ id, userId }) => {
 const retrieveAll = async userId => {
   const tasks = await taskModel.findAll({
     include: [
-      'bookmarks',
       {
         model: taskModel,
-        include: ['bookmarks'],
+        include: ['bookmarks', 'comments'],
         where: { isDone: false },
         required: false,
+      },
+      {
+        model: models.bookmark,
+        required: false,
+        order: [['createdAt', 'ASC']],
+      },
+      {
+        model: models.comment,
+        required: false,
+        order: [['createdAt', 'ASC']],
       },
       {
         model: models.section,
@@ -59,7 +68,7 @@ const retrieveAll = async userId => {
         ],
       },
     ],
-    group: ['section.project.creatorId'],
+    where: { parentId: null },
     having: { 'section.project.creatorId': userId },
     order: [[taskModel, 'position', 'ASC']],
   });
