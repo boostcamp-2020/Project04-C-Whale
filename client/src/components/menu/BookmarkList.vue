@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import whaleApi, { isWhale } from "@/utils/whaleApi";
+import whaleApi from "@/utils/whaleApi";
 import { mapMutations } from "vuex";
 
 export default {
@@ -68,7 +68,7 @@ export default {
   components: {},
   data() {
     return {
-      isWhale: isWhale,
+      isWhale: window.whale ? true : false,
       tasks: [
         {
           id: 0,
@@ -112,13 +112,11 @@ export default {
   methods: {
     ...mapMutations(["SET_SUCCESS_ALERT", "SET_ERROR_ALERT"]),
     uploadBookmarks(task) {
-      if (isWhale) {
-        try {
-          whaleApi.createBookmark({ folderTitle: task.title, bookmarks: task.bookmarks });
-          this.SET_SUCCESS_ALERT("북마크가 등록되었습니다");
-        } catch (err) {
-          this.SET_ERROR_ALERT(err);
-        }
+      try {
+        whaleApi.createBookmark({ folderTitle: task.title, bookmarks: task.bookmarks });
+        this.SET_SUCCESS_ALERT("북마크가 등록되었습니다");
+      } catch (err) {
+        this.SET_ERROR_ALERT(err);
       }
     },
   },

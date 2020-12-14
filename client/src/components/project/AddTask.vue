@@ -93,7 +93,7 @@ import { mapGetters, mapActions } from "vuex";
 import { getTodayString } from "../../utils/date";
 import whaleApi from "../../utils/whaleApi";
 import { getMarkDownUrl } from "../../utils/markdown";
-import { createAlarm, isWhale } from "../../utils/whaleApi";
+import { createAlarm } from "../../utils/whaleApi";
 
 export default {
   props: {
@@ -113,7 +113,7 @@ export default {
         dueDate: getTodayString(),
       },
       alarmTime: 0,
-      isWhale: isWhale,
+      isWhale: window.whale ? true : false,
     };
   },
   computed: {

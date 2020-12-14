@@ -4,7 +4,7 @@ import { getMarkDownUrl } from "@/utils/markdown";
 
 const extensionId = process.env.VUE_APP_EXTENSION_ID;
 
-const isWhale = window.whale;
+const isWhale = window.whale ? true : false;
 if (isWhale) {
   const port = whale.runtime?.connect(extensionId, { name: "Halgoraedo" });
 

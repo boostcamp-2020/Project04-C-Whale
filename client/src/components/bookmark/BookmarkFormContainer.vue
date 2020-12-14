@@ -19,19 +19,19 @@
 </template>
 
 <script>
-import whaleApi, { isWhale } from "@/utils/whaleApi";
+import whaleApi from "@/utils/whaleApi";
 import { getMarkDownUrl } from "@/utils/markdown";
 
 export default {
   data() {
     return {
       bookmark: "",
-      isWhale: isWhale,
+      isWhale: window.whale ? true : false,
     };
   },
   methods: {
     setBookmark() {
-      if (isWhale) {
+      if (window.whale) {
         whaleApi.getCurrentTabUrl(({ title, url }) => {
           this.bookmark = getMarkDownUrl(title, url);
         });
