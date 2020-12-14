@@ -44,7 +44,9 @@ const updateComment = asyncTryCatch(async (req, res) => {
     throw validationError;
   }
 
-  await commentService.update(req.params.commentId, req.body);
+  const { taskId, commentId } = req.params;
+  const userId = req.user.id;
+  await commentService.update({ id: commentId, taskId, userId, ...req.body });
 
   responseHandler(res, 200, { message: 'ok' });
 });
