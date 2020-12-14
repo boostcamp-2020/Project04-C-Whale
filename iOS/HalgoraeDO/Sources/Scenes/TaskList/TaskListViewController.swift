@@ -323,10 +323,14 @@ extension TaskListViewController: TaskListDisplayLogic {
     func displayFetchTasks(viewModel: TaskListModels.FetchTasks.ViewModel) {
         var snapshot = NSDiffableDataSourceSnapshot<TaskListModels.SectionVM, TaskListModels.DisplayedTask>()
         snapshot.appendSections(viewModel.sectionVMs)
-        dataSource.apply(snapshot)
+        DispatchQueue.main.async {
+            self.dataSource.apply(snapshot)
+        }
         for sectionVM in viewModel.sectionVMs {
             let sectionSnapshot = generateSnapshot(taskItems: sectionVM.tasks)
-            dataSource.apply(sectionSnapshot, to: sectionVM)
+            DispatchQueue.main.async {
+                self.dataSource.apply(sectionSnapshot, to: sectionVM)
+            }
         }
     }
     

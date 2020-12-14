@@ -156,7 +156,9 @@ enum TaskListModels {
             self.isCompleted = task.isDone
             self.tintColor = task.priority.color
             self.position = Int(task.position)
-            self.parentPosition = Int(task.parent?.position ?? 0)
+            if let parentPosition = task.parent?.position {
+                self.parentPosition = Int(parentPosition)
+            }
             guard let tasks = task.tasks else { return }
             self.subItems = tasks.compactMap({ $0 as? Task }).compactMap { DisplayedTask(task: $0) }
         }
