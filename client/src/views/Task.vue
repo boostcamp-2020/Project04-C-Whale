@@ -59,8 +59,8 @@ export default {
 <style>
 .v-dialog {
   max-height: 80% !important;
-  width: 50%;
 }
+
 @media screen and (max-width: 720px) {
   .v-dialog {
     width: 80%;

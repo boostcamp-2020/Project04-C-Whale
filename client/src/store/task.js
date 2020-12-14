@@ -1,5 +1,5 @@
 import taskAPI from "../api/task";
-import { isToday } from "@/utils/date";
+import { isToday, isExpired } from "@/utils/date";
 import projectAPI from "../api/project";
 
 const state = {
@@ -11,7 +11,7 @@ const state = {
 const getters = {
   currentTask: (state) => state.currentTask,
   todayTasks: (state) => state.tasks.filter((task) => isToday(task.dueDate) && !task.isDone),
-  expiredTasks: (state) => state.tasks.filter((task) => !isToday(task.dueDate) && !task.isDone),
+  expiredTasks: (state) => state.tasks.filter((task) => isExpired(task.dueDate) && !task.isDone),
   taskCount: (state) => state.tasks.length,
   tasksWithBookmarks: (state) => state.tasks.filter((task) => task.bookmarks.length > 0),
 };
