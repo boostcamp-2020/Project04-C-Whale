@@ -17,7 +17,7 @@
 
       <v-dialog v-model="showQuickAdd" width="500">
         <v-card class="pa-3">
-          <AddTask :initialShow="true" />
+          <AddTask @done="toggleQuickAdd" :initialShow="true" type="quick" />
         </v-card>
       </v-dialog>
 
