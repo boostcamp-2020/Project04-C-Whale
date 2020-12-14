@@ -45,7 +45,6 @@ const retrieveAll = async userId => {
       {
         model: taskModel,
         include: ['bookmarks', 'comments'],
-        where: { isDone: false },
         required: false,
       },
       {
@@ -74,7 +73,7 @@ const retrieveAll = async userId => {
     having: { 'section.project.creatorId': userId },
     order: [[taskModel, 'position', 'ASC']],
   });
-
+  console.log(tasks);
   return tasks;
 };
 
