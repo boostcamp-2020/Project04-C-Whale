@@ -1,6 +1,7 @@
-const errorHandler = (res, code, message = '') => {
-  res.status(code).json({
-    message,
+const errorHandler = (res, error) => {
+  res.status(error.status).json({
+    message: error.message,
+    code: error.code,
   });
 };
 
