@@ -70,11 +70,27 @@ const update = async ({ id, taskId, userId, ...data }) => {
   return true;
 };
 
-const remove = async id => {
-  const result = await commentModel.destroy({
-    where: { id },
-  });
-  return result;
+const remove = async ({ id, taskId, userId }) => {
+  const comment = await commentModel.findByPk(id);
+
+  if (!comment) {
+    const error = customError.NOT_FOUND_ERROR('comment');
+    throw error;
+  }
+  if (!(await isCommentOwner({ id, userId }))) {
+    const error = customError.FORBIDDEN_ERROR('comment');
+    throw error;
+  }
+
+  if (comment.taskId !== taskId) {
+    const error = customError.WRONG_RELATION_ERROR('task, comment');
+    throw error;
+  }
+
+  const result = await comment.destroy();
+  result.save();
+
+  return true;
 };
 
 module.exports = { retrieveAllByTaskId, create, update, remove };

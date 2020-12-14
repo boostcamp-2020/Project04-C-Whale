@@ -58,7 +58,10 @@ const deleteComment = asyncTryCatch(async (req, res) => {
     const validationError = getTypeError(errs);
     throw validationError;
   }
-  await commentService.remove(req.params.commentId);
+
+  const { commentId, taskId } = req.params;
+  const userId = req.user.id;
+  await commentService.remove({ id: commentId, taskId, userId });
 
   responseHandler(res, 200, { message: 'ok' });
 });
