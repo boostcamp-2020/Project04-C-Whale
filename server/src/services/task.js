@@ -45,7 +45,6 @@ const retrieveAll = async userId => {
       {
         model: taskModel,
         include: ['bookmarks', 'comments'],
-        where: { isDone: false },
         required: false,
       },
       {

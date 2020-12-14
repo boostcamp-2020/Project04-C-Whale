@@ -1,7 +1,10 @@
-const taskModel = require('@models').models.task;
-const commentModel = require('@models').models.comment;
-const { isTaskOwner } = require('@services/authority-check');
+const sequelize = require('@models');
+const { isTaskOwner, isCommentOwner } = require('@services/authority-check');
 const { customError } = require('@utils/custom-error');
+
+const { models } = sequelize;
+const taskModel = models.task;
+const commentModel = models.comment;
 
 const retrieveAllByTaskId = async ({ userId, taskId }) => {
   const task = await taskModel.findByPk(taskId);
@@ -17,28 +20,77 @@ const retrieveAllByTaskId = async ({ userId, taskId }) => {
   return comments;
 };
 
-const create = async (taskId, commentData) => {
+const create = async ({ userId, taskId, ...commentData }) => {
   const task = await taskModel.findByPk(taskId);
   if (!task) {
     const error = customError.NOT_FOUND_ERROR('task');
     throw error;
   }
+  if (!(await isTaskOwner({ id: taskId, userId }))) {
+    const error = customError.FORBIDDEN_ERROR('task');
+    throw error;
+  }
+
   const result = await commentModel.create({ ...commentData, taskId });
 
   return result;
 };
 
-const update = async (id, data) => {
-  const result = await commentModel.update(data, { where: { id } });
+const update = async ({ id, taskId, userId, ...data }) => {
+  const task = await taskModel.findByPk(taskId);
+  if (!task) {
+    const error = customError.NOT_FOUND_ERROR('task');
+    throw error;
+  }
+  if (!(await isTaskOwner({ id: taskId, userId }))) {
+    const error = customError.FORBIDDEN_ERROR('task');
+    throw error;
+  }
 
-  return result;
+  const comment = await commentModel.findByPk(id);
+
+  if (!comment) {
+    const error = customError.NOT_FOUND_ERROR('comment');
+    throw error;
+  }
+
+  if (!(await isCommentOwner({ id, userId }))) {
+    const error = customError.FORBIDDEN_ERROR('comment');
+    throw error;
+  }
+
+  if (comment.taskId !== taskId) {
+    const error = customError.WRONG_RELATION_ERROR('task, comment');
+    throw error;
+  }
+
+  comment.update({ ...data });
+  comment.save();
+
+  return true;
 };
 
-const remove = async id => {
-  const result = await commentModel.destroy({
-    where: { id },
-  });
-  return result;
+const remove = async ({ id, taskId, userId }) => {
+  const comment = await commentModel.findByPk(id);
+
+  if (!comment) {
+    const error = customError.NOT_FOUND_ERROR('comment');
+    throw error;
+  }
+  if (!(await isCommentOwner({ id, userId }))) {
+    const error = customError.FORBIDDEN_ERROR('comment');
+    throw error;
+  }
+
+  if (comment.taskId !== taskId) {
+    const error = customError.WRONG_RELATION_ERROR('task, comment');
+    throw error;
+  }
+
+  const result = await comment.destroy();
+  result.save();
+
+  return true;
 };
 
 module.exports = { retrieveAllByTaskId, create, update, remove };
