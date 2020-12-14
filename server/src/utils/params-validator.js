@@ -21,6 +21,11 @@ class ParamsValidator {
   @IsString({ message: errorMessage.TYPE_ERROR('commentId') })
   @IsUUID('4', { message: errorMessage.INVALID_INPUT_ERROR('commentId') })
   commentId;
+
+  @ValidateIf(o => typeof o.bookmarkId !== 'undefined')
+  @IsString({ message: errorMessage.TYPE_ERROR('bookmarkId') })
+  @IsUUID('4', { message: errorMessage.INVALID_INPUT_ERROR('bookmarkId') })
+  bookmarkId;
 }
 
 module.exports = ParamsValidator;
