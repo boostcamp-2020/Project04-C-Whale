@@ -59,9 +59,23 @@ const updateTask = asyncTryCatch(async (req, res) => {
   responseHandler(res, 200, { message: 'ok' });
 });
 
+const updateChildTaskPositions = asyncTryCatch(async (req, res) => {
+  const parentId = req.params.taskId;
+  await taskService.updateChildTaskPositions(parentId, req.body.orderedTasks);
+
+  responseHandler(res, 200, { message: 'ok' });
+});
+
 const deleteTask = asyncTryCatch(async (req, res) => {
   await taskService.remove(req.params.taskId);
   responseHandler(res, 200, { message: 'ok' });
 });
 
-module.exports = { getTaskById, getAllTasks, createTask, updateTask, deleteTask };
+module.exports = {
+  getTaskById,
+  getAllTasks,
+  createTask,
+  updateTask,
+  deleteTask,
+  updateChildTaskPositions,
+};
