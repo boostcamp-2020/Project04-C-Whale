@@ -19,7 +19,10 @@ afterAll(async done => {
 describe('get comments', () => {
   it('get comments 일반', async done => {
     // given
-    const expectedCommentId = seeder.comments[0].id;
+    const expectedComments = seeder.comments.sort((comment1, comment2) => {
+      return comment1.createdAt.getTime() - comment2.createdAt.getTime();
+    });
+
     const taskId = seeder.tasks[1].id;
 
     try {
@@ -27,10 +30,13 @@ describe('get comments', () => {
       const res = await request(app)
         .get(`/api/task/${taskId}/comment`)
         .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`);
-      const firstCommentId = res.body.comments[0].id;
-
+      const { comments } = res.body;
       // then
-      expect(firstCommentId).toEqual(expectedCommentId);
+      expect(
+        comments.every(recievedComment =>
+          expectedComments.some(expectedComment => recievedComment.id === expectedComment.id),
+        ),
+      ).toBeTruthy();
       done();
     } catch (err) {
       done(err);
@@ -101,36 +107,12 @@ describe('create comment', () => {
       done(err);
     }
   });
-  it('isImage가 Boolean 타입이 아닌 경우', async done => {
-    // given
-    const requestBody = { content: '하이하이', isImage: '잘못된 타입' };
-    const taskId = seeder.tasks[1].id;
-    const expectedError = customError.TYPE_ERROR('isImage');
-    try {
-      // when
-      const res = await request(app)
-        .post(`/api/task/${taskId}/comment`)
-        .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
-        .send(requestBody);
-
-      // then
-      expect(res.status).toBe(expectedError.status);
-      expect(res.body.code).toBe(expectedError.code);
-      expect(res.body.message).toBe(expectedError.message);
-      done();
-    } catch (err) {
-      done(err);
-    }
-  });
 });
 
 describe('update comment', () => {
   it('update comment 일반', async done => {
     // given
-    const requestBody = {
-      content: '바뀐 댓글',
-      isImage: false,
-    };
+    const requestBody = { content: '바뀐 댓글' };
     const taskId = seeder.tasks[1].id;
     const commentId = seeder.comments[0].id;
     try {
@@ -139,7 +121,6 @@ describe('update comment', () => {
         .put(`/api/task/${taskId}/comment/${commentId}`)
         .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
         .send(requestBody);
-
       // then
       expect(res.status).toBe(status.SUCCESS.CODE);
       expect(res.body.message).toBe(status.SUCCESS.MSG);
@@ -150,7 +131,7 @@ describe('update comment', () => {
   });
   it('빈 배열 content', async done => {
     // given
-    const requestBody = { content: '', isImage: false };
+    const requestBody = { content: '' };
     const taskId = seeder.tasks[1].id;
     const commentId = seeder.comments[0].id;
     const expectedError = customError.INVALID_INPUT_ERROR('content');
@@ -170,31 +151,9 @@ describe('update comment', () => {
       done(err);
     }
   });
-  it('isImage가 Boolean 타입이 아닌 경우', async done => {
-    // given
-    const requestBody = { content: '하이하이', isImage: '잘못된 타입' };
-    const taskId = seeder.tasks[1].id;
-    const commentId = seeder.comments[0].id;
-    const expectedError = customError.TYPE_ERROR('isImage');
-    try {
-      // when
-      const res = await request(app)
-        .put(`/api/task/${taskId}/comment/${commentId}`)
-        .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
-        .send(requestBody);
-
-      // then
-      expect(res.status).toBe(expectedError.status);
-      expect(res.body.code).toBe(expectedError.code);
-      expect(res.body.message).toBe(expectedError.message);
-      done();
-    } catch (err) {
-      done(err);
-    }
-  });
   it('id가 포함된 경우', async done => {
     // given
-    const requestBody = { id: seeder.comments[0].id, content: '하이하이', isImage: false };
+    const requestBody = { id: seeder.comments[0].id, content: '하이하이' };
     const taskId = seeder.tasks[1].id;
     const commentId = seeder.comments[0].id;
     const expectedError = customError.UNNECESSARY_INPUT_ERROR('id');
