@@ -16,5 +16,6 @@ router.delete('/:taskId/comment/:commentId', commentController.deleteComment);
 
 router.get('/:taskId/bookmark', bookmarkController.getBookmarks);
 router.post('/:taskId/bookmark', bookmarkController.createBookmark);
+router.delete('/:taskId/bookmark/:bookmarkId', bookmarkController.deleteBookmark);
 
 module.exports = router;
