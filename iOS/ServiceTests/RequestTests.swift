@@ -19,7 +19,7 @@ class RequestTests: XCTestCase {
         request = URLRequest(url: url)
     }
     
-    func testRequest_request_init_url() {
+    func testURL_init_url() {
         // When
         let dataRequest = DataRequest(session: session, request: request)
         
@@ -27,7 +27,7 @@ class RequestTests: XCTestCase {
         XCTAssertEqual(dataRequest.request.url, url)
     }
     
-    func testRequest_responseData_init_url() {
+    func testURL_inResponseData_success() {
         // Given
         let dataRequest = DataRequest(session: session, request: request)
         
@@ -38,7 +38,7 @@ class RequestTests: XCTestCase {
         XCTAssertEqual(responseRequest.request.url, url)
     }
     
-    func testRequest_responseURL_init_url() {
+    func testURL_inResponseURL_success() {
         // Given
         let dataRequest = DataRequest(session: session, request: request)
         
