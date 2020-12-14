@@ -63,7 +63,7 @@ describe('get comments', () => {
   it('taskId가 잘못된 경우', async done => {
     // given
     const taskId = seeder.sections[1].id;
-    const expectedError = customError.INVALID_INPUT_ERROR('taskId');
+    const expectedError = customError.NOT_FOUND_ERROR('task');
     try {
       // when
       const res = await request(app)
@@ -167,7 +167,7 @@ describe('create comment', () => {
     // given
     const requestBody = { content: '하이' };
     const taskId = seeder.sections[1].id;
-    const expectedError = customError.INVALID_INPUT_ERROR('taskId');
+    const expectedError = customError.NOT_FOUND_ERROR('task');
     try {
       // when
       const res = await request(app)
@@ -297,7 +297,7 @@ describe('update comment', () => {
     const requestBody = { content: '하이' };
     const taskId = seeder.sections[1].id;
     const commentId = seeder.comments[0].id;
-    const expectedError = customError.INVALID_INPUT_ERROR('taskId');
+    const expectedError = customError.NOT_FOUND_ERROR('task');
     try {
       // when
       const res = await request(app)
