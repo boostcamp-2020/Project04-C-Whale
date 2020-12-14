@@ -10,7 +10,7 @@ import Foundation
 protocol SessionManagerProtocol {
     func request(endPoint: EndPointType,
                  cachePolicy: URLRequest.CachePolicy,
-                 timeoutInterval: TimeInterval) -> DataRequest
+                 timeoutInterval: TimeInterval) -> DataResponsing
 }
 
 extension SessionManagerProtocol {
@@ -32,7 +32,7 @@ class SessionManager: SessionManagerProtocol {
     
     func request(endPoint: EndPointType,
                  cachePolicy: URLRequest.CachePolicy = .reloadIgnoringLocalAndRemoteCacheData,
-                 timeoutInterval: TimeInterval = 10.0) -> DataRequest {
+                 timeoutInterval: TimeInterval = 10.0) -> DataResponsing {
         var url = endPoint.baseURL
         if !endPoint.path.isEmpty {
             url.appendPathComponent(endPoint.path)
