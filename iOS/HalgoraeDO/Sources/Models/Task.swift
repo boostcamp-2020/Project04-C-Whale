@@ -18,6 +18,7 @@ final class Task {
     var isDone: Bool
     var dueDate: String?
     var position: Int
+    var sectionId: String
     var createdAt: String
     var updatedAt: String
     var priority: Priority?
@@ -29,6 +30,7 @@ final class Task {
          isCompleted: Bool = false,
          dueDate: String = "\(Date())",
          position: Int,
+         sectionId: String = UUID().uuidString,
          createdAt: String = "\(Date())",
          updatedAt: String = "\(Date())",
          priority: Priority = .four,
@@ -49,6 +51,7 @@ final class Task {
         self.tasks = subTasks
         self.comments = comments
         self.bookmarks = bookmarks
+        self.sectionId = sectionId
         self.tasks?.forEach { $0.parent = self }
     }
         
@@ -104,6 +107,6 @@ extension Task: Hashable {
 
 extension Task: CustomStringConvertible {
     var description: String {
-        return "id: \(id), title: \(title), isCompleted: \(isDone), parent: \(parent ?? "nil" as CustomStringConvertible), subTasks: \(tasks)"
+        return "id: \(id), title: \(title), isDone: \(isDone), parent: \(parent ?? "nil" as CustomStringConvertible), subTasks: \(tasks)"
     }
 }
