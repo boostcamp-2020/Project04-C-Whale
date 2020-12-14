@@ -13,15 +13,6 @@ protocol SessionManagerProtocol {
                  timeoutInterval: TimeInterval) -> DataResponsing
 }
 
-extension SessionManagerProtocol {
-    
-    func request(endPoint: EndPointType,
-                 cachePolicy: URLRequest.CachePolicy = .reloadIgnoringLocalAndRemoteCacheData,
-                 timeoutInterval: TimeInterval = 10.0) -> DataRequest {
-        request(endPoint: endPoint, cachePolicy: cachePolicy, timeoutInterval: timeoutInterval)
-    }
-}
-
 class SessionManager: SessionManagerProtocol {
     
     let session: URLSession
