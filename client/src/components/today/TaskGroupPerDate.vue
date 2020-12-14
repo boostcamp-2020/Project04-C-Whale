@@ -2,8 +2,7 @@
   <v-list class="mb-5" v-show="type !== 'expired' || (type === 'expired' && tasks.length > 0)">
     <v-list-item class="font-weight-black text-h6"
       >{{ typeString[type] }}
-      <!--TODO: 기한이 지난 날짜 없애기 -->
-      <span v-if="type === 'today'" class="font-14 d-inline-block ml-2">{{ todayString }}</span>
+      <span v-if="isToday" class="font-14 d-inline-block ml-2">{{ todayString }}</span>
     </v-list-item>
     <div v-for="task in tasks" :key="task.id" class="task-container">
       <TaskItem :task="task" />
@@ -18,7 +17,11 @@
         />
       </div>
     </div>
-    <AddTask :projectId="managedProject.id" :sectionId="managedProject.defaultSectionId" />
+    <AddTask
+      v-if="isToday"
+      :projectId="managedProject.id"
+      :sectionId="managedProject.defaultSectionId"
+    />
   </v-list>
 </template>
 
@@ -45,6 +48,9 @@ export default {
     ...mapGetters(["managedProject"]),
     todayString() {
       return getTodayString();
+    },
+    isToday() {
+      return this.type === "today";
     },
   },
   components: { TaskItem, AddTask },
