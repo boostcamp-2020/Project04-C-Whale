@@ -33,7 +33,7 @@ class TaskBoardViewController: UIViewController {
     }
     
     required init?(coder: NSCoder) {
-        self.project = Project(title: "")
+        self.project = Project(context: Storage().childContext)
         super.init(coder: coder)
     }
     
@@ -80,11 +80,11 @@ class TaskBoardViewController: UIViewController {
         let alert = UIAlertController(title: "섹션 추가", message: "예. 3주차 할일", preferredStyle: .alert)
         let ok = UIAlertAction(title: "OK", style: .default) { (ok) in
             guard let sectionName = alert.textFields?[0].text,
-                  let projectId = self.project.id,
                   sectionName != ""
             else {
                 return
             }
+            let projectId = self.project.id
             let sectionFields = TaskListModels.SectionFields(title: sectionName)
             self.interactor?.createSection(request: .init(projectId: projectId, sectionFields: sectionFields))
         }
@@ -193,10 +193,9 @@ private extension TaskBoardViewController {
 extension TaskBoardViewController: TaskAddViewControllerDelegate {
     
     func taskAddViewControllerDidDone(_ taskAddViewController: TaskAddViewController) {
-        guard let projectId = project.id,
-              let sectionNum = taskAddViewController.sectionNum,
-              let sectionId = sectionVM[sectionNum].id as? String
-        else { return }
+        guard let sectionNum = taskAddViewController.sectionNum else { return }
+        let projectId = project.id
+        let sectionId = sectionVM[sectionNum].id
         let taskFields = TaskListModels.TaskFields(title: taskAddViewController.text,
                                                   date: taskAddViewController.date,
                                                   priority: "\(taskAddViewController.priority.rawValue)")

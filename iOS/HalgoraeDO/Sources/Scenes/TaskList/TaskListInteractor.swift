@@ -34,7 +34,7 @@ extension TaskListInteractor: TaskListBusinessLogic {
     func fetchTasks(request: TaskListModels.FetchTasks.Request) {
         guard let id = request.projectId else { return }
         worker.request(endPoint: .get(projectId: id)) { [weak self] (project: Project?) in
-            self?.taskList.sections = project?.sections ?? []
+            self?.taskList.sections = project?.sections?.array as? [Section] ?? []
             self?.presenter.presentFetchTasks(response: TaskListModels.FetchTasks.Response(sections: self?.taskList.sections ?? []))
         }
     }
@@ -57,7 +57,7 @@ extension TaskListInteractor: TaskListBusinessLogic {
     func createTask(request: TaskListModels.CreateTask.Request) {
         guard let data = request.taskFields.encodeData else { return }
         worker.requestPostAndGetTask(post: TaskEndPoint.create(projectId: request.projectId, sectionId: request.sectionId, request: data), endPoint: .get(projectId: request.projectId)) { [weak self] (project: Project?) in
-            self?.taskList.sections = project?.sections ?? []
+            self?.taskList.sections = project?.sections?.array as? [Section] ?? []
             self?.presenter.presentFetchTasks(response: TaskListModels.FetchTasks.Response(sections: self?.taskList.sections ?? []))
         }
     }
@@ -65,8 +65,9 @@ extension TaskListInteractor: TaskListBusinessLogic {
     func createSection(request: TaskListModels.CreateSection.Request) {
         guard let data = request.sectionFields.encodeData else { return }
         
+        
         worker.requestPostAndGetTemp(post: TaskEndPoint.sectionCreate(projectId: request.projectId, request: data), endPoint: .get(projectId: request.projectId)) { [weak self] (project: Project?) in
-            self?.taskList.sections = project?.sections ?? []
+            self?.taskList.sections = project?.sections?.array as? [Section] ?? []
             self?.presenter.presentFetchTasks(response: TaskListModels.FetchTasks.Response(sections: self?.taskList.sections ?? []))
         }
     }

@@ -62,7 +62,7 @@ class TaskDetailViewController: UIViewController {
     }
     
     required init?(coder: NSCoder) {
-        self.task = Task(title: "", position: 0)
+        self.task = Task(context: Storage().childContext)
         super.init(coder: coder)
     }
     
@@ -98,7 +98,7 @@ class TaskDetailViewController: UIViewController {
         taskTitleTextView.delegate = self
         titleLabel.text = "할일 수정하기"
         taskTitleTextView.text = task.title
-        priority = task.priority ?? .four
+        priority = task.priority 
     }
     
     override func setEditing(_ editing: Bool, animated: Bool) {

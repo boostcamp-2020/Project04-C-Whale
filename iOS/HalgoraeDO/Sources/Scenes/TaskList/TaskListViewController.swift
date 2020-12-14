@@ -55,7 +55,7 @@ class TaskListViewController: UIViewController {
     }
     
     required init?(coder: NSCoder) {
-        self.project = Project(title: "")
+        self.project = Project(context: Storage().childContext)
         super.init(coder: coder)
     }
     
@@ -69,7 +69,6 @@ class TaskListViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        print("project id = ", project.id)
         interactor?.fetchTasks(request: .init(projectId: project.id ?? ""))
     }
     
@@ -182,12 +181,11 @@ class TaskListViewController: UIViewController {
         let alert = UIAlertController(title: "섹션 추가", message: "예. 3주차 할일", preferredStyle: .alert)
         let ok = UIAlertAction(title: "OK", style: .default) { (ok) in
             guard let sectionName = alert.textFields?[0].text,
-                  let projectId = self.project.id,
                   sectionName != ""
             else {
                 return
             }
-            
+            let projectId = self.project.id
             let sectionFields = TaskListModels.SectionFields(title: sectionName)
             self.interactor?.createSection(request: .init(projectId: projectId, sectionFields: sectionFields))
         }
@@ -619,12 +617,8 @@ private extension TaskListViewController {
 extension TaskListViewController: TaskAddViewControllerDelegate {
     
     func taskAddViewControllerDidDone(_ taskAddViewController: TaskAddViewController) {
-        guard let projectId = project.id,
-              dataSource.snapshot().sectionIdentifiers.count != 0
-        else {
-            return
-        }
-        
+        guard dataSource.snapshot().sectionIdentifiers.count != 0 else { return }
+        let projectId = project.id
         let sectionId = dataSource.snapshot().sectionIdentifiers[0].id
         let taskFields = TaskListModels.TaskFields(title: taskAddViewController.text,
                                                   date: taskAddViewController.date,
