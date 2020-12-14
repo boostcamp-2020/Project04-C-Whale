@@ -490,11 +490,32 @@ describe('delete comment', () => {
       done(err);
     }
   });
-  it('잘못된 commentId', async done => {
+  it('commentId가 uuid가 아닌 경우', async done => {
     // given
     const taskId = seeder.tasks[1].id;
     const commentId = 'invalid commentId';
     const expectedError = customError.INVALID_INPUT_ERROR('commentId');
+
+    try {
+      // when
+      const res = await request(app)
+        .delete(`/api/task/${taskId}/comment/${commentId}`)
+        .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`);
+
+      // then
+      expect(res.status).toBe(expectedError.status);
+      expect(res.body.code).toBe(expectedError.code);
+      expect(res.body.message).toBe(expectedError.message);
+      done();
+    } catch (err) {
+      done(err);
+    }
+  });
+  it('존재하지 않는 commentId', async done => {
+    // given
+    const taskId = seeder.tasks[1].id;
+    const commentId = seeder.sections[0].id;
+    const expectedError = customError.NOT_FOUND_ERROR('commentId');
 
     try {
       // when
