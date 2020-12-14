@@ -17,21 +17,42 @@ class NetworkMonitor {
     }
     
     static public let shared = NetworkMonitor()
-    private var monitor: NWPathMonitor
-    private var queue = DispatchQueue.global()
-    var isAvailable: Bool = true
+    let monitor: NWPathMonitor
+    let queue: DispatchQueue
+    let networkManager: NetworkDispatcher
     var connectionType: ConnectionType = .wifi
+    var isAvailable: Bool {
+        return monitor.currentPath.status == .satisfied
+    }
+    var storage: EndPointStorageType {
+        return Storage()
+    }
  
     private init() {
         self.monitor = NWPathMonitor()
         self.queue = DispatchQueue.global(qos: .background)
         self.monitor.start(queue: queue)
+        self.networkManager = NetworkManager(sessionManager: SessionManager(configuration: .default))
     }
  
     func startMonitoring() {
         self.monitor.pathUpdateHandler = { path in
-            self.isAvailable = path.status == .satisfied
             self.connectionType = self.checkConnectionTypeForPath(path)
+            
+            guard self.isAvailable else { return }
+            self.storage.fetchEndPoints { [weak self] (endPoints, error) in
+                for endPoint in endPoints {
+                    self?.networkManager.fetchData(endPoint.endPoint) { (response: ResponseMessage?, error) in
+                        guard error == nil else {
+                            #if DEBUG
+                            print("Fail request endPoint: \(error!)")
+                            #endif
+                            return
+                        }
+                    }
+                    self?.storage.deleteEndPoint(endPoint)
+                }
+            }
         }
     }
  
