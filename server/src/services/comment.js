@@ -3,8 +3,8 @@ const commentModel = require('@models').models.comment;
 
 const retrieveAllByTaskId = async taskId => {
   const task = await taskModel.findByPk(taskId);
-  const comments = await task.getComments();
 
+  const comments = await task.getComments({ order: [['createdAt', 'ASC']] });
   return comments;
 };
 
