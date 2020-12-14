@@ -1,20 +1,22 @@
 <template>
-  <v-list
+  <!-- <v-list
     class="mr-10"
     draggable="false"
     @dragstart="sectionDragStart"
     @dragover.prevent="sectionDragOver"
     @drop.prevent="sectionDrop"
-  >
+  > -->
+  <v-list class="mr-10" draggable="false">
     <v-list-item class="font-weight-black text-h6">
       <UpdatableTitle :originalTitle="section.title" :parent="section" type="section" />
     </v-list-item>
 
-    <div
+    <!-- <div
       v-for="(task, index) in showDoneTasks ? tasks : todoTasks"
       :key="task.id"
       class="task-container"
-    >
+    > -->
+    <div v-for="(task, index) in todoTasks" :key="task.id" class="task-container">
       <TaskItem
         :section="section"
         :task="task"
@@ -54,16 +56,6 @@ export default {
     UpdatableTitle,
     ChildTaskList,
   },
-  setup(props) {
-    const { section } = toRefs(props);
-    const { tasks, taskDragOver, taskDrop } = useDragDropContainer({ parent: section });
-
-    return {
-      tasks,
-      taskDragOver,
-      taskDrop,
-    };
-  },
   computed: {
     ...mapGetters(["draggingSection"]),
     todoTasks() {
@@ -77,6 +69,16 @@ export default {
   },
   beforeDestroy() {
     bus.$off("toggleDoneTasks");
+  },
+  setup(props) {
+    const { section } = toRefs(props);
+    const { tasks, taskDragOver, taskDrop } = useDragDropContainer({ parent: section });
+
+    return {
+      tasks,
+      taskDragOver,
+      taskDrop,
+    };
   },
 };
 </script>
