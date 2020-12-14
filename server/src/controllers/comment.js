@@ -12,7 +12,10 @@ const getComments = asyncTryCatch(async (req, res) => {
     const validationError = getTypeError(errs);
     throw validationError;
   }
-  const comments = await commentService.retrieveAllByTaskId(req.params.taskId);
+  const comments = await commentService.retrieveAllByTaskId({
+    taskId: req.params.taskId,
+    userId: req.user.id,
+  });
 
   responseHandler(res, 200, { comments });
 });
