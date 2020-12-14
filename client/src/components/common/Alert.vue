@@ -5,7 +5,6 @@
       :value="!!alert.message"
       :type="alert.type"
       :color="alert.type === 'success' ? 'whaleGreen' : null"
-      outlined
       dismissible
       @input="CLEAR_ALERT()"
       >{{ alert.message }}</v-alert
