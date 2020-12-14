@@ -8,24 +8,20 @@
     class="task-item text-subtitle"
   >
     <v-list-item-action>
-      <v-radio-group>
-        <v-radio
-          dense
-          @click="updateTaskToDone({ projectId: $route.params.projectId, taskId: task.id })"
-          class="done-checkbox"
-        ></v-radio>
-      </v-radio-group>
+      <v-checkbox v-model="checkBox" @click="updateTaskStatus"></v-checkbox>
     </v-list-item-action>
 
-    <div class="task-div d-flex" @click="moveToTaskDetail()">
+    <v-flex class="task-div d-flex" @click.prevent="moveToTaskDetail()">
       <v-list-item-content>
         <v-list-item-title>
-          <vue-markdown class="mark-down">
+          <vue-mark-down
+            :class="task.isDone ? 'mark-down text-decoration-line-through' : 'mark-down'"
+          >
             {{ task.title }}
-          </vue-markdown>
+          </vue-mark-down>
         </v-list-item-title>
       </v-list-item-content>
-    </div>
+    </v-flex>
   </v-list-item>
 </template>
 
@@ -44,17 +40,23 @@ export default {
   data() {
     return {
       dialog: false,
+      checkBox: this.task.isDone,
     };
   },
   components: {
-    "vue-markdown": VueMarkDown,
+    VueMarkDown,
   },
   methods: {
     ...mapActions(["updateTaskToDone"]),
     ...mapMutations(["SET_DRAGGING_TASK", "SET_DROP_TARGET_SECTION"]),
-
+    updateTaskStatus() {
+      this.updateTaskToDone({
+        projectId: this.task.section.projectId,
+        taskId: this.task.id,
+        isDone: !this.task.isDone,
+      });
+    },
     moveToTaskDetail() {
-      console.log(this.$route);
       const destinationInfo = this.$route.params.projectId
         ? {
             name: "ProjectTaskDetail",
@@ -62,10 +64,9 @@ export default {
           }
         : { name: "TodayTaskDetail", params: { taskId: this.task.id } };
       bus.$emit("moveToTaskDetail", destinationInfo);
-      // this.$router.push(destinationInfo).catch(() => {});
     },
 
-    handleDragStart() {
+    handleDragStart(e) {
       this.SET_DRAGGING_TASK(this.task);
       this.$emit("taskDragStart", { ...this.task, $el: this.$el });
     },

@@ -1,5 +1,7 @@
 <template>
-  <today-tasks-container :today-tasks="todayTasks" :expired-tasks="expiredTasks" />
+  <v-col cols="12" sm="12" lg="8" md="10">
+    <today-tasks-container :today-tasks="todayTasks" :expired-tasks="expiredTasks" />
+  </v-col>
 </template>
 
 <script>

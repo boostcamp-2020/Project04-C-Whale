@@ -1,27 +1,27 @@
 whale.contextMenus.create({
-  id: 'ADD_TASK',
+  id: "ADD_TASK",
   title: `할고래DO 할일로 추가`,
-  contexts: ['selection'],
+  contexts: ["selection"],
 });
 
-whale.alarms.onAlarm.addListener((alarm)=>{
+whale.alarms.onAlarm.addListener((alarm) => {
   whale.notifications.create({
     title: `할일: ${alarm.name}`,
-    message: 'CLICK !!',
-    iconUrl: 'images/icon.png',
-    type: 'basic'
-  })
-})
+    message: "CLICK !!",
+    iconUrl: "images/icon.png",
+    type: "basic",
+  });
+});
 
-whale.notifications.onClicked.addListener(()=>{
+whale.notifications.onClicked.addListener(() => {
   whale.sidebarAction.show();
-})
+});
 
 let handlerToRemove;
 
 whale.runtime.onConnectExternal.addListener((port) => {
   const handleOnClicked = (info) => {
-    if (info.menuItemId == 'ADD_TASK') {
+    if (info.menuItemId == "ADD_TASK") {
       port.postMessage(info);
     }
   };
@@ -31,25 +31,42 @@ whale.runtime.onConnectExternal.addListener((port) => {
   handlerToRemove = handleOnClicked;
 });
 
-whale.runtime.onMessageExternal.addListener((message, sendResponse) => {
+whale.runtime.onMessageExternal.addListener((message, sender, sendResponse) => {
   switch (message.type) {
-    case 'getCurrentTabUrl':
+    case "getCurrentTabUrl":
       whale.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
         const currentTab = tabs[0];
+        console.log(currentTab);
         sendResponse({ url: currentTab.url, title: currentTab.title });
       });
       break;
 
-    case 'createAlarm':
-      const {taskId, taskTitle, fireTime} = message.data;
+    case "createAlarm":
+      const { taskId, taskTitle, fireTime } = message.data;
       console.log(fireTime);
-      whale.storage.sync.set({taskId: {taskTitle, fireTime}});
+      whale.storage.sync.set({ taskId: { taskTitle, fireTime } });
       whale.alarms.create(taskTitle, {
         when: fireTime,
-      })
+      });
 
     case "createBookmark":
-      whale.bookmarks.create({ title: data.title, url: data.url });
+      const { folderTitle, bookmarks } = message.data;
+
+      whale.bookmarks.create(
+        {
+          parentId: "1",
+          title: folderTitle,
+        },
+        (newFolder) => {
+          bookmarks.forEach((bookmark) => {
+            whale.bookmarks.create({
+              parentId: newFolder.id,
+              title: bookmark.title,
+              url: bookmark.url,
+            });
+          });
+        }
+      );
       sendResponse("북마크가 추가되었습니다.");
       break;
   }

@@ -18,7 +18,7 @@ const retrieveProjects = async userId => {
       {
         model: models.section,
         required: false,
-        attributes: ['id', 'position'],
+        attributes: [],
         include: [
           {
             model: models.task,
@@ -101,6 +101,21 @@ const remove = async ({ id }) => {
   return result === 1;
 };
 
+const updateSectionPositions = async orderedSections => {
+  const result = await sequelize.transaction(async t => {
+    return await Promise.all(
+      orderedSections.map(async (sectionId, position) => {
+        return await models.section.update(
+          { position },
+          { where: { id: sectionId } },
+          { transaction: t },
+        );
+      }),
+    );
+  });
+
+  return result.length === orderedSections.length;
+};
 module.exports = {
   retrieveProjects,
   retrieveById,
@@ -108,4 +123,5 @@ module.exports = {
   findOrCreate,
   update,
   remove,
+  updateSectionPositions,
 };

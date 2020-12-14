@@ -25,7 +25,6 @@ export default {
   transform: translateX(-50%);
   z-index: 1000;
 }
-// TODO: color property 적용 안됨
 .v-progress-circular__overlay {
   stroke: #07c4a3 !important;
 }

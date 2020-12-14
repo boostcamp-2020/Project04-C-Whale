@@ -47,19 +47,20 @@ const retrieveAll = async userId => {
   const tasks = await taskModel.findAll({
     include: [
       'bookmarks',
+      'comments',
       {
         model: taskModel,
-        include: ['bookmarks'],
+        include: ['bookmarks', 'comments'],
         where: { isDone: false },
         required: false,
       },
       {
         model: models.section,
-        attribute: [],
+        attribute: ['id', 'title', 'projectId', 'position'],
         include: [
           {
             model: models.project,
-            attributes: ['creatorId'],
+            attributes: ['creatorId', 'title', 'color'],
             where: { creatorId: userId },
           },
         ],

@@ -7,6 +7,7 @@
       :favorite-project-infos="favoriteProjectInfos"
     />
     <ProjectListContainer :project-infos="namedProjectInfos" />
+    <BookmarkList />
     <!-- <LabelList :labels="labels" />
     <FilterList :priorities="priorities" /> -->
   </div>
@@ -15,18 +16,20 @@
 <script>
 import FavoriteProjectList from "./FavoriteProjectList";
 import ProjectListContainer from "./ProjectListContainer";
+import BookmarkList from "./BookmarkList";
+
 import { mapGetters, mapActions } from "vuex";
 
 export default {
   components: {
     FavoriteProjectList,
     ProjectListContainer,
+    BookmarkList,
   },
   computed: mapGetters([
     "namedProjectInfos",
     "favoriteProjectInfos",
     "managedProject",
-    "todayProject",
     "taskCount",
   ]),
   methods: {

@@ -69,6 +69,21 @@ const deleteProject = asyncTryCatch(async (req, res) => {
   responseHandler(res, 200, { message: 'ok' });
 });
 
+const updateSectionPositions = asyncTryCatch(async (req, res) => {
+  try {
+    await validator(ProjectDto, { id: req.params.projectId });
+  } catch (errs) {
+    const message = getErrorMsg(errs);
+    const err = new Error(message);
+    err.status = 400;
+    throw err;
+  }
+
+  await projectService.updateSectionPositions(req.body.orderedSections);
+
+  responseHandler(res, 200, { message: 'ok' });
+});
+
 module.exports = {
   getProjects,
   getTodayProject,
@@ -76,4 +91,5 @@ module.exports = {
   createProject,
   updateProject,
   deleteProject,
+  updateSectionPositions,
 };

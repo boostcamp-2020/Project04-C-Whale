@@ -1,27 +1,34 @@
 <template>
-  <v-flex>
-    <v-list-item class="flex-column">
-      <v-list-item-group class="d-flex">
-        <v-list-item-title>
-          <div class="task_detail-project_title">{{ projectTitle }}</div>
+  <v-card>
+    <v-list-item>
+      <v-list-item-icon class="mr-1 py-3">
+        <v-icon small :color="task.section.project.color">mdi-circle</v-icon>
+      </v-list-item-icon>
+      <v-list-item-content>
+        <v-list-item-title class="font-14 white-space-normal" v-text="task.section.project.title">
         </v-list-item-title>
+      </v-list-item-content>
+      <v-list-item-action>
         <v-btn icon @click="hideTaskModal()">
           <v-icon>mdi-close</v-icon>
         </v-btn>
-      </v-list-item-group>
+      </v-list-item-action>
+    </v-list-item>
 
-      <div class="task_container mr-10">
-        <TaskItem :task="task" />
-      </div>
+    <div class="task_container mr-10">
+      <TaskItem :task="task" />
+    </div>
+    <div class="px-4 task-detail-tabs">
       <TaskDetailTabs
         :tasks="this.task.tasks"
         :tabList="this.tabList"
         :comments="this.comments"
         :projectId="this.$route.params.projectId"
         :sectionId="this.task.sectionId"
+        :isParent="this.task.parentId === null"
       />
-    </v-list-item>
-  </v-flex>
+    </div>
+  </v-card>
 </template>
 
 <script>
@@ -53,16 +60,22 @@ export default {
   },
   computed: {},
   created() {
-    this.tabList.childTask.count = this.task.tasks.length;
-    this.tabList.comment.count = this.comments.length;
+    this.tabList.childTask.count = this.task ? this.task.tasks.length : 0;
+    this.tabList.comment.count = this.comments ? this.comments.length : 0;
     this.tabList.bookmark.count = 3;
   },
   mounted() {},
 };
 </script>
 
-<style>
-.v-list-item {
-  align-items: initial;
+<style lang="scss">
+.task-detail-tabs {
+  height: 50vw;
+}
+
+@media screen and (max-width: 512px) {
+  .task-detail-tabs {
+    height: 100vw;
+  }
 }
 </style>

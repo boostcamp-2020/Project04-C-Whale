@@ -1,28 +1,30 @@
-<template>
-  <v-input>
-    <v-flex xs12 sm5 md3 ml-5 mt-12>
-      <v-card-text>
-        <v-autocomplete
-          v-model="model"
-          :items="items"
-          :loading="isLoading"
-          :search-input.sync="search"
-          color="green"
-          hide-no-data
-          hide-selected
-          item-text="title"
-          item-value="API"
-          placeholder="검색"
-          prepend-icon="mdi-magnify"
-          return-object
-          solo
-        ></v-autocomplete>
-      </v-card-text>
-    </v-flex>
-    <v-container v-if="show">
-      <v-list v-for="task in lastSearched" :key="task.id">{{ task.title }}</v-list>
-    </v-container>
-  </v-input>
+<template class="search">
+  <v-col cols="6" sm="6" md="3">
+    <v-autocomplete
+      v-model="model"
+      :items="items"
+      :loading="isLoading"
+      :search-input.sync="search"
+      hide-no-data
+      hide-selected
+      hide-details
+      item-text="title"
+      item-value="API"
+      placeholder="검색"
+      prepend-icon="mdi-magnify"
+      return-object
+      color="black"
+    >
+      <template v-slot:item="{ item }">
+        <v-list-item :to="`/project/${item.section.projectId}/task/${item.id}`">
+          <v-list-item-title
+            class="font-14"
+            v-text="`${item.title} - ${item.section.project.title}`"
+          ></v-list-item-title>
+        </v-list-item>
+      </template>
+    </v-autocomplete>
+  </v-col>
 </template>
 
 <script>
@@ -37,6 +39,7 @@ export default {
       isLoading: false,
       model: null,
       search: null,
+      isFocused: false,
     };
   },
   computed: {
@@ -70,24 +73,21 @@ export default {
       });
     },
     async search() {
-      // Items have already been loaded
-      // or Items have already been requested
       if (this.tasks.length > 0 || this.isLoading) {
         return;
       }
 
       this.isLoading = true;
 
-      // Lazily load input items,
       const res = await taskAPI.getAllTasks();
-      this.tasks = res.data.tasks;
+      this.tasks = res.data.tasks.filter((task) => !task.isDone);
       this.isLoading = false;
     },
   },
 };
 </script>
 
-<style>
+<style lang="scss">
 .v-select__slot input {
   margin-bottom: 0;
 }

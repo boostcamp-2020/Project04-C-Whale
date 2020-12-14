@@ -1,7 +1,5 @@
 const getMarkDownUrl = (title, url) => {
-    return `[${title}](${url})`;
-}
+  return `[${title}](${url})`;
+};
 
-export {
-    getMarkDownUrl,
-}
+export { getMarkDownUrl };
