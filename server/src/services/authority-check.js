@@ -37,4 +37,30 @@ const isSectionOwner = async ({ id, userId }) => {
   return project.creatorId === userId;
 };
 
-module.exports = { isTaskOwner, isProjectOwner, isSectionOwner };
+const isCommentOwner = async ({ id, userId }) => {
+  const comment = await models.comment.findByPk(id, {
+    include: [
+      {
+        model: models.task,
+        attribute: [],
+        include: [
+          {
+            model: models.section,
+            attribute: [],
+            include: [
+              {
+                model: models.project,
+                attributes: ['creatorId'],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+    having: { 'task.section.project.creatorId': userId },
+  });
+
+  return !!comment;
+};
+
+module.exports = { isTaskOwner, isProjectOwner, isSectionOwner, isCommentOwner };
