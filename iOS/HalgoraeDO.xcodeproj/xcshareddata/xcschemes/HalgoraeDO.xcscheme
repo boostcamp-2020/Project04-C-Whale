@@ -104,7 +104,7 @@
       <EnvironmentVariables>
          <EnvironmentVariable
             key = "token"
-            value = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjM1NzNjYmJlLWJiYmItNDFhMy1hMzJkLWY4MTE4YjE1YTJiZCIsImVtYWlsIjoiY2N3MTAyMS5kZXZAZ21haWwuY29tIiwibmFtZSI6Iuy1nOyyoOybhSIsInByb3ZpZGVyIjoibmF2ZXIiLCJpYXQiOjE2MDczMjkwNjYsImV4cCI6MTYwNzMzMjY2Nn0.yDbVfkgRCaht6iAM0GUwYniKX8QX5NeIukMIxqbbhG4&quot;"
+            value = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImJiMTYwNzYzLTlmMWMtNDAzNC1iMDg5LThhMjBkZmIzYWVlNyIsImVtYWlsIjoiY2N3MTAyMS5kZXZAZ21haWwuY29tIiwibmFtZSI6bnVsbCwicHJvdmlkZXIiOiJuYXZlciIsImlhdCI6MTYwNzkzMzA5OCwiZXhwIjoxNjA3OTM2Njk4fQ.M-h_OrgPIhGHb6GualWf3wuWK5bGJi5Px8ip2G9Q2p4"
             isEnabled = "YES">
          </EnvironmentVariable>
       </EnvironmentVariables>

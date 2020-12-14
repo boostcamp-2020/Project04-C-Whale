@@ -120,7 +120,7 @@ enum TaskListModels {
         init(section: Section) {
             self.id = section.id
             self.title = section.title ?? ""
-            self.tasks = section.tasks?.compactMap { DisplayedTask(task: $0) } ?? []
+            self.tasks = section.tasks?.compactMap({ $0 as? Task }).map { DisplayedTask(task: $0) } ?? []
         }
     }
     
@@ -131,7 +131,6 @@ enum TaskListModels {
         var tintColor: UIColor
         var position: Int
         var parentPosition: Int?
-        var sectionId: String
         var subItems: [DisplayedTask] = []
         
         init(id: String,
@@ -148,20 +147,20 @@ enum TaskListModels {
             self.tintColor = tintColor
             self.position = position
             self.parentPosition = parentPosition
-            self.sectionId = sectionId
             self.subItems = subItems
         }
         
         init(task: Task) {
             self.id = task.id
-            self.title = task.title
+            self.title = task.title ?? ""
             self.isCompleted = task.isDone
-            self.tintColor = task.priority?.color ?? .black
-            self.position = task.position
-            self.parentPosition = task.parent?.position
-            self.sectionId = task.sectionId
+            self.tintColor = task.priority.color
+            self.position = Int(task.position)
+            if let parentPosition = task.parent?.position {
+                self.parentPosition = Int(parentPosition)
+            }
             guard let tasks = task.tasks else { return }
-            self.subItems = tasks.compactMap { DisplayedTask(task: $0) }
+            self.subItems = tasks.compactMap({ $0 as? Task }).compactMap { DisplayedTask(task: $0) }
         }
     }
 }
