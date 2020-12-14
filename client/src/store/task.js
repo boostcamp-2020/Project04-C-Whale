@@ -12,7 +12,7 @@ const getters = {
   currentTask: (state) => state.currentTask,
   todayTasks: (state) => state.tasks.filter((task) => isToday(task.dueDate) && !task.isDone),
   expiredTasks: (state) => state.tasks.filter((task) => isExpired(task.dueDate) && !task.isDone),
-  taskCount: (state) => state.tasks.length,
+  taskCount: (state) => state.tasks.filter((task) => !task.isDone).length,
   tasksWithBookmarks: (state) => state.tasks.filter((task) => task.bookmarks.length > 0),
 };
 
