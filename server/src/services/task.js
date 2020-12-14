@@ -73,7 +73,7 @@ const retrieveAll = async userId => {
     having: { 'section.project.creatorId': userId },
     order: [[taskModel, 'position', 'ASC']],
   });
-  console.log(tasks);
+
   return tasks;
 };
 
