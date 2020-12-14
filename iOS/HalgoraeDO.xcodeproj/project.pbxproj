@@ -72,6 +72,7 @@
 		4C9A047F258672FF00727F88 /* APIStorageType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9A047E258672FF00727F88 /* APIStorageType.swift */; };
 		4C9A0484258675FA00727F88 /* DefaultEndPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9A0483258675FA00727F88 /* DefaultEndPoint.swift */; };
 		4C9A0489258732B400727F88 /* EndPointStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9A0488258732B400727F88 /* EndPointStorage.swift */; };
+		4C9A04972587659A00727F88 /* TaskStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9A04962587659A00727F88 /* TaskStorage.swift */; };
 		4CCD31E8256EBC0C00A46D10 /* TaskListWorkerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0CA5F0256E9AF100E66045 /* TaskListWorkerTests.swift */; };
 		4CCD31E9256EBC0C00A46D10 /* TaskListInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0CA60C256EAA7300E66045 /* TaskListInteractorTests.swift */; };
 		4CCD31EA256EBC0C00A46D10 /* TaskListPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0CA629256EABF700E66045 /* TaskListPresenterTests.swift */; };
@@ -194,7 +195,6 @@
 		4C9A03502584EFD000727F88 /* PersistentContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistentContainer.swift; sourceTree = "<group>"; };
 		4C9A03552584F17C00727F88 /* Storage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
 		4C9A035A2584F1B300727F88 /* ProjectStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectStorage.swift; sourceTree = "<group>"; };
-		4C9A036E2585C59900727F88 /* TaskStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskStorage.swift; sourceTree = "<group>"; };
 		4C9A037D2585E2CA00727F88 /* NetworkMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMonitor.swift; sourceTree = "<group>"; };
 		4C9A03822585EB4000727F88 /* Encodable+encodeData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Encodable+encodeData.swift"; sourceTree = "<group>"; };
 		4C9A038D258602DB00727F88 /* TaskListTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TaskListTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -214,6 +214,7 @@
 		4C9A047E258672FF00727F88 /* APIStorageType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIStorageType.swift; sourceTree = "<group>"; };
 		4C9A0483258675FA00727F88 /* DefaultEndPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultEndPoint.swift; sourceTree = "<group>"; };
 		4C9A0488258732B400727F88 /* EndPointStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndPointStorage.swift; sourceTree = "<group>"; };
+		4C9A04962587659A00727F88 /* TaskStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskStorage.swift; sourceTree = "<group>"; };
 		4CCD31DD256EBC0000A46D10 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4CCD31F8256EBC8000A46D10 /* TaskListDisplaySpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListDisplaySpy.swift; sourceTree = "<group>"; };
 		4CCD31FE256EBCEF00A46D10 /* TaskListPresenterSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListPresenterSpy.swift; sourceTree = "<group>"; };
@@ -440,6 +441,7 @@
 			children = (
 				4C9A046A2586482B00727F88 /* Models */,
 				4C9A03502584EFD000727F88 /* PersistentContainer.swift */,
+				4C9A04962587659A00727F88 /* TaskStorage.swift */,
 				4C9A03552584F17C00727F88 /* Storage.swift */,
 				4C9A035A2584F1B300727F88 /* ProjectStorage.swift */,
 				4C9A03402584E1FF00727F88 /* HalgoraeDO.xcdatamodeld */,
@@ -827,11 +829,11 @@
 				4C3F567E256B8CB3006D7C9F /* TaskListModels.swift in Sources */,
 				AA19EF252576488B00E59017 /* TaskBoardSupplementaryView.swift in Sources */,
 				4C9A0489258732B400727F88 /* EndPointStorage.swift in Sources */,
-				4C9A036F2585C59900727F88 /* TaskStorage.swift in Sources */,
 				4CE915D9257F228400BCF398 /* TaskEndPoint.swift in Sources */,
 				4C4236E02574DF980068A252 /* ConfirmActionView.swift in Sources */,
 				4C3F5705256CF8B9006D7C9F /* TaskContentView.swift in Sources */,
 				4C9A04192586065F00727F88 /* Task+CoreDataClass.swift in Sources */,
+				4C9A04972587659A00727F88 /* TaskStorage.swift in Sources */,
 				4C9A04652586455100727F88 /* Section+CoreDataProperties.swift in Sources */,
 				4C9A044325863D3F00727F88 /* Comment+CoreDataClass.swift in Sources */,
 				4C9A044125863D3F00727F88 /* Bookmark+CoreDataClass.swift in Sources */,

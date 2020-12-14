@@ -14,7 +14,7 @@ protocol ProjectStorageType: APIStorageType {
     func updateProject(id: String, for projectFields: MenuModels.ProjectFields)
     func updateProjects(to projects: [Project])
     func deleteProject(id: String)
-    func deleteAll(completion: @escaping (Error?) -> Void)
+    func deleteAll()
 }
 
 extension Storage: ProjectStorageType {
@@ -56,13 +56,10 @@ extension Storage: ProjectStorageType {
     }
     
     func updateProjects(to projects: [Project]) {
+        deleteAll()
         self.saveContext(context: self.childContext)
-        deleteAll { (error) in
-            guard error == nil else { return }
-            self.saveContext(context: self.childContext)
-            let _ = projects
-            self.saveContext(context: self.mainContext)
-        }
+        let _ = projects
+        self.saveContext(context: self.childContext)
     }
     
     func deleteProject(id: String) {
@@ -71,21 +68,16 @@ extension Storage: ProjectStorageType {
         saveContext(context: childContext)
     }
     
-    func deleteAll(completion: @escaping (Error?) -> Void) {
+    func deleteAll() {
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "Project")
         let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
-        
-        childContext.perform {
-            do {
-                try self.childContext.execute(deleteRequest)
-                self.saveContext(context: self.childContext)
-                completion(nil)
-            } catch {
-                #if DEBUG
-                print("Failed delete All Projects, \(error)")
-                #endif
-                completion(error)
-            }
+        do {
+            try self.childContext.execute(deleteRequest)
+            self.saveContext(context: self.childContext)
+        } catch {
+            #if DEBUG
+            print(error)
+            #endif
         }
     }
 }
