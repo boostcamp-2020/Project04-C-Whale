@@ -1,11 +1,12 @@
 <template>
-  <v-form class="px-3 py-3" @submit.prevent>
+  <v-form class="px-3 py-3" @submit.prevent="addBookmark">
     <div class="commment-form-data">
       <v-text-field
         class="font-14"
         v-model="bookmark"
-        label="작업과 관련된 URL을 등록해주세요"
+        label="[북마크제목](URL)형식으로 입력해주세요"
         @keyup.ctrl="copyURL"
+        :rules="[rules.URL]"
       ></v-text-field>
       <v-btn color="primary" class="text--white" :disabled="bookmark.length <= 0">
         북마크추가
@@ -20,13 +21,18 @@
 
 <script>
 import whaleApi from "@/utils/whaleApi";
-import { getMarkDownUrl } from "@/utils/markdown";
+import { getMarkDownUrl, isValidURLMarkdown, getBookmark } from "@/utils/markdown";
 
 export default {
   data() {
     return {
       bookmark: "",
       isWhale: window.whale ? true : false,
+      rules: {
+        URL: (value) => {
+          return isValidURLMarkdown(value) || "유효하지 않은 형식입니다.";
+        },
+      },
     };
   },
   methods: {
