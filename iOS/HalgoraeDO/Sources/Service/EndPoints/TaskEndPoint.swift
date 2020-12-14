@@ -11,6 +11,7 @@ enum TaskEndPoint {
     case get(taskId: String)
     case create(projectId: String, sectionId: String, request: Data)
     case sectionCreate(projectId: String, request: Data)
+    case taskUpdate(id: String, task: Data)
     case titleUpdate(id: Int, titleData: Data)
     case update(id: Int, project: Data)
     case delete(id: Int)
@@ -27,6 +28,7 @@ extension TaskEndPoint: EndPointType {
             case .get(let id): return "task/\(id)"
             case .create(let projectId, let sectionId, _): return "project/\(projectId)/section/\(sectionId)/task"
             case .sectionCreate(let projectId, _): return "project/\(projectId)/section"
+            case .taskUpdate(let id, _): return "task/\(id)"
             case .titleUpdate(let id, _): return "\(id)"
             case .update(let id, _): return "\(id)"
             case .delete(let id): return "\(id)"
@@ -38,6 +40,7 @@ extension TaskEndPoint: EndPointType {
             case .get: return .get
             case .create: return .post
             case .sectionCreate: return .post
+            case .taskUpdate: return .patch
             case .titleUpdate: return .patch
             case .update: return .put
             case .delete: return .delete
@@ -49,6 +52,7 @@ extension TaskEndPoint: EndPointType {
             case .get: return (nil, nil)
             case .create(_, _, let body): return (body, nil)
             case .sectionCreate(_, let body): return (body, nil)
+            case .taskUpdate(_, let body): return (body, nil)
             case .titleUpdate(_, let titleData): return (titleData, nil)
             case .update(_, let project): return (project, nil)
             case .delete: return (nil, nil)
