@@ -50,7 +50,7 @@ export default {
     ...mapState({ commentsMap: (state) => state.comment.commentsMap }),
   },
   methods: {
-    ...mapActions(["fetchAllComments"]),
+    ...mapActions(["fetchComments"]),
     hideTaskModal() {
       this.$emit("hideTaskModal");
     },

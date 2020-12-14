@@ -1,9 +1,9 @@
 <template>
   <v-flex>
-    <BookmarkFormContainer />
-    <div v-for="bookmark in bookmarks" :key="bookmark.id">
-      <BookmarkItem :bookmark="bookmark" />
+    <div v-if="bookmarks">
+      <BookmarkItem :bookmark="bookmark" v-for="bookmark in bookmarks" :key="bookmark.id" />
     </div>
+    <BookmarkFormContainer />
   </v-flex>
 </template>
 

@@ -37,7 +37,7 @@ export default {
   },
   components: { TaskDetailContainer },
   methods: {
-    ...mapActions(["fetchCurrentTask", "fetchAllComments"]),
+    ...mapActions(["fetchCurrentTask", "fetchComments"]),
     hideTaskModal() {
       this.$router.go(-1);
     },
@@ -62,7 +62,7 @@ export default {
       const result = await taskAPI.getTaskById(this.$route.params.taskId);
       this.task = result.data.task;
     }
-    this.fetchAllComments(this.$route.params.taskId);
+    this.fetchComments(this.$route.params.taskId);
   },
   mixins: [SpinnerMixin],
 };
