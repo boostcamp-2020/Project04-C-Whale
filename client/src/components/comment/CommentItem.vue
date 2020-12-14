@@ -26,6 +26,7 @@
       </v-list-item-content>
     </v-list-item>
 
+    <!-- TODO: UI 수정 -->
     <div v-if="isVisibleEditUtils">
       <v-flex>
         <v-btn class="ma-2" outlined x-small color="whaleGreen" @click="showCommentEdit">

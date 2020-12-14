@@ -17,11 +17,11 @@ import TaskGroupPerDate from "@/components/today/TaskGroupPerDate";
 import bus from "@/utils/bus";
 
 export default {
+  components: { TaskGroupPerDate },
   props: {
     todayTasks: Array,
     expiredTasks: Array,
   },
-  components: { TaskGroupPerDate },
   data() {
     return {};
   },
@@ -34,6 +34,9 @@ export default {
     bus.$on("moveToTaskDetail", (destinationInfo) => {
       this.$router.push(destinationInfo).catch(() => {});
     });
+  },
+  beforeDestroy() {
+    bus.$off("moveToTaskDetail");
   },
 };
 </script>

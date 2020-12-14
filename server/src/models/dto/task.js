@@ -28,7 +28,7 @@ class TaskDto {
     { strict: true },
     { groups: ['create', 'patch'], message: errorMessage.TYPE_ERROR('dueDate') },
   )
-  @isAfterToday('dueDate', { groups: ['create', 'patch'], message: errorMessage.DUEDATE_ERROR })
+  @isAfterToday('dueDate', { groups: ['create', 'patch'], message: errorMessage.DUEDATE_ERROR() })
   dueDate;
 
   @IsOptional({ groups: ['patch'] })
