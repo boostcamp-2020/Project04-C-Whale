@@ -289,10 +289,138 @@ describe('post bookmark', () => {
   });
 });
 
-// describe('delete bookmark', () => {
-//   it('bookmark 삭제 성공', async done => {
-//     // given
-//     // when
-//     // then
-//   });
-// });
+describe('delete bookmark', () => {
+  it('bookmark 삭제 성공', async done => {
+    // given
+    const taskId = seeder.tasks[2].id;
+    const bookmarkId = seeder.bookmarks[1].id;
+    // when
+    const res = await request(app)
+      .delete(`/api/task/${taskId}/bookmark/${bookmarkId}`)
+      .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`);
+
+    // then
+    expect(res.status).toBe(status.SUCCESS.CODE);
+    expect(res.body.message).toBe(status.SUCCESS.MSG);
+    done();
+  });
+  it('taskId가 잘못된 Id인 경우', async done => {
+    // given
+    const taskId = 'Invalid taskId';
+    const bookmarkId = seeder.bookmarks[0].id;
+    const expectedError = customError.INVALID_INPUT_ERROR('taskId');
+
+    // when
+    const res = await request(app)
+      .delete(`/api/task/${taskId}/bookmark/${bookmarkId}`)
+      .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`);
+
+    // then
+    expect(res.status).toBe(expectedError.status);
+    expect(res.body.message).toBe(expectedError.message);
+    expect(res.body.code).toBe(expectedError.code);
+    done();
+  });
+  it('bookmakrId 잘못된 Id인 경우', async done => {
+    // given
+    const taskId = seeder.tasks[0].id;
+    const bookmarkId = 'invalid bookmarkId';
+    const expectedError = customError.INVALID_INPUT_ERROR('bookmarkId');
+
+    // when
+    const res = await request(app)
+      .delete(`/api/task/${taskId}/bookmark/${bookmarkId}`)
+      .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`);
+
+    // then
+    expect(res.status).toBe(expectedError.status);
+    expect(res.body.message).toBe(expectedError.message);
+    expect(res.body.code).toBe(expectedError.code);
+    done();
+  });
+  it('존재하지 않는 taskId인 경우', async done => {
+    // given
+    const taskId = seeder.sections[0].id;
+    const bookmarkId = seeder.bookmarks[0].id;
+    const expectedError = customError.NOT_FOUND_ERROR('task');
+
+    // when
+    const res = await request(app)
+      .delete(`/api/task/${taskId}/bookmark/${bookmarkId}`)
+      .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`);
+
+    // then
+    expect(res.status).toBe(expectedError.status);
+    expect(res.body.message).toBe(expectedError.message);
+    expect(res.body.code).toBe(expectedError.code);
+    done();
+  });
+  it('존재하지 않는 bookmarkId인 경우', async done => {
+    // given
+    const taskId = seeder.tasks[0].id;
+    const bookmarkId = seeder.section[0].id;
+    const expectedError = customError.NOT_FOUND_ERROR('bookmark');
+
+    // when
+    const res = await request(app)
+      .delete(`/api/task/${taskId}/bookmark/${bookmarkId}`)
+      .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`);
+
+    // then
+    expect(res.status).toBe(expectedError.status);
+    expect(res.body.message).toBe(expectedError.message);
+    expect(res.body.code).toBe(expectedError.code);
+    done();
+  });
+  it('자신의 task가 아닌 경우', async done => {
+    // given
+    const taskId = seeder.tasks[0].id;
+    const bookmarkId = seeder.bookmarks[2].id;
+    const expectedError = customError.FORBIDDEN_ERROR('task');
+
+    // when
+    const res = await request(app)
+      .delete(`/api/task/${taskId}/bookmark/${bookmarkId}`)
+      .set('Authorization', `Bearer ${createJWT(seeder.users[1])}`);
+
+    // then
+    expect(res.status).toBe(expectedError.status);
+    expect(res.body.message).toBe(expectedError.message);
+    expect(res.body.code).toBe(expectedError.code);
+    done();
+  });
+  it('자신의 bookmark가 아닌 경우', async done => {
+    // given
+    const taskId = seeder.tasks[0].id;
+    const bookmarkId = seeder.bookmarks[2].id;
+    const expectedError = customError.FORBIDDEN_ERROR('bookmark');
+
+    // when
+    const res = await request(app)
+      .delete(`/api/task/${taskId}/bookmark/${bookmarkId}`)
+      .set('Authorization', `Bearer ${createJWT(seeder.users[2])}`);
+
+    // then
+    expect(res.status).toBe(expectedError.status);
+    expect(res.body.message).toBe(expectedError.message);
+    expect(res.body.code).toBe(expectedError.code);
+    done();
+  });
+  it('task랑 bookmark가 관계가 잘못된 경우', async done => {
+    // given
+    const taskId = seeder.tasks[0].id;
+    const bookmarkId = seeder.bookmarks[3].id;
+    const expectedError = customError.WRONG_RELATION_ERROR('task, bookmark');
+
+    // when
+    const res = await request(app)
+      .delete(`/api/task/${taskId}/bookmark/${bookmarkId}`)
+      .set('Authorization', `Bearer ${createJWT(seeder.users[2])}`);
+
+    // then
+    expect(res.status).toBe(expectedError.status);
+    expect(res.body.message).toBe(expectedError.message);
+    expect(res.body.code).toBe(expectedError.code);
+    done();
+  });
+});

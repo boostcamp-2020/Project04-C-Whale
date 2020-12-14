@@ -146,6 +146,17 @@ const tasks = [
     createdAt: new Date(),
     updatedAt: new Date(),
   },
+  {
+    id: '3efbb242-f0f6-442f-9c25-28fbc11f35a3',
+    sectionId: sections[1].id,
+    parentId: null,
+    title: '작업 7',
+    dueDate: new Date(),
+    position: 1,
+    isDone: false,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
 ];
 
 const comments = [
@@ -178,6 +189,30 @@ const bookmarks = [
     url: 'https://www.uuidgenerator.net/version4',
     title: 'uuid 생성 사이트',
     taskId: tasks[0].id,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    id: '660ea855-0657-443e-9a5f-69a314512d71',
+    url: 'https://www.naver.com',
+    title: '네이버',
+    taskId: tasks[2].id,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    id: '4fcb6ba3-e11a-4512-8dbc-d04b826e2b35',
+    url: 'https://www.google.com',
+    title: '구글',
+    taskId: tasks[5].id,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    id: 'b72f37ae-830b-4621-8f47-fac685bda931',
+    url: 'https://www.amazon.com',
+    title: '아마존',
+    taskId: tasks[6].id,
     createdAt: new Date(),
     updatedAt: new Date(),
   },
