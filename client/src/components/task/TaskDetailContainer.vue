@@ -22,7 +22,7 @@
       <TaskDetailTabs
         :tasks="this.task.tasks"
         :tabList="this.tabList"
-        :comments="this.task.comments"
+        :comments="this.comments"
         :projectId="this.$route.params.projectId"
         :sectionId="this.task.sectionId"
         :isParent="this.task.parentId === null"
@@ -34,6 +34,8 @@
 <script>
 import TaskItem from "@/components/project/TaskItem";
 import TaskDetailTabs from "@/components/task/TaskDetailTabs";
+import SpinnerMixin from "@/mixins/SpinnerMixins";
+import { mapState, mapActions } from "vuex";
 
 export default {
   components: { TaskItem, TaskDetailTabs },
@@ -42,6 +44,7 @@ export default {
   },
   data() {
     return {
+      comments: [],
       tabList: {
         childTask: { title: "하위 작업", count: 0 },
         comment: { title: "댓글", count: 0 },
@@ -49,18 +52,22 @@ export default {
       },
     };
   },
+  computed: {
+    ...mapState({ commentsMap: (state) => state.comment.commentsMap }),
+  },
   methods: {
+    ...mapActions(["fetchAllComments"]),
     hideTaskModal() {
       this.$emit("hideTaskModal");
     },
   },
-  computed: {},
   created() {
+    this.comments = this.commentsMap[this.$route.params.taskId];
     this.tabList.childTask.count = this.task ? this.task.tasks.length : 0;
-    this.tabList.comment.count = this.task ? this.task.comments.length : 0;
-    this.tabList.bookmark.count = this.task ? this.task.bookmarks.length : 0;
+    this.tabList.comment.count = this.comments ? this.comments.length : 0;
+    this.tabList.bookmark.count = this.bookmarks ? this.bookmarks.length : 0;
   },
-  mounted() {},
+  mixins: [SpinnerMixin],
 };
 </script>
 

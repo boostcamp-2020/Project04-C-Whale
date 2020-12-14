@@ -54,6 +54,7 @@ export default {
       this.active = active % 3;
     },
   },
+  created() {},
   components: { ChildTaskList, CommentList, BookmarkList },
 };
 </script>

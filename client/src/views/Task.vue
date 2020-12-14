@@ -6,11 +6,14 @@
     :retain-focus="false"
     @click:outside="hideTaskModal()"
   >
-    <task-detail-container
-      v-if="tasks && tasks.length !== 0"
-      @hideTaskModal="hideTaskModal"
-      :task="task"
-    ></task-detail-container>
+    <keep-alive>
+      <task-detail-container
+        v-if="tasks && tasks.length !== 0"
+        @hideTaskModal="hideTaskModal"
+        :task="task"
+        :key="$route.params.taskId"
+      ></task-detail-container>
+    </keep-alive>
   </v-dialog>
 </template>
 
@@ -26,6 +29,7 @@ export default {
     return {
       dialog: true,
       task: {},
+      comments: [],
     };
   },
   computed: {
@@ -33,7 +37,7 @@ export default {
   },
   components: { TaskDetailContainer },
   methods: {
-    ...mapActions(["fetchCurrentTask", "fetchComments"]),
+    ...mapActions(["fetchCurrentTask", "fetchAllComments"]),
     hideTaskModal() {
       this.$router.go(-1);
     },
@@ -58,6 +62,7 @@ export default {
       const result = await taskAPI.getTaskById(this.$route.params.taskId);
       this.task = result.data.task;
     }
+    this.fetchAllComments(this.$route.params.taskId);
   },
   mixins: [SpinnerMixin],
 };
