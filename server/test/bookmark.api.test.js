@@ -321,7 +321,7 @@ describe('delete bookmark', () => {
     expect(res.body.code).toBe(expectedError.code);
     done();
   });
-  it('bookmakrId 잘못된 Id인 경우', async done => {
+  it('bookmarkId가 잘못된 Id인 경우', async done => {
     // given
     const taskId = seeder.tasks[0].id;
     const bookmarkId = 'invalid bookmarkId';
@@ -358,7 +358,7 @@ describe('delete bookmark', () => {
   it('존재하지 않는 bookmarkId인 경우', async done => {
     // given
     const taskId = seeder.tasks[0].id;
-    const bookmarkId = seeder.section[0].id;
+    const bookmarkId = seeder.sections[0].id;
     const expectedError = customError.NOT_FOUND_ERROR('bookmark');
 
     // when
