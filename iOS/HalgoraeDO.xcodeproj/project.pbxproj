@@ -101,6 +101,8 @@
 		AA19EF2F2576835900E59017 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA19EF2E2576835900E59017 /* Colors.xcassets */; };
 		AA19EF332576846100E59017 /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA19EF322576846100E59017 /* UIColor+.swift */; };
 		AA354C2A2570002600072657 /* TaskAddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA354C292570002600072657 /* TaskAddViewController.swift */; };
+		AA6D84B3258712D000019373 /* ResponseDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA6D84B2258712D000019373 /* ResponseDetail.swift */; };
+		AA6D84B8258739B600019373 /* BookmarkEndPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA6D84B7258739B600019373 /* BookmarkEndPoint.swift */; };
 		AAA74C74257DAE00004FC883 /* AddProjectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA74C73257DAE00004FC883 /* AddProjectViewController.swift */; };
 		AAA74C9D25805BC3004FC883 /* TaskDetailModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA74C9C25805BC2004FC883 /* TaskDetailModels.swift */; };
 		AAEE20DE2564E4A900668FAD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAEE20DD2564E4A900668FAD /* AppDelegate.swift */; };
@@ -211,6 +213,8 @@
 		AA19EF2E2576835900E59017 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		AA19EF322576846100E59017 /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
 		AA354C292570002600072657 /* TaskAddViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskAddViewController.swift; sourceTree = "<group>"; };
+		AA6D84B2258712D000019373 /* ResponseDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseDetail.swift; sourceTree = "<group>"; };
+		AA6D84B7258739B600019373 /* BookmarkEndPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkEndPoint.swift; sourceTree = "<group>"; };
 		AAA74C73257DAE00004FC883 /* AddProjectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProjectViewController.swift; sourceTree = "<group>"; };
 		AAA74C9C25805BC2004FC883 /* TaskDetailModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskDetailModels.swift; sourceTree = "<group>"; };
 		AAEE20DD2564E4A900668FAD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -398,6 +402,7 @@
 			children = (
 				4C9A02D02581C50400727F88 /* ResponseMessage.swift */,
 				4C9A02F225826CCA00727F88 /* ResponseProject.swift */,
+				AA6D84B2258712D000019373 /* ResponseDetail.swift */,
 			);
 			path = Response;
 			sourceTree = "<group>";
@@ -486,6 +491,7 @@
 				4CE915C0257E1D5700BCF398 /* ProjectEndPoint.swift */,
 				4CE915D8257F228400BCF398 /* TaskEndPoint.swift */,
 				4C9A02C82581725100727F88 /* CommentEndPoint.swift */,
+				AA6D84B7258739B600019373 /* BookmarkEndPoint.swift */,
 			);
 			path = EndPoints;
 			sourceTree = "<group>";
@@ -781,6 +787,7 @@
 				4C4238742579358A0068A252 /* DataRequest.swift in Sources */,
 				AA19EF1B25756C3200E59017 /* AddSectionViewCell.swift in Sources */,
 				AAA74C74257DAE00004FC883 /* AddProjectViewController.swift in Sources */,
+				AA6D84B8258739B600019373 /* BookmarkEndPoint.swift in Sources */,
 				4CE915D1257E5D2B00BCF398 /* TaskDetailModels.swift in Sources */,
 				4C9A02C92581725100727F88 /* CommentEndPoint.swift in Sources */,
 				4C42371B25763B080068A252 /* TaskDetailInteractor.swift in Sources */,
@@ -794,6 +801,7 @@
 				4C3F5674256B8C63006D7C9F /* TaskListWorker.swift in Sources */,
 				4C3F566F256B8C2B006D7C9F /* TaskListInteractor.swift in Sources */,
 				4CCD3257256F8BA700A46D10 /* Priority.swift in Sources */,
+				AA6D84B3258712D000019373 /* ResponseDetail.swift in Sources */,
 				4C42371125762FCE0068A252 /* TaskDetailBookmarkViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

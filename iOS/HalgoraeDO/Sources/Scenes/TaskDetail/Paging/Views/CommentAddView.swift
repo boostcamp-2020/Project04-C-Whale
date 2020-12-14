@@ -44,6 +44,7 @@ class CommentAddView: UIView {
     
     @IBAction private func didTapDoneButton(_ sender: UIButton) {
         doneHandler?(contentsTextView.text)
+        contentsTextView.text = ""
     }
 }
 
