@@ -398,7 +398,7 @@ describe('delete bookmark', () => {
     // when
     const res = await request(app)
       .delete(`/api/task/${taskId}/bookmark/${bookmarkId}`)
-      .set('Authorization', `Bearer ${createJWT(seeder.users[2])}`);
+      .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`);
 
     // then
     expect(res.status).toBe(expectedError.status);
@@ -415,7 +415,7 @@ describe('delete bookmark', () => {
     // when
     const res = await request(app)
       .delete(`/api/task/${taskId}/bookmark/${bookmarkId}`)
-      .set('Authorization', `Bearer ${createJWT(seeder.users[2])}`);
+      .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`);
 
     // then
     expect(res.status).toBe(expectedError.status);
