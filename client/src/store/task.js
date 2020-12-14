@@ -10,9 +10,10 @@ const state = {
 
 const getters = {
   currentTask: (state) => state.currentTask,
-  todayTasks: (state) => state.tasks.filter((task) => isToday(task.dueDate)),
-  expiredTasks: (state) => state.tasks.filter((task) => !isToday(task.dueDate)),
+  todayTasks: (state) => state.tasks.filter((task) => isToday(task.dueDate) && !task.isDone),
+  expiredTasks: (state) => state.tasks.filter((task) => !isToday(task.dueDate) && !task.isDone),
   taskCount: (state) => state.tasks.length,
+  tasksWithBookmarks: (state) => state.tasks.filter((task) => task.bookmarks.length > 0),
 };
 
 const mutations = {
@@ -36,7 +37,6 @@ const actions = {
       const {
         data: { task },
       } = await taskAPI.getTaskById(taskId);
-      console.log(task);
       commit("SET_CURRENT_TASK", task);
     } catch (err) {
       commit("SET_ERROR_ALERT", err.response);
@@ -48,19 +48,24 @@ const actions = {
       await dispatch("fetchCurrentProject", task.projectId);
       await dispatch("fetchAllTasks");
       await dispatch("fetchProjectInfos");
-      //commit("ADD_TASK_COUNT", task.projectId);
     } catch (err) {
       commit("SET_ERROR_ALERT", err.response);
     }
   },
-  async updateTaskToDone({ dispatch, commit }, { projectId, taskId }) {
+  async updateTaskToDone({ dispatch, commit }, { projectId, taskId, isDone }) {
     try {
       await taskAPI.updateTask(taskId, { isDone: true });
-      await dispatch("fetchCurrentProject", projectId);
+
+      // '오늘' 화면에서 호출되었을 경우
+      if (projectId !== undefined) {
+        await dispatch("fetchCurrentProject", projectId);
+      }
+
       await dispatch("fetchAllTasks");
       await dispatch("fetchProjectInfos");
-
-      commit("SET_SUCCESS_ALERT", "작업을 완료했습니다.");
+      if (isDone) {
+        commit("SET_SUCCESS_ALERT", "작업을 완료했습니다.");
+      }
     } catch (err) {
       commit("SET_ERROR_ALERT", err.response);
     }
@@ -75,20 +80,34 @@ const actions = {
       commit("SET_ERROR_ALERT", err.response);
     }
   },
-  startDragTask({ commit }, { task }) {
-    commit("SET_DRAGGING_TASK", task);
-  },
   async changeTaskPosition({ rootState, dispatch, commit }, { orderedTasks }) {
-    const { draggingTask, dropTargetSection } = rootState.dragAndDrop;
+    const { draggingTask, dropTargetContainer } = rootState.dragAndDrop;
 
     try {
       await taskAPI.updateTask(draggingTask.id, {
-        sectionId: dropTargetSection.id,
+        sectionId: dropTargetContainer.id,
       });
-      await projectAPI.updateTaskPosition(dropTargetSection.projectId, dropTargetSection.id, {
+      await projectAPI.updateTaskPosition(dropTargetContainer.projectId, dropTargetContainer.id, {
         orderedTasks,
       });
-      await dispatch("fetchCurrentProject", dropTargetSection.projectId);
+      await dispatch("fetchCurrentProject", dropTargetContainer.projectId);
+      await dispatch("fetchAllTasks");
+
+      commit("SET_SUCCESS_ALERT", "작업 위치가 변경되었습니다.");
+    } catch (err) {
+      commit("SET_ERROR_ALERT", err.response);
+    }
+  },
+
+  async changeChildTaskPosition({ rootState, dispatch, commit }, { orderedTasks }) {
+    const { draggingTask, dropTargetContainer } = rootState.dragAndDrop;
+
+    try {
+      await taskAPI.updateTask(draggingTask.id, {
+        sectionId: dropTargetContainer.sectionId,
+      });
+      await taskAPI.updateChildTaskPosition(dropTargetContainer.id, { orderedTasks });
+      await dispatch("fetchCurrentProject", dropTargetContainer.projectId);
       await dispatch("fetchAllTasks");
 
       commit("SET_SUCCESS_ALERT", "작업 위치가 변경되었습니다.");

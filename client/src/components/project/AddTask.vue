@@ -4,7 +4,13 @@
       <div v-if="show" class="task-form-container">
         <form @submit.prevent="submit">
           <div class="task-form-data">
-            <input type="text" v-model="task.title" placeholder="할일을 입력하세요" />
+            <v-text-field
+              class="pt-0 mt-0 mb-2"
+              hide-details
+              type="text"
+              v-model="task.title"
+              placeholder="할일을 입력하세요"
+            />
             <div class="task-info">
               <v-menu :offset-y="true">
                 <template v-slot:activator="{ on }">
@@ -22,7 +28,7 @@
                     {{ projectTitle }}
                   </v-btn>
                 </template>
-                <v-list>
+                <v-list v-if="projectInfos.length > 0">
                   <v-list-item
                     v-for="projectInfo in projectInfos"
                     :key="projectInfo.id"
@@ -55,10 +61,15 @@
             </div>
           </div>
           <v-flex>
-            <v-btn type="submit" depressed color="primary" :disabled="task.title.length === 0"
+            <v-btn
+              type="submit"
+              depressed
+              color="whaleGreen"
+              class="text--white"
+              :disabled="task.title.length === 0"
               >+ 작업 추가</v-btn
             >
-            <v-btn @click="closeForm" text color="primary">취소</v-btn>
+            <v-btn @click="closeForm" text color="whaleGreen">취소</v-btn>
           </v-flex>
         </form>
       </div>
@@ -68,7 +79,7 @@
           <v-icon color="primary" dense class="mr-1"> mdi-plus </v-icon>
           작업 추가
         </v-btn>
-        <v-btn @click="showForm('url')" text color="#777777">
+        <v-btn v-if="isWhale" @click="showForm('url')" text color="#777777">
           <v-icon color="primary" dense class="mr-1"> mdi-plus </v-icon>
           웹사이트를 작업으로 추가
         </v-btn>
@@ -82,17 +93,17 @@ import { mapGetters, mapActions } from "vuex";
 import { getTodayString } from "../../utils/date";
 import whaleApi from "../../utils/whaleApi";
 import { getMarkDownUrl } from "../../utils/markdown";
-import { createAlarm } from "../../utils/whaleApi";
 
 export default {
   props: {
     projectId: String,
     sectionId: String,
     parentId: String,
+    initialShow: Boolean,
   },
   data() {
     return {
-      show: false,
+      show: this.initialShow || false,
       projectTitle: "",
       task: {
         projectId: this.projectId,
@@ -102,6 +113,7 @@ export default {
         dueDate: getTodayString(),
       },
       alarmTime: 0,
+      isWhale: window.whale ? true : false,
     };
   },
   computed: {
@@ -111,14 +123,13 @@ export default {
     ...mapActions(["addTask"]),
     submit() {
       // 오늘 페이지 첫 렌더링 시, projectId, sectionId가 없는 상황을 위한 초기화
-      this.task.projectId = this.projectId ? this.projectId : this.managedProject.id;
-      this.sectionId = this.sectionId ? this.sectionId : this.managedProject.defaultSectionId;
+      // this.task.projectId = this.projectId ? this.projectId : this.managedProject.id;
+      // this.sectionId = this.sectionId ? this.sectionId : this.managedProject.defaultSectionId;
       this.addTask(this.task);
-      // createAlarm({
-      //   taskId: '??',
-      //   taskTitle: this.task.title,
-      //   fireTime: this.alarmTime,
-      // });
+      whaleApi.createAlarm({
+        taskTitle: this.task.title,
+        fireTime: this.alarmTime,
+      });
       this.task = {
         projectId: this.projectId ? this.projectId : this.managedProject.id,
         sectionId: this.sectionId ? this.sectionId : this.managedProject.defaultSectionId,
@@ -150,7 +161,7 @@ export default {
     },
     todayStringToKorean(todayString) {
       const today = new Date(todayString);
-      return `${today.getMonth()}월 ${today.getDate()}일`;
+      return `${today.getMonth() + 1}월 ${today.getDate()}일`;
     },
     selectAlarm(time) {
       this.alarmTime = Date.now() + 1000 * time;
@@ -158,10 +169,10 @@ export default {
   },
   created() {
     if (this.projectId === undefined || this.sectionId === undefined) {
-      const { title, id, defaultSectionId } = this.managedProject;
-      this.projectTitle = title;
-      this.task.projectId = id;
-      this.task.sectionId = defaultSectionId;
+      //const { title, id, defaultSectionId } = this.managedProject;
+      this.projectTitle = this.managedProject?.title;
+      this.task.projectId = this.managedProject?.id;
+      this.task.sectionId = this.managedProject?.defaultSectionId;
       return;
     }
     this.projectTitle = this.projectInfos.find((project) => project.id === this.projectId).title;

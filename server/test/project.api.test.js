@@ -25,7 +25,8 @@ describe('get all projects', () => {
         task => project.creatorId === expectedUser.id && task.projectId === project.id,
       );
       const { id, title } = project;
-      return { id, title, taskCount: tasks.length };
+      const defaultSectionId = seeder.sections.find(section => section.projectId === project.id);
+      return { id, title, taskCount: tasks.length, defaultSectionId };
     });
 
     try {

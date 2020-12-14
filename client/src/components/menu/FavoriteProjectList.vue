@@ -50,6 +50,9 @@
             <v-list-item @click.stop="openDeleteDialog(favoriteProjectInfo.id)">
               <v-list-item-title class="font-14">프로젝트 삭제 </v-list-item-title>
             </v-list-item>
+            <v-list-item @click.stop="setFavorite(favoriteProjectInfo.id)">
+              <v-list-item-title class="font-14">즐겨찾기 해제 </v-list-item-title>
+            </v-list-item>
           </v-list>
         </v-menu>
       </v-list-item>
@@ -72,6 +75,7 @@
 <script>
 import UpdateProjectModal from "@/components/project/UpdateProjectModal.vue";
 import DeleteProjectModal from "@/components/project/DeleteProjectModal.vue";
+import { mapActions } from "vuex";
 
 export default {
   props: {
@@ -87,6 +91,7 @@ export default {
     return { updateDialog: false, deleteDialog: false, projectId: "" };
   },
   methods: {
+    ...mapActions(["updateProject"]),
     openUpdateDialog(projectId) {
       this.projectId = projectId;
       this.updateDialog = true;
@@ -95,10 +100,8 @@ export default {
       this.projectId = projectId;
       this.deleteDialog = true;
     },
-    prevent(e) {
-      console.log(e);
-      e.preventDefault();
-      e.stopPropagation();
+    setFavorite(projectId) {
+      this.updateProject({ projectId, data: { isFavorite: false } });
     },
   },
 };

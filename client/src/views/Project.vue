@@ -1,10 +1,11 @@
 <template>
-  <div>
+  <v-col cols="12" sm="12" lg="10" md="10">
     <project-container
       v-if="projectList[$route.params.projectId]"
       :project="projectList[$route.params.projectId]"
+      :sections="projectList[$route.params.projectId].sections"
     />
-  </div>
+  </v-col>
 </template>
 
 <script>

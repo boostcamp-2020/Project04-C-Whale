@@ -131,6 +131,18 @@ const actions = {
       commit("SET_ERROR_ALERT", err.response);
     }
   },
+  async changeSectionPosition({ dispatch, commit }, { projectId, orderedSections }) {
+    try {
+      await projectAPI.updateSectionPosition(projectId, {
+        orderedSections,
+      });
+      await dispatch("fetchCurrentProject", projectId);
+
+      commit("SET_SUCCESS_ALERT", "섹션 위치가 변경되었습니다.");
+    } catch (err) {
+      commit("SET_ERROR_ALERT", err.response);
+    }
+  },
 };
 
 export default {

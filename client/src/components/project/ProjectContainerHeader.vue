@@ -1,7 +1,7 @@
 <template>
   <div class="project-header">
     <v-list-item>
-      <v-list-item-content class="text-h5">
+      <v-list-item-content class="text-h5 font-weight-bold">
         <UpdatableTitle
           v-if="project.title"
           :originalTitle="project.title"
@@ -28,6 +28,11 @@
           <v-list-item @click="selectBoardView">
             <v-list-item-title>보기 형태: 보드 </v-list-item-title>
           </v-list-item>
+          <v-list-item @click="filterIsDone">
+            <v-list-item-title
+              >{{ showDoneTasks ? "완료한 작업 숨기기" : "완료한 작업 표시" }}
+            </v-list-item-title>
+          </v-list-item>
         </v-list>
       </v-menu>
     </v-list-item>
@@ -36,12 +41,16 @@
 
 <script>
 import UpdatableTitle from "@/components/common/UpdatableTitle";
+import bus from "@/utils/bus";
+
 export default {
   props: {
     project: Object,
   },
   data: function () {
-    return {};
+    return {
+      showDoneTasks: false,
+    };
   },
   methods: {
     selectListView() {
@@ -53,6 +62,10 @@ export default {
     showAddSection() {
       this.$emit("showAddSection");
     },
+    filterIsDone() {
+      this.showDoneTasks = !this.showDoneTasks;
+      bus.$emit("toggleDoneTasks", this.showDoneTasks);
+    },
   },
   components: {
     UpdatableTitle,
@@ -62,6 +75,5 @@ export default {
 
 <style>
 .project-header {
-  min-width: 440px;
 }
 </style>

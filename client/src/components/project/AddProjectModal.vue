@@ -133,6 +133,11 @@ export default {
 .v-dialog {
   min-height: auto !important;
 }
+
+.v-dialog.add-project-dialog {
+  width: 100% !important;
+}
+
 .color-list-item {
   min-height: 36px;
 }

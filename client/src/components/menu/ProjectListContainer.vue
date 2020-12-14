@@ -1,17 +1,11 @@
 <template>
   <v-list-group small :value="false" sub-group active-class="list-active px-3">
     <template v-slot:activator>
-      <v-hover v-slot="{ hover }">
-        <v-list-item>
-          <v-list-item-content>
-            <v-list-item-title class="font-14">프로젝트</v-list-item-title>
-          </v-list-item-content>
-          <!-- TODO: 이벤트 버블링 오류 고치기 -->
-          <v-list-item-icon :class="{ 'd-none ': !hover }" @click.stop="addDialog = true">
-            <v-icon>mdi-plus</v-icon>
-          </v-list-item-icon>
-        </v-list-item>
-      </v-hover>
+      <v-list-item>
+        <v-list-item-content>
+          <v-list-item-title class="font-14">프로젝트</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
     </template>
     <v-list-item-group active-class="list-active">
       <v-list-item
@@ -44,6 +38,9 @@
             </v-list-item>
             <v-list-item @click.stop="openDeleteDialog(project.id)">
               <v-list-item-title class="font-14">프로젝트 삭제 </v-list-item-title>
+            </v-list-item>
+            <v-list-item @click.stop="setFavorite(project.id)">
+              <v-list-item-title class="font-14">즐겨찾기 추가 </v-list-item-title>
             </v-list-item>
           </v-list>
         </v-menu>
@@ -84,6 +81,7 @@
 import AddProjectModal from "@/components/project/AddProjectModal.vue";
 import UpdateProjectModal from "@/components/project/UpdateProjectModal.vue";
 import DeleteProjectModal from "@/components/project/DeleteProjectModal.vue";
+import { mapActions } from "vuex";
 
 export default {
   props: {
@@ -103,6 +101,7 @@ export default {
     };
   },
   methods: {
+    ...mapActions(["updateProject"]),
     openUpdateDialog(projectId) {
       this.projectId = projectId;
       this.updateDialog = true;
@@ -110,6 +109,9 @@ export default {
     openDeleteDialog(projectId) {
       this.projectId = projectId;
       this.deleteDialog = true;
+    },
+    setFavorite(projectId) {
+      this.updateProject({ projectId, data: { isFavorite: true } });
     },
   },
 };

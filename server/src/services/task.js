@@ -1,3 +1,4 @@
+/* eslint-disable no-return-await */
 const sequelize = require('@models');
 const { isTaskOwner, isProjectOwner, isSectionOwner } = require('@services/authority-check');
 const { customError } = require('@utils/custom-error');
@@ -59,11 +60,12 @@ const retrieveAll = async userId => {
       },
       {
         model: models.section,
-        attribute: [],
+        attribute: ['id', 'title', 'projectId', 'position'],
         include: [
           {
             model: models.project,
-            attributes: ['creatorId'],
+            attributes: ['creatorId', 'title', 'color'],
+            where: { creatorId: userId },
           },
         ],
       },
@@ -149,6 +151,24 @@ const update = async taskData => {
   return result;
 };
 
+const updateChildTaskPositions = async (parentId, orderedTasks) => {
+  const result = await sequelize.transaction(async t => {
+    return await Promise.all(
+      orderedTasks.map(async (taskId, position) => {
+        return await models.task.update(
+          { position, parentId },
+          { where: { id: taskId } },
+          { transaction: t },
+        );
+      }),
+    );
+  });
+
+  return (
+    result.length === orderedTasks.length && result.every(countArray => countArray.length !== 0)
+  );
+};
+
 const remove = async id => {
   const task = await taskModel.findByPk(id);
   if (!task) {
@@ -164,4 +184,11 @@ const remove = async id => {
   return result;
 };
 
-module.exports = { retrieveById, retrieveAll, create, update, remove };
+module.exports = {
+  retrieveById,
+  retrieveAll,
+  create,
+  update,
+  remove,
+  updateChildTaskPositions,
+};

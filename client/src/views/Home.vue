@@ -2,7 +2,7 @@
   <v-app v-if="isAuth">
     <my-header />
     <v-main>
-      <div class="router-view-container">
+      <div class="router-view-container px-4 py-4">
         <keep-alive>
           <router-view :key="$route.params.projectId"></router-view>
         </keep-alive>
@@ -36,8 +36,8 @@ export default {
 
 <style>
 .router-view-container {
-  padding: 10px 20%;
   display: flex;
   justify-content: center;
+  height: 100%;
 }
 </style>
