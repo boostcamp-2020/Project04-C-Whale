@@ -5,6 +5,7 @@ const commentController = require('@controllers/comment');
 router.get('/', taskController.getAllTasks);
 router.get('/:taskId', taskController.getTaskById);
 router.patch('/:taskId', taskController.updateTask);
+router.patch('/:taskId/position', taskController.updateChildTaskPositions);
 router.delete('/:taskId', taskController.deleteTask);
 
 router.get('/:taskId/comment', commentController.getComments);

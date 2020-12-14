@@ -23,15 +23,14 @@ const retrieveProjects = async userId => {
           {
             model: models.task,
             attributes: [],
-            where: { isDone: false },
+            where: { isDone: false, parentId: null },
             required: false,
-            group: ['sections.id'],
           },
         ],
       },
     ],
     where: { creatorId: userId },
-    group: ['project.id'],
+    group: ['project.id', 'sections.id'],
   });
   return projects;
 };

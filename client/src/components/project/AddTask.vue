@@ -93,17 +93,17 @@ import { mapGetters, mapActions } from "vuex";
 import { getTodayString } from "../../utils/date";
 import whaleApi from "../../utils/whaleApi";
 import { getMarkDownUrl } from "../../utils/markdown";
-import { createAlarm } from "../../utils/whaleApi";
 
 export default {
   props: {
     projectId: String,
     sectionId: String,
     parentId: String,
+    initialShow: Boolean,
   },
   data() {
     return {
-      show: false,
+      show: this.initialShow || false,
       projectTitle: "",
       task: {
         projectId: this.projectId,
@@ -123,14 +123,13 @@ export default {
     ...mapActions(["addTask"]),
     submit() {
       // 오늘 페이지 첫 렌더링 시, projectId, sectionId가 없는 상황을 위한 초기화
-      this.task.projectId = this.projectId ? this.projectId : this.managedProject.id;
-      this.sectionId = this.sectionId ? this.sectionId : this.managedProject.defaultSectionId;
+      // this.task.projectId = this.projectId ? this.projectId : this.managedProject.id;
+      // this.sectionId = this.sectionId ? this.sectionId : this.managedProject.defaultSectionId;
       this.addTask(this.task);
-      // createAlarm({
-      //   taskId: '??',
-      //   taskTitle: this.task.title,
-      //   fireTime: this.alarmTime,
-      // });
+      whaleApi.createAlarm({
+        taskTitle: this.task.title,
+        fireTime: this.alarmTime,
+      });
       this.task = {
         projectId: this.projectId ? this.projectId : this.managedProject.id,
         sectionId: this.sectionId ? this.sectionId : this.managedProject.defaultSectionId,
@@ -162,7 +161,7 @@ export default {
     },
     todayStringToKorean(todayString) {
       const today = new Date(todayString);
-      return `${today.getMonth()}월 ${today.getDate()}일`;
+      return `${today.getMonth() + 1}월 ${today.getDate()}일`;
     },
     selectAlarm(time) {
       this.alarmTime = Date.now() + 1000 * time;

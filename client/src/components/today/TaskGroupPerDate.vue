@@ -18,11 +18,15 @@
         />
       </div>
     </div>
-    <AddTask />
+    <AddTask 
+      :projectId="managedProject.id" 
+      :sectionId="managedProject.defaultSectionId"
+    />
   </v-list>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import TaskItem from "@/components/project/TaskItem";
 import AddTask from "@/components/project/AddTask";
 import { getTodayString } from "@/utils/date";
@@ -41,6 +45,7 @@ export default {
     };
   },
   computed: {
+    ...mapGetters(['managedProject']),
     todayString() {
       return getTodayString();
     },

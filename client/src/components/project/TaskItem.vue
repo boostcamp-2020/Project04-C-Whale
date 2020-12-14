@@ -33,6 +33,7 @@ import bus from "@/utils/bus";
 export default {
   props: {
     task: Object,
+    parentTask: Object,
     section: Object,
     position: Number,
     dragging: Boolean,
@@ -76,7 +77,19 @@ export default {
         return;
       }
 
-      this.SET_DROP_TARGET_SECTION(this.section);
+      if (this.task.parentId) {
+        if (this.task.parentId !== this.dropTargetContainer.id) {
+          this.SET_DROP_TARGET_CONTAINER({
+            ...this.parentTask,
+            type: "TASK",
+            projectId: this.section.projectId,
+          });
+        }
+      } else {
+        if (this.section.id !== this.dropTargetContainer.id) {
+          this.SET_DROP_TARGET_CONTAINER({ ...this.section, type: "SECTION" });
+        }
+      }
 
       const offset = this.middleY - e.clientY;
       this.$emit("taskDragOver", {
@@ -88,7 +101,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(["draggingTask"]),
+    ...mapGetters(["draggingTask", "dropTargetContainer"]),
     middleY() {
       const box = this.$el.getBoundingClientRect();
       const middle = box.top + box.height / 2;
