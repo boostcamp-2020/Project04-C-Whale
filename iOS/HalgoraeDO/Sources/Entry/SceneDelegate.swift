@@ -10,13 +10,25 @@ import UIKit
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
+    var storage: Storage {
+        return Storage()
+    }
+    
+    func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
+        NetworkMonitor.shared.startMonitoring()
+    }
+    
+    func sceneDidDisconnect(_ scene: UIScene) {
+        NetworkMonitor.shared.stopMonitoring()
+    }
 
     func sceneWillEnterForeground(_ scene: UIScene) {
-        NetworkMonitor.shared.startMonitoring()
+        
     }
 
     func sceneDidEnterBackground(_ scene: UIScene) {
-        NetworkMonitor.shared.stopMonitoring()
+        
+        storage.saveContext(context: storage.mainContext)
     }
 }
 
