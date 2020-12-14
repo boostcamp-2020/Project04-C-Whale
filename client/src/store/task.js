@@ -10,9 +10,10 @@ const state = {
 
 const getters = {
   currentTask: (state) => state.currentTask,
-  todayTasks: (state) => state.tasks.filter((task) => isToday(task.dueDate)),
-  expiredTasks: (state) => state.tasks.filter((task) => !isToday(task.dueDate)),
+  todayTasks: (state) => state.tasks.filter((task) => isToday(task.dueDate) && !task.isDone),
+  expiredTasks: (state) => state.tasks.filter((task) => !isToday(task.dueDate) && !task.isDone),
   taskCount: (state) => state.tasks.length,
+  tasksWithBookmarks: (state) => state.tasks.filter((task) => task.bookmarks.length > 0),
 };
 
 const mutations = {
@@ -36,7 +37,6 @@ const actions = {
       const {
         data: { task },
       } = await taskAPI.getTaskById(taskId);
-      console.log(task);
       commit("SET_CURRENT_TASK", task);
     } catch (err) {
       commit("SET_ERROR_ALERT", err.response);
@@ -52,7 +52,7 @@ const actions = {
       commit("SET_ERROR_ALERT", err.response);
     }
   },
-  async updateTaskToDone({ dispatch, commit }, { projectId, taskId }) {
+  async updateTaskToDone({ dispatch, commit }, { projectId, taskId, isDone }) {
     try {
       await taskAPI.updateTask(taskId, { isDone: true });
 
@@ -63,8 +63,9 @@ const actions = {
 
       await dispatch("fetchAllTasks");
       await dispatch("fetchProjectInfos");
-
-      commit("SET_SUCCESS_ALERT", "작업을 완료했습니다.");
+      if (isDone) {
+        commit("SET_SUCCESS_ALERT", "작업을 완료했습니다.");
+      }
     } catch (err) {
       commit("SET_ERROR_ALERT", err.response);
     }

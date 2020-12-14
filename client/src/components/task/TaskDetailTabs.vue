@@ -6,11 +6,16 @@
     <!-- 하위 작업-->
     <v-tab-item>
       <ChildTaskList
+        v-if="isParent"
         :tasks="tasks"
         :projectId="projectId"
         :sectionId="sectionId"
         :parentId="parentId"
       />
+      <div v-else class="py-3">
+        <p class="text-center">하위작업을 더이상 생성할 수 없습니다</p>
+        <v-img src="@/assets/halgoraedo.png"></v-img>
+      </div>
     </v-tab-item>
     <!-- 댓글-->
     <v-tab-item>
@@ -18,7 +23,7 @@
     </v-tab-item>
     <!-- 북마크-->
     <v-tab-item>
-      <div>하이 북마크</div>
+      <BookmarkList />
     </v-tab-item>
   </v-tabs>
 </template>
@@ -26,6 +31,7 @@
 <script>
 import ChildTaskList from "@/components/task/ChildTaskList";
 import CommentList from "@/components/comment/CommentList";
+import BookmarkList from "@/components/bookmark/BookmarkList";
 
 export default {
   props: {
@@ -34,6 +40,7 @@ export default {
     tabList: Object,
     projectId: String,
     sectionId: String,
+    isParent: Boolean,
   },
   data() {
     return {
@@ -47,7 +54,7 @@ export default {
       this.active = active % 3;
     },
   },
-  components: { ChildTaskList, CommentList },
+  components: { ChildTaskList, CommentList, BookmarkList },
 };
 </script>
 

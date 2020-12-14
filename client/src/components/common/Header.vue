@@ -1,16 +1,19 @@
 <template>
   <v-container>
-    <v-navigation-drawer class="left-menu px-4 py-4 grey lighten-5" v-model="drawer" app>
+    <v-navigation-drawer class="left-menu px-4 py-4" v-model="drawer" app>
       <left-menu></left-menu>
     </v-navigation-drawer>
     <v-app-bar class="header whaleGreen" dense flat app>
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-toolbar-title>할고래DO</v-toolbar-title>
-      <Search />
+      <v-app-bar-nav-icon @click="goHome" text>
+        <v-icon>mdi-home</v-icon>
+      </v-app-bar-nav-icon>
 
-      <v-btn @click="toggleQuickAdd" text>
-        <v-icon color="white" class="icon"> mdi-plus </v-icon>
-      </v-btn>
+      <Search />
+      <v-spacer></v-spacer>
+      <v-app-bar-nav-icon @click="toggleQuickAdd" text>
+        <v-icon> mdi-plus </v-icon>
+      </v-app-bar-nav-icon>
 
       <v-dialog v-model="showQuickAdd" width="500">
         <v-card class="pa-3">
@@ -20,16 +23,26 @@
 
       <v-menu :offset-y="true">
         <template v-slot:activator="{ on }">
-          <v-btn text v-on="on">
-            <v-icon color="white"> mdi-account </v-icon>
-          </v-btn>
+          <v-app-bar-nav-icon v-on="on" text>
+            <v-icon> mdi-account </v-icon>
+          </v-app-bar-nav-icon>
         </template>
         <v-list>
+          <v-list-item>
+            <v-list-item-title class="font-14">{{ user.email }}</v-list-item-title>
+          </v-list-item>
+          <v-list-item>
+            <v-switch
+              @click.stop
+              v-model="darkMode"
+              :label="darkMode ? '다크모드 해제' : '다크모드 설정'"
+            ></v-switch>
+          </v-list-item>
           <v-list-item @click="logout">
-            <!-- <v-list-item-icon>
-              <v-icon color="blue">mdi-inbox</v-icon>
-            </v-list-item-icon> -->
-            <v-list-item-title>로그아웃</v-list-item-title>
+            <v-list-item-icon>
+              <v-icon>mdi-logout</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title class="font-14">로그아웃</v-list-item-title>
           </v-list-item>
         </v-list>
       </v-menu>
@@ -41,23 +54,39 @@
 import Search from "@/components/task/Search";
 import LeftMenu from "@/components/menu/LeftMenu";
 import AddTask from "@/components/project/AddTask";
-import { mapActions } from "vuex";
+import { mapActions, mapState } from "vuex";
 
 export default {
   data: () => ({
     drawer: null,
     showQuickAdd: false,
+    darkMode: JSON.parse(localStorage.getItem("darkMode")) || false,
   }),
   components: {
     Search,
     LeftMenu,
     AddTask,
   },
+  computed: {
+    ...mapState({ user: (state) => state.auth.user }),
+  },
   methods: {
     ...mapActions(["logout"]),
     toggleQuickAdd() {
       this.showQuickAdd = !this.showQuickAdd;
     },
+    goHome() {
+      this.$router.push("/today").catch(() => {});
+    },
+  },
+  watch: {
+    darkMode() {
+      this.$vuetify.theme.dark = this.darkMode;
+      localStorage.setItem("darkMode", this.darkMode);
+    },
+  },
+  created() {
+    this.$vuetify.theme.dark = this.darkMode;
   },
 };
 </script>
