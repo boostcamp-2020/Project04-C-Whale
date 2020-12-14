@@ -179,28 +179,10 @@ describe('post bookmark', () => {
     expect(res.body.code).toBe(expectedError.code);
     done();
   });
-  it('url 타입이 잘못된 경우', async done => {
-    // given
-    const taskId = seeder.tasks[0].id;
-    const data = { url: 1 };
-    const expectedError = customError.TYPE_ERROR('url');
-
-    // when
-    const res = await request(app)
-      .post(`/api/task/${taskId}/bookmark`)
-      .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
-      .send(data);
-
-    // then
-    expect(res.status).toBe(expectedError.status);
-    expect(res.body.message).toBe(expectedError.message);
-    expect(res.body.code).toBe(expectedError.code);
-    done();
-  });
   it('url 형식이 잘못된 경우', async done => {
     // given
     const taskId = seeder.tasks[0].id;
-    const data = { url: 'https://www.naver.com' };
+    const data = { url: '배고프다' };
     const expectedError = customError.INVALID_INPUT_ERROR('url');
 
     // when
