@@ -53,6 +53,8 @@
 		4C9A02DF2582214800727F88 /* TaskDetailContentsCellCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9A02DE2582214800727F88 /* TaskDetailContentsCellCollectionViewCell.swift */; };
 		4C9A02F325826CCA00727F88 /* ResponseProject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9A02F225826CCA00727F88 /* ResponseProject.swift */; };
 		4C9A03422584E1FF00727F88 /* HalgoraeDO.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4C9A03402584E1FF00727F88 /* HalgoraeDO.xcdatamodeld */; };
+		4C9A03512584EFD000727F88 /* PersistentContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9A03502584EFD000727F88 /* PersistentContainer.swift */; };
+		4C9A03562584F17C00727F88 /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9A03552584F17C00727F88 /* Storage.swift */; };
 		4CCD31E8256EBC0C00A46D10 /* TaskListWorkerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0CA5F0256E9AF100E66045 /* TaskListWorkerTests.swift */; };
 		4CCD31E9256EBC0C00A46D10 /* TaskListInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0CA60C256EAA7300E66045 /* TaskListInteractorTests.swift */; };
 		4CCD31EA256EBC0C00A46D10 /* TaskListPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0CA629256EABF700E66045 /* TaskListPresenterTests.swift */; };
@@ -178,6 +180,8 @@
 		4C9A02DE2582214800727F88 /* TaskDetailContentsCellCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDetailContentsCellCollectionViewCell.swift; sourceTree = "<group>"; };
 		4C9A02F225826CCA00727F88 /* ResponseProject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseProject.swift; sourceTree = "<group>"; };
 		4C9A03412584E1FF00727F88 /* HalgoraeDO.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = HalgoraeDO.xcdatamodel; sourceTree = "<group>"; };
+		4C9A03502584EFD000727F88 /* PersistentContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistentContainer.swift; sourceTree = "<group>"; };
+		4C9A03552584F17C00727F88 /* Storage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
 		4CCD31DD256EBC0000A46D10 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4CCD31F8256EBC8000A46D10 /* TaskListDisplaySpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListDisplaySpy.swift; sourceTree = "<group>"; };
 		4CCD31FE256EBCEF00A46D10 /* TaskListPresenterSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListPresenterSpy.swift; sourceTree = "<group>"; };
@@ -405,6 +409,16 @@
 			path = Response;
 			sourceTree = "<group>";
 		};
+		4C9A034F2584EFC100727F88 /* Core Data */ = {
+			isa = PBXGroup;
+			children = (
+				4C9A046A2586482B00727F88 /* Models */,
+				4C9A03502584EFD000727F88 /* PersistentContainer.swift */,
+				4C9A03552584F17C00727F88 /* Storage.swift */,
+			);
+			path = "Core Data";
+			sourceTree = "<group>";
+		};
 		4CCD31DA256EBC0000A46D10 /* TaskListTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -528,6 +542,7 @@
 		AAEE21112564E57D00668FAD /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				4C9A034F2584EFC100727F88 /* Core Data */,
 				AAEE21102564E55500668FAD /* Entry */,
 				4CCD325C256F8BE600A46D10 /* Utils */,
 				4C42385E2578D6FD0068A252 /* Service */,
@@ -746,6 +761,7 @@
 				4CE915F0257F633200BCF398 /* Section.swift in Sources */,
 				4CE9160A257F81BD00BCF398 /* MenuWorker.swift in Sources */,
 				4C3F573F256D2263006D7C9F /* RoundButton.swift in Sources */,
+				4C9A03512584EFD000727F88 /* PersistentContainer.swift in Sources */,
 				4C4236F825761A8E0068A252 /* TaskDetailPageViewController.swift in Sources */,
 				AAA74C9D25805BC3004FC883 /* TaskDetailModels.swift in Sources */,
 				4C42370425761CB00068A252 /* TaskDetailSubTasksViewController.swift in Sources */,
@@ -790,6 +806,7 @@
 				4C42371B25763B080068A252 /* TaskDetailInteractor.swift in Sources */,
 				4CE915FA257F662800BCF398 /* Bookmark.swift in Sources */,
 				4C423896257A2A560068A252 /* ParameterEncoding.swift in Sources */,
+				4C9A03562584F17C00727F88 /* Storage.swift in Sources */,
 				4C42387A25794C8C0068A252 /* SessionManager.swift in Sources */,
 				4CE91619257F83AD00BCF398 /* MenuRouter.swift in Sources */,
 				4C42374125771BA40068A252 /* DatePickerButtonView.swift in Sources */,
