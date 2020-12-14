@@ -1,17 +1,21 @@
 const { validateOrReject, registerDecorator } = require('class-validator');
 const { plainToClass } = require('class-transformer');
 const { isValidDueDate } = require('@utils/date');
+const { message, customError } = require('@utils/custom-error');
 
 const validator = async (Dto, object, options) => {
   const classObject = plainToClass(Dto, object);
   await validateOrReject(classObject, { ...options, stopAtFirstError: true });
 };
 
-const getErrorMsg = errorArray => {
+const getTypeError = errorArray => {
   const [validationError] = errorArray;
-  const [message] = Object.values(validationError.constraints);
+  const { property } = validationError;
+  const recievedErrorMessage = Object.values(validationError.constraints).shift();
 
-  return message;
+  const errorKyes = Object.keys(message);
+  const errorType = errorKyes.find(key => message[key](property) === recievedErrorMessage);
+  return customError[errorType](property);
 };
 const isAfterToday = (property, validationOptions) => {
   return (object, propertyName) => {
@@ -30,4 +34,4 @@ const isAfterToday = (property, validationOptions) => {
   };
 };
 
-module.exports = { validator, getErrorMsg, isAfterToday };
+module.exports = { validator, getTypeError, isAfterToday };
