@@ -22,6 +22,7 @@
       <TaskDetailTabs
         :tasks="task.tasks"
         :comments="commentsMap[this.$route.params.taskId]"
+        :bookmarks="bookmarkMap[this.$route.params.taskId]"
         :projectId="$route.params.projectId"
         :sectionId="task.sectionId"
         :isParent="task.parentId === null"
@@ -47,15 +48,17 @@ export default {
     };
   },
   computed: {
-    ...mapState({ commentsMap: (state) => state.comment.commentsMap }),
+    ...mapState({
+      commentsMap: (state) => state.comment.commentsMap,
+      bookmarkMap: (state) => state.bookmark.bookmarkMap,
+    }),
   },
   methods: {
-    ...mapActions(["fetchComments"]),
+    ...mapActions(["fetchComments", "fetchBookmarks"]),
     hideTaskModal() {
       this.$emit("hideTaskModal");
     },
   },
-  created() {},
   mixins: [SpinnerMixin],
 };
 </script>

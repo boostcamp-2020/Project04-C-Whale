@@ -1,6 +1,6 @@
 <template>
   <!-- TODO: :to 수정, UI 만들기 -->
-  <v-list-item :to="bookmark.url">
+  <v-list-item :href="bookmark.url">
     <v-list-item-content>
       <v-list-item-title v-text="bookmark.title"></v-list-item-title>
     </v-list-item-content>

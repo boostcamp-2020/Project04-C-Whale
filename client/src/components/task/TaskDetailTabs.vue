@@ -23,7 +23,7 @@
     </v-tab-item>
     <!-- 북마크-->
     <v-tab-item>
-      <BookmarkList />
+      <BookmarkList :bookmarks="bookmarks" />
     </v-tab-item>
   </v-tabs>
 </template>
@@ -37,6 +37,7 @@ export default {
   props: {
     tasks: Array,
     comments: Array,
+    bookmarks: Array,
     projectId: String,
     sectionId: String,
     isParent: Boolean,
@@ -58,10 +59,10 @@ export default {
       this.active = active % 3;
     },
   },
-  created() {},
   beforeUpdate() {
     this.tabList.childTask.count = this.task ? this.tasks.length : 0;
     this.tabList.comment.count = this.comments ? this.comments.length : 0;
+    this.tabList.bookmark.count = this.bookmarks ? this.bookmarks.length : 0;
   },
   components: { ChildTaskList, CommentList, BookmarkList },
 };
