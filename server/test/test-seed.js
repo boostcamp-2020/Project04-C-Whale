@@ -176,6 +176,8 @@ const bookmarks = [
   {
     id: 'cb8eb131-ad2e-4677-a4e5-c8ec078b28e8',
     url: 'https://www.uuidgenerator.net/version4',
+    title: 'uuid 생성 사이트',
+    taskId: tasks[0].id,
     createdAt: new Date(),
     updatedAt: new Date(),
   },
