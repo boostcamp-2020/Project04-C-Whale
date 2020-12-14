@@ -54,6 +54,11 @@ export default {
     UpdatableTitle,
     ChildTaskList,
   },
+  data() {
+    return {
+      showDoneTasks: false,
+    };
+  },
   setup(props) {
     const { section } = toRefs(props);
     const { tasks, taskDragOver, taskDrop } = useDragDropContainer({ parent: section });

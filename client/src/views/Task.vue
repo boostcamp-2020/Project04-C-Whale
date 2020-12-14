@@ -9,9 +9,7 @@
     <task-detail-container
       v-if="tasks && tasks.length !== 0"
       @hideTaskModal="hideTaskModal"
-      :task="task"
-      :comments="task.comments"
-      :projectTitle="projectTitle"
+      :task="tasks.find((task) => task.id === $route.params.taskId)"
     ></task-detail-container>
   </v-dialog>
 </template>
@@ -38,10 +36,7 @@ export default {
       this.$router.go(-1);
     },
   },
-  created() {
-    this.task = this.tasks.find((task) => task.id === this.$route.params.taskId);
-    this.projectTitle = this.task.section.project.title;
-  },
+
   watch: {
     tasks() {
       this.task = this.tasks.find((task) => task.id === this.$route.params.taskId);
