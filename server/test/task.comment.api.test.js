@@ -405,14 +405,14 @@ describe('update comment', () => {
   it('자신의 commentId가 아닌 경우', async done => {
     // given
     const requestBody = { content: '하이' };
-    const taskId = seeder.tasks[1].id;
-    const commentId = seeder.comments[0].id;
+    const taskId = seeder.tasks[5].id;
+    const commentId = seeder.comments[2].id;
     const expectedError = customError.FORBIDDEN_ERROR('comment');
     try {
       // when
       const res = await request(app)
         .put(`/api/task/${taskId}/comment/${commentId}`)
-        .set('Authorization', `Bearer ${createJWT(seeder.users[2])}`)
+        .set('Authorization', `Bearer ${createJWT(seeder.users[1])}`)
         .send(requestBody);
 
       // then
