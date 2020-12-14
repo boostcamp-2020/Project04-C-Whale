@@ -26,6 +26,20 @@ public class Task: NSManagedObject, Codable {
         }
     }
     
+    convenience init(fields: TaskListModels.TaskFields, context: NSManagedObjectContext) {
+        self.init(context: context)
+        self.id = UUID().uuidString
+        
+        configure(fields: fields)
+    }
+    
+    func configure(fields: TaskListModels.TaskFields) {
+        self.title = fields.title
+        // self.dueDate =
+            // let a = Date().fromString(format: fields.date)
+        self.priorityRaw = Int16(fields.priority) ?? 4
+    }
+    
     required convenience public init(from decoder: Decoder) throws {
         self.init(context: Storage().childContext)
         

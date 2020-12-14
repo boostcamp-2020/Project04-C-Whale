@@ -36,8 +36,8 @@ public class Project: NSManagedObject, Codable {
         self.taskCount = try container.decodeIfPresent(Int32.self, forKey: .taskCount) ?? 0
         self.isList = try container.decode(Bool.self, forKey: .isList)
         self.isFavorite = try container.decodeIfPresent(Bool.self, forKey: .isFavorite) ?? false
-        let tempSections = try container.decode([Section].self, forKey: .sections)
-        self.sections = NSOrderedSet(array: tempSections)
+        let tempSections = try container.decodeIfPresent([Section].self, forKey: .sections)
+        self.sections = NSOrderedSet(array: tempSections ?? [])
     }
     
     public func encode(to encoder: Encoder) throws {

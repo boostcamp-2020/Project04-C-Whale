@@ -69,7 +69,7 @@ class TaskDetailCommentViewController: UIViewController {
     
     func createComment(text: String) {
         guard let task = task else { return }
-        interactor?.createComment(request: .init(commentFields: .init(taskId: task.id, text: text)))
+        interactor?.createComment(request: .init(taskId: task.id, commentFields: .init(content: text)))
     }
 }
 

@@ -9,7 +9,9 @@ import Foundation
 
 protocol TaskListBusinessLogic {
     func fetchTasks(request: TaskListModels.FetchTasks.Request)
+    func fetchTasksForComplete(request: TaskListModels.FetchTasks.Request)
     func changeFinish(request: TaskListModels.FinishTask.Request)
+    func changeFinishForAll(request: TaskListModels.FinishTask.Request, projectId: String)
     func createTask(request: TaskListModels.CreateTask.Request)
     func createSection(request: TaskListModels.CreateSection.Request)
 }
@@ -39,19 +41,40 @@ extension TaskListInteractor: TaskListBusinessLogic {
         }
     }
     
+    func fetchTasksForComplete(request: TaskListModels.FetchTasks.Request) {
+        guard let id = request.projectId else { return }
+        worker.request(endPoint: .get(projectId: id)) { [weak self] (project: Project?) in
+            self?.taskList.sections = project?.sections?.array as? [Section] ?? []
+            self?.presenter.presentFetchTasksForAll(response: TaskListModels.FetchTasks.Response(sections: self?.taskList.sections ?? []))
+        }
+    }
+    
     func changeFinish(request: TaskListModels.FinishTask.Request) {
         let viewModels = request.displayedTasks
         viewModels.forEach { viewModel in
-            guard let task = taskList.task(identifier: viewModel.id,
-                                           postion: viewModel.position,
-                                           parentPosition: viewModel.parentPosition)
-            else {
-                return
-            }
-            task.isDone = viewModel.isCompleted
-            worker.changeFinish(task: task, postion: viewModel.position, parentPosition: viewModel.parentPosition)
+            guard let data = TaskListModels.TaskUpdateFields(title: viewModel.title, isDone: viewModel.isCompleted).encodeData else { return }
+            worker.requestPatch(endPoint: TaskEndPoint.taskUpdate(id: viewModel.id, task: data)) { (project: Project?) in }
         }
         presenter.presentFinshChanged(response: .init(tasks: taskList.tasks))
+    }
+    
+    func changeFinishForAll(request: TaskListModels.FinishTask.Request, projectId: String) {
+        var viewModels = request.displayedTasks
+        let lastItem = viewModels.popLast()
+        viewModels.forEach { viewModel in
+            guard let data = TaskListModels.TaskUpdateFields(title: viewModel.title, isDone: viewModel.isCompleted).encodeData else { return }
+            worker.requestPatch(endPoint: TaskEndPoint.taskUpdate(id: viewModel.id, task: data)) { (project: Project?) in }
+          
+        }
+        guard let viewModel = lastItem,
+              let data = TaskListModels.TaskUpdateFields(title: viewModel.title, isDone: viewModel.isCompleted).encodeData
+        else {
+            return
+        }
+        worker.requestPostAndGetTask(post: TaskEndPoint.taskUpdate(id: viewModel.id, task: data), endPoint: .get(projectId: projectId)) { [weak self] (project: Project?) in
+            self?.taskList.sections = project?.sections?.array as? [Section] ?? []
+            self?.presenter.presentFetchTasks(response: TaskListModels.FetchTasks.Response(sections: self?.taskList.sections ?? []))
+        }
     }
     
     func createTask(request: TaskListModels.CreateTask.Request) {
@@ -64,9 +87,7 @@ extension TaskListInteractor: TaskListBusinessLogic {
     
     func createSection(request: TaskListModels.CreateSection.Request) {
         guard let data = request.sectionFields.encodeData else { return }
-        
-        
-        worker.requestPostAndGetTemp(post: TaskEndPoint.sectionCreate(projectId: request.projectId, request: data), endPoint: .get(projectId: request.projectId)) { [weak self] (project: Project?) in
+        worker.requestPostAndGetTask(post: TaskEndPoint.sectionCreate(projectId: request.projectId, request: data), endPoint: .get(projectId: request.projectId)) { [weak self] (project: Project?) in
             self?.taskList.sections = project?.sections?.array as? [Section] ?? []
             self?.presenter.presentFetchTasks(response: TaskListModels.FetchTasks.Response(sections: self?.taskList.sections ?? []))
         }

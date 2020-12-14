@@ -39,7 +39,7 @@ extension TaskDetailPresenter: TaskDetailPresentLogic {
     }
     
     func presentFetchedComments(response: TaskDetailModels.FetchComments.Response) {
-        let comemntVMs = response.comments.compactMap { TaskDetailModels.ContentsVM(comment: $0) }
-        subTaskCommentViewController?.displayFetchedComments(viewModel: .init(commentVMs: comemntVMs))
+        let commentVMs = response.comments.compactMap { TaskDetailModels.ContentsVM(comment: $0) }
+        subTaskCommentViewController?.displayFetchedComments(viewModel: .init(commentVMs: commentVMs))
     }
 }

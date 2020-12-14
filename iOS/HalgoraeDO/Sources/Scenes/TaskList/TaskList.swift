@@ -20,7 +20,8 @@ class TaskList {
            0..<(superTasks?.count ?? 0) ~= parentPosition {
             superTasks = superTasks?[parentPosition].tasks?.array as? [Task]
         }
-        
+        guard 0..<(superTasks?.count ?? 0) ~= taskVM.position else { return nil }
+        //TODO position 접근. -> task 접근
         return superTasks?[taskVM.position]
     }
     

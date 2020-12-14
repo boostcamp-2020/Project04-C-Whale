@@ -16,7 +16,7 @@ extension Comment {
         return NSFetchRequest<Comment>(entityName: "Comment")
     }
 
-    @NSManaged public var contents: String?
+    @NSManaged public var content: String?
     @NSManaged public var id: String
     @NSManaged public var task: Task?
 

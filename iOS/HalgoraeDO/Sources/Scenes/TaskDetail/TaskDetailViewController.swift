@@ -52,6 +52,7 @@ class TaskDetailViewController: UIViewController {
     @IBOutlet weak private var commentTabButton: UIButton!
     @IBOutlet weak private var bookmarkTabButton: UIButton!
     @IBOutlet weak private var subTabStackView: UIStackView!
+    @IBOutlet weak private var datePickerButtonView: DatePickerButtonView!
     weak private var pageViewController: UIPageViewController?
     
     // MARK: View Life Cycle
@@ -80,6 +81,7 @@ class TaskDetailViewController: UIViewController {
     // MARK: - Initialize
     
     private func configureLogic() {
+        
         let taskDetailSubTasksViewController = pages[0] as? TaskDetailSubTasksViewController
         let taskDetailCommentViewController = pages[1] as? TaskDetailCommentViewController
         let taskDetailBookmarkViewController = pages[2] as? TaskDetailBookmarkViewController
@@ -91,6 +93,9 @@ class TaskDetailViewController: UIViewController {
         taskDetailSubTasksViewController?.configure(interactor: interactor, task: task)
         taskDetailCommentViewController?.configure(interactor: interactor, task: task)
         taskDetailBookmarkViewController?.configure(interactor: interactor, task: task)
+        //TODO segment view 
+       // pages.removeFirst()//자식뷰일때
+       // subTaskTabButton.removeFromSuperview()
         self.interactor = interactor
     }
     
@@ -127,13 +132,24 @@ class TaskDetailViewController: UIViewController {
     
     // MARK: IBActions
     
+    @IBAction func didTabCancelButton(_ sender: UIButton) {
+        dismiss(animated: true, completion: nil)
+    }
+    
     @IBAction private func didTapCancelBarButtonItem(_ sender: UIBarButtonItem) {
         setEditing(false, animated: true)
         view.endEditing(true)
     }
     
     @IBAction private func didTapSaveBarButtonItem(_ sender: UIBarButtonItem) {
+        guard let taskTitle = taskTitleTextView.text else { return }
+
+        interactor?.updateTask(request: .init(taskId: task.id, displayedTask: .init(title: taskTitle, isDone: task.isDone, dueDate: "\(datePickerButtonView.date)", priority: "\(priority.rawValue)")))
         
+        let taskListViewController = (self.presentingViewController as? UINavigationController)?.viewControllers.last
+        dismiss(animated: true) {
+            taskListViewController?.viewWillAppear(true)
+        }
     }
     
     

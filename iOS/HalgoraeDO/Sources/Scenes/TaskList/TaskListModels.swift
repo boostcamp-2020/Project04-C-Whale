@@ -41,7 +41,8 @@ enum TaskListModels {
     
     enum ReorderTask {
         struct Request {
-            var displayedTask: DisplayedTask
+            var taskId: String
+            var displayedTask: TaskUpdateFields
         }
         
         struct Response {
@@ -69,6 +70,14 @@ enum TaskListModels {
         }
     }
     
+    enum UpdateTask {
+        struct Request {
+            var taskId: String
+            var projectId: String
+            var taskFileds: TaskUpdateFields
+        }
+    }
+    
     enum CreateSection {
         struct Request {
             var projectId: String
@@ -86,6 +95,13 @@ enum TaskListModels {
         var title: String
         var date: Date?
         var priority: String
+    }
+    
+    struct TaskUpdateFields: Encodable {
+        var title: String
+        var isDone: Bool
+        var dueDate: String?
+        var priority: String?
     }
     
     struct SectionVM {
@@ -123,6 +139,7 @@ enum TaskListModels {
              tintColor: UIColor,
              position: Int,
              parentPosition: Int?,
+             sectionId: String,
              subItems: [DisplayedTask]) {
             self.id = id
             self.title = title

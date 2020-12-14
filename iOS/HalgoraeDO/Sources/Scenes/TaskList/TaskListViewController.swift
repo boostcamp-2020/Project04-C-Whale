@@ -90,12 +90,30 @@ class TaskListViewController: UIViewController {
     
     private func set(editingMode: Bool) {
         if !editingMode {
+            editToolBar.items?.removeLast()
             selectedTasks.removeAll()
+        } else {
+            let allCheckToolBarItem = UIBarButtonItem(title: "작업 완료", style: .plain, target: self, action: #selector(tapAllCheckToolBarItem(_:)))
+            editToolBar.items?.append(allCheckToolBarItem)
         }
         title = editingMode ? "\(selectedTasks.count) 개 선택됨" : project.title
         taskListCollectionView.isEditing = editingMode
         moreButton.title = editingMode ? "취소" : "More"
-        editToolBar.isHidden = !editingMode
+    }
+    
+    @objc func tapAllCheckToolBarItem(_ sender: UIBarButtonItem) {
+        
+        var selectItemTemp: [TaskVM] = []
+        for selectedItem in selectedTasks {
+            var tempSelectItem = selectedItem
+            tempSelectItem.isCompleted = true
+            selectItemTemp.append(tempSelectItem)
+        }
+
+        let projectId = project.id
+        selectedTasks.removeAll()
+        set(editingMode: false)
+        self.interactor?.changeFinishForAll(request: .init(displayedTasks: selectItemTemp), projectId: projectId)
     }
     
     private func slideRightConfirmActionViewWillDismiss(targetView: UIView,
@@ -151,7 +169,11 @@ class TaskListViewController: UIViewController {
         let changeCompletedDisplayTitle = displayCompleted ? "완료된 항목 숨기기" : "완료된 항목 보기"
         let changeCompletedDisplayAction = UIAlertAction(title: changeCompletedDisplayTitle, style: .default) { (_: UIAlertAction) in
             self.displayCompleted.toggle()
-            self.interactor?.fetchTasks(request: .init(projectId: self.project.id))
+            if self.displayCompleted{
+                self.interactor?.fetchTasksForComplete(request: .init(projectId: self.project.id))
+            } else {
+                self.interactor?.fetchTasks(request: .init(projectId: self.project.id))
+            }
         }
         
         let cancelAction = UIAlertAction(title: "취소", style: .cancel) { (_: UIAlertAction) in
@@ -220,9 +242,10 @@ private extension TaskListViewController {
                 if !self.isEditing {
                     self.setEditing(true, animated: true)
                 }
-                
-                let taskVM = self.dataSource.snapshot().itemIdentifiers[indexPath.item]
-                self.selectedTasks.insert(taskVM)
+
+                let section = self.dataSource.snapshot().sectionIdentifiers[indexPath.section]
+                let taskItem = self.dataSource.snapshot(for: section).items[indexPath.row]
+                self.selectedTasks.insert(taskItem)
                 self.taskListCollectionView.selectItem(at: indexPath, animated: true, scrollPosition: .init())
             }
             
@@ -300,7 +323,7 @@ extension TaskListViewController: TaskListDisplayLogic {
     func displayFetchTasks(viewModel: TaskListModels.FetchTasks.ViewModel) {
         var snapshot = NSDiffableDataSourceSnapshot<TaskListModels.SectionVM, TaskListModels.DisplayedTask>()
         snapshot.appendSections(viewModel.sectionVMs)
-        dataSource.apply(snapshot, animatingDifferences: false)
+        dataSource.apply(snapshot)
         for sectionVM in viewModel.sectionVMs {
             let sectionSnapshot = generateSnapshot(taskItems: sectionVM.tasks)
             dataSource.apply(sectionSnapshot, to: sectionVM)
@@ -343,14 +366,15 @@ extension TaskListViewController: TaskListDisplayLogic {
 extension TaskListViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let taskVM = dataSource.snapshot().itemIdentifiers[indexPath.item]
+        let section = dataSource.snapshot().sectionIdentifiers[indexPath.section]
+        let taskItem = dataSource.snapshot(for: section).items[indexPath.row]
         guard !isEditing else {
-            selectedTasks.insert(taskVM)
+            selectedTasks.insert(taskItem)
             return
         }
         
         collectionView.deselectItem(at: indexPath, animated: true)
-        router?.routeToTaskDetail(for: taskVM, at: indexPath)
+        router?.routeToTaskDetail(for: taskItem, at: indexPath)
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
@@ -558,7 +582,6 @@ extension TaskListViewController: UICollectionViewDropDelegate {
         }
     }
 }
-
 
 private extension TaskListViewController {
     
