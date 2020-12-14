@@ -5,22 +5,17 @@
     </v-list-item>
 
     <div v-for="(task, index) in tasks" :key="task.id" class="task-container">
-      <TaskItem
-        v-if="!task.isDone"
-        :section="section"
-        :task="task"
-        :position="index"
-        @taskDragOver="taskDragOver"
-        @taskDrop="taskDrop"
-      />
-      <v-divider />
       <div v-if="!task.isDone">
         <TaskItem
-          v-for="childTask in task.tasks"
-          :key="childTask.id"
-          :task="childTask"
-          class="ml-10"
+          :section="section"
+          :task="task"
+          :position="index"
+          @taskDragOver="taskDragOver"
+          @taskDrop="taskDrop"
         />
+        <v-divider />
+
+        <ChildTaskList v-if="task.tasks" :section="section" :parentTask="task" class="ml-10" />
       </div>
     </div>
 
@@ -29,51 +24,33 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
 import AddTask from "@/components/project/AddTask";
 import TaskItem from "@/components/project/TaskItem";
 import UpdatableTitle from "@/components/common/UpdatableTitle";
-import _ from "lodash";
+import ChildTaskList from "@/components/project/ChildTaskList";
+import { toRefs } from "@vue/composition-api";
+import useDragDropContainer from "@/composables/useDragDropContainer";
 
 export default {
   props: {
     projectId: String,
     section: Object,
   },
-  data: function () {
-    return {
-      tasks: _.cloneDeep(this.section.tasks),
-    };
-  },
-  methods: {
-    ...mapActions(["changeTaskPosition"]),
-    taskDragOver({ position }) {
-      this.tasks = this.tasks.filter((task) => task.id !== this.draggingTask.id);
-      this.tasks.splice(position, 0, { ...this.draggingTask, dragging: true });
-    },
-    taskDrop() {
-      this.changeTaskPosition({
-        orderedTasks: this.tasks.map((task) => task.id),
-      });
-    },
-  },
   components: {
     AddTask,
     TaskItem,
     UpdatableTitle,
+    ChildTaskList,
   },
-  computed: {
-    ...mapGetters(["draggingTask", "dropTargetSection"]),
-  },
-  watch: {
-    section(updatedSection) {
-      this.tasks = _.cloneDeep(updatedSection.tasks);
-    },
-    dropTargetSection(dropTargetSection) {
-      if (dropTargetSection.id !== this.section.id) {
-        this.tasks = this.tasks.filter((task) => task.id !== this.draggingTask.id);
-      }
-    },
+  setup(props) {
+    const { section } = toRefs(props);
+    const { tasks, taskDragOver, taskDrop } = useDragDropContainer({ parent: section });
+
+    return {
+      tasks,
+      taskDragOver,
+      taskDrop,
+    };
   },
 };
 </script>

@@ -1,19 +1,19 @@
 const state = {
   draggingTask: {},
-  dropTargetSection: {},
+  dropTargetContainer: {},
 };
 
 const getters = {
   draggingTask: (state) => state.draggingTask,
-  dropTargetSection: (state) => state.dropTargetSection,
+  dropTargetContainer: (state) => state.dropTargetContainer,
 };
 
 const mutations = {
   SET_DRAGGING_TASK: (state, task) => {
     state.draggingTask = task;
   },
-  SET_DROP_TARGET_SECTION: (state, newDropTargetSection) => {
-    state.dropTargetSection = newDropTargetSection;
+  SET_DROP_TARGET_CONTAINER: (state, newDropTargetContainer) => {
+    state.dropTargetContainer = newDropTargetContainer;
   },
 };
 
