@@ -1,5 +1,5 @@
 const { IsUUID, IsString, IsInt, MinLength } = require('class-validator');
-const errorMessage = require('@utils/error-messages');
+const errorMessage = require('@utils/custom-error').message;
 
 class SectionDto {
   @IsUUID('4')

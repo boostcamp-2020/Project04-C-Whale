@@ -13,12 +13,7 @@ module.exports = sequelize => {
         allowNull: false,
         type: DataTypes.STRING,
       },
-      isImage: {
-        allowNull: false,
-        type: DataTypes.BOOLEAN,
-        defaultValue: false,
-      },
     },
-    { tableName: 'comment' },
+    { charset: 'utf8', collate: 'utf8_unicode_ci', tableName: 'comment' },
   );
 };

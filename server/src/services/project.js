@@ -1,3 +1,4 @@
+/* eslint-disable no-return-await */
 const sequelize = require('@models');
 
 const { models } = sequelize;
@@ -30,8 +31,13 @@ const retrieveProjects = async userId => {
       },
     ],
     where: { creatorId: userId },
-    group: ['project.id', 'sections.id'],
+    group: ['project.id'],
+    order: [
+      ['createdAt', 'ASC'],
+      [models.section, 'position', 'ASC'],
+    ],
   });
+
   return projects;
 };
 

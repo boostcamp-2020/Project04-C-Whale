@@ -26,6 +26,6 @@ module.exports = sequelize => {
         defaultValue: false,
       },
     },
-    { tableName: 'project' },
+    { charset: 'utf8', collate: 'utf8_unicode_ci', tableName: 'project' },
   );
 };

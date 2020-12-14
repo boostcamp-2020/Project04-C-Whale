@@ -191,14 +191,6 @@ const bookmarks = [
   },
 ];
 
-const alarms = [
-  {
-    id: 'e23a789c-ce37-45bd-bb6b-20602edfe221',
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-];
-
 module.exports = {
   up: async queryInterface => {
     await queryInterface.bulkInsert('user', users, {});
@@ -207,7 +199,6 @@ module.exports = {
     await queryInterface.bulkInsert('task', tasks, {});
     await queryInterface.bulkInsert('comment', comments, {});
     await queryInterface.bulkInsert('bookmark', bookmarks, {});
-    await queryInterface.bulkInsert('alarm', alarms, {});
   },
   down: async queryInterface => {
     await queryInterface.bulkDelete('user', null, {});
@@ -216,6 +207,5 @@ module.exports = {
     await queryInterface.bulkDelete('section', null, {});
     await queryInterface.bulkDelete('comment', null, {});
     await queryInterface.bulkDelete('bookmark', null, {});
-    await queryInterface.bulkDelete('alarm', null, {});
   },
 };

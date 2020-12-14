@@ -9,7 +9,7 @@ const {
   IsEmpty,
   IsEnum,
 } = require('class-validator');
-const errorMessage = require('@utils/error-messages');
+const errorMessage = require('@utils/custom-error').message;
 const { isAfterToday } = require('@utils/validator');
 
 class TaskDto {

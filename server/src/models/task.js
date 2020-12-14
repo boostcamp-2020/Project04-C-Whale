@@ -29,6 +29,6 @@ module.exports = sequelize => {
         type: DataTypes.ENUM(['1', '2', '3', '4']),
       },
     },
-    { tableName: 'task' },
+    { charset: 'utf8', collate: 'utf8_unicode_ci', tableName: 'task' },
   );
 };
