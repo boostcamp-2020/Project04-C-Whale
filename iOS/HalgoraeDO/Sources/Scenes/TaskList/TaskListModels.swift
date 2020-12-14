@@ -41,7 +41,8 @@ enum TaskListModels {
     
     enum ReorderTask {
         struct Request {
-            var displayedTask: DisplayedTask
+            var taskId: String
+            var displayedTask: TaskUpdateFields
         }
         
         struct Response {
@@ -69,6 +70,14 @@ enum TaskListModels {
         }
     }
     
+    enum UpdateTask {
+        struct Request {
+            var taskId: String
+            var projectId: String
+            var taskFileds: TaskUpdateFields
+        }
+    }
+    
     enum CreateSection {
         struct Request {
             var projectId: String
@@ -86,6 +95,13 @@ enum TaskListModels {
         var title: String
         var date: Date?
         var priority: String
+    }
+    
+    struct TaskUpdateFields: Encodable {
+        var title: String
+        var isDone: Bool
+        var dueDate: String?
+        var priority: String?
     }
     
     struct SectionVM {
@@ -115,6 +131,7 @@ enum TaskListModels {
         var tintColor: UIColor
         var position: Int
         var parentPosition: Int?
+        var sectionId: String
         var subItems: [DisplayedTask] = []
         
         init(id: String,
@@ -123,6 +140,7 @@ enum TaskListModels {
              tintColor: UIColor,
              position: Int,
              parentPosition: Int?,
+             sectionId: String,
              subItems: [DisplayedTask]) {
             self.id = id
             self.title = title
@@ -130,6 +148,7 @@ enum TaskListModels {
             self.tintColor = tintColor
             self.position = position
             self.parentPosition = parentPosition
+            self.sectionId = sectionId
             self.subItems = subItems
         }
         
@@ -140,6 +159,7 @@ enum TaskListModels {
             self.tintColor = task.priority?.color ?? .black
             self.position = task.position
             self.parentPosition = task.parent?.position
+            self.sectionId = task.sectionId
             guard let tasks = task.tasks else { return }
             self.subItems = tasks.compactMap { DisplayedTask(task: $0) }
         }
