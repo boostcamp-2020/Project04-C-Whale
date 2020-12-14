@@ -65,6 +65,8 @@
 		4C9A04642586455100727F88 /* Project+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9A04612586455100727F88 /* Project+CoreDataProperties.swift */; };
 		4C9A04652586455100727F88 /* Section+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9A04622586455100727F88 /* Section+CoreDataProperties.swift */; };
 		4C9A04662586455100727F88 /* Task+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9A04632586455100727F88 /* Task+CoreDataProperties.swift */; };
+		4C9A047025865A0000727F88 /* EndPointMO+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9A046E25865A0000727F88 /* EndPointMO+CoreDataClass.swift */; };
+		4C9A047A2586718700727F88 /* EndPointMO+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9A04792586718700727F88 /* EndPointMO+CoreDataProperties.swift */; };
 		4CCD31E8256EBC0C00A46D10 /* TaskListWorkerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0CA5F0256E9AF100E66045 /* TaskListWorkerTests.swift */; };
 		4CCD31E9256EBC0C00A46D10 /* TaskListInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0CA60C256EAA7300E66045 /* TaskListInteractorTests.swift */; };
 		4CCD31EA256EBC0C00A46D10 /* TaskListPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0CA629256EABF700E66045 /* TaskListPresenterTests.swift */; };
@@ -447,6 +449,8 @@
 		4C9A046A2586482B00727F88 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				4C9A04792586718700727F88 /* EndPointMO+CoreDataProperties.swift */,
+				4C9A046E25865A0000727F88 /* EndPointMO+CoreDataClass.swift */,
 				4C9A04612586455100727F88 /* Project+CoreDataProperties.swift */,
 				4C9A04622586455100727F88 /* Section+CoreDataProperties.swift */,
 				4C9A04632586455100727F88 /* Task+CoreDataProperties.swift */,
@@ -793,8 +797,10 @@
 				4CCD3248256F847800A46D10 /* PopoverViewController.swift in Sources */,
 				4C423727257640470068A252 /* UIViewController+segueIdentifier.swift in Sources */,
 				4C3F568C256B93D5006D7C9F /* TaskCollectionViewListCell.swift in Sources */,
+				4C9A047025865A0000727F88 /* EndPointMO+CoreDataClass.swift in Sources */,
 				4CCD324E256F84BD00A46D10 /* PopoverViewModelType.swift in Sources */,
 				4C3F5679256B8C83006D7C9F /* TaskListPresenter.swift in Sources */,
+				4C9A047A2586718700727F88 /* EndPointMO+CoreDataProperties.swift in Sources */,
 				AA19EF172575680600E59017 /* TaskSectionViewCell.swift in Sources */,
 				4CE91605257F81B600BCF398 /* MenuInteractor.swift in Sources */,
 				4C42371F25763B100068A252 /* TaskDetailWorker.swift in Sources */,
