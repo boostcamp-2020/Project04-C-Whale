@@ -35,14 +35,14 @@ describe('get bookmark', () => {
     const { bookmarks } = res.body;
 
     // then
-    bookmarks
-      .every(recievedBookmark => {
+    expect(
+      bookmarks.every(recievedBookmark => {
         return expectedBookmarks.some(
           expectedBookmark =>
             Object.entries(recievedBookmark).toString === Object.entries(expectedBookmark).toString,
         );
-      })
-      .toBeTruthy();
+      }),
+    ).toBeTruthy();
     done();
   });
   it('bookmark 조회 성공', async done => {
@@ -58,7 +58,7 @@ describe('get bookmark', () => {
     const { bookmarks } = res.body;
 
     // then
-    bookmarks.toStrictEqual(expectedBookmarks);
+    expect(bookmarks).toStrictEqual(expectedBookmarks);
     done();
   });
   it('taskId가 uuid가 아닌 경우', async done => {
@@ -72,9 +72,9 @@ describe('get bookmark', () => {
       .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`);
 
     // then
-    expectedError(res.status).toBe(expectedError.status);
-    expectedError(res.body.message).toBe(expectedError.message);
-    expectedError(res.body.code).toBe(expectedError.code);
+    expect(res.status).toBe(expectedError.status);
+    expect(res.body.message).toBe(expectedError.message);
+    expect(res.body.code).toBe(expectedError.code);
     done();
   });
   it('taskId가 없는 경우', async done => {
@@ -88,14 +88,14 @@ describe('get bookmark', () => {
       .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`);
 
     // then
-    expectedError(res.status).toBe(expectedError.status);
-    expectedError(res.body.message).toBe(expectedError.message);
-    expectedError(res.body.code).toBe(expectedError.code);
+    expect(res.status).toBe(expectedError.status);
+    expect(res.body.message).toBe(expectedError.message);
+    expect(res.body.code).toBe(expectedError.code);
     done();
   });
   it('자신의 taskId가 아닌 경우', async done => {
     // given
-    const taskId = seeder.sections[0].id;
+    const taskId = seeder.tasks[0].id;
     const expectedError = customError.FORBIDDEN_ERROR('task');
 
     // when
@@ -104,9 +104,9 @@ describe('get bookmark', () => {
       .set('Authorization', `Bearer ${createJWT(seeder.users[2])}`);
 
     // then
-    expectedError(res.status).toBe(expectedError.status);
-    expectedError(res.body.message).toBe(expectedError.message);
-    expectedError(res.body.code).toBe(expectedError.code);
+    expect(res.status).toBe(expectedError.status);
+    expect(res.body.message).toBe(expectedError.message);
+    expect(res.body.code).toBe(expectedError.code);
     done();
   });
 });
