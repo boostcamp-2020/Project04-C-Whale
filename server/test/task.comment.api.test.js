@@ -84,7 +84,7 @@ describe('create comment', () => {
     // given
     const requestBody = { id: 'unnecessary id', content: '하이' };
     const taskId = seeder.tasks[1].id;
-    const expectedError = customError.INVALID_INPUT_ERROR('id');
+    const expectedError = customError.UNNECESSARY_INPUT_ERROR('id');
     try {
       // when
       const res = await request(app)
@@ -153,7 +153,7 @@ describe('update comment', () => {
     const requestBody = { content: '', isImage: false };
     const taskId = seeder.tasks[1].id;
     const commentId = seeder.comments[0].id;
-    const expectedError = customError.TYPE_ERROR('content');
+    const expectedError = customError.INVALID_INPUT_ERROR('content');
     try {
       // when
       const res = await request(app)
