@@ -30,7 +30,7 @@ describe('get bookmark', () => {
     // when
     const res = await request(app)
       .get(`/api/task/${taskId}/bookmark`)
-      .set('Authorization', `Bearer ${createJWT(seeder.users[0].id)}`);
+      .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`);
 
     const { bookmarks } = res.body;
 
@@ -53,7 +53,7 @@ describe('get bookmark', () => {
     // when
     const res = await request(app)
       .get(`/api/task/${taskId}/bookmark`)
-      .set('Authorization', `Bearer ${createJWT(seeder.users[0].id)}`);
+      .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`);
 
     const { bookmarks } = res.body;
 
@@ -69,7 +69,7 @@ describe('get bookmark', () => {
     // when
     const res = await request(app)
       .get(`/api/task/${taskId}/bookmark`)
-      .set('Authorization', `Bearer ${createJWT(seeder.users[0].id)}`);
+      .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`);
 
     // then
     expectedError(res.status).toBe(expectedError.status);
@@ -85,7 +85,7 @@ describe('get bookmark', () => {
     // when
     const res = await request(app)
       .get(`/api/task/${taskId}/bookmark`)
-      .set('Authorization', `Bearer ${createJWT(seeder.users[0].id)}`);
+      .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`);
 
     // then
     expectedError(res.status).toBe(expectedError.status);
@@ -101,7 +101,7 @@ describe('get bookmark', () => {
     // when
     const res = await request(app)
       .get(`/api/task/${taskId}/bookmark`)
-      .set('Authorization', `Bearer ${createJWT(seeder.users[2].id)}`);
+      .set('Authorization', `Bearer ${createJWT(seeder.users[2])}`);
 
     // then
     expectedError(res.status).toBe(expectedError.status);
