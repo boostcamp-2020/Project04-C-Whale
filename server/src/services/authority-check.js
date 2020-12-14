@@ -63,4 +63,30 @@ const isCommentOwner = async ({ id, userId }) => {
   return !!comment;
 };
 
-module.exports = { isTaskOwner, isProjectOwner, isSectionOwner, isCommentOwner };
+const isBookmarkOwner = async ({ id, userId }) => {
+  const bookmark = await models.bookmark.findByPk(id, {
+    include: [
+      {
+        model: models.task,
+        attribute: [],
+        include: [
+          {
+            model: models.section,
+            attribute: [],
+            include: [
+              {
+                model: models.project,
+                attributes: ['creatorId'],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+    having: { 'task.section.project.creatorId': userId },
+  });
+
+  return !!bookmark;
+};
+
+module.exports = { isTaskOwner, isProjectOwner, isSectionOwner, isCommentOwner, isBookmarkOwner };
