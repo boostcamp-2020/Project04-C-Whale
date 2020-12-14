@@ -1,6 +1,34 @@
 # Project04-C-Whale
 
-## 할고래DO
+<p align="center">
+<img src="https://user-images.githubusercontent.com/18397630/102030254-5ce93000-3df5-11eb-906e-60b3c040ccaf.png">
+</p>
+
+
+## 🕹 팀 소개 
+
+|                            🕸 Web                             |                            🕸 Web                             |                            🕸 Web                             |                            🍎 iOS                             |                            🍎 iOS                             |
+| :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: |
+| [![Avatar](https://avatars2.githubusercontent.com/u/59331444?s=400&v=4)J044_김성환(BE)](https://github.com/shkilo) | ![Avatar](https://avatars0.githubusercontent.com/u/26531678?s=460&u=9639d66e99c696fba8eb3843f0bdb2dd298c818a&v=4)[J090_박진영(FE)](https://github.com/Zinyon) | [![Avatar](https://avatars0.githubusercontent.com/u/40550453?s=400&u=828ee03204967e5a1186f27fb72d1b2afb35e56f&v=4)J091_박진영(BE)](https://github.com/pjy0416) | [![img](https://avatars1.githubusercontent.com/u/18397630?s=400&v=4)S038_이상윤](https://github.com/SANGYOONLEE) | [![Avatar](https://avatars2.githubusercontent.com/u/23303023?s=400&u=8a0c3a22e6ea9035b4b42e534b2f59ecd1f3e426&v=4)S061_최철웅](https://github.com/chelwoong) |
+|                                  카일                         |          토니                                                    |        찐                                                      |                                     커널                         |                         파인애플                                     |
+
+
+
+## 🖥 기술 스택
+<p align="center">
+  <img src="https://img.shields.io/badge/swift-v5.3-orange?logo=swift">
+  <img src="https://img.shields.io/badge/xcode-v12.1-blue?logo=xcode">
+</p>
+<p align="center">
+  <img src="https://img.shields.io/badge/javascript-ES6+-yellow?logo=javascript">
+  <img src="https://img.shields.io/badge/node.js-v14.15.0-green?logo=node.js">
+  <img src="https://img.shields.io/badge/vue-2.6.11-9cf?logo=vue.js">
+  <img src="https://img.shields.io/badge/mysql-v5.7.32-blue?logo=mysql" />
+</p>
+
+## [👉 할고래두 WIKI보러가기](https://github.com/boostcamp-2020/Project04-C-Whale/wiki)
+
+## 💁‍♂️ 할고래DO 소개
 
 ```
 👨🏻‍💻 : 해야하는 일 관리가 잘 안되는데, whale까요..?? TODO 서비스좀 추전해주세요
@@ -16,7 +44,7 @@
 
 **웨일 확장앱 API**를 활용한 알림과 북마크 기능으로 더욱 지능적으로 할 일 관리를 해보세요 !
 
-## **주요 기능**
+## ⭐️ 주요 기능
 
 ### 🐳 웨일브라우저 연동
 
@@ -41,18 +69,6 @@
 **할일 관련 링크를 북마크로 추가**
 
 **다크모드 지원**
-
-## 팀원 소개
-
-**J044_김성환 (Web / Full stack)** 
-
-**J090_박진영 (Web / Full stack)**
-
-**J091_박진영 (Web / Full stack)**
-
-**S038_이상윤 (iOS)**
-
-**S061_최철웅 (iOS)**
 
 
 ## 기술 특장점
