@@ -8,10 +8,12 @@
 import UIKit
 
 protocol TaskDetailBookmarkDisplayLogic: class {
-    
+    func displayFetchedBookmarks(viewModel: TaskDetailModels.FetchBookmarks.ViewModel)
 }
 
 class TaskDetailBookmarkViewController: UIViewController {
+
+    // MARK: - Properties
 
     private var task: Task?
     private var interactor: TaskDetailBusinessLogic?
@@ -20,16 +22,73 @@ class TaskDetailBookmarkViewController: UIViewController {
     // MARK: - Views
     
     @IBOutlet weak var bookmarkCollectionView: UICollectionView!
+    @IBOutlet weak var bookmarkAddView: CommentAddView! {
+        didSet {
+            bookmarkAddView.doneHandler = { [weak self] text in
+                self?.createBookmark(text: text)
+            }
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        configureCollectionView()
         configureDataSource()
+        addObservers()
     }
-
+    
     func configure(interactor: TaskDetailBusinessLogic, task: Task) {
         self.interactor = interactor
         self.task = task
     }
+    
+    private func addObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    @objc private func keyboardWillShow(_ notification: Notification) {
+        guard let keyboardFrame = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else { return }
+        
+        self.bookmarkAddView.transform = CGAffineTransform(translationX: 0, y: -(keyboardFrame.height - (self.view.window?.safeAreaInsets.bottom ?? 0)))
+    }
+    
+    @objc private func keyboardWillHide(_ notification: Notification) {
+        self.bookmarkAddView.transform = .identity
+    }
+    
+    func createBookmark(text: String) {
+        guard let task = task else { return }
+        //interactor?.createComment(request: .init(taskId: task.id, commentFields: .init(content: text)))
+    }
+}
+
+// MARK: - Configure CollectionView Layout
+
+private extension TaskDetailBookmarkViewController {
+    
+    func configureCollectionView() {
+        bookmarkCollectionView.collectionViewLayout = generateLayout()
+        
+    }
+    
+    func generateLayout() -> UICollectionViewLayout {
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                               heightDimension: .estimated(44))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                              heightDimension: .estimated(44))
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize,
+                                                         subitems: [item])
+        
+        let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets = .init(top: 8, leading: 16, bottom: 0, trailing: 16)
+        section.interGroupSpacing = 8
+        let layout = UICollectionViewCompositionalLayout(section: section)
+        return layout
+    }
+    
 }
 
 // MARK: - Configure CollectionView Data Source
@@ -58,5 +117,9 @@ private extension TaskDetailBookmarkViewController {
 // MARK: - TaskDetailBookmark DisplayLogic
 
 extension TaskDetailBookmarkViewController: TaskDetailBookmarkDisplayLogic {
-
+    
+    func displayFetchedBookmarks(viewModel: TaskDetailModels.FetchBookmarks.ViewModel) {
+       // let sectionSnapshot = generateSnapshot(taskItems: viewModel. commentVMs)
+    //    dataSource.apply(sectionSnapshot, to: "")
+    }
 }
