@@ -41,6 +41,7 @@ enum TaskDetailModels {
     
     enum CreateComment {
         struct Request {
+            var taskId: String
             var commentFields: CommentFields
         }
         
@@ -76,7 +77,7 @@ enum TaskDetailModels {
         
         init(comment: Comment) {
             self.id = comment.id
-            self.contents = comment.contents
+            self.contents = comment.content
         }
         
         func hash(into hasher: inout Hasher) {
@@ -88,8 +89,7 @@ enum TaskDetailModels {
         }
     }
     
-    struct CommentFields {
-        var taskId: String
-        var text: String
+    struct CommentFields: Encodable {
+        var content: String
     }
 }
