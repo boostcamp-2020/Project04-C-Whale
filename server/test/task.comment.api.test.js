@@ -184,6 +184,27 @@ describe('create comment', () => {
       done(err);
     }
   });
+  it('taskId가 uuid가 아닌 경우', async done => {
+    // given
+    const requestBody = { content: '하이' };
+    const taskId = 'invalid taskId';
+    const expectedError = customError.INVALID_INPUT_ERROR('taskId');
+    try {
+      // when
+      const res = await request(app)
+        .post(`/api/task/${taskId}/comment`)
+        .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
+        .send(requestBody);
+
+      // then
+      expect(res.status).toBe(expectedError.status);
+      expect(res.body.code).toBe(expectedError.code);
+      expect(res.body.message).toBe(expectedError.message);
+      done();
+    } catch (err) {
+      done(err);
+    }
+  });
   it('자신의 taskId가 아닌 경우', async done => {
     // given
     const requestBody = { content: '하이' };
