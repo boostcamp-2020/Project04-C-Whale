@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 class TaskDetailWorker {
     
     let networkManager: NetworkDispatcher
@@ -17,7 +16,7 @@ class TaskDetailWorker {
     }
     
     func request<T: Decodable>(endPoint: EndPointType, completion: @escaping ((T?) -> Void)) {
-        networkManager.fetchData(endPoint) { (result: T?, error: NetworkError?) in
+        networkManager.fetchData(endPoint) { (result: ResponseDetail<T>?, error: NetworkError?) in
             guard error == nil else {
                 #if DEBUG
                 print(error ?? "error is null")
@@ -25,7 +24,7 @@ class TaskDetailWorker {
                 completion(nil)
                 return
             }
-            completion(result)
+            completion(result?.comments)
         }
     }
     
@@ -39,8 +38,15 @@ class TaskDetailWorker {
                 completion(nil)
                 return
             }
-            self?.networkManager.fetchData(getEndPoint) { (result: T?, error) in
-                completion(result)
+            self?.networkManager.fetchData(getEndPoint) { (result: ResponseDetail<T>?, error: NetworkError?) in
+                guard error == nil else {
+                    #if DEBUG
+                    print(error ?? "error is null")
+                    #endif
+                    completion(nil)
+                    return
+                }
+                completion(result?.comments)
             }
         }
     }
