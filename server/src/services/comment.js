@@ -17,12 +17,17 @@ const retrieveAllByTaskId = async ({ userId, taskId }) => {
   return comments;
 };
 
-const create = async (taskId, commentData) => {
+const create = async ({ userId, taskId, ...commentData }) => {
   const task = await taskModel.findByPk(taskId);
   if (!task) {
     const error = customError.NOT_FOUND_ERROR('task');
     throw error;
   }
+  if (!(await isTaskOwner({ id: taskId, userId }))) {
+    const error = customError.FORBIDDEN_ERROR('task');
+    throw error;
+  }
+
   const result = await commentModel.create({ ...commentData, taskId });
 
   return result;

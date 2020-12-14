@@ -28,8 +28,9 @@ const createComment = asyncTryCatch(async (req, res) => {
     const validationError = getTypeError(errs);
     throw validationError;
   }
-
-  await commentService.create(req.params.taskId, req.body);
+  const { taskId } = req.params;
+  const userId = req.user.id;
+  await commentService.create({ userId, taskId, ...req.body });
 
   responseHandler(res, 201, { message: 'ok' });
 });
