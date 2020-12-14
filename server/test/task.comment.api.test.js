@@ -4,7 +4,7 @@ const app = require('@root/app');
 const seeder = require('@test/test-seed');
 const status = require('@test/response-status');
 const { createJWT } = require('@utils/auth');
-const errorMessage = require('@utils/error-messages');
+const { customError } = require('@utils/custom-error');
 
 beforeAll(async done => {
   await seeder.up();
@@ -63,7 +63,7 @@ describe('create comment', () => {
     // given
     const requestBody = { content: '' };
     const taskId = seeder.tasks[1].id;
-
+    const expectedError = customError.INVALID_INPUT_ERROR('content');
     try {
       // when
       const res = await request(app)
@@ -72,8 +72,9 @@ describe('create comment', () => {
         .send(requestBody);
 
       // then
-      expect(res.status).toBe(status.BAD_REQUEST.CODE);
-      expect(res.body.message).toBe(errorMessage.INVALID_INPUT_ERROR('content'));
+      expect(res.status).toBe(expectedError.status);
+      expect(res.body.code).toBe(expectedError.code);
+      expect(res.body.message).toBe(expectedError.message);
       done();
     } catch (err) {
       done(err);
@@ -83,7 +84,7 @@ describe('create comment', () => {
     // given
     const requestBody = { id: 'unnecessary id', content: '하이' };
     const taskId = seeder.tasks[1].id;
-
+    const expectedError = customError.INVALID_INPUT_ERROR('id');
     try {
       // when
       const res = await request(app)
@@ -92,8 +93,9 @@ describe('create comment', () => {
         .send(requestBody);
 
       // then
-      expect(res.status).toBe(status.BAD_REQUEST.CODE);
-      expect(res.body.message).toBe(errorMessage.UNNECESSARY_INPUT_ERROR('id'));
+      expect(res.status).toBe(expectedError.status);
+      expect(res.body.code).toBe(expectedError.code);
+      expect(res.body.message).toBe(expectedError.message);
       done();
     } catch (err) {
       done(err);
@@ -103,6 +105,7 @@ describe('create comment', () => {
     // given
     const requestBody = { content: '하이하이', isImage: '잘못된 타입' };
     const taskId = seeder.tasks[1].id;
+    const expectedError = customError.TYPE_ERROR('isImage');
     try {
       // when
       const res = await request(app)
@@ -111,8 +114,9 @@ describe('create comment', () => {
         .send(requestBody);
 
       // then
-      expect(res.status).toBe(status.BAD_REQUEST.CODE);
-      expect(res.body.message).toBe(errorMessage.TYPE_ERROR('isImage'));
+      expect(res.status).toBe(expectedError.status);
+      expect(res.body.code).toBe(expectedError.code);
+      expect(res.body.message).toBe(expectedError.message);
       done();
     } catch (err) {
       done(err);
@@ -149,6 +153,7 @@ describe('update comment', () => {
     const requestBody = { content: '', isImage: false };
     const taskId = seeder.tasks[1].id;
     const commentId = seeder.comments[0].id;
+    const expectedError = customError.TYPE_ERROR('content');
     try {
       // when
       const res = await request(app)
@@ -157,8 +162,9 @@ describe('update comment', () => {
         .send(requestBody);
 
       // then
-      expect(res.status).toBe(status.BAD_REQUEST.CODE);
-      expect(res.body.message).toBe(errorMessage.INVALID_INPUT_ERROR('content'));
+      expect(res.status).toBe(expectedError.status);
+      expect(res.body.code).toBe(expectedError.code);
+      expect(res.body.message).toBe(expectedError.message);
       done();
     } catch (err) {
       done(err);
@@ -169,6 +175,7 @@ describe('update comment', () => {
     const requestBody = { content: '하이하이', isImage: '잘못된 타입' };
     const taskId = seeder.tasks[1].id;
     const commentId = seeder.comments[0].id;
+    const expectedError = customError.TYPE_ERROR('isImage');
     try {
       // when
       const res = await request(app)
@@ -177,8 +184,9 @@ describe('update comment', () => {
         .send(requestBody);
 
       // then
-      expect(res.status).toBe(status.BAD_REQUEST.CODE);
-      expect(res.body.message).toBe(errorMessage.TYPE_ERROR('isImage'));
+      expect(res.status).toBe(expectedError.status);
+      expect(res.body.code).toBe(expectedError.code);
+      expect(res.body.message).toBe(expectedError.message);
       done();
     } catch (err) {
       done(err);
@@ -189,6 +197,7 @@ describe('update comment', () => {
     const requestBody = { id: seeder.comments[0].id, content: '하이하이', isImage: false };
     const taskId = seeder.tasks[1].id;
     const commentId = seeder.comments[0].id;
+    const expectedError = customError.UNNECESSARY_INPUT_ERROR('id');
     try {
       // when
       const res = await request(app)
@@ -197,8 +206,9 @@ describe('update comment', () => {
         .send(requestBody);
 
       // then
-      expect(res.status).toBe(status.BAD_REQUEST.CODE);
-      expect(res.body.message).toBe(errorMessage.UNNECESSARY_INPUT_ERROR('id'));
+      expect(res.status).toBe(expectedError.status);
+      expect(res.body.code).toBe(expectedError.code);
+      expect(res.body.message).toBe(expectedError.message);
       done();
     } catch (err) {
       done(err);
