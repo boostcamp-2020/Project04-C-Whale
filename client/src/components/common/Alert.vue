@@ -13,7 +13,6 @@
 </template>
 
 <script>
-// TODO: success color값 바꾸기 -whaleGreen or whaleBlue
 import { mapState, mapMutations } from "vuex";
 
 export default {

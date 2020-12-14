@@ -16,7 +16,6 @@
       color="black"
     >
       <template v-slot:item="{ item }">
-        <!-- TODO: 라우팅 -->
         <v-list-item :to="`/project/${item.section.projectId}/task/${item.id}`">
           <v-list-item-title
             class="font-14"

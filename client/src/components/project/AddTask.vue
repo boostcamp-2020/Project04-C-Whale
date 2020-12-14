@@ -168,7 +168,6 @@ export default {
       this.alarmTime = Date.now() + 1000 * time;
     },
   },
-  // TODO: 오늘 화면에서 추가로직 해결
   created() {
     if (this.projectId === undefined || this.sectionId === undefined) {
       //const { title, id, defaultSectionId } = this.managedProject;
