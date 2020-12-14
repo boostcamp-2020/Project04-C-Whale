@@ -35,6 +35,7 @@ extension MenuInteractor: MenuBusinessLogic {
         worker.request(endPoint: .getAll) { [weak self] (projects: [Project]?) in
             let projects = projects ?? []
             self?.projects = projects
+            self?.worker.updateProjects(projects)
             self?.presenter.presentProjects(response: .init(projects: projects))
         }
     }
@@ -45,16 +46,21 @@ extension MenuInteractor: MenuBusinessLogic {
         worker.requestPostAndGet(post: ProjectEndPoint.create(request: requestData), get: ProjectEndPoint.getAll) { [weak self] (projects: [Project]?) in
             let projects = projects ?? []
             self?.projects = projects
+            self?.worker.updateProjects(projects)
             self?.presenter.presentProjects(response: .init(projects: projects))
         }
     }
     
     func updateProject(request: MenuModels.UpdateProject.Request) {
+        #warning("ProjectVM가지고 ProjectVM 만드는 게 너무 어색한데요..?")
         let vmForFavorite = MenuModels.ProjectVM(projectVM: request.project)
         guard let requestData = vmForFavorite.encodeData else { return }
         
         worker.requestPostAndGet(post: ProjectEndPoint.update(id: vmForFavorite.id, project: requestData), get: ProjectEndPoint.getAll) { [weak self] (projects: [Project]?) in
-            self?.presenter.presentProjects(response: .init(projects: projects ?? []))
+            let projects = projects ?? []
+            self?.projects = projects
+            self?.worker.updateProjects(projects)
+            self?.presenter.presentProjects(response: .init(projects: projects))
         }
     }
 }
