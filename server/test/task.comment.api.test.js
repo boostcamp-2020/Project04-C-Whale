@@ -314,7 +314,7 @@ describe('update comment', () => {
       done(err);
     }
   });
-  it('id가 잘못된 경우', async done => {
+  it('id가 없는 경우', async done => {
     // given
     const requestBody = { content: '하이' };
     const taskId = seeder.tasks[1].id;
@@ -336,12 +336,56 @@ describe('update comment', () => {
       done(err);
     }
   });
-  it('taskId가 잘못된 경우', async done => {
+  it('id가 uuid가 아닌 경우', async done => {
+    // given
+    const requestBody = { content: '하이' };
+    const taskId = seeder.tasks[1].id;
+    const commentId = 'invalidId';
+    const expectedError = customError.INVALID_INPUT_ERROR('commentId');
+    try {
+      // when
+      const res = await request(app)
+        .put(`/api/task/${taskId}/comment/${commentId}`)
+        .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
+        .send(requestBody);
+
+      // then
+      expect(res.status).toBe(expectedError.status);
+      expect(res.body.code).toBe(expectedError.code);
+      expect(res.body.message).toBe(expectedError.message);
+      done();
+    } catch (err) {
+      done(err);
+    }
+  });
+  it('taskId가 없는 경우', async done => {
     // given
     const requestBody = { content: '하이' };
     const taskId = seeder.sections[1].id;
     const commentId = seeder.comments[0].id;
     const expectedError = customError.NOT_FOUND_ERROR('task');
+    try {
+      // when
+      const res = await request(app)
+        .put(`/api/task/${taskId}/comment/${commentId}`)
+        .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
+        .send(requestBody);
+
+      // then
+      expect(res.status).toBe(expectedError.status);
+      expect(res.body.code).toBe(expectedError.code);
+      expect(res.body.message).toBe(expectedError.message);
+      done();
+    } catch (err) {
+      done(err);
+    }
+  });
+  it('taskId가 uuid가 아닌 경우', async done => {
+    // given
+    const requestBody = { content: '하이' };
+    const taskId = 'invalidId';
+    const commentId = seeder.comments[0].id;
+    const expectedError = customError.INVALID_INPUT_ERROR('taskId');
     try {
       // when
       const res = await request(app)
