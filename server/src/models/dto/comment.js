@@ -12,6 +12,10 @@ class CommentDto {
   })
   content;
 
+  @IsEmpty({
+    groups: ['update'],
+    message: errorMessage.UNNECESSARY_INPUT_ERROR('taskId'),
+  })
   taskId;
 }
 
