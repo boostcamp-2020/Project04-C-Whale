@@ -270,12 +270,56 @@ describe('update comment', () => {
       done(err);
     }
   });
-  it('id가 포함된 경우', async done => {
+  it('data에 id가 포함된 경우', async done => {
     // given
     const requestBody = { id: seeder.comments[0].id, content: '하이하이' };
     const taskId = seeder.tasks[1].id;
     const commentId = seeder.comments[0].id;
     const expectedError = customError.UNNECESSARY_INPUT_ERROR('id');
+    try {
+      // when
+      const res = await request(app)
+        .put(`/api/task/${taskId}/comment/${commentId}`)
+        .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
+        .send(requestBody);
+
+      // then
+      expect(res.status).toBe(expectedError.status);
+      expect(res.body.code).toBe(expectedError.code);
+      expect(res.body.message).toBe(expectedError.message);
+      done();
+    } catch (err) {
+      done(err);
+    }
+  });
+  it('data에 taskId가 포함된 경우', async done => {
+    // given
+    const taskId = seeder.tasks[1].id;
+    const commentId = seeder.comments[0].id;
+    const requestBody = { taskId, content: '하이하이' };
+    const expectedError = customError.UNNECESSARY_INPUT_ERROR('taskId');
+    try {
+      // when
+      const res = await request(app)
+        .put(`/api/task/${taskId}/comment/${commentId}`)
+        .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
+        .send(requestBody);
+
+      // then
+      expect(res.status).toBe(expectedError.status);
+      expect(res.body.code).toBe(expectedError.code);
+      expect(res.body.message).toBe(expectedError.message);
+      done();
+    } catch (err) {
+      done(err);
+    }
+  });
+  it('id가 잘못된 경우', async done => {
+    // given
+    const requestBody = { content: '하이' };
+    const taskId = seeder.tasks[1].id;
+    const commentId = seeder.sections[0].id;
+    const expectedError = customError.NOT_FOUND_ERROR('comment');
     try {
       // when
       const res = await request(app)
@@ -303,6 +347,28 @@ describe('update comment', () => {
       const res = await request(app)
         .put(`/api/task/${taskId}/comment/${commentId}`)
         .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
+        .send(requestBody);
+
+      // then
+      expect(res.status).toBe(expectedError.status);
+      expect(res.body.code).toBe(expectedError.code);
+      expect(res.body.message).toBe(expectedError.message);
+      done();
+    } catch (err) {
+      done(err);
+    }
+  });
+  it('자신의 commentId가 아닌 경우', async done => {
+    // given
+    const requestBody = { content: '하이' };
+    const taskId = seeder.tasks[1].id;
+    const commentId = seeder.comments[0].id;
+    const expectedError = customError.FORBIDDEN_ERROR('comment');
+    try {
+      // when
+      const res = await request(app)
+        .put(`/api/task/${taskId}/comment/${commentId}`)
+        .set('Authorization', `Bearer ${createJWT(seeder.users[2])}`)
         .send(requestBody);
 
       // then
