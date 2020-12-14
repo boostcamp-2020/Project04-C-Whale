@@ -55,6 +55,16 @@
 		4C9A03422584E1FF00727F88 /* HalgoraeDO.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4C9A03402584E1FF00727F88 /* HalgoraeDO.xcdatamodeld */; };
 		4C9A03512584EFD000727F88 /* PersistentContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9A03502584EFD000727F88 /* PersistentContainer.swift */; };
 		4C9A03562584F17C00727F88 /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9A03552584F17C00727F88 /* Storage.swift */; };
+		4C9A04092586064200727F88 /* Project+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9A0392258604CB00727F88 /* Project+CoreDataClass.swift */; };
+		4C9A04112586064B00727F88 /* Section+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9A0396258604CB00727F88 /* Section+CoreDataClass.swift */; };
+		4C9A04192586065F00727F88 /* Task+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9A039A258604CB00727F88 /* Task+CoreDataClass.swift */; };
+		4C9A044125863D3F00727F88 /* Bookmark+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9A043D25863D3F00727F88 /* Bookmark+CoreDataClass.swift */; };
+		4C9A044225863D3F00727F88 /* Bookmark+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9A043E25863D3F00727F88 /* Bookmark+CoreDataProperties.swift */; };
+		4C9A044325863D3F00727F88 /* Comment+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9A043F25863D3F00727F88 /* Comment+CoreDataClass.swift */; };
+		4C9A044425863D3F00727F88 /* Comment+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9A044025863D3F00727F88 /* Comment+CoreDataProperties.swift */; };
+		4C9A04642586455100727F88 /* Project+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9A04612586455100727F88 /* Project+CoreDataProperties.swift */; };
+		4C9A04652586455100727F88 /* Section+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9A04622586455100727F88 /* Section+CoreDataProperties.swift */; };
+		4C9A04662586455100727F88 /* Task+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9A04632586455100727F88 /* Task+CoreDataProperties.swift */; };
 		4CCD31E8256EBC0C00A46D10 /* TaskListWorkerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0CA5F0256E9AF100E66045 /* TaskListWorkerTests.swift */; };
 		4CCD31E9256EBC0C00A46D10 /* TaskListInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0CA60C256EAA7300E66045 /* TaskListInteractorTests.swift */; };
 		4CCD31EA256EBC0C00A46D10 /* TaskListPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0CA629256EABF700E66045 /* TaskListPresenterTests.swift */; };
@@ -182,6 +192,20 @@
 		4C9A03412584E1FF00727F88 /* HalgoraeDO.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = HalgoraeDO.xcdatamodel; sourceTree = "<group>"; };
 		4C9A03502584EFD000727F88 /* PersistentContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistentContainer.swift; sourceTree = "<group>"; };
 		4C9A03552584F17C00727F88 /* Storage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
+		4C9A035A2584F1B300727F88 /* ProjectStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectStorage.swift; sourceTree = "<group>"; };
+		4C9A036E2585C59900727F88 /* TaskStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskStorage.swift; sourceTree = "<group>"; };
+		4C9A0392258604CB00727F88 /* Project+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Project+CoreDataClass.swift"; path = "HalgoraeDO/Sources/Core Data/Models/Project+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
+		4C9A0396258604CB00727F88 /* Section+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Section+CoreDataClass.swift"; path = "HalgoraeDO/Sources/Core Data/Models/Section+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
+		4C9A039A258604CB00727F88 /* Task+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Task+CoreDataClass.swift"; path = "HalgoraeDO/Sources/Core Data/Models/Task+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
+		4C9A043D25863D3F00727F88 /* Bookmark+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Bookmark+CoreDataClass.swift"; path = "HalgoraeDO/Sources/Core Data/Models/Bookmark+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
+		4C9A043E25863D3F00727F88 /* Bookmark+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Bookmark+CoreDataProperties.swift"; path = "HalgoraeDO/Sources/Core Data/Models/Bookmark+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
+		4C9A043F25863D3F00727F88 /* Comment+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Comment+CoreDataClass.swift"; path = "HalgoraeDO/Sources/Core Data/Models/Comment+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
+		4C9A044025863D3F00727F88 /* Comment+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Comment+CoreDataProperties.swift"; path = "HalgoraeDO/Sources/Core Data/Models/Comment+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
+		4C9A04612586455100727F88 /* Project+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Project+CoreDataProperties.swift"; path = "HalgoraeDO/Sources/Core Data/Models/Project+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
+		4C9A04622586455100727F88 /* Section+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Section+CoreDataProperties.swift"; path = "HalgoraeDO/Sources/Core Data/Models/Section+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
+		4C9A04632586455100727F88 /* Task+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Task+CoreDataProperties.swift"; path = "HalgoraeDO/Sources/Core Data/Models/Task+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
+		4C9A046E25865A0000727F88 /* EndPointMO+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EndPointMO+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
+		4C9A04792586718700727F88 /* EndPointMO+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EndPointMO+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
 		4CCD31DD256EBC0000A46D10 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4CCD31F8256EBC8000A46D10 /* TaskListDisplaySpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListDisplaySpy.swift; sourceTree = "<group>"; };
 		4CCD31FE256EBCEF00A46D10 /* TaskListPresenterSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListPresenterSpy.swift; sourceTree = "<group>"; };
@@ -415,8 +439,26 @@
 				4C9A046A2586482B00727F88 /* Models */,
 				4C9A03502584EFD000727F88 /* PersistentContainer.swift */,
 				4C9A03552584F17C00727F88 /* Storage.swift */,
+				4C9A03402584E1FF00727F88 /* HalgoraeDO.xcdatamodeld */,
 			);
 			path = "Core Data";
+			sourceTree = "<group>";
+		};
+		4C9A046A2586482B00727F88 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				4C9A04612586455100727F88 /* Project+CoreDataProperties.swift */,
+				4C9A04622586455100727F88 /* Section+CoreDataProperties.swift */,
+				4C9A04632586455100727F88 /* Task+CoreDataProperties.swift */,
+				4C9A043D25863D3F00727F88 /* Bookmark+CoreDataClass.swift */,
+				4C9A043E25863D3F00727F88 /* Bookmark+CoreDataProperties.swift */,
+				4C9A043F25863D3F00727F88 /* Comment+CoreDataClass.swift */,
+				4C9A044025863D3F00727F88 /* Comment+CoreDataProperties.swift */,
+				4C9A0392258604CB00727F88 /* Project+CoreDataClass.swift */,
+				4C9A0396258604CB00727F88 /* Section+CoreDataClass.swift */,
+				4C9A039A258604CB00727F88 /* Task+CoreDataClass.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		4CCD31DA256EBC0000A46D10 /* TaskListTests */ = {
@@ -757,9 +799,11 @@
 				4CE91605257F81B600BCF398 /* MenuInteractor.swift in Sources */,
 				4C42371F25763B100068A252 /* TaskDetailWorker.swift in Sources */,
 				4C9A02D12581C50400727F88 /* ResponseMessage.swift in Sources */,
+				4C9A04092586064200727F88 /* Project+CoreDataClass.swift in Sources */,
 				4C42370D25762FC10068A252 /* TaskDetailCommentViewController.swift in Sources */,
 				4CE915F0257F633200BCF398 /* Section.swift in Sources */,
 				4CE9160A257F81BD00BCF398 /* MenuWorker.swift in Sources */,
+				4C9A04662586455100727F88 /* Task+CoreDataProperties.swift in Sources */,
 				4C3F573F256D2263006D7C9F /* RoundButton.swift in Sources */,
 				4C9A03512584EFD000727F88 /* PersistentContainer.swift in Sources */,
 				4C4236F825761A8E0068A252 /* TaskDetailPageViewController.swift in Sources */,
@@ -774,6 +818,10 @@
 				4CE915F5257F661E00BCF398 /* Comment.swift in Sources */,
 				4C4236E02574DF980068A252 /* ConfirmActionView.swift in Sources */,
 				4C3F5705256CF8B9006D7C9F /* TaskContentView.swift in Sources */,
+				4C9A04192586065F00727F88 /* Task+CoreDataClass.swift in Sources */,
+				4C9A04652586455100727F88 /* Section+CoreDataProperties.swift in Sources */,
+				4C9A044325863D3F00727F88 /* Comment+CoreDataClass.swift in Sources */,
+				4C9A044125863D3F00727F88 /* Bookmark+CoreDataClass.swift in Sources */,
 				AA19EF332576846100E59017 /* UIColor+.swift in Sources */,
 				AA354C2A2570002600072657 /* TaskAddViewController.swift in Sources */,
 				4C42386E257917790068A252 /* NetworkManager.swift in Sources */,
@@ -783,6 +831,7 @@
 				4C0CA636256EAC5200E66045 /* TaskListDisplayLogic.swift in Sources */,
 				4CE915EB257F61DA00BCF398 /* Project.swift in Sources */,
 				4C4238602578D70D0068A252 /* EndPointType.swift in Sources */,
+				4C9A04112586064B00727F88 /* Section+CoreDataClass.swift in Sources */,
 				4C423751257792690068A252 /* BorderRadiusButton.swift in Sources */,
 				4C9A02DF2582214800727F88 /* TaskDetailContentsCellCollectionViewCell.swift in Sources */,
 				4C42372325763B1C0068A252 /* TaskDetailPresenter.swift in Sources */,
@@ -791,12 +840,15 @@
 				AAEE20E02564E4A900668FAD /* SceneDelegate.swift in Sources */,
 				4C3F5683256B8F4B006D7C9F /* TaskListRouter.swift in Sources */,
 				AAFAD175258328B600ED6624 /* TaskDetailContentsCellCollectionViewCell.swift in Sources */,
+				4C9A044425863D3F00727F88 /* Comment+CoreDataProperties.swift in Sources */,
 				4CE9160F257F81C500BCF398 /* MenuPresenter.swift in Sources */,
+				4C9A044225863D3F00727F88 /* Bookmark+CoreDataProperties.swift in Sources */,
 				4C3F566A256B82F2006D7C9F /* TaskBoardViewController.swift in Sources */,
 				4C3F5665256B8117006D7C9F /* TaskListViewController.swift in Sources */,
 				4CCD325E256F8C1200A46D10 /* UIImage+scaled.swift in Sources */,
 				4C3F5700256CF8A7006D7C9F /* TaskContentConfigure.swift in Sources */,
 				4CE91614257F82A100BCF398 /* MenuModels.swift in Sources */,
+				4C9A04642586455100727F88 /* Project+CoreDataProperties.swift in Sources */,
 				4C4238742579358A0068A252 /* DataRequest.swift in Sources */,
 				4C9A03422584E1FF00727F88 /* HalgoraeDO.xcdatamodeld in Sources */,
 				AA19EF1B25756C3200E59017 /* AddSectionViewCell.swift in Sources */,
