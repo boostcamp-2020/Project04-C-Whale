@@ -152,14 +152,14 @@ const comments = [
   {
     id: '6200bcb9-f871-439b-9507-57abbde3d468',
     content: '댓글 1',
-    taskId: 'cd62f93c-9233-46a9-a5cf-ec18ad5a36f4',
+    taskId: tasks[1].id,
     createdAt: new Date(),
     updatedAt: new Date(),
   },
   {
     id: 'f7aeb64f-1aaf-4c0a-b962-dbfa6c4bb629',
     content: '댓글 2',
-    taskId: 'cd62f93c-9233-46a9-a5cf-ec18ad5a36f4',
+    taskId: tasks[1].id,
     createdAt: new Date('2020-12-13'),
     updatedAt: new Date('2020-12-13'),
   },
