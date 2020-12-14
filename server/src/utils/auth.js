@@ -5,7 +5,7 @@ const { customError } = require('@utils/custom-error');
 
 const createJWT = user => {
   return `${jwt.sign(user, process.env.JWT_SECRET, {
-    expiresIn: '1h',
+    // expiresIn: '1h',
   })}`;
 };
 

@@ -1,6 +1,6 @@
 <template>
   <v-col cols="12" sm="12" lg="8" md="10">
-    <today-tasks-container :today-tasks="todayTasks" :expired-tasks="expiredTasks" />
+    <TodayTasksContainer :today-tasks="todayTasks" :expired-tasks="expiredTasks" />
   </v-col>
 </template>
 
@@ -14,7 +14,7 @@ export default {
   components: {
     TodayTasksContainer,
   },
-  computed: mapGetters(["todayTasks", "expiredTasks"]),
+  computed: { ...mapGetters(["todayTasks", "expiredTasks"]) },
   mixins: [SpinnerMixin],
 };
 </script>

@@ -27,6 +27,6 @@
   ],
 
   "externally_connectable": {
-    "matches": ["http://localhost/*"]
+    "matches": ["http://localhost/*", "http://115.85.183.106/*"]
   }
 }

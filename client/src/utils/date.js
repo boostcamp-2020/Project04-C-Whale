@@ -10,6 +10,10 @@ const isToday = (inputDate) => {
   );
 };
 
+const isExpired = (inputDate) => {
+  return new Date(inputDate) < new Date(new Date(Date.now()).toLocaleDateString());
+};
+
 const getTodayString = () => {
   const today = new Date();
   const dd = String(today.getDate()).padStart(2, "0");
@@ -19,4 +23,4 @@ const getTodayString = () => {
   return `${yyyy}-${mm}-${dd}`;
 };
 
-export { isToday, getTodayString };
+export { isExpired, isToday, getTodayString };

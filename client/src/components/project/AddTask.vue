@@ -100,6 +100,7 @@ export default {
     sectionId: String,
     parentId: String,
     initialShow: Boolean,
+    type: String,
   },
   data() {
     return {
@@ -122,9 +123,6 @@ export default {
   methods: {
     ...mapActions(["addTask"]),
     submit() {
-      // 오늘 페이지 첫 렌더링 시, projectId, sectionId가 없는 상황을 위한 초기화
-      // this.task.projectId = this.projectId ? this.projectId : this.managedProject.id;
-      // this.sectionId = this.sectionId ? this.sectionId : this.managedProject.defaultSectionId;
       this.addTask(this.task);
       whaleApi.createAlarm({
         taskTitle: this.task.title,
@@ -138,7 +136,11 @@ export default {
         dueDate: getTodayString(),
       };
 
-      this.projectTitle = this.managedProject.title;
+      // this.projectTitle = this.managedProject.title;
+      // if (this.type === "quick") {
+      //   this.emitDone();
+      //   return;
+      // }
       this.show = !this.show;
     },
     showForm(target) {
@@ -151,6 +153,11 @@ export default {
     },
     closeForm() {
       this.task.title = "";
+
+      if (this.type === "quick") {
+        this.emitDone();
+        return;
+      }
       this.show = !this.show;
     },
     selectProject(projectInfo) {
@@ -165,6 +172,9 @@ export default {
     },
     selectAlarm(time) {
       this.alarmTime = Date.now() + 1000 * time;
+    },
+    emitDone() {
+      this.$emit("done");
     },
   },
   created() {

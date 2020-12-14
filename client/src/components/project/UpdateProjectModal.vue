@@ -10,7 +10,7 @@
       <v-card>
         <v-card-title> 프로젝트 추가 </v-card-title>
         <v-card-text>
-          <v-container>
+          <v-container class="project-modal">
             <v-row>
               <v-col cols="12" sm="12" md="12">
                 <v-text-field
