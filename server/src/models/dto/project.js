@@ -6,7 +6,7 @@ const {
   MinLength,
   IsBoolean,
 } = require('class-validator');
-const errorMessage = require('@utils/error-messages');
+const errorMessage = require('@utils/custom-error').message;
 
 class ProjectDto {
   @ValidateIf(o => !!o.id)

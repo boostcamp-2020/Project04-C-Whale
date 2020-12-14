@@ -1,5 +1,5 @@
 const { IsString, IsBoolean, IsOptional, IsEmpty, MinLength } = require('class-validator');
-const errorMessage = require('@utils/error-messages');
+const errorMessage = require('@utils/custom-error').message;
 
 class CommentDto {
   @IsEmpty({ groups: ['create', 'update'], message: errorMessage.UNNECESSARY_INPUT_ERROR('id') })
