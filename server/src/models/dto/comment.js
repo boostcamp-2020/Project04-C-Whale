@@ -1,4 +1,4 @@
-const { IsString, IsBoolean, IsOptional, IsEmpty, MinLength } = require('class-validator');
+const { IsString, IsEmpty, MinLength } = require('class-validator');
 const errorMessage = require('@utils/custom-error').message;
 
 class CommentDto {
@@ -11,10 +11,6 @@ class CommentDto {
     message: errorMessage.INVALID_INPUT_ERROR('content'),
   })
   content;
-
-  @IsOptional({ groups: ['create'] })
-  @IsBoolean({ groups: ['create', 'update'], message: errorMessage.TYPE_ERROR('isImage') })
-  isImage;
 
   taskId;
 }
