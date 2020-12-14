@@ -25,14 +25,18 @@ const retrieveProjects = async userId => {
             attributes: [],
             where: { isDone: false },
             required: false,
-            group: ['sections.id'],
           },
         ],
       },
     ],
     where: { creatorId: userId },
     group: ['project.id'],
+    order: [
+      ['createdAt', 'ASC'],
+      [models.section, 'position', 'ASC'],
+    ],
   });
+
   return projects;
 };
 
