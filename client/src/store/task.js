@@ -13,6 +13,7 @@ const getters = {
   todayTasks: (state) => state.tasks.filter((task) => isToday(task.dueDate) && !task.isDone),
   expiredTasks: (state) => state.tasks.filter((task) => !isToday(task.dueDate) && !task.isDone),
   taskCount: (state) => state.tasks.length,
+  tasksWithBookmarks: (state) => state.tasks.filter((task) => task.bookmarks.length > 0),
 };
 
 const mutations = {

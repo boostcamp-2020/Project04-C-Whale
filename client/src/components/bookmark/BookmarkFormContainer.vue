@@ -31,7 +31,7 @@ export default {
   },
   methods: {
     setBookmark() {
-      if (window.whale) {
+      if (this.isWhale) {
         whaleApi.getCurrentTabUrl(({ title, url }) => {
           this.bookmark = getMarkDownUrl(title, url);
         });
