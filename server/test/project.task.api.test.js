@@ -141,7 +141,7 @@ describe('post task', () => {
 
     // then
     expect(res.status).toBe(status.BAD_REQUEST.CODE);
-    expect(res.body.message).toBe(errorMessage.DUEDATE_ERROR);
+    expect(res.body.message).toBe(errorMessage.DUEDATE_ERROR());
     done();
   });
   it('잘못된 parentId 생성', async done => {

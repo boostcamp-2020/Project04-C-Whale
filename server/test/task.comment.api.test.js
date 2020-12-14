@@ -270,7 +270,7 @@ describe('update comment', () => {
       done(err);
     }
   });
-  it('id가 포함된 경우', async done => {
+  it('data에 id가 포함된 경우', async done => {
     // given
     const requestBody = { id: seeder.comments[0].id, content: '하이하이' };
     const taskId = seeder.tasks[1].id;
@@ -292,7 +292,73 @@ describe('update comment', () => {
       done(err);
     }
   });
-  it('taskId가 잘못된 경우', async done => {
+  it('data에 taskId가 포함된 경우', async done => {
+    // given
+    const taskId = seeder.tasks[1].id;
+    const commentId = seeder.comments[0].id;
+    const requestBody = { taskId, content: '하이하이' };
+    const expectedError = customError.UNNECESSARY_INPUT_ERROR('taskId');
+    try {
+      // when
+      const res = await request(app)
+        .put(`/api/task/${taskId}/comment/${commentId}`)
+        .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
+        .send(requestBody);
+
+      // then
+      expect(res.status).toBe(expectedError.status);
+      expect(res.body.code).toBe(expectedError.code);
+      expect(res.body.message).toBe(expectedError.message);
+      done();
+    } catch (err) {
+      done(err);
+    }
+  });
+  it('id가 없는 경우', async done => {
+    // given
+    const requestBody = { content: '하이' };
+    const taskId = seeder.tasks[1].id;
+    const commentId = seeder.sections[0].id;
+    const expectedError = customError.NOT_FOUND_ERROR('comment');
+    try {
+      // when
+      const res = await request(app)
+        .put(`/api/task/${taskId}/comment/${commentId}`)
+        .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
+        .send(requestBody);
+
+      // then
+      expect(res.status).toBe(expectedError.status);
+      expect(res.body.code).toBe(expectedError.code);
+      expect(res.body.message).toBe(expectedError.message);
+      done();
+    } catch (err) {
+      done(err);
+    }
+  });
+  it('id가 uuid가 아닌 경우', async done => {
+    // given
+    const requestBody = { content: '하이' };
+    const taskId = seeder.tasks[1].id;
+    const commentId = 'invalidId';
+    const expectedError = customError.INVALID_INPUT_ERROR('commentId');
+    try {
+      // when
+      const res = await request(app)
+        .put(`/api/task/${taskId}/comment/${commentId}`)
+        .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
+        .send(requestBody);
+
+      // then
+      expect(res.status).toBe(expectedError.status);
+      expect(res.body.code).toBe(expectedError.code);
+      expect(res.body.message).toBe(expectedError.message);
+      done();
+    } catch (err) {
+      done(err);
+    }
+  });
+  it('taskId가 없는 경우', async done => {
     // given
     const requestBody = { content: '하이' };
     const taskId = seeder.sections[1].id;
@@ -303,6 +369,50 @@ describe('update comment', () => {
       const res = await request(app)
         .put(`/api/task/${taskId}/comment/${commentId}`)
         .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
+        .send(requestBody);
+
+      // then
+      expect(res.status).toBe(expectedError.status);
+      expect(res.body.code).toBe(expectedError.code);
+      expect(res.body.message).toBe(expectedError.message);
+      done();
+    } catch (err) {
+      done(err);
+    }
+  });
+  it('taskId가 uuid가 아닌 경우', async done => {
+    // given
+    const requestBody = { content: '하이' };
+    const taskId = 'invalidId';
+    const commentId = seeder.comments[0].id;
+    const expectedError = customError.INVALID_INPUT_ERROR('taskId');
+    try {
+      // when
+      const res = await request(app)
+        .put(`/api/task/${taskId}/comment/${commentId}`)
+        .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
+        .send(requestBody);
+
+      // then
+      expect(res.status).toBe(expectedError.status);
+      expect(res.body.code).toBe(expectedError.code);
+      expect(res.body.message).toBe(expectedError.message);
+      done();
+    } catch (err) {
+      done(err);
+    }
+  });
+  it('자신의 commentId가 아닌 경우', async done => {
+    // given
+    const requestBody = { content: '하이' };
+    const taskId = seeder.tasks[5].id;
+    const commentId = seeder.comments[2].id;
+    const expectedError = customError.FORBIDDEN_ERROR('comment');
+    try {
+      // when
+      const res = await request(app)
+        .put(`/api/task/${taskId}/comment/${commentId}`)
+        .set('Authorization', `Bearer ${createJWT(seeder.users[1])}`)
         .send(requestBody);
 
       // then
@@ -380,7 +490,7 @@ describe('delete comment', () => {
       done(err);
     }
   });
-  it('잘못된 commentId', async done => {
+  it('commentId가 uuid가 아닌 경우', async done => {
     // given
     const taskId = seeder.tasks[1].id;
     const commentId = 'invalid commentId';
@@ -401,11 +511,32 @@ describe('delete comment', () => {
       done(err);
     }
   });
+  it('존재하지 않는 commentId', async done => {
+    // given
+    const taskId = seeder.tasks[1].id;
+    const commentId = seeder.sections[0].id;
+    const expectedError = customError.NOT_FOUND_ERROR('comment');
+
+    try {
+      // when
+      const res = await request(app)
+        .delete(`/api/task/${taskId}/comment/${commentId}`)
+        .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`);
+
+      // then
+      expect(res.status).toBe(expectedError.status);
+      expect(res.body.code).toBe(expectedError.code);
+      expect(res.body.message).toBe(expectedError.message);
+      done();
+    } catch (err) {
+      done(err);
+    }
+  });
   it('자신의 comment가 아닌 경우', async done => {
     // given
     const taskId = seeder.tasks[1].id;
     const commentId = seeder.comments[1].id;
-    const expectedError = customError.FORBIDDEN_ERROR('commentId');
+    const expectedError = customError.FORBIDDEN_ERROR('comment');
 
     try {
       // when
@@ -426,7 +557,7 @@ describe('delete comment', () => {
     // given
     const taskId = seeder.tasks[0].id;
     const commentId = seeder.comments[1].id;
-    const expectedError = customError.WRONG_RELATION_ERROR('commentId');
+    const expectedError = customError.WRONG_RELATION_ERROR('task, comment');
 
     try {
       // when

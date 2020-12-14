@@ -163,6 +163,13 @@ const comments = [
     createdAt: new Date('2020-12-13'),
     updatedAt: new Date('2020-12-13'),
   },
+  {
+    id: '47811107-b2ca-42f8-8a39-20e765694a4a',
+    content: '댓글 3',
+    taskId: tasks[2].id,
+    createdAt: new Date('2020-12-13'),
+    updatedAt: new Date('2020-12-13'),
+  },
 ];
 
 const bookmarks = [

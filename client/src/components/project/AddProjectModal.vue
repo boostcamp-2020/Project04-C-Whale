@@ -3,14 +3,13 @@
     <v-dialog
       v-model="dialog"
       persistent
-      max-width="600"
       class="add-project-dialog"
       @click:outside="sendCloseModalEvent"
     >
       <v-card>
         <v-card-title> 프로젝트 추가 </v-card-title>
         <v-card-text>
-          <v-container>
+          <v-container class="project-modal">
             <v-row>
               <v-col cols="12" sm="12" md="12">
                 <v-text-field
@@ -132,6 +131,10 @@ export default {
 <style lang="scss">
 .v-dialog {
   min-height: auto !important;
+}
+
+.project-modal {
+  min-width: auto !important;
 }
 
 .v-dialog.add-project-dialog {

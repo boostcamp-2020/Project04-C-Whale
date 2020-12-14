@@ -56,6 +56,11 @@ export default {
     UpdatableTitle,
     ChildTaskList,
   },
+  data() {
+    return {
+      showDoneTasks: false,
+    };
+  },
   computed: {
     ...mapGetters(["draggingSection"]),
     todoTasks() {

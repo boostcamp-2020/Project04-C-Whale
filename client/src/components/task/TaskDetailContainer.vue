@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card v-if="task">
     <v-list-item>
       <v-list-item-icon class="mr-1 py-3">
         <v-icon small :color="task.section.project.color">mdi-circle</v-icon>
@@ -22,7 +22,7 @@
       <TaskDetailTabs
         :tasks="this.task.tasks"
         :tabList="this.tabList"
-        :comments="this.comments"
+        :comments="this.task.comments"
         :projectId="this.$route.params.projectId"
         :sectionId="this.task.sectionId"
         :isParent="this.task.parentId === null"
@@ -36,6 +36,10 @@ import TaskItem from "@/components/project/TaskItem";
 import TaskDetailTabs from "@/components/task/TaskDetailTabs";
 
 export default {
+  components: { TaskItem, TaskDetailTabs },
+  props: {
+    task: Object,
+  },
   data() {
     return {
       tabList: {
@@ -45,14 +49,6 @@ export default {
       },
     };
   },
-  props: {
-    task: Object,
-    comments: Array,
-    projectTitle: String,
-  },
-
-  components: { TaskItem, TaskDetailTabs },
-
   methods: {
     hideTaskModal() {
       this.$emit("hideTaskModal");
@@ -61,8 +57,8 @@ export default {
   computed: {},
   created() {
     this.tabList.childTask.count = this.task ? this.task.tasks.length : 0;
-    this.tabList.comment.count = this.comments ? this.comments.length : 0;
-    this.tabList.bookmark.count = 3;
+    this.tabList.comment.count = this.task ? this.task.comments.length : 0;
+    this.tabList.bookmark.count = this.task ? this.task.bookmarks.length : 0;
   },
   mounted() {},
 };

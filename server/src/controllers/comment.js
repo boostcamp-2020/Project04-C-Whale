@@ -28,8 +28,9 @@ const createComment = asyncTryCatch(async (req, res) => {
     const validationError = getTypeError(errs);
     throw validationError;
   }
-
-  await commentService.create(req.params.taskId, req.body);
+  const { taskId } = req.params;
+  const userId = req.user.id;
+  await commentService.create({ userId, taskId, ...req.body });
 
   responseHandler(res, 201, { message: 'ok' });
 });
@@ -43,7 +44,9 @@ const updateComment = asyncTryCatch(async (req, res) => {
     throw validationError;
   }
 
-  await commentService.update(req.params.commentId, req.body);
+  const { taskId, commentId } = req.params;
+  const userId = req.user.id;
+  await commentService.update({ id: commentId, taskId, userId, ...req.body });
 
   responseHandler(res, 200, { message: 'ok' });
 });
@@ -55,7 +58,10 @@ const deleteComment = asyncTryCatch(async (req, res) => {
     const validationError = getTypeError(errs);
     throw validationError;
   }
-  await commentService.remove(req.params.commentId);
+
+  const { commentId, taskId } = req.params;
+  const userId = req.user.id;
+  await commentService.remove({ id: commentId, taskId, userId });
 
   responseHandler(res, 200, { message: 'ok' });
 });

@@ -62,7 +62,7 @@ const customError = {
     return error;
   },
   DUEDATE_ERROR: () => {
-    const error = new Error(message.DUEDATE_ERROR);
+    const error = new Error(message.DUEDATE_ERROR());
     error.status = status.BAD_REQUEST_ERROR;
     error.code = code.VALIDATION_ERROR;
     return error;
