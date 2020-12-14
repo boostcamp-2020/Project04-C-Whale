@@ -20,20 +20,21 @@ const getBookmarks = asyncTryCatch(async (req, res) => {
   responseHandler(res, 200, { bookmarks });
 });
 
-// const createComment = asyncTryCatch(async (req, res) => {
-//   try {
-//     await validator(ParamsValidator, req.params);
-//     await validator(CommentDto, req.body, { groups: ['create'] });
-//   } catch (errs) {
-//     const validationError = getTypeError(errs);
-//     throw validationError;
-//   }
-//   const { taskId } = req.params;
-//   const userId = req.user.id;
-//   await commentService.create({ userId, taskId, ...req.body });
+const createBookmark = asyncTryCatch(async (req, res) => {
+  try {
+    await validator(ParamsValidator, req.params);
+    await validator(BookmarkDto, req.body);
+  } catch (errs) {
+    const validationError = getTypeError(errs);
+    throw validationError;
+  }
 
-//   responseHandler(res, 201, { message: 'ok' });
-// });
+  const { taskId } = req.params;
+  const userId = req.user.id;
+  await bookmarkService.create({ userId, taskId, ...req.body });
+
+  responseHandler(res, 201, { message: 'ok' });
+});
 
 // const deleteComment = asyncTryCatch(async (req, res) => {
 //   try {
@@ -50,4 +51,4 @@ const getBookmarks = asyncTryCatch(async (req, res) => {
 //   responseHandler(res, 200, { message: 'ok' });
 // });
 
-module.exports = { getBookmarks };
+module.exports = { getBookmarks, createBookmark };

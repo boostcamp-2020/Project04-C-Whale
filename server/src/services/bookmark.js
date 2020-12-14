@@ -20,21 +20,21 @@ const retrieveAllByTaskId = async ({ userId, taskId }) => {
   return bookmarks;
 };
 
-// const create = async ({ userId, taskId, ...commentData }) => {
-//   const task = await taskModel.findByPk(taskId);
-//   if (!task) {
-//     const error = customError.NOT_FOUND_ERROR('task');
-//     throw error;
-//   }
-//   if (!(await isTaskOwner({ id: taskId, userId }))) {
-//     const error = customError.FORBIDDEN_ERROR('task');
-//     throw error;
-//   }
+const create = async ({ userId, taskId, ...bookmarkData }) => {
+  const task = await taskModel.findByPk(taskId);
+  if (!task) {
+    const error = customError.NOT_FOUND_ERROR('task');
+    throw error;
+  }
+  if (!(await isTaskOwner({ id: taskId, userId }))) {
+    const error = customError.FORBIDDEN_ERROR('task');
+    throw error;
+  }
 
-//   const result = await commentModel.create({ ...commentData, taskId });
+  const result = await bookmarkModel.create({ ...bookmarkData, taskId });
 
-//   return result;
-// };
+  return result;
+};
 
 // const remove = async ({ id, taskId, userId }) => {
 //   const comment = await commentModel.findByPk(id);
@@ -56,4 +56,4 @@ const retrieveAllByTaskId = async ({ userId, taskId }) => {
 
 // };
 
-module.exports = { retrieveAllByTaskId };
+module.exports = { retrieveAllByTaskId, create };
