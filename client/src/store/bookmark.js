@@ -29,6 +29,7 @@ const actions = {
     try {
       await bookmarkAPI.createBookmark(taskId, bookmark);
       await dispatch("fetchBookmarks", taskId);
+      await dispatch("fetchAllTasks");
       commit("SET_SUCCESS_ALERT", "북마크가 생성되었습니다.");
     } catch (err) {
       commit("SET_ERROR_ALERT", err.response);
@@ -38,6 +39,7 @@ const actions = {
     try {
       await bookmarkAPI.deleteBookmark(taskId, bookmarkId);
       await dispatch("fetchBookmarks", taskId);
+      await dispatch("fetchAllTasks");
       commit("SET_SUCCESS_ALERT", "북마크가 삭제되었습니다.");
     } catch (err) {
       commit("SET_ERROR_ALERT", err.response);
