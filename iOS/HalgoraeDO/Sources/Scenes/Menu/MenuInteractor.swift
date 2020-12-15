@@ -32,8 +32,8 @@ class MenuInteractor: MenuDataStore {
 extension MenuInteractor: MenuBusinessLogic {
 
     func fetchProjects() {
-        worker.request(endPoint: .getAll) { [weak self] (projects: [Project]?) in
-            let projects = projects ?? []
+        worker.request(endPoint: .getAll) { [weak self] (response: Response<[Project]>?) in
+            let projects = response?.projectInfos ?? []
             self?.projects = projects
             self?.worker.updateProjects(projects)
             self?.presenter.presentProjects(response: .init(projects: projects))
@@ -42,9 +42,8 @@ extension MenuInteractor: MenuBusinessLogic {
     
     func createProject(request: MenuModels.CreateProject.Request) {
         guard let requestData = request.projectFields.encodeData else { return }
-        
-        worker.requestPostAndGet(post: ProjectEndPoint.create(request: requestData), get: ProjectEndPoint.getAll) { [weak self] (projects: [Project]?) in
-            let projects = projects ?? []
+        worker.requestPostAndGet(post: ProjectEndPoint.create(request: requestData), get: ProjectEndPoint.getAll) { [weak self] (response: Response<[Project]>?) in
+            let projects = response?.projectInfos ?? []
             self?.projects = projects
             self?.worker.updateProjects(projects)
             self?.presenter.presentProjects(response: .init(projects: projects))
@@ -56,8 +55,8 @@ extension MenuInteractor: MenuBusinessLogic {
         let vmForFavorite = MenuModels.ProjectVM(projectVM: request.project)
         guard let requestData = vmForFavorite.encodeData else { return }
         
-        worker.requestPostAndGet(post: ProjectEndPoint.update(id: vmForFavorite.id, project: requestData), get: ProjectEndPoint.getAll) { [weak self] (projects: [Project]?) in
-            let projects = projects ?? []
+        worker.requestPostAndGet(post: ProjectEndPoint.update(id: vmForFavorite.id, project: requestData), get: ProjectEndPoint.getAll) { [weak self] (response: Response<[Project]>?) in
+            let projects = response?.projectInfos ?? []
             self?.projects = projects
             self?.worker.updateProjects(projects)
             self?.presenter.presentProjects(response: .init(projects: projects))
