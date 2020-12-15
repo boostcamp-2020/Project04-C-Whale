@@ -58,13 +58,13 @@ enum TaskDetailModels {
             var taskId: String
             var commentFields: CommentFields
         }
-        
-        struct Response {
-            var comments: [Comment]
-        }
-        
-        struct ViewModel {
-            var comments: [ContentsVM]
+ 
+    }
+    
+    enum CreateBookmark {
+        struct Request {
+            var taskId: String
+            var bookmarkFields: BookmarkFields
         }
     }
     
@@ -98,5 +98,9 @@ enum TaskDetailModels {
     
     struct CommentFields: Encodable {
         var content: String
+    }
+    
+    struct BookmarkFields: Encodable {
+        var url: String
     }
 }

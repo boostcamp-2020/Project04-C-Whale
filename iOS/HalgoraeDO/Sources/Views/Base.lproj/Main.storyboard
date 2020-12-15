@@ -174,10 +174,10 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3nB-Vn-XKE" userLabel="TaskBg">
-                                <rect key="frame" x="0.0" y="94" width="414" height="132.5"/>
+                                <rect key="frame" x="0.0" y="94" width="414" height="156.5"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="755" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ovW-bp-nsn">
-                                        <rect key="frame" x="16" y="54" width="25" height="25"/>
+                                        <rect key="frame" x="16" y="66" width="25" height="25"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="25" id="Reu-dV-35h"/>
                                             <constraint firstAttribute="width" secondItem="ovW-bp-nsn" secondAttribute="height" multiplier="1:1" id="gX4-eT-S5j"/>
@@ -190,7 +190,7 @@
                                         </connections>
                                     </button>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="255" verticalCompressionResistancePriority="756" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="htc-6e-bKT">
-                                        <rect key="frame" x="57" y="8" width="349" height="116.5"/>
+                                        <rect key="frame" x="57" y="20" width="349" height="116.5"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure </string>
                                         <color key="textColor" systemColor="labelColor"/>
@@ -203,25 +203,25 @@
                                     <constraint firstItem="htc-6e-bKT" firstAttribute="centerY" secondItem="3nB-Vn-XKE" secondAttribute="centerY" id="DT1-Km-738"/>
                                     <constraint firstItem="ovW-bp-nsn" firstAttribute="centerY" secondItem="3nB-Vn-XKE" secondAttribute="centerY" id="NH3-34-ody"/>
                                     <constraint firstItem="ovW-bp-nsn" firstAttribute="top" relation="greaterThanOrEqual" secondItem="3nB-Vn-XKE" secondAttribute="top" constant="8" id="T88-uM-wgc"/>
-                                    <constraint firstItem="htc-6e-bKT" firstAttribute="top" secondItem="3nB-Vn-XKE" secondAttribute="top" constant="8" id="YXl-Tu-i3O"/>
+                                    <constraint firstItem="htc-6e-bKT" firstAttribute="top" secondItem="3nB-Vn-XKE" secondAttribute="top" constant="20" id="YXl-Tu-i3O"/>
                                     <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="ovW-bp-nsn" secondAttribute="bottom" constant="8" id="ac1-Rb-Ybv"/>
                                     <constraint firstItem="htc-6e-bKT" firstAttribute="leading" secondItem="ovW-bp-nsn" secondAttribute="trailing" constant="16" id="dBe-6U-dQU"/>
                                     <constraint firstItem="ovW-bp-nsn" firstAttribute="leading" secondItem="3nB-Vn-XKE" secondAttribute="leading" constant="16" id="u93-Yh-YE7"/>
-                                    <constraint firstAttribute="bottom" secondItem="htc-6e-bKT" secondAttribute="bottom" constant="8" id="uRP-D7-E2U"/>
+                                    <constraint firstAttribute="bottom" secondItem="htc-6e-bKT" secondAttribute="bottom" constant="20" id="uRP-D7-E2U"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5ki-c6-MyL">
-                                <rect key="frame" x="0.0" y="226.5" width="414" height="44"/>
+                                <rect key="frame" x="0.0" y="250.5" width="414" height="40"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="MiT-lo-gCO">
-                                        <rect key="frame" x="16" y="0.0" width="219" height="44"/>
+                                        <rect key="frame" x="16" y="0.0" width="215" height="40"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" horizontalHuggingPriority="255" horizontalCompressionResistancePriority="755" translatesAutoresizingMaskIntoConstraints="NO" id="ISU-Dn-Rec" customClass="DatePickerButtonView" customModule="HalgoraeDO" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="0.0" width="165" height="44"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="165" height="40"/>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                             </view>
                                             <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="755" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YHa-fV-ExY" customClass="BorderRadiusButton" customModule="HalgoraeDO" customModuleProvider="target">
-                                                <rect key="frame" x="175" y="0.0" width="44" height="44"/>
+                                                <rect key="frame" x="175" y="0.0" width="40" height="40"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="YHa-fV-ExY" secondAttribute="height" multiplier="1:1" id="EdZ-pE-dPL"/>
                                                 </constraints>
@@ -251,14 +251,14 @@
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="MiT-lo-gCO" firstAttribute="top" secondItem="5ki-c6-MyL" secondAttribute="top" id="30J-1K-rG1"/>
-                                    <constraint firstAttribute="height" constant="44" id="NEl-fm-7Jz"/>
+                                    <constraint firstAttribute="height" constant="40" id="NEl-fm-7Jz"/>
                                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="MiT-lo-gCO" secondAttribute="trailing" id="Wkg-m3-iy1"/>
                                     <constraint firstAttribute="bottom" secondItem="MiT-lo-gCO" secondAttribute="bottom" id="YUa-8l-DiY"/>
                                     <constraint firstItem="MiT-lo-gCO" firstAttribute="leading" secondItem="5ki-c6-MyL" secondAttribute="leading" constant="16" id="aux-0k-TdS"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="C4G-CN-ckF">
-                                <rect key="frame" x="0.0" y="270.5" width="414" height="50"/>
+                                <rect key="frame" x="0.0" y="290.5" width="414" height="50"/>
                                 <subviews>
                                     <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="1MW-zk-p3h">
                                         <rect key="frame" x="5" y="10" width="404" height="41"/>
@@ -326,7 +326,7 @@
                                 </constraints>
                             </view>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fT0-Kb-7tn">
-                                <rect key="frame" x="0.0" y="320.5" width="414" height="541.5"/>
+                                <rect key="frame" x="0.0" y="340.5" width="414" height="521.5"/>
                                 <connections>
                                     <segue destination="0ln-em-1OC" kind="embed" identifier="TaskDetailViewControllerTo TaskDetailPageViewController" id="XlB-7M-ywm"/>
                                 </connections>
@@ -411,7 +411,6 @@
                                 </accessibility>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="19"/>
                                 <color key="tintColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <inset key="titleEdgeInsets" minX="10" minY="0.0" maxX="-10" maxY="0.0"/>
                                 <state key="normal" title="작업 추가" image="plus" catalog="system">
                                     <color key="titleColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
@@ -789,11 +788,11 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="pcJ-NH-hpV" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="GJv-W2-k95">
-                        <rect key="frame" x="0.0" y="44" width="414" height="96"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="GJv-W2-k95">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <color key="tintColor" red="0.1019607843" green="0.15218839049999999" blue="0.41057401900000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <color key="barTintColor" red="0.029415823519999999" green="0.77209502460000001" blue="0.64217513800000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="barTintColor" name="halgoraedoMint"/>
                         <textAttributes key="titleTextAttributes">
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </textAttributes>
@@ -866,7 +865,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" bouncesZoom="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="i1l-sl-RpB">
-                                <rect key="frame" x="0.0" y="140" width="414" height="722"/>
+                                <rect key="frame" x="0.0" y="88" width="414" height="774"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="2nZ-4X-snI">
                                     <size key="itemSize" width="128" height="128"/>
@@ -886,7 +885,7 @@
                             <constraint firstItem="qIh-dh-kCn" firstAttribute="bottom" secondItem="i1l-sl-RpB" secondAttribute="bottom" id="yHP-dr-uKZ"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="QCA-8H-c9B"/>
+                    <navigationItem key="navigationItem" largeTitleDisplayMode="never" id="QCA-8H-c9B"/>
                     <connections>
                         <outlet property="menuCollectionView" destination="i1l-sl-RpB" id="SnW-CE-hhg"/>
                     </connections>
@@ -916,6 +915,9 @@
         <image name="xmark.circle.fill" catalog="system" width="128" height="121"/>
         <namedColor name="halgoraedoDarkBlue">
             <color red="0.10999999940395355" green="0.17000000178813934" blue="0.50999999046325684" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="halgoraedoMint">
+            <color red="0.027450980392156862" green="0.7686274509803922" blue="0.63921568627450975" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

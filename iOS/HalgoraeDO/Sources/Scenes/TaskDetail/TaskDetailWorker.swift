@@ -38,7 +38,7 @@ class TaskDetailWorker {
                 completion(nil)
                 return
             }
-            self?.networkManager.fetchData(getEndPoint) { (response: Response<T>?, error: NetworkError?) in
+            self?.networkManager.fetchData(getEndPoint) { (response: T?, error: NetworkError?) in
                 guard error == nil else {
                     #if DEBUG
                     print(error ?? "error is null")
@@ -46,7 +46,7 @@ class TaskDetailWorker {
                     completion(nil)
                     return
                 }
-                completion(response?.comments)
+                completion(response)
             }
         }
     }
