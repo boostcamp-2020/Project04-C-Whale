@@ -26,7 +26,7 @@ class MenuWorker {
             return
         }
         
-        networkManager.fetchData(endPoint) { (result: ResponseProject<T>?, error: NetworkError?) in
+        networkManager.fetchData(endPoint) { (response: T?, error: NetworkError?) in
             guard error == nil else {
                 #if DEBUG
                 print(error ?? "error is null")
@@ -34,7 +34,7 @@ class MenuWorker {
                 completion(nil)
                 return
             }
-            completion(result?.projectInfos)
+            completion(response)
         }
     }
     
@@ -44,25 +44,23 @@ class MenuWorker {
             return
         }
         
-        networkManager.fetchData(postEndPoint) { [weak self] (response: ResponseMessage?, error) in
+        networkManager.fetchData(postEndPoint) { [weak self] (message: Response<String>?, error) in
             guard error == nil else {
                 #if DEBUG
-                print("response msg: \(String(describing: response))")
                 print(error ?? "error is null")
                 #endif
                 completion(nil)
                 return
             }
-            self?.networkManager.fetchData(getEndPoint) { (result: ResponseProject<T>?, error) in
+            self?.networkManager.fetchData(getEndPoint) { (response: T?, error) in
                 guard error == nil else {
                     #if DEBUG
-                    print("response msg: \(String(describing: response))")
                     print(error ?? "error is null")
                     #endif
                     completion(nil)
                     return
                 }
-                completion(result?.projectInfos)
+                completion(response)
             }
         }
     }
@@ -78,7 +76,7 @@ class MenuWorker {
                 guard let projectFields = try? JSONDecoder().decode(MenuModels.ProjectFields.self, from: data) else { return }
                 storage.createProject(for: projectFields)
                 storage.saveEndPoint(endPoint)
-                storage.fetchProjectList { (projects, error) in
+                storage.fetchProjectList { (response, error) in
                     guard error == nil else {
                         #if DEBUG
                         print("fetch fail from storage, \(error!)")
@@ -86,7 +84,7 @@ class MenuWorker {
                         completion(nil)
                         return
                     }
-                    completion(projects as? T ?? nil)
+                    completion(response as? T ?? nil)
                 }
             case .delete(let id):
                 storage.deleteProject(id: id)
@@ -95,7 +93,7 @@ class MenuWorker {
                 let project = storage.fetchProject(id: projectId)
                 completion(project as? T ?? nil)
             case .getAll:
-                storage.fetchProjectList { (projects, error) in
+                storage.fetchProjectList { (response, error) in
                     guard error == nil else {
                         #if DEBUG
                         print("fetch fail from storage, \(error!)")
@@ -103,13 +101,13 @@ class MenuWorker {
                         completion(nil)
                         return
                     }
-                    completion(projects as? T ?? nil)
+                    completion(response as? T ?? nil)
                 }
             case .update(let id, let data):
                 guard let projectFields = try? JSONDecoder().decode(MenuModels.ProjectFields.self, from: data) else { return }
                 storage.updateProject(id: id, for: projectFields)
                 storage.saveEndPoint(endPoint)
-                storage.fetchProjectList { (projects, error) in
+                storage.fetchProjectList { (response, error) in
                     guard error == nil else {
                         #if DEBUG
                         print("fetch fail from storage, \(error!)")
@@ -117,7 +115,7 @@ class MenuWorker {
                         completion(nil)
                         return
                     }
-                    completion(projects as? T ?? nil)
+                    completion(response as? T ?? nil)
                 }
             default: break
         }

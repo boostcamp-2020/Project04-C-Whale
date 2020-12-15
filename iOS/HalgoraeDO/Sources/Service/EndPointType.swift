@@ -22,6 +22,7 @@ enum HTTPMethod: String {
     case patch = "PATCH"
     case delete = "DELETE"
 }
+
 typealias HTTPTask = (body: Data?,
                       queryItems: Parameters?)
 typealias HTTPHeaders = [String: String]

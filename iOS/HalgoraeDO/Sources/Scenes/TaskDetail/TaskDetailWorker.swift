@@ -16,7 +16,7 @@ class TaskDetailWorker {
     }
     
     func request<T: Decodable>(endPoint: EndPointType, completion: @escaping ((T?) -> Void)) {
-        networkManager.fetchData(endPoint) { (result: ResponseDetail<T>?, error: NetworkError?) in
+        networkManager.fetchData(endPoint) { (result: Response<T>?, error: NetworkError?) in
             guard error == nil else {
                 #if DEBUG
                 print(error ?? "error is null")
@@ -29,16 +29,16 @@ class TaskDetailWorker {
     }
     
     func requestPostAndGet<T: Decodable>(post postEndPoint: EndPointType, get getEndPoint: EndPointType, completion: @escaping (T?) -> Void) {
-        networkManager.fetchData(postEndPoint) { [weak self] (response: ResponseMessage?, error) in
+        networkManager.fetchData(postEndPoint) { [weak self] (message: Response<String>?, error) in
             guard error == nil else {
                 #if DEBUG
-                print("response msg: \(String(describing: response))")
+                print("response msg: \(String(describing: message))")
                 print(error ?? "error is null")
                 #endif
                 completion(nil)
                 return
             }
-            self?.networkManager.fetchData(getEndPoint) { (result: ResponseDetail<T>?, error: NetworkError?) in
+            self?.networkManager.fetchData(getEndPoint) { (response: Response<T>?, error: NetworkError?) in
                 guard error == nil else {
                     #if DEBUG
                     print(error ?? "error is null")
@@ -46,7 +46,7 @@ class TaskDetailWorker {
                     completion(nil)
                     return
                 }
-                completion(result?.comments)
+                completion(response?.comments)
             }
         }
     }
