@@ -33,8 +33,9 @@ class TaskDetailSubTasksViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        guard let id = task?.id else { return }
-        interactor?.fetchSubTasks(request: .init(id: id))
+        guard let task = task else { return }
+        let tasks = task.tasks?.array as? [Task] ?? []
+        interactor?.fetchSubTasks(task: tasks)
     }
     
     // MARK: - Initialize
@@ -42,6 +43,8 @@ class TaskDetailSubTasksViewController: UIViewController {
     func configure(interactor: TaskDetailBusinessLogic, task: Task) {
         self.interactor = interactor
         self.task = task
+        let tasks = task.tasks?.array as? [Task] ?? []
+        interactor.fetchSubTasks(task: tasks)
     }
 }
 
@@ -97,6 +100,6 @@ private extension TaskDetailSubTasksViewController {
 extension TaskDetailSubTasksViewController: TaskDetailSubTasksDisplayLogic {
     func displaySubTasks(viewModel: TaskDetailModels.FetchSubTasks.ViewModel) {
         let sectionSnapshot = generateSnapshot(taskItems: viewModel.taskVMs)
-        dataSource.apply(sectionSnapshot, to: "")
+        dataSource?.apply(sectionSnapshot, to: "")
     }
 }

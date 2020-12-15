@@ -105,7 +105,6 @@ private extension TaskDetailCommentViewController {
 private extension TaskDetailCommentViewController {
     
     func configureDataSource() {
-        
         let cellRegistration = UICollectionView.CellRegistration<TaskDetailContentsCellCollectionViewCell, TaskDetailModels.ContentsVM> { (cell, _: IndexPath, taskItem) in
             cell.viewModel = taskItem
         }

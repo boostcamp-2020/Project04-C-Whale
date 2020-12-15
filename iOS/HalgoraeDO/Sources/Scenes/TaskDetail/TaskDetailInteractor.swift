@@ -8,9 +8,11 @@
 import Foundation
 
 protocol TaskDetailBusinessLogic {
-    func fetchSubTasks(request: TaskDetailModels.FetchSubTasks.Request)
+    func fetchSubTasks(task: [Task])
     func fetchComments(request: TaskDetailModels.FetchComments.Request)
+    func fetchBookmarks(request: TaskDetailModels.FetchBookmarks.Request)
     func createComment(request: TaskDetailModels.CreateComment.Request)
+    func createBookmark(request: TaskDetailModels.CreateBookmark.Request)
     func updateTask(request: TaskListModels.ReorderTask.Request)
 }
 
@@ -32,36 +34,38 @@ class TaskDetailInteractor: TaskDetailDataStore {
 extension TaskDetailInteractor: TaskDetailBusinessLogic {
     
     func fetchComments(request: TaskDetailModels.FetchComments.Request) {
-        
-        worker.request(endPoint: CommentEndPoint.get(taskId: request.id)) { [weak self] (comments: [Comment]?) in
-            self?.presenter.presentFetchedComments(response: .init(comments: comments ?? []))
+        worker.request(endPoint: CommentEndPoint.get(taskId: request.id)) { [weak self] (response: Response<[Comment]>?) in
+            self?.presenter.presentFetchedComments(response: .init(comments: response?.comments ?? []))
         }
     }
     
     func createComment(request: TaskDetailModels.CreateComment.Request) {
-        
         let fields = request.commentFields
         guard let data = fields.encodeData else { return }
         
-        worker.requestPostAndGet(post: CommentEndPoint.create(taskId: request.taskId, request: data), get: CommentEndPoint.get(taskId: request.taskId)) { [weak self] (comments: [Comment]?) in
-            self?.presenter.presentFetchedComments(response: .init(comments: comments ?? []))
+        worker.requestPostAndGet(post: CommentEndPoint.create(taskId: request.taskId, request: data), get: CommentEndPoint.get(taskId: request.taskId)) { [weak self] (response: Response<[Comment]>?) in
+            self?.presenter.presentFetchedComments(response: .init(comments: response?.comments ?? []))
         }
     }
     
+    func fetchBookmarks(request: TaskDetailModels.FetchBookmarks.Request) {
+        worker.request(endPoint: BookmarkEndPoint.get(taskId: request.id)) { [weak self] (response: Response<[Bookmark]>?) in
+            self?.presenter.presentFetchedBookmarks(response: .init(bookmakrs: response?.bookmarks ?? []))
+        }
+    }
     
-    func fetchSubTasks(request: TaskDetailModels.FetchSubTasks.Request) {
+    func createBookmark(request: TaskDetailModels.CreateBookmark.Request) {
+        let fields = request.bookmarkFields
+        guard let data = fields.encodeData else { return }
         
-//        worker.request(endPoint: TaskEndPoint.get(taskId: request.id)) { [weak self] (tasks: [Task]?) in
-//            self?.presenter.presentFetchedTasks(response: .init(tasks: tasks ?? []))
-//        }
-        //TODO 임시 데이터 변경하기!
-        let tasks = [
-            Task(fields: .init(title: "1111", date: Date(), priority: "4"), context: Storage().childContext),
-            Task(fields: .init(title: "1111", date: Date(), priority: "4"), context: Storage().childContext),
-            Task(fields: .init(title: "1111", date: Date(), priority: "4"), context: Storage().childContext),
-            Task(fields: .init(title: "1111", date: Date(), priority: "4"), context: Storage().childContext),
-        ]
-        presenter.presentFetchedTasks(response: .init(tasks: tasks))
+        worker.requestPostAndGet(post: BookmarkEndPoint.create(taskId: request.taskId, request: data), get: BookmarkEndPoint.get(taskId: request.taskId)) { [weak self] (response: Response<[Bookmark]>?) in
+            self?.presenter.presentFetchedBookmarks(response: .init(bookmakrs: response?.bookmarks ?? []))
+        }
+  
+    }
+    
+    func fetchSubTasks(task: [Task]) {
+        presenter.presentFetchedTasks(response: .init(tasks: task))
     }
     
     func updateTask(request: TaskListModels.ReorderTask.Request) {

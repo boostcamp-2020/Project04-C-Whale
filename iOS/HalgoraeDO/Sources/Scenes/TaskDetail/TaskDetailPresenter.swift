@@ -10,6 +10,7 @@ import Foundation
 protocol TaskDetailPresentLogic {
     func presentFetchedTasks(response: TaskDetailModels.FetchSubTasks.Response)
     func presentFetchedComments(response: TaskDetailModels.FetchComments.Response)
+    func presentFetchedBookmarks(response: TaskDetailModels.FetchBookmarks.Response)
 }
 
 class TaskDetailPresenter {
@@ -23,7 +24,6 @@ class TaskDetailPresenter {
          subTaskViewController: TaskDetailSubTasksDisplayLogic?,
          subTaskCommentViewController: TaskDetailCommentDisplayLogic?,
          subTaskBookmarkViewController: TaskDetailBookmarkDisplayLogic?) {
-        
         self.viewController = viewController
         self.subTaskViewController = subTaskViewController
         self.subTaskCommentViewController = subTaskCommentViewController
@@ -41,5 +41,10 @@ extension TaskDetailPresenter: TaskDetailPresentLogic {
     func presentFetchedComments(response: TaskDetailModels.FetchComments.Response) {
         let commentVMs = response.comments.compactMap { TaskDetailModels.ContentsVM(comment: $0) }
         subTaskCommentViewController?.displayFetchedComments(viewModel: .init(commentVMs: commentVMs))
+    }
+    
+    func presentFetchedBookmarks(response: TaskDetailModels.FetchBookmarks.Response) {
+        let bookmarkVMs = response.bookmakrs.compactMap { TaskDetailModels.ContentsVM(bookmark: $0) }
+        subTaskBookmarkViewController?.displayFetchedBookmarks(viewModel: .init(bookmarkVMs: bookmarkVMs))
     }
 }

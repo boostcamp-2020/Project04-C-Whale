@@ -2,7 +2,7 @@
 //  Task+CoreDataProperties.swift
 //  HalgoraeDO
 //
-//  Created by woong on 2020/12/13.
+//  Created by 이상윤 on 2020/12/15.
 //
 //
 
@@ -26,9 +26,9 @@ extension Task {
     @NSManaged public var updatedAt: String?
     @NSManaged public var parentId: String?
     @NSManaged public var bookmarks: NSOrderedSet?
+    @NSManaged public var comments: NSOrderedSet?
     @NSManaged public var section: Section?
     @NSManaged public var tasks: NSOrderedSet?
-    @NSManaged public var comments: NSOrderedSet?
 
 }
 
@@ -67,41 +67,6 @@ extension Task {
 
 }
 
-// MARK: Generated accessors for tasks
-extension Task {
-
-    @objc(insertObject:inTasksAtIndex:)
-    @NSManaged public func insertIntoTasks(_ value: Task, at idx: Int)
-
-    @objc(removeObjectFromTasksAtIndex:)
-    @NSManaged public func removeFromTasks(at idx: Int)
-
-    @objc(insertTasks:atIndexes:)
-    @NSManaged public func insertIntoTasks(_ values: [Task], at indexes: NSIndexSet)
-
-    @objc(removeTasksAtIndexes:)
-    @NSManaged public func removeFromTasks(at indexes: NSIndexSet)
-
-    @objc(replaceObjectInTasksAtIndex:withObject:)
-    @NSManaged public func replaceTasks(at idx: Int, with value: Task)
-
-    @objc(replaceTasksAtIndexes:withTasks:)
-    @NSManaged public func replaceTasks(at indexes: NSIndexSet, with values: [Task])
-
-    @objc(addTasksObject:)
-    @NSManaged public func addToTasks(_ value: Task)
-
-    @objc(removeTasksObject:)
-    @NSManaged public func removeFromTasks(_ value: Task)
-
-    @objc(addTasks:)
-    @NSManaged public func addToTasks(_ values: NSOrderedSet)
-
-    @objc(removeTasks:)
-    @NSManaged public func removeFromTasks(_ values: NSOrderedSet)
-
-}
-
 // MARK: Generated accessors for comments
 extension Task {
 
@@ -134,6 +99,41 @@ extension Task {
 
     @objc(removeComments:)
     @NSManaged public func removeFromComments(_ values: NSOrderedSet)
+
+}
+
+// MARK: Generated accessors for tasks
+extension Task {
+
+    @objc(insertObject:inTasksAtIndex:)
+    @NSManaged public func insertIntoTasks(_ value: Task, at idx: Int)
+
+    @objc(removeObjectFromTasksAtIndex:)
+    @NSManaged public func removeFromTasks(at idx: Int)
+
+    @objc(insertTasks:atIndexes:)
+    @NSManaged public func insertIntoTasks(_ values: [Task], at indexes: NSIndexSet)
+
+    @objc(removeTasksAtIndexes:)
+    @NSManaged public func removeFromTasks(at indexes: NSIndexSet)
+
+    @objc(replaceObjectInTasksAtIndex:withObject:)
+    @NSManaged public func replaceTasks(at idx: Int, with value: Task)
+
+    @objc(replaceTasksAtIndexes:withTasks:)
+    @NSManaged public func replaceTasks(at indexes: NSIndexSet, with values: [Task])
+
+    @objc(addTasksObject:)
+    @NSManaged public func addToTasks(_ value: Task)
+
+    @objc(removeTasksObject:)
+    @NSManaged public func removeFromTasks(_ value: Task)
+
+    @objc(addTasks:)
+    @NSManaged public func addToTasks(_ values: NSOrderedSet)
+
+    @objc(removeTasks:)
+    @NSManaged public func removeFromTasks(_ values: NSOrderedSet)
 
 }
 

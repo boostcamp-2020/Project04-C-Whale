@@ -30,11 +30,19 @@ class TaskDetailBookmarkViewController: UIViewController {
         }
     }
     
+    // MARK: - View Life Cycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configureCollectionView()
         configureDataSource()
         addObservers()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        guard let id = task?.id else { return }
+        interactor?.fetchBookmarks(request: .init(id: id))
     }
     
     func configure(interactor: TaskDetailBusinessLogic, task: Task) {
@@ -59,7 +67,7 @@ class TaskDetailBookmarkViewController: UIViewController {
     
     func createBookmark(text: String) {
         guard let task = task else { return }
-        //interactor?.createComment(request: .init(taskId: task.id, commentFields: .init(content: text)))
+        interactor?.createBookmark(request: .init(taskId: task.id, bookmarkFields: .init(url: text)))
     }
 }
 
@@ -69,7 +77,7 @@ private extension TaskDetailBookmarkViewController {
     
     func configureCollectionView() {
         bookmarkCollectionView.collectionViewLayout = generateLayout()
-        
+        bookmarkCollectionView.delegate = self
     }
     
     func generateLayout() -> UICollectionViewLayout {
@@ -119,7 +127,18 @@ private extension TaskDetailBookmarkViewController {
 extension TaskDetailBookmarkViewController: TaskDetailBookmarkDisplayLogic {
     
     func displayFetchedBookmarks(viewModel: TaskDetailModels.FetchBookmarks.ViewModel) {
-       // let sectionSnapshot = generateSnapshot(taskItems: viewModel. commentVMs)
-    //    dataSource.apply(sectionSnapshot, to: "")
+        let sectionSnapshot = generateSnapshot(taskItems: viewModel.bookmarkVMs)
+        dataSource.apply(sectionSnapshot, to: "")
+    }
+}
+
+
+extension TaskDetailBookmarkViewController: UICollectionViewDelegate {
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        bookmarkCollectionView.deselectItem(at: indexPath, animated: true)
+        let bookmarkCell = bookmarkCollectionView.cellForItem(at: indexPath) as? TaskDetailContentsCellCollectionViewCell
+        UIPasteboard.general.string = bookmarkCell?.viewModel?.contents
+        
     }
 }

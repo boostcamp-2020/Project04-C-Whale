@@ -5,7 +5,7 @@
 //  Created by woong on 2020/12/07.
 //
 
-import Foundation
+import UIKit
 
 enum TaskDetailModels {
     
@@ -39,32 +39,32 @@ enum TaskDetailModels {
         }
     }
     
+    enum FetchBookmarks {
+        struct Request {
+            var id: String
+        }
+        
+        struct Response {
+            var bookmakrs: [Bookmark]
+        }
+        
+        struct ViewModel {
+            var bookmarkVMs: [ContentsVM]
+        }
+    }
+    
     enum CreateComment {
         struct Request {
             var taskId: String
             var commentFields: CommentFields
         }
-        
-        struct Response {
-            var comments: [Comment]
-        }
-        
-        struct ViewModel {
-            var comments: [ContentsVM]
-        }
+ 
     }
     
-    enum FetchBookmarks {
+    enum CreateBookmark {
         struct Request {
-            
-        }
-        
-        struct Response {
-            
-        }
-        
-        struct ViewModel {
-            
+            var taskId: String
+            var bookmarkFields: BookmarkFields
         }
     }
     
@@ -72,12 +72,19 @@ enum TaskDetailModels {
     
     struct ContentsVM: Hashable {
         
+        var image: UIImage?
         var id: String
         var contents: String?
         
         init(comment: Comment) {
             self.id = comment.id
             self.contents = comment.content
+        }
+        
+        init(bookmark: Bookmark) {
+            self.id = bookmark.id
+            self.contents = bookmark.url
+            self.image = UIImage(systemName: "paperclip")
         }
         
         func hash(into hasher: inout Hasher) {
@@ -91,5 +98,9 @@ enum TaskDetailModels {
     
     struct CommentFields: Encodable {
         var content: String
+    }
+    
+    struct BookmarkFields: Encodable {
+        var url: String
     }
 }

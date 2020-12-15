@@ -24,6 +24,7 @@ class TaskDetailViewController: UIViewController {
     }
     private var currentTabIndex = 0 {
         didSet {
+            #warning("이거 지우기!!!!")
             subTabStackView
                 .arrangedSubviews
                 .compactMap({$0 as? UIButton})
@@ -31,16 +32,20 @@ class TaskDetailViewController: UIViewController {
                 .forEach { $0.element.isSelected = $0.offset == currentTabIndex }
         }
     }
-    lazy var pages: [UIViewController] = {
-        return [
-            instance(name: "\(TaskDetailSubTasksViewController.self)"),
-            instance(name: "\(TaskDetailCommentViewController.self)"),
-            instance(name: "\(TaskDetailBookmarkViewController.self)"),
-        ]
+    lazy var pageViewControllers: [UIViewController] = {
+        var pages: [UIViewController] = []
+        pages.append(instance(name: "\(TaskDetailBookmarkViewController.self)"))
+        pages.append(instance(name: "\(TaskDetailCommentViewController.self)"))
+        
+        if task.parentId == nil {
+            pages.append(instance(name: "\(TaskDetailSubTasksViewController.self)"))
+        }
+        return pages
     }()
     
     // MARK: Views
 
+    @IBOutlet weak private var pageSegmentsControl: UISegmentedControl!
     @IBOutlet weak private var navigationView: UIView!
     @IBOutlet weak private var navigationBar: UINavigationBar!
     @IBOutlet weak private var saveBarButtomItem: UIBarButtonItem!
@@ -75,28 +80,29 @@ class TaskDetailViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        interactor?.fetchSubTasks(request: .init(id: task.id))
     }
     
     // MARK: - Initialize
     
     private func configureLogic() {
         
-        let taskDetailSubTasksViewController = pages[0] as? TaskDetailSubTasksViewController
-        let taskDetailCommentViewController = pages[1] as? TaskDetailCommentViewController
-        let taskDetailBookmarkViewController = pages[2] as? TaskDetailBookmarkViewController
-        let presenter: TaskDetailPresenter = TaskDetailPresenter(viewController: self,
-                                            subTaskViewController: taskDetailSubTasksViewController,
-                                            subTaskCommentViewController: taskDetailCommentViewController,
-                                            subTaskBookmarkViewController: taskDetailBookmarkViewController)
+        let taskDetailBookmarkViewController =  pageViewControllers[0] as? TaskDetailBookmarkViewController
+        let taskDetailCommentViewController =  pageViewControllers[1] as? TaskDetailCommentViewController
+        let taskDetailSubTasksViewController = pageViewControllers.last as? TaskDetailSubTasksViewController
+        
+        let presenter: TaskDetailPresenter = TaskDetailPresenter(viewController: self, subTaskViewController: taskDetailSubTasksViewController, subTaskCommentViewController: taskDetailCommentViewController, subTaskBookmarkViewController: taskDetailBookmarkViewController)
+        
         let interactor = TaskDetailInteractor(presenter: presenter, worker: TaskDetailWorker(sessionManager: SessionManager(configuration: .default)))
         taskDetailSubTasksViewController?.configure(interactor: interactor, task: task)
         taskDetailCommentViewController?.configure(interactor: interactor, task: task)
         taskDetailBookmarkViewController?.configure(interactor: interactor, task: task)
-        //TODO segment view 
-       // pages.removeFirst()//자식뷰일때
-       // subTaskTabButton.removeFromSuperview()
         self.interactor = interactor
+        
+        if task.parentId != nil {
+            pageSegmentsControl.removeSegment(at: 0, animated: false)
+            pageSegmentsControl.selectedSegmentIndex = 0
+        }
+ 
     }
     
     private func setup() {
@@ -160,22 +166,28 @@ class TaskDetailViewController: UIViewController {
     @IBAction private func didTapSubTasksTabButton(_ sender: UIButton) {
         let tabIndex = 0
         let direection: UIPageViewController.NavigationDirection = currentTabIndex == 2 ? .forward : .reverse
-        pageViewController?.setViewControllers([pages[tabIndex]], direction: direection, animated: true, completion: nil)
+        pageViewController?.setViewControllers([pageViewControllers[tabIndex]], direction: direection, animated: true, completion: nil)
         currentTabIndex = tabIndex
     }
     
     @IBAction private func didTapCommentTabButton(_ sender: UIButton) {
         let tabIndex = 1
         let direection: UIPageViewController.NavigationDirection = currentTabIndex < tabIndex ? .forward : .reverse
-        pageViewController?.setViewControllers([pages[tabIndex]], direction: direection, animated: true, completion: nil)
+        pageViewController?.setViewControllers([pageViewControllers[tabIndex]], direction: direection, animated: true, completion: nil)
         currentTabIndex = tabIndex
     }
     
     @IBAction private func didTapBookmarkButton(_ sender: UIButton) {
         let tabIndex = 2
         let direection: UIPageViewController.NavigationDirection = .forward
-        pageViewController?.setViewControllers([pages[tabIndex]], direction: direection, animated: true, completion: nil)
+        pageViewController?.setViewControllers([pageViewControllers[tabIndex]], direction: direection, animated: true, completion: nil)
         currentTabIndex = tabIndex
+    }
+    
+    @IBAction func didTapSegmentControl(_ sender: UISegmentedControl) {
+        var tempPageViewControllers = pageViewControllers
+        tempPageViewControllers.reverse()
+        pageViewController?.setViewControllers([tempPageViewControllers[sender.selectedSegmentIndex]], direction: .reverse, animated: false, completion: nil)
     }
     
     // MARK: - Navigation
@@ -186,9 +198,10 @@ class TaskDetailViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let pagingVC = segue.destination as? TaskDetailPageViewController {
-            pageViewController = pagingVC
+
             pagingVC.delegate = self
-            pagingVC.pages = pages
+            pagingVC.pages = pageViewControllers.reversed()
+            pageViewController = pagingVC
         } else if let popoverVC = segue.destination as? PopoverViewController {
             configure(popover: popoverVC)
         }
@@ -226,13 +239,14 @@ extension TaskDetailViewController: UIPageViewControllerDelegate {
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+        var tempPageViewControllers = pageViewControllers
+        tempPageViewControllers.reverse()
         guard let currentVC = pageViewController.viewControllers?.first,
-            let currentIndex = pages.firstIndex(of: currentVC)
+            let currentIndex = tempPageViewControllers.firstIndex(of: currentVC)
         else {
             return
         }
-        
-        currentTabIndex = currentIndex
+        pageSegmentsControl.selectedSegmentIndex = currentIndex
     }
 }
 
