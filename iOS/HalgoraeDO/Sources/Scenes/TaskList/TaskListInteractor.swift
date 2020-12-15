@@ -35,7 +35,7 @@ extension TaskListInteractor: TaskListBusinessLogic {
     
     func fetchTasks(request: TaskListModels.FetchTasks.Request) {
         guard let id = request.projectId else { return }
-        worker.request(endPoint: .get(projectId: id)) { [weak self] (project: Project?) in
+        worker.requestProjects(endPoint: .get(projectId: id)) { [weak self] (project: Project?) in
             self?.taskList.sections = project?.sections?.array as? [Section] ?? []
             self?.presenter.presentFetchTasks(response: TaskListModels.FetchTasks.Response(sections: self?.taskList.sections ?? []))
         }
@@ -43,7 +43,7 @@ extension TaskListInteractor: TaskListBusinessLogic {
     
     func fetchTasksForComplete(request: TaskListModels.FetchTasks.Request) {
         guard let id = request.projectId else { return }
-        worker.request(endPoint: .get(projectId: id)) { [weak self] (project: Project?) in
+        worker.requestProjects(endPoint: .get(projectId: id)) { [weak self] (project: Project?) in
             self?.taskList.sections = project?.sections?.array as? [Section] ?? []
             self?.presenter.presentFetchTasksForAll(response: TaskListModels.FetchTasks.Response(sections: self?.taskList.sections ?? []))
         }

@@ -28,37 +28,16 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES"
       codeCoverageEnabled = "YES">
+      <CodeCoverageTargets>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "4CE91512257CCEFA00BCF398"
+            BuildableName = "ServiceTests.xctest"
+            BlueprintName = "ServiceTests"
+            ReferencedContainer = "container:HalgoraeDO.xcodeproj">
+         </BuildableReference>
+      </CodeCoverageTargets>
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "4C0CA5ED256E9AF100E66045"
-               BuildableName = "TaskListWorkerTests.xctest"
-               BlueprintName = "TaskListWorkerTests"
-               ReferencedContainer = "container:HalgoraeDO.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "4C0CA609256EAA7300E66045"
-               BuildableName = "TaskListInteractorTests.xctest"
-               BlueprintName = "TaskListInteractorTests"
-               ReferencedContainer = "container:HalgoraeDO.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "4C0CA626256EABF700E66045"
-               BuildableName = "TaskListPresenterTests.xctest"
-               BlueprintName = "TaskListPresenterTests"
-               ReferencedContainer = "container:HalgoraeDO.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
          <TestableReference
             skipped = "NO">
             <BuildableReference

@@ -42,7 +42,7 @@ class NetworkMonitor {
             guard self.isAvailable else { return }
             self.storage.fetchEndPoints { [weak self] (endPoints, error) in
                 for endPoint in endPoints {
-                    self?.networkManager.fetchData(endPoint.endPoint) { (response: ResponseMessage?, error) in
+                    self?.networkManager.fetchData(endPoint.endPoint) { (response: Response<String>?, error) in
                         guard error == nil else {
                             #if DEBUG
                             print("Fail request endPoint: \(error!)")

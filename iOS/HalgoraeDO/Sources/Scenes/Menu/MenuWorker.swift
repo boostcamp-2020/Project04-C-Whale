@@ -26,7 +26,7 @@ class MenuWorker {
             return
         }
         
-        networkManager.fetchData(endPoint) { (result: ResponseProject<T>?, error: NetworkError?) in
+        networkManager.fetchData(endPoint) { (result: Response<T>?, error: NetworkError?) in
             guard error == nil else {
                 #if DEBUG
                 print(error ?? "error is null")
@@ -44,25 +44,24 @@ class MenuWorker {
             return
         }
         
-        networkManager.fetchData(postEndPoint) { [weak self] (response: ResponseMessage?, error) in
+        networkManager.fetchData(postEndPoint) { [weak self] (message: Response<String>?, error) in
             guard error == nil else {
                 #if DEBUG
-                print("response msg: \(String(describing: response))")
+                print("response msg: \(String(describing: message))")
                 print(error ?? "error is null")
                 #endif
                 completion(nil)
                 return
             }
-            self?.networkManager.fetchData(getEndPoint) { (result: ResponseProject<T>?, error) in
+            self?.networkManager.fetchData(getEndPoint) { (response: Response<T>?, error) in
                 guard error == nil else {
                     #if DEBUG
-                    print("response msg: \(String(describing: response))")
                     print(error ?? "error is null")
                     #endif
                     completion(nil)
                     return
                 }
-                completion(result?.projectInfos)
+                completion(response?.projectInfos)
             }
         }
     }

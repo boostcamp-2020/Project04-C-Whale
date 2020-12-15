@@ -48,7 +48,7 @@
         <relationship name="bookmarks" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Bookmark" inverseName="task" inverseEntity="Bookmark"/>
         <relationship name="comments" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Comment" inverseName="task" inverseEntity="Comment"/>
         <relationship name="section" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Section" inverseName="tasks" inverseEntity="Section"/>
-        <relationship name="tasks" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Task" inverseName="tasks" inverseEntity="Task" spotlightIndexingEnabled="YES"/>
+        <relationship name="tasks" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Task" spotlightIndexingEnabled="YES"/>
     </entity>
     <elements>
         <element name="Bookmark" positionX="-36" positionY="9" width="128" height="88"/>
@@ -56,6 +56,6 @@
         <element name="EndPointMO" positionX="9" positionY="153" width="128" height="148"/>
         <element name="Project" positionX="-9" positionY="117" width="128" height="148"/>
         <element name="Section" positionX="-18" positionY="108" width="128" height="133"/>
-        <element name="Task" positionX="-63" positionY="-18" width="128" height="223"/>
+        <element name="Task" positionX="-328.25" positionY="-68.84765625" width="128" height="223"/>
     </elements>
 </model>
