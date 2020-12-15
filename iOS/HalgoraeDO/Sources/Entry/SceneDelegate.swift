@@ -19,6 +19,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     func sceneDidDisconnect(_ scene: UIScene) {
+        storage.saveContext(context: storage.mainContext)
         NetworkMonitor.shared.stopMonitoring()
     }
 
