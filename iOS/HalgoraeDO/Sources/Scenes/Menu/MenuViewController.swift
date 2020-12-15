@@ -159,7 +159,7 @@ private extension MenuViewController {
             content.text = project.title
             cell.contentConfiguration = content
             var backgroundColor = UIBackgroundConfiguration.listPlainCell()
-            backgroundColor.backgroundColor = .systemGray4
+            backgroundColor.backgroundColor = .systemGray6
             cell.backgroundConfiguration = backgroundColor
             cell.accessories = [.outlineDisclosure()]
             let addProjectImage = UIImage(systemName: "plus")
@@ -207,7 +207,9 @@ private extension MenuViewController {
     func leadingSwipeAction(_ item: ProjectVM) -> UISwipeActionsConfiguration? {
         let starAction = UIContextualAction(style: .normal, title: nil) {
             [weak self] (_, _, completion) in
-            self?.interactor?.updateProject(request: .init(project: item))
+            var tempItem = item
+            tempItem.isFavorite = !item.isFavorite
+            self?.interactor?.updateProject(request: .init(project: tempItem))
             completion(true)
         }
         starAction.image = UIImage(systemName: item.isFavorite ? "heart.slash" : "heart.fill")

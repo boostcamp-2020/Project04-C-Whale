@@ -159,8 +159,11 @@ enum TaskListModels {
             if let parentPosition = task.parent?.position {
                 self.parentPosition = Int(parentPosition)
             }
-            guard let tasks = task.tasks else { return }
-            self.subItems = tasks.compactMap({ $0 as? Task }).compactMap { DisplayedTask(task: $0) }
+            guard let tasks = task.tasks, tasks.count != 0 else { return }
+            let subTasks = tasks.array as? [Task] ?? []
+            self.subItems = subTasks.map {
+                DisplayedTask(task: $0)
+            }
         }
     }
 }

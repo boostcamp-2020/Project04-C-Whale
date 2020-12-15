@@ -265,6 +265,7 @@ private extension TaskListViewController {
     func configureDataSource() {
         let cellRegistration = UICollectionView.CellRegistration<TaskCollectionViewListCell, TaskVM> { (cell, _: IndexPath, taskItem) in
             cell.taskViewModel = taskItem
+            cell.indentationWidth = 25
             cell.finishHandler = { [weak self] task in
                 guard let self = self else { return }
                 self.slideRightConfirmActionViewWillDismiss(targetView: self.confirmActionView)
@@ -378,7 +379,9 @@ extension TaskListViewController: UICollectionViewDelegate {
         }
         
         collectionView.deselectItem(at: indexPath, animated: true)
-        router?.routeToTaskDetail(for: taskItem, at: indexPath)
+        let taskVM = dataSource.snapshot(for: dataSource.snapshot().sectionIdentifiers[indexPath.section]).items[indexPath.row]
+    
+        router?.routeToTaskDetail(for: taskVM, at: indexPath)
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
@@ -627,8 +630,9 @@ private extension TaskListViewController {
             return false
         }
         
-        let depthWidth: CGFloat = CGFloat(destinationCell.indentationLevel * 20 + childCheck * 20)
-        drawLineView(depthWidth, destinationCell)
+        let cellDepth = destinationCell.indentationWidth * CGFloat(destinationCell.indentationLevel)
+        let childDepth = CGFloat(childCheck) * destinationCell.indentationWidth
+        drawLineView(cellDepth + childDepth, destinationCell)
         
         return true
     }

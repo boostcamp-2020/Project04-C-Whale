@@ -51,10 +51,9 @@ extension MenuInteractor: MenuBusinessLogic {
     }
     
     func updateProject(request: MenuModels.UpdateProject.Request) {
-        #warning("ProjectVM가지고 ProjectVM 만드는 게 너무 어색한데요..?")
-        let vmForFavorite = MenuModels.ProjectVM(projectVM: request.project)
+        var vmForFavorite = request.project
+        vmForFavorite.id = vmForFavorite.id.replacingOccurrences(of: "+", with: "")
         guard let requestData = vmForFavorite.encodeData else { return }
-        
         worker.requestPostAndGet(post: ProjectEndPoint.update(id: vmForFavorite.id, project: requestData), get: ProjectEndPoint.getAll) { [weak self] (response: Response<[Project]>?) in
             let projects = response?.projectInfos ?? []
             self?.projects = projects

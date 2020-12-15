@@ -19,7 +19,8 @@ public class Task: NSManagedObject, Codable {
     var parent: Task?
     var priority: Priority {
         get {
-            return Priority(rawValue: Int(priorityRaw)) ?? .four
+            let raw = Int(priorityRaw)
+            return Priority(rawValue: raw) ?? .four
         }
         set {
             self.priorityRaw = Int16(newValue.rawValue)
@@ -35,8 +36,6 @@ public class Task: NSManagedObject, Codable {
     
     func configure(fields: TaskListModels.TaskFields) {
         self.title = fields.title
-        // self.dueDate =
-            // let a = Date().fromString(format: fields.date)
         self.priorityRaw = Int16(fields.priority) ?? 4
     }
     
@@ -51,12 +50,15 @@ public class Task: NSManagedObject, Codable {
         self.createdAt = try container.decode(String.self, forKey: .createdAt)
         self.updatedAt = try container.decode(String.self, forKey: .updatedAt)
         self.isDone = try container.decode(Bool.self, forKey: .isDone)
+        self.parentId = try container.decodeIfPresent(String.self, forKey: .parentId)
         let priorityString = try container.decode(String.self, forKey: .priorityRaw)
         self.priorityRaw = Int16(priorityString) ?? 4
-//        self.bookmarks = container.decode(
-//        self.comments = container.decode(
-//        self.section = container.decode(
-//        self.tasks = container.decode(
+        let tempBookmarks = try container.decodeIfPresent([Bookmark].self, forKey: .bookmarks)
+        self.bookmarks = NSOrderedSet(array: tempBookmarks ?? [])
+        let tempComments = try container.decodeIfPresent([Comment].self, forKey: .comments)
+        self.comments = NSOrderedSet(array: tempComments ?? [])
+        let tempTasks = try container.decodeIfPresent([Task].self, forKey: .tasks)
+        self.tasks = NSOrderedSet(array: tempTasks ?? [])
     }
     
     public func encode(to encoder: Encoder) throws {
@@ -65,6 +67,7 @@ public class Task: NSManagedObject, Codable {
         try container.encode(dueDate, forKey: .dueDate)
         try container.encode(id, forKey: .id)
         try container.encode(isDone, forKey: .isDone)
+        try container.encode(parentId, forKey: .parentId)
         try container.encode(position, forKey: .position)
         try container.encode(priorityRaw, forKey: .priorityRaw)
         try container.encode(title, forKey: .title)
@@ -76,12 +79,13 @@ public class Task: NSManagedObject, Codable {
         case dueDate
         case id
         case isDone
+        case parentId
         case position
         case priorityRaw = "priority"
         case title
         case updatedAt
-//        case bookmarks
-//        case comments
-//        case tasks
+        case tasks
+        case bookmarks
+        case comments
     }
 }
