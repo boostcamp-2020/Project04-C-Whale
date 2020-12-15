@@ -16,9 +16,8 @@ class SessionManagerMock: SessionManagerProtocol {
     }
     
     func request(endPoint: EndPointType,
-                 cachePolicy: URLRequest.CachePolicy = .reloadIgnoringLocalAndRemoteCacheData,
-                 timeoutInterval: TimeInterval = 10.0) -> DataRequestMock {
-        
+                 cachePolicy: URLRequest.CachePolicy,
+                 timeoutInterval: TimeInterval) -> DataResponsing {
         return request
     }
 }

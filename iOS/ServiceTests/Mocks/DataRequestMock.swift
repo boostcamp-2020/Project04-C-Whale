@@ -9,6 +9,10 @@ import Foundation
 
 class DataRequestMock: DataResponsing {
     
+    var session = URLSession(configuration: .default)
+    var request = URLRequest(url: URL(string: "https://base.com")!)
+    
+    
     enum NetworkResponse: String {
         case success
         case badURL = "Bad URL"
@@ -30,13 +34,13 @@ class DataRequestMock: DataResponsing {
         self.response = response
     }
     
-    func responseData(completionHandler: @escaping (Data?, NetworkResponse?) -> Void) -> Self {
-        completionHandler(mockData, response)
+    func responseData(completionHandler: @escaping (Data?, String?) -> Void) -> Self {
+        completionHandler(mockData, response?.rawValue)
         return self
     }
     
-    func responseURL(completionHandler: @escaping (URL?, NetworkResponse?) -> Void) -> Self {
-        completionHandler(mockURL, response)
+    func responseURL(completionHandler: @escaping (URL?, String?) -> Void) -> Self {
+        completionHandler(mockURL, response?.rawValue)
         return self
     }
 }
