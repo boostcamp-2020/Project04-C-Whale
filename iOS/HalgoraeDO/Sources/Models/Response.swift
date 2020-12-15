@@ -8,8 +8,8 @@
 import Foundation
 
 struct Response<T: Decodable>: Decodable {
+    var message: String?
     var project: T?
     var projectInfos: T?
-    var message: T?
     var comments: T?
 }
