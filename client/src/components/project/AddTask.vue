@@ -14,7 +14,7 @@
             <div class="task-info">
               <v-menu :offset-y="true">
                 <template v-slot:activator="{ on }">
-                  <v-btn depressed color="normal" v-on="on" width="120" class="mr-3">
+                  <v-btn depressed color="normal" v-on="on" width="120" class="mr-1">
                     기한:{{ todayStringToKorean(task.dueDate) }}
                   </v-btn>
                 </template>
@@ -23,7 +23,7 @@
 
               <v-menu :offset-y="true">
                 <template v-slot:activator="{ on }">
-                  <v-btn depressed color="normal" v-on="on" class="mr-3">
+                  <v-btn depressed color="normal" v-on="on" class="mr-1">
                     <v-icon color="blue">mdi-inbox</v-icon>
                     {{ projectTitle }}
                   </v-btn>
@@ -41,23 +41,15 @@
                   </v-list-item>
                 </v-list>
               </v-menu>
-
-              <v-menu :offset-y="true">
-                <template v-slot:activator="{ on }">
-                  <v-btn depressed color="normal" v-on="on">
-                    <v-icon color="red">mdi-alarm</v-icon>
-                    알람:
-                  </v-btn>
-                </template>
-                <v-list>
-                  <v-list-item @click="selectAlarm(5)">
-                    <v-list-item-title>5초 후</v-list-item-title>
-                  </v-list-item>
-                  <v-list-item>
-                    <v-list-item-title>10초 후</v-list-item-title>
-                  </v-list-item>
-                </v-list>
-              </v-menu>
+              <v-btn depressed color="normal" v-on="on">
+                <v-icon color="red">mdi-alarm</v-icon>
+                <VueTimepicker
+                  v-model="alarm.time"
+                  :format="alarm.format"
+                  class="my-time-picker"
+                  :second-interval="10"
+                />
+              </v-btn>
             </div>
           </div>
           <v-flex>
@@ -93,6 +85,7 @@ import { mapGetters, mapActions } from "vuex";
 import { getTodayString } from "../../utils/date";
 import whaleApi from "../../utils/whaleApi";
 import { getMarkDownUrl } from "../../utils/markdown";
+import VueTimepicker from "vue2-timepicker/src/vue-timepicker.vue";
 
 export default {
   props: {
@@ -101,6 +94,9 @@ export default {
     parentId: String,
     initialShow: Boolean,
     type: String,
+  },
+  components: {
+    VueTimepicker,
   },
   data() {
     return {
@@ -113,7 +109,14 @@ export default {
         title: "",
         dueDate: getTodayString(),
       },
-      alarmTime: 0,
+      alarm: {
+        format: "HH시간 mm분 ss초",
+        time: {
+          HH: "00",
+          mm: "00",
+          ss: "00",
+        },
+      },
       isWhale: window.whale ? true : false,
     };
   },
@@ -122,12 +125,34 @@ export default {
   },
   methods: {
     ...mapActions(["addTask"]),
-    submit() {
-      this.addTask(this.task);
+    getAlarmTimeInSec() {
+      return (
+        Date.now() +
+        (this.alarm.time.HH * 3600 + this.alarm.time.mm * 60 + this.alarm.time.ss) * 1000
+      );
+    },
+    submitAlarm() {
+      if (this.getAlarmTimeInSec() < Date.now()) {
+        return;
+      }
+
       whaleApi.createAlarm({
         taskTitle: this.task.title,
-        fireTime: this.alarmTime,
+        fireTime: this.getAlarmTimeInSec(),
       });
+
+      this.alarm.time = {
+        HH: "00",
+        mm: "00",
+        ss: "00",
+      };
+    },
+    submit() {
+      this.addTask(this.task);
+      console.log(Date.now() - this.getAlarmTimeInSec());
+
+      this.submitAlarm();
+
       this.task = {
         projectId: this.projectId ? this.projectId : this.managedProject.id,
         sectionId: this.sectionId ? this.sectionId : this.managedProject.defaultSectionId,
@@ -136,11 +161,10 @@ export default {
         dueDate: getTodayString(),
       };
 
-      // this.projectTitle = this.managedProject.title;
-      // if (this.type === "quick") {
-      //   this.emitDone();
-      //   return;
-      // }
+      if (this.type === "quick") {
+        this.emitDone();
+        return;
+      }
       this.show = !this.show;
     },
     showForm(target) {
@@ -210,10 +234,14 @@ export default {
   display: flex;
   margin-top: 6px;
 }
-input[type="text"] {
-  margin-bottom: 10px;
-}
 input:focus {
   outline: none;
+}
+</style>
+
+<style>
+.my-time-picker * {
+  border: none !important;
+  margin-bottom: 0px !important;
 }
 </style>
