@@ -1,12 +1,8 @@
 <template>
-  <div
-    class="comment_item-container d-flex flex-row"
-    @mouseover="showEditUtils"
-    @mouseleave="unshowEditUtils"
-  >
-    <v-list-item-group v-if="isVisibleCommentEdit" class="flex-grow-1">
+  <div class="comment_item-container" @mouseover="showEditUtils" @mouseleave="unshowEditUtils">
+    <div class="py-3" v-if="isVisibleCommentEdit">
       <form @submit.prevent="update">
-        <div class="comment-form-data">
+        <div class="commment-form-data px-4 py-2">
           <v-text-field v-model="newContent" ref="input"></v-text-field>
           <v-btn type="submit" depressed color="primary" :disabled="newContent.length <= 0"
             >업데이트</v-btn
@@ -16,19 +12,15 @@
           >
         </div>
       </form>
-    </v-list-item-group>
+    </div>
 
-    <v-list-item v-else class="flex-grow-1">
+    <v-list-item v-else class="flex-grow-1 justify-space-around">
       <v-list-item-content>
         <v-list-item-title class="font-14">
           {{ comment.content }} <span class="d-inline-block ml-2">{{ timeDateString }}</span>
         </v-list-item-title>
       </v-list-item-content>
-    </v-list-item>
-
-    <!-- TODO: UI 수정 -->
-    <div v-if="isVisibleEditUtils">
-      <v-flex>
+      <div v-if="isVisibleEditUtils">
         <v-btn class="ma-2" outlined x-small color="whaleGreen" @click="showCommentEdit">
           <v-icon>mdi-pencil</v-icon>
           수정
@@ -37,8 +29,8 @@
           <v-icon>mdi-delete</v-icon>
           삭제
         </v-btn>
-      </v-flex>
-    </div>
+      </div>
+    </v-list-item>
   </div>
 </template>
 <script>

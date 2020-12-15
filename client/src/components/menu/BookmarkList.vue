@@ -9,7 +9,7 @@
     </template>
     <v-list-item-group active-class="list-active">
       <v-list-group
-        v-for="task in tasks"
+        v-for="task in tasksWithBookmarks"
         :key="task.id"
         active-class="font-weight-bold list-active"
         class="pl-2"
@@ -41,6 +41,7 @@
           <v-list-item
             v-for="bookmark in task.bookmarks"
             :key="bookmark.id"
+            :href="bookmark.url"
             class="pl-4"
             active-class="font-weight-bold list-active"
           >
@@ -61,7 +62,7 @@
 
 <script>
 import whaleApi from "@/utils/whaleApi";
-import { mapMutations } from "vuex";
+import { mapGetters, mapMutations } from "vuex";
 
 export default {
   props: {},
@@ -69,45 +70,10 @@ export default {
   data() {
     return {
       isWhale: window.whale ? true : false,
-      tasks: [
-        {
-          id: 0,
-          title: "task 1 ",
-          bookmarks: [
-            {
-              id: 0,
-              title: "bookmakr 1",
-              url:
-                "https://developer.chrome.com/docs/extensions/reference/bookmarks/#type-CreateDetails",
-            },
-            {
-              id: 1,
-              title: "bookmark2",
-              url:
-                "https://github.com/GoogleChrome/chrome-extensions-samples/blob/master/api/bookmarks/basic/popup.js",
-            },
-          ],
-        },
-        {
-          id: 1,
-          title: "task 2",
-          bookmarks: [
-            {
-              id: 0,
-              title: "bookmakr 1",
-              url:
-                "https://developer.chrome.com/docs/extensions/reference/bookmarks/#type-CreateDetails",
-            },
-            {
-              id: 1,
-              title: "bookmark2",
-              url:
-                "https://github.com/GoogleChrome/chrome-extensions-samples/blob/master/api/bookmarks/basic/popup.js",
-            },
-          ],
-        },
-      ],
     };
+  },
+  computed: {
+    ...mapGetters(["tasksWithBookmarks"]),
   },
   methods: {
     ...mapMutations(["SET_SUCCESS_ALERT", "SET_ERROR_ALERT"]),

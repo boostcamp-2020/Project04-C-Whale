@@ -20,12 +20,12 @@
     </div>
     <div class="px-4 task-detail-tabs">
       <TaskDetailTabs
-        :tasks="this.task.tasks"
-        :tabList="this.tabList"
-        :comments="this.task.comments"
-        :projectId="this.$route.params.projectId"
-        :sectionId="this.task.sectionId"
-        :isParent="this.task.parentId === null"
+        :tasks="task.tasks"
+        :comments="commentsMap[this.$route.params.taskId]"
+        :bookmarks="bookmarkMap[this.$route.params.taskId]"
+        :projectId="$route.params.projectId"
+        :sectionId="task.sectionId"
+        :isParent="task.parentId === null"
       />
     </div>
   </v-card>
@@ -34,6 +34,8 @@
 <script>
 import TaskItem from "@/components/project/TaskItem";
 import TaskDetailTabs from "@/components/task/TaskDetailTabs";
+import SpinnerMixin from "@/mixins/SpinnerMixins";
+import { mapState } from "vuex";
 
 export default {
   components: { TaskItem, TaskDetailTabs },
@@ -42,25 +44,21 @@ export default {
   },
   data() {
     return {
-      tabList: {
-        childTask: { title: "하위 작업", count: 0 },
-        comment: { title: "댓글", count: 0 },
-        bookmark: { title: "북마크", count: 0 },
-      },
+      comments: [],
     };
+  },
+  computed: {
+    ...mapState({
+      commentsMap: (state) => state.comment.commentsMap,
+      bookmarkMap: (state) => state.bookmark.bookmarkMap,
+    }),
   },
   methods: {
     hideTaskModal() {
       this.$emit("hideTaskModal");
     },
   },
-  computed: {},
-  created() {
-    this.tabList.childTask.count = this.task ? this.task.tasks.length : 0;
-    this.tabList.comment.count = this.task ? this.task.comments.length : 0;
-    this.tabList.bookmark.count = this.task ? this.task.bookmarks.length : 0;
-  },
-  mounted() {},
+  mixins: [SpinnerMixin],
 };
 </script>
 

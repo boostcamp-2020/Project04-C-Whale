@@ -1,8 +1,8 @@
 <template>
   <div>
-    <v-list-item v-for="comment in commentsSorted" :key="comment.id">
-      <CommentItem :comment="comment" />
-    </v-list-item>
+    <div v-if="commentsSorted.length > 0">
+      <CommentItem v-for="comment in commentsSorted" :key="comment.id" :comment="comment" />
+    </div>
     <CommentFormContainer />
   </div>
 </template>
@@ -18,9 +18,11 @@ export default {
   },
   computed: {
     commentsSorted() {
-      return [...this.comments].sort(
-        (commentA, commentB) => new Date(commentA.createdAt) - new Date(commentB.createdAt)
-      );
+      return this.comments
+        ? [...this.comments].sort(
+            (commentA, commentB) => new Date(commentA.createdAt) - new Date(commentB.createdAt)
+          )
+        : [];
     },
   },
 };

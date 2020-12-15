@@ -8,7 +8,7 @@
           placeholder="댓글 작성"
           class="mb-2 mt-0 pt-0"
         ></v-text-field>
-        <v-btn type="submit" depressed color="whaleGreen" :disabled="comment.content.length <= 0"
+        <v-btn type="submit" depressed color="primary" :disabled="comment.content.length <= 0"
           >댓글 추가</v-btn
         >
       </div>
