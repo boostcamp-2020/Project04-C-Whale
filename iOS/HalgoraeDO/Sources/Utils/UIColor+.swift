@@ -16,6 +16,10 @@ extension UIColor {
     class var halgoraedoDarkBlue: UIColor {
         return UIColor(named: "halgoraedoDarkBlue")!
     }
+    
+    class var halgoraedoBackground: UIColor {
+        return UIColor(named: "halgoraedoBackground")!
+    }
 }
 
 extension UIColor {

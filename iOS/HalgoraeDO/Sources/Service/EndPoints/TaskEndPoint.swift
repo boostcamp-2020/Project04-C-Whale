@@ -71,7 +71,7 @@ extension TaskEndPoint: EndPointType {
         return [
             "Content-Type": "application/json",
             "Accept": "application/json",
-            "Authorization": "Bearer \(ProcessInfo.processInfo.environment["token"] ?? "")"
+            "Authorization": "Bearer \(AuthManager.shared.userToken ?? "")"
         ]
     }
 }
