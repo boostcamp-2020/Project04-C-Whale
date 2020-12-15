@@ -12,6 +12,7 @@ protocol TaskDetailBusinessLogic {
     func fetchComments(request: TaskDetailModels.FetchComments.Request)
     func fetchBookmarks(request: TaskDetailModels.FetchBookmarks.Request)
     func createComment(request: TaskDetailModels.CreateComment.Request)
+    func createBookmark(request: TaskDetailModels.CreateBookmark.Request)
     func updateTask(request: TaskListModels.ReorderTask.Request)
 }
 
@@ -51,6 +52,16 @@ extension TaskDetailInteractor: TaskDetailBusinessLogic {
         worker.request(endPoint: BookmarkEndPoint.get(taskId: request.id)) { [weak self] (response: Response<[Bookmark]>?) in
             self?.presenter.presentFetchedBookmarks(response: .init(bookmakrs: response?.bookmarks ?? []))
         }
+    }
+    
+    func createBookmark(request: TaskDetailModels.CreateBookmark.Request) {
+        let fields = request.bookmarkFields
+        guard let data = fields.encodeData else { return }
+        
+        worker.requestPostAndGet(post: BookmarkEndPoint.create(taskId: request.taskId, request: data), get: BookmarkEndPoint.get(taskId: request.taskId)) { [weak self] (response: Response<[Bookmark]>?) in
+            self?.presenter.presentFetchedBookmarks(response: .init(bookmakrs: response?.bookmarks ?? []))
+        }
+  
     }
     
     func fetchSubTasks(task: [Task]) {
