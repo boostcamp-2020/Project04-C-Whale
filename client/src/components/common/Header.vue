@@ -15,7 +15,7 @@
         <v-icon> mdi-plus </v-icon>
       </v-app-bar-nav-icon>
 
-      <v-dialog v-model="showQuickAdd" width="500">
+      <v-dialog v-model="showQuickAdd" content-class="dialog" width="500">
         <v-card class="pa-3">
           <AddTask @done="toggleQuickAdd" :initialShow="true" type="quick" />
         </v-card>
@@ -112,4 +112,10 @@ export default {
 }
 
 $navigation-drawer-border-width: 0px;
+</style>
+
+<style>
+.dialog {
+  overflow-y: visible !important;
+}
 </style>
