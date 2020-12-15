@@ -144,15 +144,6 @@ extension MenuModels {
             }
         }
         
-        init(projectVM: ProjectVM) {
-            self.id = projectVM.id.replacingOccurrences(of: "+", with: "")
-            self.title = projectVM.title
-            self.color = projectVM.color
-            self.taskCount = projectVM.taskCount
-            self.isFavorite = !projectVM.isFavorite
-            self.isList = projectVM.isList
-        }
-        
         func hash(into hasher: inout Hasher) {
             hasher.combine(id)
         }

@@ -29,6 +29,7 @@ class TaskSectionViewCell: UICollectionViewCell {
     private var dataSource: UICollectionViewDiffableDataSource<TaskListModels.SectionVM, TaskVM>! = nil
     private var sectionName: String = ""
     private var taskVM: [TaskVM] = []
+    private var section: TaskListModels.SectionVM?
     private var lineView: UIView = {
         let view = UIView()
         view.backgroundColor = .halgoraedoMint
@@ -64,11 +65,22 @@ class TaskSectionViewCell: UICollectionViewCell {
     }
     
     func configure(section: TaskListModels.SectionVM, sectionNum: Int) {
+        #warning("코드 개선 필요!! 노션작성을 위해 section을 임시 생성")
+        self.section = section
         taskVM = section.tasks
         self.sectionNum = sectionNum
         sectionName = section.title
         let snapShot = snapshot(taskItems: section.tasks)
         dataSource.apply(snapShot, to: section, animatingDifferences: true)
+    }
+    
+    func reloadSnapshot(taskItems: [TaskVM]) {
+        var snapshot = NSDiffableDataSourceSectionSnapshot<TaskVM>()
+        snapshot.append(taskItems)
+        guard let section = section else {
+            return
+        }
+        dataSource.apply(snapshot, to: section, animatingDifferences: true)
     }
 }
 

@@ -30,11 +30,19 @@ class TaskDetailBookmarkViewController: UIViewController {
         }
     }
     
+    // MARK: - View Life Cycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configureCollectionView()
         configureDataSource()
         addObservers()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        guard let id = task?.id else { return }
+        interactor?.fetchBookmarks(request: .init(id: id))
     }
     
     func configure(interactor: TaskDetailBusinessLogic, task: Task) {
@@ -119,7 +127,7 @@ private extension TaskDetailBookmarkViewController {
 extension TaskDetailBookmarkViewController: TaskDetailBookmarkDisplayLogic {
     
     func displayFetchedBookmarks(viewModel: TaskDetailModels.FetchBookmarks.ViewModel) {
-       // let sectionSnapshot = generateSnapshot(taskItems: viewModel. commentVMs)
-    //    dataSource.apply(sectionSnapshot, to: "")
+        let sectionSnapshot = generateSnapshot(taskItems: viewModel.bookmarkVMs)
+        dataSource.apply(sectionSnapshot, to: "")
     }
 }

@@ -18,7 +18,10 @@ class TaskDetailContentsCellCollectionViewCell: UICollectionViewListCell {
     override func updateConfiguration(using state: UICellConfigurationState) {
         var content = defaultContentConfiguration()
         content.text = viewModel?.contents
-        
+        content.image = viewModel?.image
+        content.imageProperties.tintColor = .halgoraedoDarkBlue
+        layer.cornerRadius = 10
+        layer.masksToBounds = true
         contentConfiguration = content
     }
     

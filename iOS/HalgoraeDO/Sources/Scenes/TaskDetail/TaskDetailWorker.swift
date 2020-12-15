@@ -16,7 +16,7 @@ class TaskDetailWorker {
     }
     
     func request<T: Decodable>(endPoint: EndPointType, completion: @escaping ((T?) -> Void)) {
-        networkManager.fetchData(endPoint) { (result: Response<T>?, error: NetworkError?) in
+        networkManager.fetchData(endPoint) { (response: T?, error: NetworkError?) in
             guard error == nil else {
                 #if DEBUG
                 print(error ?? "error is null")
@@ -24,7 +24,7 @@ class TaskDetailWorker {
                 completion(nil)
                 return
             }
-            completion(result?.comments)
+            completion(response)
         }
     }
     

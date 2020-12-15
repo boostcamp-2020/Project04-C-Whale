@@ -278,7 +278,9 @@ extension TaskBoardViewController: TaskSectionViewCellDelegate {
                     var newItems = destinationSection.tasks
                     newItems.insert(sourceTask, at: 0)
                     sectionVM[i].tasks = newItems
-                    taskBoardCollectionView.reloadItems(at: [IndexPath(row: 0, section: i)])
+                    let sectionCell = taskBoardCollectionView.cellForItem(at: IndexPath(row: 0, section: i)) as? TaskSectionViewCell
+                    sectionCell?.reloadSnapshot(taskItems: newItems)
+                    //taskBoardCollectionView.reloadItems(at: [IndexPath(row: 0, section: i)])
                 }
             }
             
@@ -300,7 +302,9 @@ extension TaskBoardViewController: TaskSectionViewCellDelegate {
                 taskBoardCollectionView.reloadItems(at: [IndexPath(row: 0, section: i)])
             } else if sectionVM[i].id == destinationSection.id {
                 sectionVM[i].tasks = addTaskAtTasks(destinationSection.tasks, sourceTask, destinationTask.id)
-                taskBoardCollectionView.reloadItems(at: [IndexPath(row: 0, section: i)])
+                let sectionCell = taskBoardCollectionView.cellForItem(at: IndexPath(row: 0, section: i)) as? TaskSectionViewCell
+                sectionCell?.reloadSnapshot(taskItems: sectionVM[i].tasks)
+               // taskBoardCollectionView.reloadItems(at: [IndexPath(row: 0, section: i)])
             }
         }
     }

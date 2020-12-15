@@ -12,6 +12,7 @@ struct Response<T: Decodable>: Decodable {
     var project: T?
     var projectInfos: T?
     var comments: T?
+    var bookmarks: T?
     
     init(message: String? = nil,
         project: T? = nil,
