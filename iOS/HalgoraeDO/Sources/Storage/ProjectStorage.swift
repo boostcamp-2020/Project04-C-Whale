@@ -8,8 +8,8 @@
 import CoreData
 
 protocol ProjectStorageType: APIStorageType {
-    func fetchProjectList(completion: @escaping ([Project]?, Error?) -> Void)
-    func fetchProject(id: String) -> Project?
+    func fetchProjectList(completion: @escaping (Response<[Project]>?, Error?) -> Void)
+    func fetchProject(id: String) -> Response<Project>?
     func createProject(for projectFields: MenuModels.ProjectFields)
     func updateProject(id: String, for projectFields: MenuModels.ProjectFields)
     func updateProjects(to projects: [Project])
@@ -19,23 +19,24 @@ protocol ProjectStorageType: APIStorageType {
 
 extension Storage: ProjectStorageType {
     
-    func fetchProjectList(completion: @escaping ([Project]?, Error?) -> Void) {
+    func fetchProjectList(completion: @escaping (Response<[Project]>?, Error?) -> Void) {
         childContext.perform {
             let fetchRequest = NSFetchRequest<Project>(entityName: "Project")
             do {
                 let projectList = try self.childContext.fetch(fetchRequest)
-                completion(projectList, nil)
+                let response = Response(projectInfos: projectList)
+                completion(response, nil)
             } catch let error {
                 completion(nil, StorageError.read(error.localizedDescription))
             }
         }
     }
     
-    func fetchProject(id: String) -> Project? {
+    func fetchProject(id: String) -> Response<Project>? {
         let fetchRequest = NSFetchRequest<Project>(entityName: "Project")
         fetchRequest.predicate = NSPredicate(format: "id == %@", id)
         do {
-            return try self.childContext.fetch(fetchRequest).first
+            return Response(project: try self.childContext.fetch(fetchRequest).first)
         } catch {
             #if DEBUG
             print("Failed fetch project id: \(id), \(error)")
@@ -50,7 +51,7 @@ extension Storage: ProjectStorageType {
     }
     
     func updateProject(id: String, for projectFields: MenuModels.ProjectFields) {
-        guard let project = fetchProject(id: id) else { return }
+        guard let project = fetchProject(id: id)?.project else { return }
         project.configure(fields: projectFields)
         saveContext(context: childContext)
     }
@@ -63,7 +64,7 @@ extension Storage: ProjectStorageType {
     }
     
     func deleteProject(id: String) {
-        guard let project = fetchProject(id: id) else { return }
+        guard let project = fetchProject(id: id)?.project else { return }
         childContext.delete(project)
         saveContext(context: childContext)
     }

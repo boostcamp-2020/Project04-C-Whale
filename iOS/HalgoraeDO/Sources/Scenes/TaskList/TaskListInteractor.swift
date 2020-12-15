@@ -35,16 +35,16 @@ extension TaskListInteractor: TaskListBusinessLogic {
     
     func fetchTasks(request: TaskListModels.FetchTasks.Request) {
         guard let id = request.projectId else { return }
-        worker.request(endPoint: .get(projectId: id)) { [weak self] (project: Project?) in
-            self?.taskList.sections = project?.sections?.array as? [Section] ?? []
+        worker.request(endPoint: ProjectEndPoint.get(projectId: id)) { [weak self] (response: Response<Project>?) in
+            self?.taskList.sections = response?.project?.sections?.array as? [Section] ?? []
             self?.presenter.presentFetchTasks(response: TaskListModels.FetchTasks.Response(sections: self?.taskList.sections ?? []))
         }
     }
     
     func fetchTasksForComplete(request: TaskListModels.FetchTasks.Request) {
         guard let id = request.projectId else { return }
-        worker.request(endPoint: .get(projectId: id)) { [weak self] (project: Project?) in
-            self?.taskList.sections = project?.sections?.array as? [Section] ?? []
+        worker.request(endPoint: ProjectEndPoint.get(projectId: id)) { [weak self] (response: Response<Project>?) in
+            self?.taskList.sections = response?.project?.sections?.array as? [Section] ?? []
             self?.presenter.presentFetchTasksForAll(response: TaskListModels.FetchTasks.Response(sections: self?.taskList.sections ?? []))
         }
     }
@@ -53,7 +53,7 @@ extension TaskListInteractor: TaskListBusinessLogic {
         let viewModels = request.displayedTasks
         viewModels.forEach { viewModel in
             guard let data = TaskListModels.TaskUpdateFields(title: viewModel.title, isDone: viewModel.isCompleted).encodeData else { return }
-            worker.requestPatch(endPoint: TaskEndPoint.taskUpdate(id: viewModel.id, task: data)) { (project: Project?) in }
+            worker.request(endPoint: TaskEndPoint.taskUpdate(id: viewModel.id, task: data)) { (project: Response<String>?) in }
         }
         presenter.presentFinshChanged(response: .init(tasks: taskList.tasks))
     }
@@ -63,7 +63,7 @@ extension TaskListInteractor: TaskListBusinessLogic {
         let lastItem = viewModels.popLast()
         viewModels.forEach { viewModel in
             guard let data = TaskListModels.TaskUpdateFields(title: viewModel.title, isDone: viewModel.isCompleted).encodeData else { return }
-            worker.requestPatch(endPoint: TaskEndPoint.taskUpdate(id: viewModel.id, task: data)) { (project: Project?) in }
+            worker.request(endPoint: TaskEndPoint.taskUpdate(id: viewModel.id, task: data)) { (project: Response<String>?) in }
           
         }
         guard let viewModel = lastItem,
@@ -71,24 +71,32 @@ extension TaskListInteractor: TaskListBusinessLogic {
         else {
             return
         }
-        worker.requestPostAndGetTask(post: TaskEndPoint.taskUpdate(id: viewModel.id, task: data), endPoint: .get(projectId: projectId)) { [weak self] (project: Project?) in
-            self?.taskList.sections = project?.sections?.array as? [Section] ?? []
+        worker.requestPostAndGetTask(post: TaskEndPoint.taskUpdate(id: viewModel.id, task: data),
+                                     endPoint: .get(projectId: projectId)) { [weak self] (response: Response<Project>?) in
+            self?.taskList.sections = response?.project?.sections?.array as? [Section] ?? []
             self?.presenter.presentFetchTasks(response: TaskListModels.FetchTasks.Response(sections: self?.taskList.sections ?? []))
         }
     }
     
     func createTask(request: TaskListModels.CreateTask.Request) {
         guard let data = request.taskFields.encodeData else { return }
-        worker.requestPostAndGetTask(post: TaskEndPoint.create(projectId: request.projectId, sectionId: request.sectionId, request: data), endPoint: .get(projectId: request.projectId)) { [weak self] (project: Project?) in
-            self?.taskList.sections = project?.sections?.array as? [Section] ?? []
+        let taskCreateEndpoint = TaskEndPoint.create(projectId: request.projectId,
+                                                 sectionId: request.sectionId,
+                                                 request: data)
+        worker.requestPostAndGetTask(post: taskCreateEndpoint,
+                                     endPoint: .get(projectId: request.projectId)) { [weak self] (response: Response<Project>?) in
+            self?.taskList.sections = response?.project?.sections?.array as? [Section] ?? []
             self?.presenter.presentFetchTasks(response: TaskListModels.FetchTasks.Response(sections: self?.taskList.sections ?? []))
         }
     }
     
     func createSection(request: TaskListModels.CreateSection.Request) {
         guard let data = request.sectionFields.encodeData else { return }
-        worker.requestPostAndGetTask(post: TaskEndPoint.sectionCreate(projectId: request.projectId, request: data), endPoint: .get(projectId: request.projectId)) { [weak self] (project: Project?) in
-            self?.taskList.sections = project?.sections?.array as? [Section] ?? []
+        let sectionCreateEndPoint = TaskEndPoint.sectionCreate(projectId: request.projectId,
+                                                               request: data)
+        worker.requestPostAndGetTask(post: sectionCreateEndPoint,
+                                     endPoint: .get(projectId: request.projectId)) { [weak self] (response: Response<Project>?) in
+            self?.taskList.sections = response?.project?.sections?.array as? [Section] ?? []
             self?.presenter.presentFetchTasks(response: TaskListModels.FetchTasks.Response(sections: self?.taskList.sections ?? []))
         }
     }

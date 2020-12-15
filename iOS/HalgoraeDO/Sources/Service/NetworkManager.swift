@@ -37,9 +37,11 @@ extension NetworkManager: NetworkDispatcher {
 
     func fetchData<T>(_ endpoint: EndPointType, completion: @escaping (_ data: T?, _ error: NetworkError?) -> Void) where T : Decodable {
 
-        sessionManager.request(endPoint: endpoint).responseData { (result, response) in
-            guard let result = result else {
-
+        sessionManager.request(endPoint: endpoint,
+                               cachePolicy: .reloadIgnoringLocalAndRemoteCacheData,
+                               timeoutInterval: 5).responseData { (data, response) in
+                                
+            guard let data = data else {
                 completion(nil, .responseFail(response))
                 return
             }
@@ -47,7 +49,7 @@ extension NetworkManager: NetworkDispatcher {
             let decoder = JSONDecoder()
             decoder.keyDecodingStrategy = .convertFromSnakeCase
             do {
-                let result = try decoder.decode(T.self, from: result)
+                let result = try decoder.decode(T.self, from: data)
                 completion(result, nil)
             } catch {
                 completion(nil, .unableToDecode("\(error)"))
@@ -56,7 +58,7 @@ extension NetworkManager: NetworkDispatcher {
     }
 
     func fetchDownload(_ endpoint: EndPointType, completion: @escaping (_ url: URL?, _ error: NetworkError?) -> Void) {
-        sessionManager.request(endPoint: endpoint).responseURL { (result, response) in
+        sessionManager.request(endPoint: endpoint, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 5).responseURL { (result, response) in
             guard let result = result else {
                 completion(nil, .responseFail(response))
                 return

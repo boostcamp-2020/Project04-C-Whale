@@ -9,6 +9,8 @@ import Foundation
 
 protocol DataResponsing {
     
+    var session: URLSession { get }
+    var request: URLRequest { get }
     @discardableResult
     func responseData(completionHandler: @escaping (Data?, String?) -> Void) -> Self
     @discardableResult

@@ -19,7 +19,7 @@ class RequestTests: XCTestCase {
         request = URLRequest(url: url)
     }
     
-    func testRequest_request_init_url() {
+    func testURL_init_url() {
         // When
         let dataRequest = DataRequest(session: session, request: request)
         
@@ -27,7 +27,7 @@ class RequestTests: XCTestCase {
         XCTAssertEqual(dataRequest.request.url, url)
     }
     
-    func testRequest_responseData_init_url() {
+    func testURL_inResponseData_success() {
         // Given
         let dataRequest = DataRequest(session: session, request: request)
         
@@ -38,7 +38,30 @@ class RequestTests: XCTestCase {
         XCTAssertEqual(responseRequest.request.url, url)
     }
     
-    func testRequest_responseURL_init_url() {
+    func testURL_inResponseData_withRootSlash_fail() {
+        // Given
+        let dataRequest = DataRequest(session: session, request: request)
+        
+        // When
+        let responseRequest = dataRequest.responseData { (_, _) in }
+        
+        // Then
+        XCTAssertNotEqual(responseRequest.request.url, URL(string: "https://baseURL.com/")!)
+    }
+    
+    func testURL_inResponseData_withBadURL_fail() {
+        // Given
+        request.url = URL(string: "http://baseURL")!
+        let dataRequest = DataRequest(session: session, request: request)
+        
+        // When
+        let _ = dataRequest.responseData { (_, error) in
+            // Then
+            XCTAssertEqual(error, DataRequest.NetworkResponse.badURL.rawValue)
+        }
+    }
+    
+    func testURL_inResponseURL_success() {
         // Given
         let dataRequest = DataRequest(session: session, request: request)
         
@@ -48,4 +71,6 @@ class RequestTests: XCTestCase {
         // Then
         XCTAssertEqual(responseRequest.request.url, url)
     }
+    
+    
 }

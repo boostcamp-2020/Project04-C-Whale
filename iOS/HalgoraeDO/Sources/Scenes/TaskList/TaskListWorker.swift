@@ -15,8 +15,8 @@ class TaskListWorker {
         networkManager = NetworkManager(sessionManager: sessionManager)
     }
     
-    func request<T: Decodable>(endPoint: ProjectEndPoint, completion: @escaping ((T?) -> Void)) {
-        networkManager.fetchData(endPoint) { (result: ResponseProject<T>?, error: NetworkError?) in
+    func request<T: Decodable>(endPoint: EndPointType, completion: @escaping ((T?) -> Void)) {
+        networkManager.fetchData(endPoint) { (response: T?, error: NetworkError?) in
             guard error == nil else {
                 #if DEBUG
                 print(error ?? "error is null")
@@ -24,34 +24,20 @@ class TaskListWorker {
                 completion(nil)
                 return
             }
-            completion(result?.project)
+            completion(response)
         }
     }
     
-    func requestPatch<T: Decodable>(endPoint: EndPointType, completion: @escaping ((T?) -> Void)) {
-        networkManager.fetchData(endPoint) { (response: ResponseMessage?, error) in
-            guard error == nil else {
-                #if DEBUG
-                print("response msg: \(String(describing: response))")
-                print(error ?? "error is null")
-                #endif
-                completion(nil)
-                return
-            }
-        }
-    }
-
     func requestPostAndGetTask<T: Decodable>(post postEndPoint: EndPointType, endPoint: ProjectEndPoint, completion: @escaping (T?) -> Void) {
-        networkManager.fetchData(postEndPoint) { [weak self] (response: ResponseMessage?, error) in
+        networkManager.fetchData(postEndPoint) { [weak self] (message: Response<String>?, error) in
             guard error == nil else {
                 #if DEBUG
-                print("response msg: \(String(describing: response))")
                 print(error ?? "error is null")
                 #endif
                 completion(nil)
                 return
             }
-            self?.networkManager.fetchData(endPoint) { (result: ResponseProject<T>?, error: NetworkError?) in
+            self?.networkManager.fetchData(endPoint) { (response: T?, error: NetworkError?) in
                 guard error == nil else {
                     #if DEBUG
                     print(error ?? "error is null")
@@ -59,7 +45,7 @@ class TaskListWorker {
                     completion(nil)
                     return
                 }
-                completion(result?.project)
+                completion(response)
             }
         }
     }
