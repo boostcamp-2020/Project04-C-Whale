@@ -599,7 +599,7 @@ extension TaskListViewController: UICollectionViewDropDelegate {
         for task in sendTasks {
             taskIds.append(task.id)
         }
-        interactor?.fetchDragDrop(request: .init(projectId: project.id, sectionId: sectionId, taskId: sourceTask.id, parentTaskId: nil, taskMoveSection: .init(sectionId: sectionId), taskMoveFields: .init(orderedTasks: taskIds)))
+        interactor?.fetchDragDrop(request: .init(projectId: project.id, sectionId: sectionId, taskId: sourceTask.id, parentTaskId: nil, taskMoveSection: .init(sectionId: sectionId), taskMoveFields: .init(orderedTasks: taskIds))) //섹션간 이동 함수 사용
     }
     
     private func dragDropHelper(sectionId: String, sourceTask: TaskVM, allTasks: [TaskVM]) {
@@ -609,7 +609,7 @@ extension TaskListViewController: UICollectionViewDropDelegate {
                 for task in allTasks {
                     taskIds.append(task.id)
                 }
-                interactor?.fetchDragDrop(request: .init(projectId: project.id, sectionId: sectionId, taskId: sourceTask.id, parentTaskId: nil, taskMoveSection: .init(sectionId: sectionId), taskMoveFields: .init(orderedTasks: taskIds))) //이거 그대로
+                interactor?.fetchDragDrop(request: .init(projectId: project.id, sectionId: sectionId, taskId: sourceTask.id, parentTaskId: nil, taskMoveSection: .init(sectionId: sectionId), taskMoveFields: .init(orderedTasks: taskIds))) //섹션간 이동
                 return
             }
             for subTask in rootTask.subItems where subTask.id == sourceTask.id {
@@ -617,7 +617,7 @@ extension TaskListViewController: UICollectionViewDropDelegate {
                 for task in rootTask.subItems {
                     taskIds.append(task.id)
                 }
-                interactor?.fetchDragDrop(request: .init(projectId: nil, sectionId: sectionId, taskId: sourceTask.id, parentTaskId: rootTask.id, taskMoveSection: .init(sectionId: sectionId), taskMoveFields: .init(orderedTasks: taskIds))) //엔드포인트 바뀌어야됨
+                interactor?.fetchDragDrop(request: .init(projectId: nil, sectionId: sectionId, taskId: sourceTask.id, parentTaskId: rootTask.id, taskMoveSection: .init(sectionId: sectionId), taskMoveFields: .init(orderedTasks: taskIds))) //테스크 하위로
                 return
             }
         }

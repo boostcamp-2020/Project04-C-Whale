@@ -259,6 +259,7 @@ extension TaskBoardViewController: TaskListDisplayLogic {
 extension TaskBoardViewController: TaskSectionViewCellDelegate {
     
     func taskSectionViewCell(_ taskSectionViewCell: TaskSectionViewCell, _ sourceSection: TaskListModels.SectionVM, _ destinationSection: TaskListModels.SectionVM, _ sourceTask: TaskListModels.DisplayedTask, _ destinationTask: TaskListModels.DisplayedTask?) {
+
         guard let destinationTask = destinationTask else { //맨 위에 insert
             if sourceSection == destinationSection { //같은 collectionview
                 for i in 0..<sectionVM.count where sectionVM[i].id == sourceSection.id {
@@ -266,6 +267,7 @@ extension TaskBoardViewController: TaskSectionViewCellDelegate {
                     newTasks.insert(sourceTask, at: 0)
                     sectionVM[i].tasks = newTasks
                     taskBoardCollectionView.reloadItems(at: [IndexPath(row: 0, section: i)])
+                    dragDropHelper(sectionId: destinationSection.id, sourceTask: sourceTask, sendTasks: sectionVM[i].tasks)
                 }
                 
                 return
@@ -280,6 +282,7 @@ extension TaskBoardViewController: TaskSectionViewCellDelegate {
                     sectionVM[i].tasks = newItems
                     let sectionCell = taskBoardCollectionView.cellForItem(at: IndexPath(row: 0, section: i)) as? TaskSectionViewCell
                     sectionCell?.reloadSnapshot(taskItems: newItems)
+                    dragDropHelper(sectionId: destinationSection.id, sourceTask: sourceTask, sendTasks: sectionVM[i].tasks)
                     //taskBoardCollectionView.reloadItems(at: [IndexPath(row: 0, section: i)])
                 }
             }
@@ -292,8 +295,8 @@ extension TaskBoardViewController: TaskSectionViewCellDelegate {
                 let newTasks = removeTaskFromTasks(sourceSection.tasks, sourceTask.id)
                 sectionVM[i].tasks = addTaskAtTasks(newTasks, sourceTask, destinationTask.id)
                 taskBoardCollectionView.reloadItems(at: [IndexPath(row: 0, section: i)])
+                dragDropHelper(sectionId: destinationSection.id, sourceTask: sourceTask, sendTasks: sectionVM[i].tasks)
             }
-            
             return
         }
         for i in 0..<sectionVM.count  { //다른 collectionview
@@ -304,9 +307,18 @@ extension TaskBoardViewController: TaskSectionViewCellDelegate {
                 sectionVM[i].tasks = addTaskAtTasks(destinationSection.tasks, sourceTask, destinationTask.id)
                 let sectionCell = taskBoardCollectionView.cellForItem(at: IndexPath(row: 0, section: i)) as? TaskSectionViewCell
                 sectionCell?.reloadSnapshot(taskItems: sectionVM[i].tasks)
+                dragDropHelper(sectionId: destinationSection.id, sourceTask: sourceTask, sendTasks: sectionVM[i].tasks)
                // taskBoardCollectionView.reloadItems(at: [IndexPath(row: 0, section: i)])
             }
         }
+    }
+    
+    private func dragDropHelper(sectionId: String, sourceTask: TaskVM, sendTasks: [TaskVM]) {
+        var taskIds: [String] = []
+        for task in sendTasks {
+            taskIds.append(task.id)
+        }
+        interactor?.fetchDragDrop(request: .init(projectId: project.id, sectionId: sectionId, taskId: sourceTask.id, parentTaskId: nil, taskMoveSection: .init(sectionId: sectionId), taskMoveFields: .init(orderedTasks: taskIds))) //섹션간 이동 함수 사용
     }
     
     private func removeTaskFromTasks(_ taskItems: [TaskVM], _ sourceId: String) -> [TaskVM] {
