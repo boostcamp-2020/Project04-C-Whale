@@ -69,6 +69,8 @@
 		4C9A04DF258847C400727F88 /* Bookmark+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9A04D5258847C400727F88 /* Bookmark+CoreDataProperties.swift */; };
 		4C9A04E0258847C400727F88 /* Task+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9A04D6258847C400727F88 /* Task+CoreDataClass.swift */; };
 		4C9A04E1258847C400727F88 /* Project+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9A04D7258847C400727F88 /* Project+CoreDataProperties.swift */; };
+		4C9A050025887DB200727F88 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9A04FF25887DB200727F88 /* SignInViewController.swift */; };
+		4C9A05202589729000727F88 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9A051F2589729000727F88 /* AuthManager.swift */; };
 		4CCD3248256F847800A46D10 /* PopoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CCD3247256F847800A46D10 /* PopoverViewController.swift */; };
 		4CCD324E256F84BD00A46D10 /* PopoverViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CCD324D256F84BD00A46D10 /* PopoverViewModelType.swift */; };
 		4CCD3257256F8BA700A46D10 /* Priority.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CCD3256256F8BA700A46D10 /* Priority.swift */; };
@@ -194,6 +196,8 @@
 		4C9A04D7258847C400727F88 /* Project+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Project+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		4C9A04F0258873BA00727F88 /* TaskListTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = TaskListTests.xctest; path = "/Users/os/woong/iOS/Boostcamp2020/group_final/Project04-C-Whale/iOS/build/Debug-iphoneos/TaskListTests.xctest"; sourceTree = "<absolute>"; };
 		4C9A04F1258873BA00727F88 /* ServiceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = ServiceTests.xctest; path = "/Users/os/woong/iOS/Boostcamp2020/group_final/Project04-C-Whale/iOS/build/Debug-iphoneos/ServiceTests.xctest"; sourceTree = "<absolute>"; };
+		4C9A04FF25887DB200727F88 /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
+		4C9A051F2589729000727F88 /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		4CCD3247256F847800A46D10 /* PopoverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverViewController.swift; sourceTree = "<group>"; };
 		4CCD324D256F84BD00A46D10 /* PopoverViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverViewModelType.swift; sourceTree = "<group>"; };
 		4CCD3256256F8BA700A46D10 /* Priority.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Priority.swift; sourceTree = "<group>"; };
@@ -262,6 +266,7 @@
 		4C3F55AD2564EE74006D7C9F /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				4C9A04FB25887BE100727F88 /* SignIn */,
 				4CCD32752570A4E300A46D10 /* Menu */,
 				4C3F5660256B80C6006D7C9F /* TaskList */,
 				4C4236F625761A410068A252 /* TaskDetail */,
@@ -412,6 +417,7 @@
 				4C9A04962587659A00727F88 /* TaskStorage.swift */,
 				4C9A035A2584F1B300727F88 /* ProjectStorage.swift */,
 				4C9A0488258732B400727F88 /* EndPointStorage.swift */,
+				4C9A051F2589729000727F88 /* AuthManager.swift */,
 			);
 			path = Storage;
 			sourceTree = "<group>";
@@ -433,6 +439,14 @@
 				4C9A04D3258847C400727F88 /* Task+CoreDataProperties.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		4C9A04FB25887BE100727F88 /* SignIn */ = {
+			isa = PBXGroup;
+			children = (
+				4C9A04FF25887DB200727F88 /* SignInViewController.swift */,
+			);
+			path = SignIn;
 			sourceTree = "<group>";
 		};
 		4CCD3246256F846B00A46D10 /* Popover */ = {
@@ -766,6 +780,7 @@
 				4CCD32772570A4EF00A46D10 /* MenuViewController.swift in Sources */,
 				4C9A0484258675FA00727F88 /* DefaultEndPoint.swift in Sources */,
 				4C9A04E0258847C400727F88 /* Task+CoreDataClass.swift in Sources */,
+				4C9A05202589729000727F88 /* AuthManager.swift in Sources */,
 				4C4238A2257A2D800068A252 /* URLParameterEncoder.swift in Sources */,
 				4CE915C1257E1D5700BCF398 /* ProjectEndPoint.swift in Sources */,
 				4C0CA636256EAC5200E66045 /* TaskListDisplayLogic.swift in Sources */,
@@ -782,6 +797,7 @@
 				4C3F5683256B8F4B006D7C9F /* TaskListRouter.swift in Sources */,
 				AAFAD175258328B600ED6624 /* TaskDetailContentsCellCollectionViewCell.swift in Sources */,
 				4C9A04DC258847C400727F88 /* Project+CoreDataClass.swift in Sources */,
+				4C9A050025887DB200727F88 /* SignInViewController.swift in Sources */,
 				4CE9160F257F81C500BCF398 /* MenuPresenter.swift in Sources */,
 				4C3F566A256B82F2006D7C9F /* TaskBoardViewController.swift in Sources */,
 				4C3F5665256B8117006D7C9F /* TaskListViewController.swift in Sources */,
