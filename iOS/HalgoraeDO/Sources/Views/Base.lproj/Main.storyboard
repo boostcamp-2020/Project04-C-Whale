@@ -807,6 +807,9 @@
                                                 <real key="value" value="6"/>
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="didTapTestSignInButton:" destination="08p-Js-HRL" eventType="touchUpInside" id="zSJ-qj-AxE"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                             </stackView>

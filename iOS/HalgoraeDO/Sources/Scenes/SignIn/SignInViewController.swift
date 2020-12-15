@@ -31,9 +31,13 @@ class SignInViewController: UIViewController {
                 self?.switchRootViewController()
             }
         })
-
+        // \(ProcessInfo.processInfo.environment["token"] ?? "")
         webAuthSession?.presentationContextProvider = self
         webAuthSession?.start()
+    }
+    @IBAction func didTapTestSignInButton(_ sender: BorderRadiusButton) {
+        AuthManager.shared.userToken = ProcessInfo.processInfo.environment["token"]
+        switchRootViewController()
     }
     
     func switchRootViewController() {
