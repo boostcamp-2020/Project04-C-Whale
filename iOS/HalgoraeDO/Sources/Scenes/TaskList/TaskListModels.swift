@@ -85,6 +85,17 @@ enum TaskListModels {
         }
     }
     
+    enum MoveTask {
+        struct Request {
+            var projectId: String?
+            var sectionId: String
+            var taskId: String
+            var parentTaskId: String?
+            var taskMoveSection: TaskMoveSection
+            var taskMoveFields: TaskMoveFields
+        }
+    }
+    
     // MARK:  - Models
     
     struct SectionFields: Encodable {
@@ -102,6 +113,14 @@ enum TaskListModels {
         var isDone: Bool
         var dueDate: String?
         var priority: String?
+    }
+    
+    struct TaskMoveFields: Encodable {
+        var orderedTasks: [String]
+    }
+    
+    struct TaskMoveSection: Encodable {
+        var sectionId: String
     }
     
     struct SectionVM {

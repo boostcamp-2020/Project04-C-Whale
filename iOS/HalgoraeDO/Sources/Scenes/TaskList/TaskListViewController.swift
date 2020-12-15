@@ -563,6 +563,8 @@ extension TaskListViewController: UICollectionViewDropDelegate {
             let destinationSnapShot = generateSnapshot(taskItems: newItems)
             dataSource.apply(destinationSnapShot, to: destinationSection)
             
+            dragDropHelper(sectionId: destinationSection.id, sourceTask: sourceTask, sendTasks: dataSource.snapshot(for: destinationSection).rootItems)
+            
             return
         }
         var newItems: [TaskVM]
@@ -576,6 +578,8 @@ extension TaskListViewController: UICollectionViewDropDelegate {
             }
             let snapShot = generateSnapshot(taskItems: newItems)
             dataSource.apply(snapShot, to: sourceSection)
+            
+            
         } else { //다른 section 일때
             if destinationTask.parentPosition == nil && childCheck == 1 { //부모 작업의 바로 아래에 append
                 newItems = addTaskAtFirstOfSubitems(dataSource.snapshot(for: destinationSection).rootItems, sourceTask, destinationTask, destinationIndexPath)
@@ -586,6 +590,36 @@ extension TaskListViewController: UICollectionViewDropDelegate {
             let destinationSnapShot = generateSnapshot(taskItems: newItems)
             dataSource.apply(sourceSnapShot, to: sourceSection)
             dataSource.apply(destinationSnapShot, to: destinationSection)
+        }
+        dragDropHelper(sectionId: destinationSection.id, sourceTask: sourceTask, allTasks: dataSource.snapshot(for: destinationSection).rootItems)
+    }
+    
+    private func dragDropHelper(sectionId: String, sourceTask: TaskVM, sendTasks: [TaskVM]) {//섹션 상단 (하위 X)
+        var taskIds: [String] = []
+        for task in sendTasks {
+            taskIds.append(task.id)
+        }
+        interactor?.fetchDragDrop(request: .init(projectId: project.id, sectionId: sectionId, taskId: sourceTask.id, parentTaskId: nil, taskMoveSection: .init(sectionId: sectionId), taskMoveFields: .init(orderedTasks: taskIds)))
+    }
+    
+    private func dragDropHelper(sectionId: String, sourceTask: TaskVM, allTasks: [TaskVM]) {
+        for rootTask in allTasks {
+            if rootTask.id == sourceTask.id {
+                var taskIds: [String] = []
+                for task in allTasks {
+                    taskIds.append(task.id)
+                }
+                interactor?.fetchDragDrop(request: .init(projectId: project.id, sectionId: sectionId, taskId: sourceTask.id, parentTaskId: nil, taskMoveSection: .init(sectionId: sectionId), taskMoveFields: .init(orderedTasks: taskIds))) //이거 그대로
+                return
+            }
+            for subTask in rootTask.subItems where subTask.id == sourceTask.id {
+                var taskIds: [String] = []
+                for task in rootTask.subItems {
+                    taskIds.append(task.id)
+                }
+                interactor?.fetchDragDrop(request: .init(projectId: nil, sectionId: sectionId, taskId: sourceTask.id, parentTaskId: rootTask.id, taskMoveSection: .init(sectionId: sectionId), taskMoveFields: .init(orderedTasks: taskIds))) //엔드포인트 바뀌어야됨
+                return
+            }
         }
     }
 }

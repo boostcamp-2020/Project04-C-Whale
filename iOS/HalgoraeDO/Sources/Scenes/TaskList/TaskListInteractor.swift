@@ -10,6 +10,7 @@ import Foundation
 protocol TaskListBusinessLogic {
     func fetchTasks(request: TaskListModels.FetchTasks.Request)
     func fetchTasksForComplete(request: TaskListModels.FetchTasks.Request)
+    func fetchDragDrop(request: TaskListModels.MoveTask.Request)
     func changeFinish(request: TaskListModels.FinishTask.Request)
     func changeFinishForAll(request: TaskListModels.FinishTask.Request, projectId: String)
     func createTask(request: TaskListModels.CreateTask.Request)
@@ -98,6 +99,26 @@ extension TaskListInteractor: TaskListBusinessLogic {
                                      endPoint: .get(projectId: request.projectId)) { [weak self] (response: Response<Project>?) in
             self?.taskList.sections = response?.project?.sections?.array as? [Section] ?? []
             self?.presenter.presentFetchTasks(response: TaskListModels.FetchTasks.Response(sections: self?.taskList.sections ?? []))
+        }
+    }
+    
+    func fetchDragDrop(request: TaskListModels.MoveTask.Request) {
+        guard let moveSectionData = request.taskMoveSection.encodeData,
+              let taskMoveData = request.taskMoveFields.encodeData
+        else {
+            return
+            
+        }
+        
+        guard let projectId = request.projectId else {//task 하위에
+            guard let parentTaskId = request.parentTaskId else { return }
+            worker.requestPatchAndPatch(patch: TaskEndPoint.taskUpdate(id: request.taskId, task: moveSectionData), endPoint: TaskEndPoint.moveIntoTask(taskId: parentTaskId, request: taskMoveData)){ (response: Response<String>?) in
+            }
+           return
+        }
+        
+        //섹션의 root items모두 전송
+        worker.requestPatchAndPatch(patch: TaskEndPoint.taskUpdate(id: request.taskId, task: moveSectionData), endPoint: TaskEndPoint.moveIntoSection(projectId: projectId, sectionId: request.sectionId, request: taskMoveData)){ (response: Response<String>?) in
         }
     }
 }
