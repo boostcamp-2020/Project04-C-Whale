@@ -71,7 +71,6 @@ export default {
 
     handleDragStart(e) {
       this.SET_DRAGGING_TASK(this.task);
-      this.$emit("taskDragStart", { ...this.task, $el: this.$el });
     },
 
     handleDragOver(e) {
