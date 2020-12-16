@@ -105,6 +105,7 @@
 		AA6D84B8258739B600019373 /* BookmarkEndPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA6D84B7258739B600019373 /* BookmarkEndPoint.swift */; };
 		AAA74C74257DAE00004FC883 /* AddProjectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA74C73257DAE00004FC883 /* AddProjectViewController.swift */; };
 		AAA74C9D25805BC3004FC883 /* TaskDetailModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA74C9C25805BC2004FC883 /* TaskDetailModels.swift */; };
+		AAED665A258984040049ECCF /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAED6659258984040049ECCF /* SignInViewController.swift */; };
 		AAEE20DE2564E4A900668FAD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAEE20DD2564E4A900668FAD /* AppDelegate.swift */; };
 		AAEE20E02564E4A900668FAD /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAEE20DF2564E4A900668FAD /* SceneDelegate.swift */; };
 		AAEE20E52564E4AA00668FAD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AAEE20E32564E4AA00668FAD /* Main.storyboard */; };
@@ -194,9 +195,6 @@
 		4C9A04D6258847C400727F88 /* Task+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Task+CoreDataClass.swift"; sourceTree = "<group>"; };
 		4C9A04D7258847C400727F88 /* Project+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Project+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		4C9A051F2589729000727F88 /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
-		4C9A04FF25887DB200727F88 /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
-		4C9A04F1258873BA00727F88 /* ServiceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = ServiceTests.xctest; path = "/Users/os/woong/iOS/Boostcamp2020/group_final/Project04-C-Whale/iOS/build/Debug-iphoneos/ServiceTests.xctest"; sourceTree = "<absolute>"; };
-		4C9A04F0258873BA00727F88 /* TaskListTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = TaskListTests.xctest; path = "/Users/os/woong/iOS/Boostcamp2020/group_final/Project04-C-Whale/iOS/build/Debug-iphoneos/TaskListTests.xctest"; sourceTree = "<absolute>"; };
 		4CCD3247256F847800A46D10 /* PopoverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverViewController.swift; sourceTree = "<group>"; };
 		4CCD324D256F84BD00A46D10 /* PopoverViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverViewModelType.swift; sourceTree = "<group>"; };
 		4CCD3256256F8BA700A46D10 /* Priority.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Priority.swift; sourceTree = "<group>"; };
@@ -241,6 +239,7 @@
 		AA6D84B7258739B600019373 /* BookmarkEndPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkEndPoint.swift; sourceTree = "<group>"; };
 		AAA74C73257DAE00004FC883 /* AddProjectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProjectViewController.swift; sourceTree = "<group>"; };
 		AAA74C9C25805BC2004FC883 /* TaskDetailModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskDetailModels.swift; sourceTree = "<group>"; };
+		AAED6659258984040049ECCF /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		AAEE20DD2564E4A900668FAD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AAEE20DF2564E4A900668FAD /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		AAEE20E42564E4AA00668FAD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -457,7 +456,7 @@
 		4C9A04FB25887BE100727F88 /* SignIn */ = {
 			isa = PBXGroup;
 			children = (
-				4C9A04FF25887DB200727F88 /* SignInViewController.swift */,
+				AAED6659258984040049ECCF /* SignInViewController.swift */,
 			);
 			path = SignIn;
 			sourceTree = "<group>";
@@ -830,8 +829,8 @@
 				AAEE20E02564E4A900668FAD /* SceneDelegate.swift in Sources */,
 				4C3F5683256B8F4B006D7C9F /* TaskListRouter.swift in Sources */,
 				AAFAD175258328B600ED6624 /* TaskDetailContentsCellCollectionViewCell.swift in Sources */,
-				4C9A050025887DB200727F88 /* SignInViewController.swift in Sources */,
 				4CE9160F257F81C500BCF398 /* MenuPresenter.swift in Sources */,
+				AAED665A258984040049ECCF /* SignInViewController.swift in Sources */,
 				4C3F566A256B82F2006D7C9F /* TaskBoardViewController.swift in Sources */,
 				4C3F5665256B8117006D7C9F /* TaskListViewController.swift in Sources */,
 				4CCD325E256F8C1200A46D10 /* UIImage+scaled.swift in Sources */,
@@ -1023,7 +1022,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1078,7 +1077,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
