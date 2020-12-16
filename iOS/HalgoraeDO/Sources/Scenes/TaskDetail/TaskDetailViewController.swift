@@ -22,16 +22,6 @@ class TaskDetailViewController: UIViewController {
             priorityButton.tintColor = priority.color
         }
     }
-    private var currentTabIndex = 0 {
-        didSet {
-            #warning("이거 지우기!!!!")
-            subTabStackView
-                .arrangedSubviews
-                .compactMap({$0 as? UIButton})
-                .enumerated()
-                .forEach { $0.element.isSelected = $0.offset == currentTabIndex }
-        }
-    }
     lazy var pageViewControllers: [UIViewController] = {
         var pages: [UIViewController] = []
         pages.append(instance(name: "\(TaskDetailBookmarkViewController.self)"))
@@ -158,30 +148,8 @@ class TaskDetailViewController: UIViewController {
         }
     }
     
-    
     @IBAction private func didTapTaskFinishButton(_ sender: UIButton) {
         
-    }
-    
-    @IBAction private func didTapSubTasksTabButton(_ sender: UIButton) {
-        let tabIndex = 0
-        let direection: UIPageViewController.NavigationDirection = currentTabIndex == 2 ? .forward : .reverse
-        pageViewController?.setViewControllers([pageViewControllers[tabIndex]], direction: direection, animated: true, completion: nil)
-        currentTabIndex = tabIndex
-    }
-    
-    @IBAction private func didTapCommentTabButton(_ sender: UIButton) {
-        let tabIndex = 1
-        let direection: UIPageViewController.NavigationDirection = currentTabIndex < tabIndex ? .forward : .reverse
-        pageViewController?.setViewControllers([pageViewControllers[tabIndex]], direction: direection, animated: true, completion: nil)
-        currentTabIndex = tabIndex
-    }
-    
-    @IBAction private func didTapBookmarkButton(_ sender: UIButton) {
-        let tabIndex = 2
-        let direection: UIPageViewController.NavigationDirection = .forward
-        pageViewController?.setViewControllers([pageViewControllers[tabIndex]], direction: direection, animated: true, completion: nil)
-        currentTabIndex = tabIndex
     }
     
     @IBAction func didTapSegmentControl(_ sender: UISegmentedControl) {
