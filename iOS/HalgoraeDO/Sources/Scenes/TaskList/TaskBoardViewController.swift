@@ -55,7 +55,7 @@ class TaskBoardViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.prefersLargeTitles = false
-        interactor?.fetchTasks(request: .init(projectId: project.id ?? ""))
+        interactor?.fetchTasks(request: .init(projectId: project.id))
     }
     
     override func viewWillDisappear(_ animated: Bool) {

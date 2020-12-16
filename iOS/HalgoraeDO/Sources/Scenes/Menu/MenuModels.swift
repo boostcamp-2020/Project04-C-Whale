@@ -132,7 +132,7 @@ extension MenuModels {
         }
         
         init(project: Project, makeFavorite: Bool = false) {
-            self.id = project.id ?? UUID().uuidString
+            self.id = project.id 
             self.title = project.title ?? ""
             self.color = project.color ?? "#BDBDBD"
             self.taskCount = Int(project.taskCount)

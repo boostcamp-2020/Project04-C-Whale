@@ -76,7 +76,7 @@ class TaskListViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        interactor?.fetchTasks(request: .init(projectId: project.id ?? ""))
+        interactor?.fetchTasks(request: .init(projectId: project.id))
     }
     
     // MARK: - Initialize
