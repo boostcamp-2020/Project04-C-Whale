@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="08p-Js-HRL">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="08p-Js-HRL">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -182,7 +182,7 @@
                                             <constraint firstAttribute="width" constant="25" id="Reu-dV-35h"/>
                                             <constraint firstAttribute="width" secondItem="ovW-bp-nsn" secondAttribute="height" multiplier="1:1" id="gX4-eT-S5j"/>
                                         </constraints>
-                                        <state key="normal" image="circle" catalog="system"/>
+                                        <state key="normal" image="check_empty"/>
                                         <state key="selected" image="check"/>
                                         <state key="highlighted" image="check"/>
                                         <connections>
@@ -358,7 +358,7 @@
                         <outlet property="commentTabButton" destination="xTE-Ce-ANu" id="tM0-Um-KhB"/>
                         <outlet property="datePickerButtonView" destination="ISU-Dn-Rec" id="Dcr-mz-MPh"/>
                         <outlet property="finishButton" destination="ovW-bp-nsn" id="agw-B9-7KS"/>
-                        <outlet property="navigationBar" destination="hbn-2h-nDV" id="biM-Sq-vCa"/>
+                        <outlet property="navigationBar" destination="hbn-2h-nDV" id="6Fn-bl-RvA"/>
                         <outlet property="navigationView" destination="sZF-UA-ODh" id="xlH-sk-POR"/>
                         <outlet property="pageSegmentsControl" destination="1MW-zk-p3h" id="wuI-Vk-Yud"/>
                         <outlet property="priorityButton" destination="YHa-fV-ExY" id="3ds-rG-kBc"/>
@@ -836,7 +836,7 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
-                                            <action selector="didTapNaverLogicButton:" destination="08p-Js-HRL" eventType="touchUpInside" id="Lsp-KF-lk3"/>
+                                            <action selector="didTapNaverLogicButton:" destination="08p-Js-HRL" eventType="touchUpInside" id="LJz-gp-XEF"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="k2T-h5-Xxk" customClass="BorderRadiusButton" customModule="HalgoraeDO" customModuleProvider="target">
@@ -851,7 +851,7 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
-                                            <action selector="didTapTestSignInButton:" destination="08p-Js-HRL" eventType="touchUpInside" id="zSJ-qj-AxE"/>
+                                            <action selector="didTapTestSignInButton:" destination="08p-Js-HRL" eventType="touchUpInside" id="uBW-UR-Gze"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -983,7 +983,7 @@
     </scenes>
     <resources>
         <image name="check" width="512" height="512"/>
-        <image name="circle" catalog="system" width="128" height="121"/>
+        <image name="check_empty" width="512" height="512"/>
         <image name="circle.fill" catalog="system" width="128" height="121"/>
         <image name="ellipsis" catalog="system" width="128" height="37"/>
         <image name="flag.fill" catalog="system" width="128" height="121"/>

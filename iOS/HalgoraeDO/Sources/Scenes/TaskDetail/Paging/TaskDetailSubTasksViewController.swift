@@ -16,7 +16,7 @@ class TaskDetailSubTasksViewController: UIViewController {
     // MARK: - Properties
     
     private var task: Task?
-    private var dataSource: UICollectionViewDiffableDataSource<String, TaskListModels.DisplayedTask>! = nil
+    private var dataSource: UICollectionViewDiffableDataSource<String, TaskListModels.TaskVM>! = nil
     private var interactor: TaskDetailBusinessLogic?
     
     // MARK: Views
@@ -69,7 +69,7 @@ private extension TaskDetailSubTasksViewController {
 private extension TaskDetailSubTasksViewController {
     
     func configureDataSource() {
-        let cellRegistration = UICollectionView.CellRegistration<TaskCollectionViewListCell, TaskListModels.DisplayedTask> { (cell, _: IndexPath, taskItem) in
+        let cellRegistration = UICollectionView.CellRegistration<TaskCollectionViewListCell, TaskListModels.TaskVM> { (cell, _: IndexPath, taskItem) in
             cell.taskViewModel = taskItem
             cell.finishHandler = { [weak self] task in
                 guard let self = self else { return }
@@ -77,14 +77,14 @@ private extension TaskDetailSubTasksViewController {
             }
         }
         
-        dataSource = UICollectionViewDiffableDataSource<String, TaskListModels.DisplayedTask>(collectionView: subTaskCollectionView, cellProvider: { (collectionView, indexPath, task) -> UICollectionViewCell? in
+        dataSource = UICollectionViewDiffableDataSource<String, TaskListModels.TaskVM>(collectionView: subTaskCollectionView, cellProvider: { (collectionView, indexPath, task) -> UICollectionViewCell? in
             return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: task)
         })
     }
     
-    func generateSnapshot(taskItems: [TaskListModels.DisplayedTask]) -> NSDiffableDataSourceSectionSnapshot<TaskListModels.DisplayedTask> {
-        var snapshot = NSDiffableDataSourceSectionSnapshot<TaskListModels.DisplayedTask>()
-        func addItems(_ taskItems: [TaskListModels.DisplayedTask], to parent: TaskListModels.DisplayedTask?) {
+    func generateSnapshot(taskItems: [TaskListModels.TaskVM]) -> NSDiffableDataSourceSectionSnapshot<TaskListModels.TaskVM> {
+        var snapshot = NSDiffableDataSourceSectionSnapshot<TaskListModels.TaskVM>()
+        func addItems(_ taskItems: [TaskListModels.TaskVM], to parent: TaskListModels.TaskVM?) {
             snapshot.append(taskItems, to: parent)
             for taskItem in taskItems where !taskItem.subItems.isEmpty {
                 addItems(taskItem.subItems, to: taskItem)
