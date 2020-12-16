@@ -185,9 +185,6 @@
                                         <state key="normal" image="check_empty"/>
                                         <state key="selected" image="check"/>
                                         <state key="highlighted" image="check"/>
-                                        <connections>
-                                            <action selector="didTapTaskFinishButton:" destination="JAU-4d-7Yj" eventType="touchUpInside" id="o2R-3c-1G8"/>
-                                        </connections>
                                     </button>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="255" verticalCompressionResistancePriority="756" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="htc-6e-bKT">
                                         <rect key="frame" x="57" y="20" width="349" height="116.5"/>
@@ -271,56 +268,11 @@
                                             <action selector="didTapSegmentControl:" destination="JAU-4d-7Yj" eventType="valueChanged" id="Iz9-fu-rlz"/>
                                         </connections>
                                     </segmentedControl>
-                                    <stackView opaque="NO" alpha="0.0" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="Fl7-oy-TQZ">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="50"/>
-                                        <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Pe-WI-bxb">
-                                                <rect key="frame" x="0.0" y="0.0" width="138" height="50"/>
-                                                <state key="normal" title="하위작업">
-                                                    <color key="titleColor" red="0.1018261239" green="0.15218839049999999" blue="0.41057401900000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                </state>
-                                                <state key="selected">
-                                                    <color key="titleColor" red="0.029415823519999999" green="0.77209502460000001" blue="0.64217513800000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                </state>
-                                                <connections>
-                                                    <action selector="didTapSubTasksTabButton:" destination="JAU-4d-7Yj" eventType="touchUpInside" id="Cb5-i0-q6J"/>
-                                                </connections>
-                                            </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xTE-Ce-ANu">
-                                                <rect key="frame" x="138" y="0.0" width="138" height="50"/>
-                                                <state key="normal" title="댓글">
-                                                    <color key="titleColor" red="0.1019607843" green="0.15218839049999999" blue="0.41057401900000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                </state>
-                                                <state key="selected">
-                                                    <color key="titleColor" red="0.029415823519999999" green="0.77209502460000001" blue="0.64217513800000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                </state>
-                                                <connections>
-                                                    <action selector="didTapCommentTabButton:" destination="JAU-4d-7Yj" eventType="touchUpInside" id="Bra-Sa-g4t"/>
-                                                </connections>
-                                            </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vZE-sc-veY">
-                                                <rect key="frame" x="276" y="0.0" width="138" height="50"/>
-                                                <state key="normal" title="북마크">
-                                                    <color key="titleColor" red="0.1019607843" green="0.15218839049999999" blue="0.41057401900000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                </state>
-                                                <state key="selected">
-                                                    <color key="titleColor" red="0.029415823519999999" green="0.77209502460000001" blue="0.64217513800000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                </state>
-                                                <connections>
-                                                    <action selector="didTapBookmarkButton:" destination="JAU-4d-7Yj" eventType="touchUpInside" id="U4g-80-x5Y"/>
-                                                </connections>
-                                            </button>
-                                        </subviews>
-                                    </stackView>
                                 </subviews>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="1MW-zk-p3h" secondAttribute="trailing" constant="5" id="1sg-5l-3PS"/>
-                                    <constraint firstAttribute="bottom" secondItem="Fl7-oy-TQZ" secondAttribute="bottom" id="7o4-NB-Fib"/>
-                                    <constraint firstItem="Fl7-oy-TQZ" firstAttribute="leading" secondItem="C4G-CN-ckF" secondAttribute="leading" id="F2o-mI-a2q"/>
                                     <constraint firstAttribute="height" constant="50" id="Gzc-s2-5Ye"/>
-                                    <constraint firstItem="Fl7-oy-TQZ" firstAttribute="top" secondItem="C4G-CN-ckF" secondAttribute="top" id="Qvr-OV-53J"/>
                                     <constraint firstItem="1MW-zk-p3h" firstAttribute="top" secondItem="C4G-CN-ckF" secondAttribute="top" constant="10" id="fMd-qR-MWj"/>
-                                    <constraint firstAttribute="trailing" secondItem="Fl7-oy-TQZ" secondAttribute="trailing" id="opz-xd-5UG"/>
                                     <constraint firstAttribute="bottom" secondItem="1MW-zk-p3h" secondAttribute="bottom" id="pgj-lg-kJt"/>
                                     <constraint firstItem="1MW-zk-p3h" firstAttribute="leading" secondItem="C4G-CN-ckF" secondAttribute="leading" constant="5" id="url-Nv-a5I"/>
                                 </constraints>
@@ -354,8 +306,6 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="bookmarkTabButton" destination="vZE-sc-veY" id="XYD-CQ-nWw"/>
-                        <outlet property="commentTabButton" destination="xTE-Ce-ANu" id="tM0-Um-KhB"/>
                         <outlet property="datePickerButtonView" destination="ISU-Dn-Rec" id="Dcr-mz-MPh"/>
                         <outlet property="finishButton" destination="ovW-bp-nsn" id="agw-B9-7KS"/>
                         <outlet property="navigationBar" destination="hbn-2h-nDV" id="6Fn-bl-RvA"/>
@@ -363,8 +313,6 @@
                         <outlet property="pageSegmentsControl" destination="1MW-zk-p3h" id="wuI-Vk-Yud"/>
                         <outlet property="priorityButton" destination="YHa-fV-ExY" id="3ds-rG-kBc"/>
                         <outlet property="saveBarButtomItem" destination="OUj-YT-J5Z" id="Kkc-XV-ox0"/>
-                        <outlet property="subTabStackView" destination="Fl7-oy-TQZ" id="yTj-4a-wef"/>
-                        <outlet property="subTaskTabButton" destination="8Pe-WI-bxb" id="Vbs-8E-Hik"/>
                         <outlet property="taskTitleTextView" destination="htc-6e-bKT" id="rRU-2L-vVc"/>
                         <outlet property="titleLabel" destination="z49-7l-AZe" id="lx9-S7-xBS"/>
                     </connections>
@@ -404,29 +352,16 @@
                                 </collectionViewFlowLayout>
                                 <cells/>
                             </collectionView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7od-1c-bhB">
-                                <rect key="frame" x="305" y="54" width="89" height="23"/>
-                                <accessibility key="accessibilityConfiguration">
-                                    <accessibilityTraits key="traits" none="YES"/>
-                                </accessibility>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="19"/>
-                                <color key="tintColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <state key="normal" title="작업 추가" image="plus" catalog="system">
-                                    <color key="titleColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </state>
-                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="num-GV-B5u"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="lVt-5S-agt" firstAttribute="leading" secondItem="num-GV-B5u" secondAttribute="leading" constant="30" id="2VD-MY-hFX"/>
                             <constraint firstItem="num-GV-B5u" firstAttribute="bottom" secondItem="lVt-5S-agt" secondAttribute="bottom" id="6vj-Pb-3oU"/>
-                            <constraint firstItem="num-GV-B5u" firstAttribute="trailing" secondItem="7od-1c-bhB" secondAttribute="trailing" constant="20" id="9fz-Qv-xcO"/>
                             <constraint firstItem="num-GV-B5u" firstAttribute="trailing" secondItem="lVt-5S-agt" secondAttribute="trailing" id="Gfx-sR-dBt"/>
                             <constraint firstItem="FQY-8r-NAf" firstAttribute="leading" secondItem="num-GV-B5u" secondAttribute="leading" constant="20" id="Kp7-9c-nea"/>
                             <constraint firstItem="FQY-8r-NAf" firstAttribute="top" secondItem="num-GV-B5u" secondAttribute="top" constant="10" id="MJh-vq-k7i"/>
                             <constraint firstItem="lVt-5S-agt" firstAttribute="top" secondItem="FQY-8r-NAf" secondAttribute="bottom" constant="8" symbolic="YES" id="aLD-g2-HLW"/>
-                            <constraint firstItem="7od-1c-bhB" firstAttribute="top" secondItem="num-GV-B5u" secondAttribute="top" constant="10" id="t1L-uY-MMH"/>
                         </constraints>
                     </view>
                     <connections>
@@ -987,7 +922,6 @@
         <image name="circle.fill" catalog="system" width="128" height="121"/>
         <image name="ellipsis" catalog="system" width="128" height="37"/>
         <image name="flag.fill" catalog="system" width="128" height="121"/>
-        <image name="plus" catalog="system" width="128" height="113"/>
         <image name="point.topleft.down.curvedto.point.bottomright.up" catalog="system" width="121" height="128"/>
         <image name="square.and.pencil" catalog="system" width="128" height="115"/>
         <image name="whale" width="180" height="180"/>

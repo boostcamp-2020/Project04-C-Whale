@@ -10,11 +10,12 @@ import Foundation
 protocol TaskListBusinessLogic {
     func fetchTasks(request: TaskListModels.FetchTasks.Request)
     func fetchTasksForComplete(request: TaskListModels.FetchTasks.Request)
-    func fetchDragDrop(request: TaskListModels.MoveTask.Request)
-    func changeFinish(request: TaskListModels.FinishTask.Request)
-    func changeFinishForAll(request: TaskListModels.FinishTask.Request, projectId: String)
+    func updateComplete(request: TaskListModels.FinishTask.Request)
+    func updateCompleteAll(request: TaskListModels.FinishTask.Request, projectId: String)
     func createTask(request: TaskListModels.CreateTask.Request)
     func createSection(request: TaskListModels.CreateSection.Request)
+    func dragDropHelper(requset: TaskListModels.DragDropTask.DragDropRequest) 
+    func fetchDragDrop(request: TaskListModels.MoveTask.Request)
 }
 
 protocol TaskListDataStore {
@@ -25,10 +26,12 @@ class TaskListInteractor: TaskListDataStore {
     var worker: TaskListWorker
     var presenter: TaskListPresentLogic
     var taskList = TaskList()
+    let dragDropInteractor: TaskDragDropInteractor
     
     init(presenter: TaskListPresentLogic, worker: TaskListWorker) {
         self.presenter = presenter
         self.worker = worker
+        self.dragDropInteractor = TaskDragDropInteractor(presenter: presenter)
     }
 }
 
@@ -50,7 +53,7 @@ extension TaskListInteractor: TaskListBusinessLogic {
         }
     }
     
-    func changeFinish(request: TaskListModels.FinishTask.Request) {
+    func updateComplete(request: TaskListModels.FinishTask.Request) {
         let viewModels = request.displayedTasks
         viewModels.forEach { viewModel in
             guard let data = TaskListModels.TaskUpdateFields(title: viewModel.title, isDone: viewModel.isCompleted).encodeData else { return }
@@ -65,13 +68,12 @@ extension TaskListInteractor: TaskListBusinessLogic {
         presenter.presentFinshChanged(response: .init(tasks: tasks))
     }
     
-    func changeFinishForAll(request: TaskListModels.FinishTask.Request, projectId: String) {
+    func updateCompleteAll(request: TaskListModels.FinishTask.Request, projectId: String) {
         var viewModels = request.displayedTasks
         let lastItem = viewModels.popLast()
         viewModels.forEach { viewModel in
             guard let data = TaskListModels.TaskUpdateFields(title: viewModel.title, isDone: viewModel.isCompleted).encodeData else { return }
             worker.request(endPoint: TaskEndPoint.taskUpdate(id: viewModel.id, task: data)) { (project: Response<String>?) in }
-          
         }
         guard let viewModel = lastItem,
               let data = TaskListModels.TaskUpdateFields(title: viewModel.title, isDone: viewModel.isCompleted).encodeData
@@ -108,12 +110,17 @@ extension TaskListInteractor: TaskListBusinessLogic {
         }
     }
     
+    func dragDropHelper(requset: TaskListModels.DragDropTask.DragDropRequest) {
+       let apiEndPoint = dragDropInteractor.dropHelper(projectId: requset.projectId, childCheck: requset.childCheck, sourceIndexPath: requset.sourceIndexPath, destinationIndexPath: requset.destinationIndexPath, dataSource: requset.dataSource, destinationCell: requset.destinationCell)
+        guard let endPoint = apiEndPoint else { return }
+        fetchDragDrop(request: endPoint)
+    }
+    
     func fetchDragDrop(request: TaskListModels.MoveTask.Request) {
         guard let moveSectionData = request.taskMoveSection.encodeData,
               let taskMoveData = request.taskMoveFields.encodeData
         else {
             return
-            
         }
         
         guard let projectId = request.projectId else {//task 하위에
