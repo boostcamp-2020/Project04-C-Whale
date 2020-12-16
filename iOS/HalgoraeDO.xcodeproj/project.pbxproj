@@ -44,7 +44,6 @@
 		4C9A02B72581542E00727F88 /* CommentAddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9A02B62581542E00727F88 /* CommentAddView.swift */; };
 		4C9A02BC2581543600727F88 /* CommentAddView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4C9A02BB2581543600727F88 /* CommentAddView.xib */; };
 		4C9A02C92581725100727F88 /* CommentEndPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9A02C82581725100727F88 /* CommentEndPoint.swift */; };
-		4C9A02DF2582214800727F88 /* TaskDetailContentsCellCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9A02DE2582214800727F88 /* TaskDetailContentsCellCollectionViewCell.swift */; };
 		4C9A03422584E1FF00727F88 /* HalgoraeDO.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4C9A03402584E1FF00727F88 /* HalgoraeDO.xcdatamodeld */; };
 		4C9A03512584EFD000727F88 /* PersistentContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9A03502584EFD000727F88 /* PersistentContainer.swift */; };
 		4C9A03562584F17C00727F88 /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9A03552584F17C00727F88 /* Storage.swift */; };
@@ -77,7 +76,6 @@
 		4CE9157F257D14CB00BCF398 /* CodableMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CE9157E257D14CB00BCF398 /* CodableMock.swift */; };
 		4CE91584257D190900BCF398 /* DataRequestMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CE91583257D190900BCF398 /* DataRequestMock.swift */; };
 		4CE915C1257E1D5700BCF398 /* ProjectEndPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CE915C0257E1D5700BCF398 /* ProjectEndPoint.swift */; };
-		4CE915D1257E5D2B00BCF398 /* TaskDetailModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CE915D0257E5D2B00BCF398 /* TaskDetailModels.swift */; };
 		4CE915D9257F228400BCF398 /* TaskEndPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CE915D8257F228400BCF398 /* TaskEndPoint.swift */; };
 		4CE91605257F81B600BCF398 /* MenuInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CE91604257F81B600BCF398 /* MenuInteractor.swift */; };
 		4CE9160A257F81BD00BCF398 /* MenuWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CE91609257F81BD00BCF398 /* MenuWorker.swift */; };
@@ -821,7 +819,6 @@
 				4C0CA636256EAC5200E66045 /* TaskListDisplayLogic.swift in Sources */,
 				4C4238602578D70D0068A252 /* EndPointType.swift in Sources */,
 				4C423751257792690068A252 /* BorderRadiusButton.swift in Sources */,
-				4C9A02DF2582214800727F88 /* TaskDetailContentsCellCollectionViewCell.swift in Sources */,
 				4C42372325763B1C0068A252 /* TaskDetailPresenter.swift in Sources */,
 				4C9A02B72581542E00727F88 /* CommentAddView.swift in Sources */,
 				AA46A98F2588783400D343B1 /* Task+CoreDataClass.swift in Sources */,
@@ -842,7 +839,6 @@
 				4C9A04C725883A2F00727F88 /* Response.swift in Sources */,
 				AAA74C74257DAE00004FC883 /* AddProjectViewController.swift in Sources */,
 				AA6D84B8258739B600019373 /* BookmarkEndPoint.swift in Sources */,
-				4CE915D1257E5D2B00BCF398 /* TaskDetailModels.swift in Sources */,
 				4C9A02C92581725100727F88 /* CommentEndPoint.swift in Sources */,
 				4C42371B25763B080068A252 /* TaskDetailInteractor.swift in Sources */,
 				4C423896257A2A560068A252 /* ParameterEncoding.swift in Sources */,
