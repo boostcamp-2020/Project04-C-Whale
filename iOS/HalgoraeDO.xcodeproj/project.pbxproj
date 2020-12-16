@@ -41,6 +41,7 @@
 		4C42387A25794C8C0068A252 /* SessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C42387925794C8C0068A252 /* SessionManager.swift */; };
 		4C423896257A2A560068A252 /* ParameterEncoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C423895257A2A560068A252 /* ParameterEncoding.swift */; };
 		4C4238A2257A2D800068A252 /* URLParameterEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4238A1257A2D800068A252 /* URLParameterEncoder.swift */; };
+		4C8AFBC6258A7DD100E36379 /* TaskListWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3F5673256B8C63006D7C9F /* TaskListWorker.swift */; };
 		4C9A02B72581542E00727F88 /* CommentAddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9A02B62581542E00727F88 /* CommentAddView.swift */; };
 		4C9A02BC2581543600727F88 /* CommentAddView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4C9A02BB2581543600727F88 /* CommentAddView.xib */; };
 		4C9A02C92581725100727F88 /* CommentEndPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9A02C82581725100727F88 /* CommentEndPoint.swift */; };
@@ -743,6 +744,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4C8AFBC6258A7DD100E36379 /* TaskListWorker.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -910,12 +912,13 @@
 			};
 			name = Debug;
 		};
-		4CCD31E2256EBC0000A46D10 /* Release */ = {
+		4C8AFB982589D4E000E36379 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = TaskListTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
