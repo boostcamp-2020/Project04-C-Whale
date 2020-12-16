@@ -11,13 +11,19 @@ protocol TaskSectionViewCellDelegate {
     func taskSectionViewCell(_ taskSectionViewCell: TaskSectionViewCell,
                              _ sourceSection: TaskListModels.SectionVM,
                        _ destinationSection: TaskListModels.SectionVM,
-                       _ sourceTaskIdentifier: TaskListModels.DisplayedTask,
-                       _ destinationTaskIdentifier: TaskListModels.DisplayedTask?)
+                       _ sourceTaskIdentifier: TaskListModels.TaskVM,
+                       _ destinationTaskIdentifier: TaskListModels.TaskVM?)
+    
+    func taskSectionViewCell(_ taskSectionViewCell: TaskSectionViewCell,
+                             didSelectedTask task: TaskListModels.TaskVM,
+                             at section: Int)
+    
+    func taskSectionViewCellDidPullToRefresh(_ taskSectionViewCell: TaskSectionViewCell)
 }
 
 class TaskSectionViewCell: UICollectionViewCell {
     
-    typealias TaskVM = TaskListModels.DisplayedTask
+    typealias TaskVM = TaskListModels.TaskVM
     
     // MARK: - Properties
     
@@ -37,6 +43,15 @@ class TaskSectionViewCell: UICollectionViewCell {
         view.layer.masksToBounds = true
         
         return view
+    }()
+    var tapHandler: ((TaskVM) -> Void)?
+    
+    private lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.tintColor = .halgoraedoMint
+        refreshControl.addTarget(self, action: #selector(didChangeRefersh(_:)), for: .valueChanged)
+        
+        return refreshControl
     }()
     
     // MARK: - View Life Cycle
@@ -62,6 +77,7 @@ class TaskSectionViewCell: UICollectionViewCell {
         collectionView?.removeFromSuperview()
         configureCollectionView()
         configureDataSource()
+        collectionView?.refreshControl = refreshControl
     }
     
     func configure(section: TaskListModels.SectionVM, sectionNum: Int) {
@@ -81,6 +97,13 @@ class TaskSectionViewCell: UICollectionViewCell {
             return
         }
         dataSource.apply(snapshot, to: section, animatingDifferences: true)
+    }
+    
+    @objc func didChangeRefersh(_ sender: UIRefreshControl) {
+        taskSectionViewCellDelegate?.taskSectionViewCellDidPullToRefresh(self)
+        DispatchQueue.main.async {
+            self.refreshControl.endRefreshing()
+        }
     }
 }
 
@@ -102,6 +125,7 @@ private extension TaskSectionViewCell {
         collectionView.backgroundColor = .clear
         collectionView.dragDelegate = self
         collectionView.dropDelegate = self
+        collectionView.delegate = self
         collectionView.dragInteractionEnabled = true
     }
     
@@ -194,6 +218,17 @@ private extension TaskSectionViewCell {
         var snapshot = NSDiffableDataSourceSectionSnapshot<TaskVM>()
         snapshot.append(taskItems)
         return snapshot
+    }
+}
+
+// MARK: - UICollectionView Delegate
+
+extension TaskSectionViewCell: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        collectionView.deselectItem(at: indexPath, animated: true)
+        guard let task = dataSource.itemIdentifier(for: indexPath) else { return }
+        
+        taskSectionViewCellDelegate?.taskSectionViewCell(self, didSelectedTask: task, at: sectionNum)
     }
 }
 
