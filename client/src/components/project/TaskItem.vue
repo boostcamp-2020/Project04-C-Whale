@@ -69,7 +69,7 @@ export default {
       bus.$emit("moveToTaskDetail", destinationInfo);
     },
 
-    handleDragStart(e) {
+    handleDragStart() {
       this.SET_DRAGGING_TASK(this.task);
     },
 

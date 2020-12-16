@@ -11,12 +11,11 @@
       <UpdatableTitle :originalTitle="section.title" :parent="section" type="section" />
     </v-list-item>
 
-    <!-- <div
+    <div
       v-for="(task, index) in showDoneTasks ? tasks : todoTasks"
       :key="task.id"
       class="task-container"
-    > -->
-    <div v-for="(task, index) in todoTasks" :key="task.id" class="task-container">
+    >
       <TaskItem
         :section="section"
         :task="task"

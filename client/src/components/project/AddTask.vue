@@ -41,7 +41,7 @@
                   </v-list-item>
                 </v-list>
               </v-menu>
-              <v-btn depressed color="normal" v-on="on">
+              <v-btn depressed color="normal">
                 <v-icon color="red">mdi-alarm</v-icon>
                 <VueTimepicker
                   v-model="alarm.time"
@@ -132,7 +132,10 @@ export default {
       );
     },
     submitAlarm() {
-      if (this.getAlarmTimeInSec() < Date.now()) {
+      console.log(this.getAlarmTimeInSec() < Date.now());
+      console.log(this.getAlarmTimeInSec());
+      console.log(Date.now());
+      if (this.getAlarmTimeInSec() <= Date.now()) {
         return;
       }
 
