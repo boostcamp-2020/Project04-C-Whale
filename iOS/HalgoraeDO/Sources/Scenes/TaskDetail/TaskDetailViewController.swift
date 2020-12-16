@@ -43,10 +43,6 @@ class TaskDetailViewController: UIViewController {
     @IBOutlet weak private var taskTitleTextView: UITextView!
     @IBOutlet weak private var finishButton: UIButton!
     @IBOutlet weak private var priorityButton: UIButton!
-    @IBOutlet weak private var subTaskTabButton: UIButton!
-    @IBOutlet weak private var commentTabButton: UIButton!
-    @IBOutlet weak private var bookmarkTabButton: UIButton!
-    @IBOutlet weak private var subTabStackView: UIStackView!
     @IBOutlet weak private var datePickerButtonView: DatePickerButtonView!
     weak private var pageViewController: UIPageViewController?
     
@@ -146,10 +142,6 @@ class TaskDetailViewController: UIViewController {
         dismiss(animated: true) {
             taskListViewController?.viewWillAppear(true)
         }
-    }
-    
-    @IBAction private func didTapTaskFinishButton(_ sender: UIButton) {
-        
     }
     
     @IBAction func didTapSegmentControl(_ sender: UISegmentedControl) {

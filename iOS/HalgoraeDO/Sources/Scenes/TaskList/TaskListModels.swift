@@ -96,6 +96,22 @@ enum TaskListModels {
         }
     }
     
+    enum DragDropTask {
+        struct DragDropRequest {
+            var projectId: String
+            var sourceIndexPath: IndexPath
+            var destinationIndexPath: IndexPath
+            var childCheck: Int
+            var dataSource: UICollectionViewDiffableDataSource<TaskListModels.SectionVM, TaskVM>
+            var destinationCell: TaskCollectionViewListCell?
+        }
+        
+        struct ViewModel {
+            var displayedTasks: [TaskVM]
+            var sourceSection: TaskListModels.SectionVM
+        }
+    }
+    
     // MARK:  - Models
     
     struct SectionFields: Encodable {
@@ -197,7 +213,6 @@ extension TaskListModels.SectionVM: Hashable {
         return lhs.id == rhs.id
     }
 }
-
 
 extension TaskListModels.TaskVM: Hashable {
     

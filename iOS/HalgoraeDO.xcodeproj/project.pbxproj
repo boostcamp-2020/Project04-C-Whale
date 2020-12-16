@@ -101,6 +101,7 @@
 		AA46A98F2588783400D343B1 /* Task+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA46A9852588783400D343B1 /* Task+CoreDataClass.swift */; };
 		AA46A9B1258878DA00D343B1 /* EndPointMO+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9A04792586718700727F88 /* EndPointMO+CoreDataProperties.swift */; };
 		AA46A9B2258878DA00D343B1 /* EndPointMO+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9A046E25865A0000727F88 /* EndPointMO+CoreDataClass.swift */; };
+		AA5432D5258A4E620086DD70 /* TaskDragDropInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA5432D4258A4E620086DD70 /* TaskDragDropInteractor.swift */; };
 		AA6D84B8258739B600019373 /* BookmarkEndPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA6D84B7258739B600019373 /* BookmarkEndPoint.swift */; };
 		AAA74C74257DAE00004FC883 /* AddProjectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA74C73257DAE00004FC883 /* AddProjectViewController.swift */; };
 		AAA74C9D25805BC3004FC883 /* TaskDetailModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA74C9C25805BC2004FC883 /* TaskDetailModels.swift */; };
@@ -235,6 +236,7 @@
 		AA46A9832588783400D343B1 /* Comment+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Comment+CoreDataClass.swift"; sourceTree = "<group>"; };
 		AA46A9842588783400D343B1 /* Comment+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Comment+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		AA46A9852588783400D343B1 /* Task+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Task+CoreDataClass.swift"; sourceTree = "<group>"; };
+		AA5432D4258A4E620086DD70 /* TaskDragDropInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDragDropInteractor.swift; sourceTree = "<group>"; };
 		AA6D84B7258739B600019373 /* BookmarkEndPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkEndPoint.swift; sourceTree = "<group>"; };
 		AAA74C73257DAE00004FC883 /* AddProjectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProjectViewController.swift; sourceTree = "<group>"; };
 		AAA74C9C25805BC2004FC883 /* TaskDetailModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskDetailModels.swift; sourceTree = "<group>"; };
@@ -304,6 +306,7 @@
 				4C3F5669256B82F2006D7C9F /* TaskBoardViewController.swift */,
 				4C3F5664256B8117006D7C9F /* TaskListViewController.swift */,
 				4C3F566E256B8C2B006D7C9F /* TaskListInteractor.swift */,
+				AA5432D4258A4E620086DD70 /* TaskDragDropInteractor.swift */,
 				4C3F5673256B8C63006D7C9F /* TaskListWorker.swift */,
 				4C3F5678256B8C83006D7C9F /* TaskListPresenter.swift */,
 				4C3F567D256B8CB3006D7C9F /* TaskListModels.swift */,
@@ -822,6 +825,7 @@
 				4C4238602578D70D0068A252 /* EndPointType.swift in Sources */,
 				4C423751257792690068A252 /* BorderRadiusButton.swift in Sources */,
 				4C42372325763B1C0068A252 /* TaskDetailPresenter.swift in Sources */,
+				AA5432D5258A4E620086DD70 /* TaskDragDropInteractor.swift in Sources */,
 				4C9A02B72581542E00727F88 /* CommentAddView.swift in Sources */,
 				AA46A98F2588783400D343B1 /* Task+CoreDataClass.swift in Sources */,
 				4C4236B12573B4C90068A252 /* Priority+PopoverViewModelType.swift in Sources */,

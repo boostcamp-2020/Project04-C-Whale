@@ -5,10 +5,10 @@
 //  Created by woong on 2020/11/26.
 //
 
-import Foundation
+import UIKit
 
 protocol TaskListDisplayLogic {
-    func displayFetchTasks(viewModel: TaskListModels.FetchTasks.ViewModel)
-    func displayDetail(of task: Task)
+    func displayFetchTasks(snapshot: NSDiffableDataSourceSectionSnapshot<TaskListModels.TaskVM>, sectionVM: TaskListModels.SectionVM, sectionVMs: [TaskListModels.SectionVM])
     func displayFinishChanged(viewModel: TaskListModels.FinishTask.ViewModel)
+    func displatFinishDragDrop(snapshot: NSDiffableDataSourceSectionSnapshot<TaskListModels.TaskVM>, sectionVM: TaskListModels.SectionVM)
 }
