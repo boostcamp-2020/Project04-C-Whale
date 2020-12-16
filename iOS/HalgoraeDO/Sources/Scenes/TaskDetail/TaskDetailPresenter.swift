@@ -34,7 +34,7 @@ class TaskDetailPresenter {
 extension TaskDetailPresenter: TaskDetailPresentLogic {
     
     func presentFetchedTasks(response: TaskDetailModels.FetchSubTasks.Response) {
-        let taskVMs = response.tasks.compactMap { TaskListModels.DisplayedTask(task: $0) }
+        let taskVMs = response.tasks.compactMap { TaskListModels.TaskVM(task: $0) }
         subTaskViewController?.displaySubTasks(viewModel: .init(taskVMs: taskVMs))
     }
     

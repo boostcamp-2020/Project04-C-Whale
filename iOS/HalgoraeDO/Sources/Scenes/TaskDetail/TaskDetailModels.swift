@@ -21,7 +21,7 @@ enum TaskDetailModels {
         }
         
         struct ViewModel {
-            var taskVMs: [TaskListModels.DisplayedTask]
+            var taskVMs: [TaskListModels.TaskVM]
         }
     }
     

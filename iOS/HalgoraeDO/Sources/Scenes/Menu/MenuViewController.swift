@@ -26,9 +26,10 @@ class MenuViewController: UIViewController {
     // MARK: Views
     
     @IBOutlet weak private var menuCollectionView: UICollectionView!
-    private var refreshControl: UIRefreshControl = {
+    private lazy var refreshControl: UIRefreshControl = {
         let refreshControl = UIRefreshControl()
         refreshControl.tintColor = .halgoraedoMint
+        refreshControl.addTarget(self, action: #selector(didChangeRefersh(_:)), for: .valueChanged)
         
         return refreshControl
     }()
@@ -96,7 +97,6 @@ private extension MenuViewController {
         menuCollectionView.delegate = self
         menuCollectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         menuCollectionView.collectionViewLayout = createLayout()
-        refreshControl.addTarget(self, action: #selector(didChangeRefersh(_:)), for: .valueChanged)
         menuCollectionView.refreshControl = refreshControl
     }
     

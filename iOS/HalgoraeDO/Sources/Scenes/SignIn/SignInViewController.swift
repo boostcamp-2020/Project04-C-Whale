@@ -2,7 +2,7 @@
 //  SignInViewController.swift
 //  HalgoraeDO
 //
-//  Created by woong on 2020/12/15.
+//  Created by 이상윤 on 2020/12/16.
 //
 
 import UIKit
@@ -13,7 +13,7 @@ class SignInViewController: UIViewController {
     
     private var webAuthSession: ASWebAuthenticationSession?
 
-    @IBAction private func didTapNaverLogicButton(_ sender: BorderRadiusButton) {
+    @IBAction private func didTapNaverLogicButton(_ sender: UIButton) {
         guard let url = URL(string: "http://101.101.210.222:3000/api/user/oauth/naver"),
               UIApplication.shared.canOpenURL(url) else {
             return
@@ -31,11 +31,10 @@ class SignInViewController: UIViewController {
                 self?.switchRootViewController()
             }
         })
-        // \(ProcessInfo.processInfo.environment["token"] ?? "")
         webAuthSession?.presentationContextProvider = self
         webAuthSession?.start()
     }
-    @IBAction func didTapTestSignInButton(_ sender: BorderRadiusButton) {
+    @IBAction func didTapTestSignInButton(_ sender: UIButton) {
         AuthManager.shared.userToken = ProcessInfo.processInfo.environment["token"]
         switchRootViewController()
     }

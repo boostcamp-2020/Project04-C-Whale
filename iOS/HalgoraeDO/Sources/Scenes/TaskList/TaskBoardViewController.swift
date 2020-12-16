@@ -9,7 +9,7 @@ import UIKit
 
 class TaskBoardViewController: UIViewController {
     
-    typealias TaskVM = TaskListModels.DisplayedTask
+    typealias TaskVM = TaskListModels.TaskVM
     
     // MARK: - Properties
     
@@ -24,6 +24,13 @@ class TaskBoardViewController: UIViewController {
     // MARK: - Views
     
     @IBOutlet weak private var taskBoardCollectionView: UICollectionView!
+    private var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.tintColor = .halgoraedoMint
+        refreshControl.addTarget(self, action: #selector(didChangeRefersh(_:)), for: .valueChanged)
+        
+        return refreshControl
+    }()
     
     // MARK: - View Life Cycle
     
@@ -62,6 +69,8 @@ class TaskBoardViewController: UIViewController {
         let presenter = TaskListPresenter(viewController: self)
         let interactor = TaskListInteractor(presenter: presenter, worker: TaskListWorker(sessionManager: SessionManager(configuration: .default)))
         self.interactor = interactor
+        self.router = TaskListRouter(viewController: nil, boardViewController: self, dataStore: interactor)
+        
     }
     
     //MARK: - Helper Method
@@ -74,6 +83,11 @@ class TaskBoardViewController: UIViewController {
     
     @objc private func addSection(_ notification: Notification) {
         addSectionAlert()
+    }
+    
+    @objc func didChangeRefersh(_ sender: UIRefreshControl) {
+        interactor?.fetchTasks(request: .init(projectId: project.id))
+        sender.endRefreshing()
     }
     
     private func addSectionAlert() {
@@ -151,6 +165,7 @@ private extension TaskBoardViewController {
         taskBoardCollectionView.register(TaskSectionViewCell.self, forCellWithReuseIdentifier: "section-reuse-identifier")
         taskBoardCollectionView.register(AddSectionViewCell.self, forCellWithReuseIdentifier: "section-add-reuse-identifier")
         taskBoardCollectionView.isPagingEnabled = true
+        taskBoardCollectionView.refreshControl = refreshControl
     }
     
     func createCompositionalLayout() -> UICollectionViewCompositionalLayout {
@@ -223,7 +238,6 @@ extension TaskBoardViewController: UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "section-reuse-identifier", for: indexPath) as! TaskSectionViewCell
             cell.configure(section: sectionVM[indexPath.section], sectionNum: indexPath.section)
             cell.taskSectionViewCellDelegate = self
-            
             return cell
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "section-add-reuse-identifier", for: indexPath) as! AddSectionViewCell
@@ -257,8 +271,17 @@ extension TaskBoardViewController: TaskListDisplayLogic {
 // MARK: - Move Cell Delegate Logic
 
 extension TaskBoardViewController: TaskSectionViewCellDelegate {
+    func taskSectionViewCell(_ taskSectionViewCell: TaskSectionViewCell, didSelectedTask task: TaskListModels.TaskVM, at section: Int) {
+        
+        router?.routeToTaskDetailFromBoard(for: task, at: .init(item: 0, section: section))
+    }
     
-    func taskSectionViewCell(_ taskSectionViewCell: TaskSectionViewCell, _ sourceSection: TaskListModels.SectionVM, _ destinationSection: TaskListModels.SectionVM, _ sourceTask: TaskListModels.DisplayedTask, _ destinationTask: TaskListModels.DisplayedTask?) {
+    func taskSectionViewCellDidPullToRefresh(_ taskSectionViewCell: TaskSectionViewCell) {
+        interactor?.fetchTasks(request: .init(projectId: project.id))
+    }
+    
+    func taskSectionViewCell(_ taskSectionViewCell: TaskSectionViewCell, _ sourceSection: TaskListModels.SectionVM, _ destinationSection: TaskListModels.SectionVM, _ sourceTask: TaskListModels.TaskVM, _ destinationTask: TaskListModels.TaskVM?) {
+
         guard let destinationTask = destinationTask else { //맨 위에 insert
             if sourceSection == destinationSection { //같은 collectionview
                 for i in 0..<sectionVM.count where sectionVM[i].id == sourceSection.id {
@@ -266,6 +289,7 @@ extension TaskBoardViewController: TaskSectionViewCellDelegate {
                     newTasks.insert(sourceTask, at: 0)
                     sectionVM[i].tasks = newTasks
                     taskBoardCollectionView.reloadItems(at: [IndexPath(row: 0, section: i)])
+                    dragDropHelper(sectionId: destinationSection.id, sourceTask: sourceTask, sendTasks: sectionVM[i].tasks)
                 }
                 
                 return
@@ -280,6 +304,7 @@ extension TaskBoardViewController: TaskSectionViewCellDelegate {
                     sectionVM[i].tasks = newItems
                     let sectionCell = taskBoardCollectionView.cellForItem(at: IndexPath(row: 0, section: i)) as? TaskSectionViewCell
                     sectionCell?.reloadSnapshot(taskItems: newItems)
+                    dragDropHelper(sectionId: destinationSection.id, sourceTask: sourceTask, sendTasks: sectionVM[i].tasks)
                     //taskBoardCollectionView.reloadItems(at: [IndexPath(row: 0, section: i)])
                 }
             }
@@ -292,8 +317,8 @@ extension TaskBoardViewController: TaskSectionViewCellDelegate {
                 let newTasks = removeTaskFromTasks(sourceSection.tasks, sourceTask.id)
                 sectionVM[i].tasks = addTaskAtTasks(newTasks, sourceTask, destinationTask.id)
                 taskBoardCollectionView.reloadItems(at: [IndexPath(row: 0, section: i)])
+                dragDropHelper(sectionId: destinationSection.id, sourceTask: sourceTask, sendTasks: sectionVM[i].tasks)
             }
-            
             return
         }
         for i in 0..<sectionVM.count  { //다른 collectionview
@@ -304,9 +329,18 @@ extension TaskBoardViewController: TaskSectionViewCellDelegate {
                 sectionVM[i].tasks = addTaskAtTasks(destinationSection.tasks, sourceTask, destinationTask.id)
                 let sectionCell = taskBoardCollectionView.cellForItem(at: IndexPath(row: 0, section: i)) as? TaskSectionViewCell
                 sectionCell?.reloadSnapshot(taskItems: sectionVM[i].tasks)
+                dragDropHelper(sectionId: destinationSection.id, sourceTask: sourceTask, sendTasks: sectionVM[i].tasks)
                // taskBoardCollectionView.reloadItems(at: [IndexPath(row: 0, section: i)])
             }
         }
+    }
+    
+    private func dragDropHelper(sectionId: String, sourceTask: TaskVM, sendTasks: [TaskVM]) {
+        var taskIds: [String] = []
+        for task in sendTasks {
+            taskIds.append(task.id)
+        }
+        interactor?.fetchDragDrop(request: .init(projectId: project.id, sectionId: sectionId, taskId: sourceTask.id, parentTaskId: nil, taskMoveSection: .init(sectionId: sectionId), taskMoveFields: .init(orderedTasks: taskIds))) //섹션간 이동 함수 사용
     }
     
     private func removeTaskFromTasks(_ taskItems: [TaskVM], _ sourceId: String) -> [TaskVM] {

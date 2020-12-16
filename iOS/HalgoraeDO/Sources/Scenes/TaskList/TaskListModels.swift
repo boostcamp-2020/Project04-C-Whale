@@ -27,7 +27,7 @@ enum TaskListModels {
     
     enum FinishTask {
         struct Request {
-            var displayedTasks: [DisplayedTask]
+            var displayedTasks: [TaskVM]
         }
         
         struct Response {
@@ -35,7 +35,7 @@ enum TaskListModels {
         }
         
         struct ViewModel {
-            var displayedTasks: [DisplayedTask]
+            var displayedTasks: [TaskVM]
         }
     }
     
@@ -50,7 +50,7 @@ enum TaskListModels {
         }
         
         struct ViewModel {
-            var displayedTask: DisplayedTask
+            var displayedTask: TaskVM
         }
     }
     
@@ -66,7 +66,7 @@ enum TaskListModels {
         }
         
         struct ViewModel {
-            var displayedTask: DisplayedTask
+            var displayedTask: TaskVM
         }
     }
     
@@ -82,6 +82,17 @@ enum TaskListModels {
         struct Request {
             var projectId: String
             var sectionFields: SectionFields
+        }
+    }
+    
+    enum MoveTask {
+        struct Request {
+            var projectId: String?
+            var sectionId: String
+            var taskId: String
+            var parentTaskId: String?
+            var taskMoveSection: TaskMoveSection
+            var taskMoveFields: TaskMoveFields
         }
     }
     
@@ -104,14 +115,22 @@ enum TaskListModels {
         var priority: String?
     }
     
+    struct TaskMoveFields: Encodable {
+        var orderedTasks: [String]
+    }
+    
+    struct TaskMoveSection: Encodable {
+        var sectionId: String
+    }
+    
     struct SectionVM {
         var id: String
         var title: String
-        var tasks: [DisplayedTask] = []
+        var tasks: [TaskVM] = []
         
         init(id: String,
             title: String,
-            tasks: [DisplayedTask]) {
+            tasks: [TaskVM]) {
             self.id = id
             self.title = title
             self.tasks = tasks
@@ -120,18 +139,18 @@ enum TaskListModels {
         init(section: Section) {
             self.id = section.id
             self.title = section.title ?? ""
-            self.tasks = section.tasks?.compactMap({ $0 as? Task }).map { DisplayedTask(task: $0) } ?? []
+            self.tasks = section.tasks?.compactMap({ $0 as? Task }).map { TaskVM(task: $0) } ?? []
         }
     }
     
-    struct DisplayedTask: TaskContentViewModelType {
+    struct TaskVM: TaskContentViewModelType {
         var id: String
         var title: String
         var isCompleted: Bool
         var tintColor: UIColor
         var position: Int
         var parentPosition: Int?
-        var subItems: [DisplayedTask] = []
+        var subItems: [TaskVM] = []
         
         init(id: String,
              title: String,
@@ -140,7 +159,7 @@ enum TaskListModels {
              position: Int,
              parentPosition: Int?,
              sectionId: String,
-             subItems: [DisplayedTask]) {
+             subItems: [TaskVM]) {
             self.id = id
             self.title = title
             self.isCompleted = isCompleted
@@ -162,7 +181,7 @@ enum TaskListModels {
             guard let tasks = task.tasks, tasks.count != 0 else { return }
             let subTasks = tasks.array as? [Task] ?? []
             self.subItems = subTasks.map {
-                DisplayedTask(task: $0)
+                TaskVM(task: $0)
             }
         }
     }
@@ -180,7 +199,7 @@ extension TaskListModels.SectionVM: Hashable {
 }
 
 
-extension TaskListModels.DisplayedTask: Hashable {
+extension TaskListModels.TaskVM: Hashable {
     
     static func ==(lhs: Self, rhs: Self) -> Bool {
         return lhs.id == rhs.id
