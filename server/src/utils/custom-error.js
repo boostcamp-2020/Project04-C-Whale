@@ -13,7 +13,8 @@ const message = {
   UNNECESSARY_INPUT_ERROR: () => '불필요한 데이터가 포함되어있습니다.',
   INVALID_INPUT_ERROR: () => `요청하신 데이터의 일부 값이 유효하지 않습니다.`,
   WRONG_RELATION_ERROR: () => '요청하신 데이터의 연관관계가 잘못됐습니다.',
-  DUEDATE_ERROR: () => 'dueDate는 현재시간보다 이전을 설정할 수 없습니다.',
+  DUEDATE_ERROR_KR: () => 'dueDate는 현재시간보다 이전을 설정할 수 없습니다.',
+  DUEDATE_ERROR_EN: () => 'Duedate cannot be set before the current time.',
   MULTIPLE_ERROR: () => '요청에 대한 에러가 복합적으로 존재합니다.',
   // 401
   UNAUTHORIZED_ERROR: '인증되지 않은 사용자입니다. 네이버 로그인을 하신 후, 서비스를 이용해주세요.',
@@ -39,93 +40,94 @@ const code = {
 
 const customError = {
   // validation error
-  TYPE_ERROR: (fileds = {}) => {
+  TYPE_ERROR: (fields = []) => {
     const error = new Error(message.TYPE_ERROR());
     error.status = status.BAD_REQUEST_ERROR;
     error.code = code.VALIDATION_ERROR;
-    error.fileds = fileds;
+    error.fields = fields;
     return error;
   },
-  NECESSARY_INPUT_ERROR: (fileds = {}) => {
+  NECESSARY_INPUT_ERROR: (fields = []) => {
     const error = new Error(message.NECESSARY_INPUT_ERROR());
     error.status = status.BAD_REQUEST_ERROR;
     error.code = code.VALIDATION_ERROR;
-    error.fileds = fileds;
+    error.fields = fields;
     return error;
   },
-  UNNECESSARY_INPUT_ERROR: (fileds = {}) => {
+  UNNECESSARY_INPUT_ERROR: (fields = []) => {
     const error = new Error(message.UNNECESSARY_INPUT_ERROR());
     error.status = status.BAD_REQUEST_ERROR;
     error.code = code.VALIDATION_ERROR;
-    error.fileds = fileds;
+    error.fields = fields;
     return error;
   },
-  INVALID_INPUT_ERROR: (fileds = {}) => {
+  INVALID_INPUT_ERROR: (fields = []) => {
     const error = new Error(message.INVALID_INPUT_ERROR());
     error.status = status.BAD_REQUEST_ERROR;
     error.code = code.VALIDATION_ERROR;
-    error.fileds = fileds;
+    error.fields = fields;
     return error;
   },
-  DUEDATE_ERROR: (fileds = {}) => {
-    const error = new Error(message.DUEDATE_ERROR());
+  DUEDATE_ERROR: () => {
+    const error = new Error(message.DUEDATE_ERROR_KR());
     error.status = status.BAD_REQUEST_ERROR;
     error.code = code.VALIDATION_ERROR;
-    error.fileds = fileds;
+    error.fields = [message.DUEDATE_ERROR_EN];
     return error;
   },
-  MULTIPLE_ERROR: (fileds = {}) => {
+  MULTIPLE_ERROR: (fields = []) => {
     const error = new Error(message.MULTIPLE_ERROR());
     error.status = status.BAD_REQUEST_ERROR;
     error.code = code.MULTIPLE_ERROR;
-    error.fileds = fileds;
+    error.fields = fields;
     return error;
   },
   // invalid params error
-  WRONG_RELATION_ERROR: (fileds = {}) => {
+  WRONG_RELATION_ERROR: (fields = {}) => {
     const error = new Error(message.WRONG_RELATION_ERROR());
     error.status = status.BAD_REQUEST_ERROR;
     error.code = code.INVALID_PARAM_ERROR;
-    error.fileds = fileds;
+    error.fields = fields;
     return error;
   },
   // unauthorized error
-  UNAUTHORIZED_ERROR: (fileds = {}) => {
+  UNAUTHORIZED_ERROR: (fields = {}) => {
     const error = new Error(message.UNAUTHORIZED_ERROR);
     error.status = status.UNAUTHORIZED_ERROR;
     error.code = code.UNAUTHORIZED_ERROR;
-    error.fileds = fileds;
+    error.fields = fields;
     return error;
   },
   // invalid toekn error
-  INVALID_TOKEN_ERROR: (fileds = {}) => {
+  INVALID_TOKEN_ERROR: (fields = []) => {
     const error = new Error(message.INVALID_TOKEN_ERROR);
     error.status = status.UNAUTHORIZED_ERROR;
     error.code = code.INVALID_TOKEN_ERROR;
-    error.fileds = fileds;
+    error.fields = fields;
     return error;
   },
   // forbidden error
-  FORBIDDEN_ERROR: (fileds = {}) => {
+  FORBIDDEN_ERROR: (fields = []) => {
     const error = new Error(message.FORBIDDEN_ERROR());
     error.status = status.FORBIDDEN_ERROR;
     error.code = code.FORBIDDEN_ERROR;
-    error.fileds = fileds;
+    error.fields = fields;
     return error;
   },
   // notfound error
-  NOT_FOUND_ERROR: property => {
+  NOT_FOUND_ERROR: (fields = [], property) => {
     const error = new Error(message.NOT_FOUND_ERROR(property));
     error.status = status.NOT_FOUND_ERROR;
     error.code = code.NOT_FOUND_ERROR;
+    error.fields = fields;
     return error;
   },
   // internal server error
-  INTERNAL_SERVER_ERROR: (fileds = {}) => {
+  INTERNAL_SERVER_ERROR: (fields = []) => {
     const error = new Error(message.INTERNAL_SERVER_ERROR);
     error.status = status.INTERNAL_SERVER_ERROR;
     error.code = code.INTERNAL_SERVER_ERROR;
-    error.fileds = fileds;
+    error.fields = fields;
     return error;
   },
 };
