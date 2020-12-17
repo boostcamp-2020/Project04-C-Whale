@@ -1,5 +1,7 @@
 /* eslint-disable no-return-await */
 const sequelize = require('@models');
+const { isProjectOwner } = require('@services/authority-check');
+const { customError } = require('../utils/custom-error');
 
 const { models } = sequelize;
 const projectModel = models.project;
@@ -41,8 +43,8 @@ const retrieveProjects = async userId => {
   return projects;
 };
 
-const retrieveById = async id => {
-  const project = await projectModel.findByPk(id, {
+const retrieveById = async ({ projectId, userId, ...rest }) => {
+  const project = await projectModel.findByPk(projectId, {
     attributes: ['id', 'title', 'isList'],
     include: {
       model: models.section,
@@ -63,6 +65,15 @@ const retrieveById = async id => {
       [models.section, models.task, models.task, 'position', 'ASC'],
     ],
   });
+
+  if (!project) {
+    throw customError.NOT_FOUND_ERROR('project');
+  }
+
+  if (!(await isProjectOwner({ id: projectId, userId }))) {
+    throw customError.FORBIDDEN_ERROR();
+  }
+
   return project;
 };
 
