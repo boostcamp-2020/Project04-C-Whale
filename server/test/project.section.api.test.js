@@ -215,7 +215,9 @@ describe('update section task positions', () => {
     const expectedUser = seeder.users[0];
     const expectedProjectId = 'invalidId';
     const expectedSectionId = seeder.sections[0].id;
-    const requestBody = { orderedTasks: [seeder.tasks[2], seeder.tasks[1].id, seeder.tasks[0].id] };
+    const requestBody = {
+      orderedTasks: [seeder.tasks[2].id, seeder.tasks[1].id, seeder.tasks[0].id],
+    };
     const expectedError = customError.INVALID_INPUT_ERROR();
 
     // when
@@ -235,7 +237,9 @@ describe('update section task positions', () => {
     const expectedUser = seeder.users[0];
     const expectedProjectId = seeder.projects[0].id;
     const expectedSectionId = 'invalidId';
-    const requestBody = { orderedTasks: [seeder.tasks[2], seeder.tasks[1].id, seeder.tasks[0].id] };
+    const requestBody = {
+      orderedTasks: [seeder.tasks[2].id, seeder.tasks[1].id, seeder.tasks[0].id],
+    };
     const expectedError = customError.INVALID_INPUT_ERROR();
 
     // when
@@ -255,7 +259,9 @@ describe('update section task positions', () => {
     const expectedUser = seeder.users[0];
     const expectedProjectId = seeder.projects[2].id;
     const expectedSectionId = seeder.sections[0].id;
-    const requestBody = { orderedTasks: [seeder.tasks[2], seeder.tasks[1].id, seeder.tasks[0].id] };
+    const requestBody = {
+      orderedTasks: [seeder.tasks[2].id, seeder.tasks[1].id, seeder.tasks[0].id],
+    };
     const expectedError = customError.FORBIDDEN_ERROR();
 
     // when
@@ -275,7 +281,9 @@ describe('update section task positions', () => {
     const expectedUser = seeder.users[0];
     const expectedProjectId = seeder.sections[2].id;
     const expectedSectionId = seeder.sections[0].id;
-    const requestBody = { orderedTasks: [seeder.tasks[2], seeder.tasks[1].id, seeder.tasks[0].id] };
+    const requestBody = {
+      orderedTasks: [seeder.tasks[2].id, seeder.tasks[1].id, seeder.tasks[0].id],
+    };
     const expectedError = customError.NOT_FOUND_ERROR();
 
     // when
@@ -295,7 +303,9 @@ describe('update section task positions', () => {
     const expectedUser = seeder.users[0];
     const expectedProjectId = seeder.projects[0].id;
     const expectedSectionId = seeder.sections[1].id;
-    const requestBody = { orderedTasks: [seeder.tasks[2], seeder.tasks[1].id, seeder.tasks[0].id] };
+    const requestBody = {
+      orderedTasks: [seeder.tasks[2].id, seeder.tasks[1].id, seeder.tasks[0].id],
+    };
     const expectedError = customError.NOT_FOUND_ERROR();
 
     // when
@@ -359,7 +369,7 @@ describe('update section', () => {
     const expectedProjectId = seeder.projects[0].id;
     const expectedSectionId = seeder.sections[0].id;
     const requestBody = { title: { hi: 3 } };
-    const expectedError = customError.TypeError();
+    const expectedError = customError.MULTIPLE_ERROR();
 
     // when
     const res = await request(app)
@@ -378,7 +388,7 @@ describe('update section', () => {
     const expectedUser = seeder.users[0];
     const expectedProjectId = 'invalidId';
     const expectedSectionId = seeder.sections[0].id;
-    const requestBody = { title: '' };
+    const requestBody = { title: 'asd' };
     const expectedError = customError.INVALID_INPUT_ERROR();
 
     // when
@@ -398,7 +408,7 @@ describe('update section', () => {
     const expectedUser = seeder.users[0];
     const expectedProjectId = seeder.projects[0].id;
     const expectedSectionId = 'invalidId';
-    const requestBody = { title: '' };
+    const requestBody = { title: 'asd' };
     const expectedError = customError.INVALID_INPUT_ERROR();
 
     // when
@@ -416,9 +426,9 @@ describe('update section', () => {
   it('자신의 project가 아닌 update 시도', async done => {
     // given
     const expectedUser = seeder.users[0];
-    const expectedProjectId = seeder.projects[2];
+    const expectedProjectId = seeder.projects[2].id;
     const expectedSectionId = seeder.sections[0].id;
-    const requestBody = { title: '' };
+    const requestBody = { title: 'asd' };
     const expectedError = customError.FORBIDDEN_ERROR();
 
     // when
@@ -426,7 +436,7 @@ describe('update section', () => {
       .put(`/api/project/${expectedProjectId}/section/${expectedSectionId}`)
       .set('Authorization', `Bearer ${createJWT(expectedUser)}`)
       .send(requestBody);
-
+    console.log(res.body);
     // then
     expect(res.status).toBe(expectedError.status);
     expect(res.body.code).toBe(expectedError.code);
@@ -438,7 +448,7 @@ describe('update section', () => {
     const expectedUser = seeder.users[0];
     const expectedProjectId = seeder.sections[1].id;
     const expectedSectionId = seeder.sections[0].id;
-    const requestBody = { title: '' };
+    const requestBody = { title: 'asd' };
     const expectedError = customError.NOT_FOUND_ERROR();
 
     // when
@@ -458,7 +468,7 @@ describe('update section', () => {
     const expectedUser = seeder.users[0];
     const expectedProjectId = seeder.projects[0].id;
     const expectedSectionId = seeder.projects[1].id;
-    const requestBody = { title: '' };
+    const requestBody = { title: 'hi' };
     const expectedError = customError.NOT_FOUND_ERROR();
 
     // when
