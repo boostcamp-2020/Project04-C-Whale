@@ -6,16 +6,16 @@ const { message, customError } = require('@utils/custom-error');
 const validator = async (Dto, object, options) => {
   const classObject = plainToClass(Dto, object);
   await validateOrReject(classObject, { ...options, stopAtFirstError: true });
+  // await validateOrReject(classObject, { ...options });
 };
 
 const getTypeError = errorArray => {
   const [validationError] = errorArray;
-  const { property } = validationError;
   const recievedErrorMessage = Object.values(validationError.constraints).shift();
 
   const errorKyes = Object.keys(message);
-  const errorType = errorKyes.find(key => message[key](property) === recievedErrorMessage);
-  return customError[errorType](property);
+  const errorType = errorKyes.find(key => message[key]() === recievedErrorMessage);
+  return customError[errorType]();
 };
 const isAfterToday = (property, validationOptions) => {
   return (object, propertyName) => {
