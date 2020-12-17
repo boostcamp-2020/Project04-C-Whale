@@ -97,14 +97,6 @@ const create = async data => {
   return result;
 };
 
-const findOrCreate = async data => {
-  const [result] = await projectModel.findAll({ where: data });
-  if (result) return true;
-
-  const createResult = await create(data);
-  return createResult;
-};
-
 const update = async ({ projectId, userId, ...data }) => {
   const project = await projectModel.findByPk(projectId);
   if (!project) {
@@ -135,7 +127,24 @@ const remove = async ({ projectId, userId }) => {
   return true;
 };
 
-const updateSectionPositions = async orderedSections => {
+const updateSectionPositions = async ({ projectId, userId, ...data }) => {
+  const { orderedSections } = data;
+  const project = await projectModel.findByPk(projectId);
+  if (!project) {
+    throw customError.NOT_FOUND_ERROR('task');
+  }
+  if (project.creatorId !== userId) {
+    throw customError.FORBIDDEN_ERROR();
+  }
+  const sections = await project.getSections();
+  if (
+    !sections.every(section =>
+      orderedSections.find(orderedSectionId => orderedSectionId === section.id),
+    )
+  ) {
+    throw customError.WRONG_RELATION_ERROR(['please check projectId, sectionId']);
+  }
+
   const result = await sequelize.transaction(async t => {
     return await Promise.all(
       orderedSections.map(async (sectionId, position) => {
@@ -154,7 +163,6 @@ module.exports = {
   retrieveProjects,
   retrieveById,
   create,
-  findOrCreate,
   update,
   remove,
   updateSectionPositions,

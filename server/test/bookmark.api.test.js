@@ -201,7 +201,7 @@ describe('post bookmark', () => {
     // given
     const taskId = seeder.tasks[0].id;
     const data = { title: '네이버 웨일로 가봅시다!' };
-    const expectedError = customError.NECESSARY_INPUT_ERROR();
+    const expectedError = customError.MULTIPLE_ERROR();
 
     // when
     const res = await request(app)

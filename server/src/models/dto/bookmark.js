@@ -2,17 +2,17 @@ const { IsString, IsEmpty, IsUrl, ValidateIf, MinLength, IsDefined } = require('
 const errorMessage = require('@utils/custom-error').message;
 
 class BookmarkDto {
-  @IsEmpty({ message: errorMessage.UNNECESSARY_INPUT_ERROR() })
+  @IsEmpty()
   id;
 
-  @IsDefined({ message: errorMessage.NECESSARY_INPUT_ERROR() })
-  @IsUrl({ require_protocol: true }, { message: errorMessage.INVALID_INPUT_ERROR() })
-  @IsString({ message: errorMessage.TYPE_ERROR() })
+  @IsDefined()
+  @IsUrl({ require_protocol: true })
+  @IsString()
   url;
 
   @ValidateIf(o => typeof o.title !== 'undefined') // validate if를 잘못 사용, 처음에 걸리는지 나중에 거리는지 체크
-  @MinLength(1, { message: errorMessage.INVALID_INPUT_ERROR() })
-  @IsString({ message: errorMessage.TYPE_ERROR() })
+  @MinLength(1)
+  @IsString()
   title;
 
   @IsEmpty({ message: errorMessage.UNNECESSARY_INPUT_ERROR() })
