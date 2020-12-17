@@ -92,8 +92,22 @@ const updateTaskPositions = async ({ projectId, sectionId, userId, ...data }) =>
 };
 
 const remove = async ({ projectId, sectionId, userId }) => {
-  const result = await sectionModel.destroy({ where: { id: sectionId } });
+  const project = await models.project.findByPk(projectId);
+  if (!project) {
+    throw customError.NOT_FOUND_ERROR('project');
+  }
+  if (project.creatorId !== userId) {
+    throw customError.FORBIDDEN_ERROR();
+  }
 
-  return result === 1;
+  const [section] = await project.getSections({ where: { id: sectionId } });
+  if (!section) {
+    throw customError.NOT_FOUND_ERROR('section');
+  }
+
+  section.destroy();
+  section.save();
+
+  return true;
 };
 module.exports = { create, update, updateTaskPositions, remove };
