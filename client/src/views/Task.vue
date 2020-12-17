@@ -64,10 +64,8 @@ export default {
       const result = await taskAPI.getTaskById(this.$route.params.taskId);
       this.task = result.data.task;
     }
-    bus.$emit("start:spinner");
     await this.fetchComments(this.$route.params.taskId);
     await this.fetchBookmarks(this.$route.params.taskId);
-    bus.$emit("end:spinner");
   },
   mixins: [SpinnerMixin],
 };

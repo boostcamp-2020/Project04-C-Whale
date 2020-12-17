@@ -17,9 +17,6 @@ myAxios.interceptors.request.use((config) => {
 
 myAxios.interceptors.response.use(
   (res) => {
-    if (res.config.url === "/user/me") {
-      return res;
-    }
     if (res.config.method === "get") {
       bus.$emit("end:spinner");
     }

@@ -5,7 +5,6 @@
         <img width="400" src="../assets/halgoraedo.png" />
         <div class="text-h1">NOT FOUND</div>
       </div>
-      <alert></alert>
     </v-layout>
   </v-app>
 </template>
