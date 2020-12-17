@@ -1,14 +1,14 @@
-const { IsUUID, IsString, IsInt, MinLength } = require('class-validator');
-const errorMessage = require('@utils/custom-error').message;
+const { IsString, MinLength, IsEmpty, ValidateIf, IsInt } = require('class-validator');
 
 class SectionDto {
-  @IsUUID('4')
+  @IsEmpty()
   id;
 
-  @MinLength(1, { groups: ['create', 'update'] }, { message: errorMessage.INVALID_INPUT_ERROR() })
-  @IsString({ groups: ['create', 'update'] }, { message: errorMessage.TYPE_ERROR() })
+  @MinLength(1)
+  @IsString()
   title;
 
+  @ValidateIf(o => o.position)
   @IsInt()
   position;
 }

@@ -1,30 +1,24 @@
-const { IsString, ValidateIf, IsUUID } = require('class-validator');
-const errorMessage = require('@utils/custom-error').message;
+const { IsString, ValidateIf, IsUUID, IsOptional } = require('class-validator');
 
 class ParamsValidator {
-  @ValidateIf(o => typeof o.projectId !== 'undefined')
-  @IsUUID('4', { message: errorMessage.INVALID_INPUT_ERROR('projectId') })
-  @IsString({ message: errorMessage.TYPE_ERROR('projectId') })
+  @IsOptional()
+  @IsUUID('4')
   projectId;
 
   @ValidateIf(o => typeof o.sectionId !== 'undefined')
-  @IsUUID('4', { message: errorMessage.INVALID_INPUT_ERROR('sectionId') })
-  @IsString({ message: errorMessage.TYPE_ERROR('sectionId') })
+  @IsUUID('4')
   sectionId;
 
   @ValidateIf(o => typeof o.taskId !== 'undefined')
-  @IsUUID('4', { message: errorMessage.INVALID_INPUT_ERROR('taskId') })
-  @IsString({ message: errorMessage.TYPE_ERROR('taskId') })
+  @IsUUID('4')
   taskId;
 
   @ValidateIf(o => typeof o.commentId !== 'undefined')
-  @IsUUID('4', { message: errorMessage.INVALID_INPUT_ERROR('commentId') })
-  @IsString({ message: errorMessage.TYPE_ERROR('commentId') })
+  @IsUUID('4')
   commentId;
 
   @ValidateIf(o => typeof o.bookmarkId !== 'undefined')
-  @IsString({ message: errorMessage.TYPE_ERROR('bookmarkId') })
-  @IsUUID('4', { message: errorMessage.INVALID_INPUT_ERROR('bookmarkId') })
+  @IsString()
   bookmarkId;
 }
 

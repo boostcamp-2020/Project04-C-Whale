@@ -9,63 +9,52 @@ const {
   IsEmpty,
   IsEnum,
 } = require('class-validator');
-const errorMessage = require('@utils/custom-error').message;
+const { message: errorMessage } = require('@utils/custom-error');
 const { isAfterToday } = require('@utils/validator');
 
 class TaskDto {
-  @IsEmpty({ groups: ['create', 'patch'], message: errorMessage.UNNECESSARY_INPUT_ERROR() })
-  @IsUUID('4', { groups: ['retrieve'], message: errorMessage.INVALID_INPUT_ERROR() })
-  @IsString({ groups: ['retrieve'], message: errorMessage.TYPE_ERROR() })
+  @IsEmpty({ groups: ['create', 'patch'] })
   id;
 
   @IsOptional({ groups: ['patch'] })
-  @MinLength(1, { groups: ['create', 'patch'], message: errorMessage.INVALID_INPUT_ERROR() })
-  @IsString({ groups: ['create', 'patch'], message: errorMessage.TYPE_ERROR() })
+  @MinLength(1, { groups: ['create', 'patch'] })
+  @IsString({ groups: ['create', 'patch'] })
   title;
 
   @IsOptional({ groups: ['patch'] })
-  @isAfterToday('dueDate', { groups: ['create', 'patch'], message: errorMessage.DUEDATE_ERROR() })
-  @IsDateString(
-    { strict: true },
-    { groups: ['create', 'patch'], message: errorMessage.TYPE_ERROR() },
-  )
+  @isAfterToday('dueDate', {
+    groups: ['create', 'patch'],
+    message: errorMessage.DUEDATE_ERROR_EN(),
+  })
+  @IsDateString({ strict: true }, { groups: ['create', 'patch'] })
   dueDate;
 
   @IsOptional({ groups: ['patch'] })
-  @IsInt({ groups: ['patch'], message: errorMessage.TYPE_ERROR() })
+  @IsInt({ groups: ['patch'] })
   position;
 
   @IsOptional({ groups: ['patch'] })
-  @IsBoolean({ groups: ['patch'], message: errorMessage.TYPE_ERROR() })
+  @IsBoolean({ groups: ['patch'] })
   isDone;
 
   @IsOptional({ groups: ['create', 'patch'] })
-  @IsUUID('4', {
-    groups: ['create', 'patch'],
-    message: errorMessage.INVALID_INPUT_ERROR(),
-  })
-  @IsString({ groups: ['create', 'patch'], message: errorMessage.TYPE_ERROR() })
+  @IsUUID('4', { groups: ['create', 'patch'] })
+  @IsString({ groups: ['create', 'patch'] })
   parentId;
 
-  @IsEmpty({ groups: ['create'], message: errorMessage.UNNECESSARY_INPUT_ERROR() })
+  @IsEmpty({ groups: ['create'] })
   @IsOptional({ groups: ['patch'] })
-  @IsUUID('4', { groups: ['patch'], message: errorMessage.INVALID_INPUT_ERROR() })
-  @IsString({ groups: ['patch'], message: errorMessage.TYPE_ERROR() })
+  @IsUUID('4', { groups: ['patch'] })
+  @IsString({ groups: ['patch'] })
   sectionId;
 
   @IsOptional({ groups: ['patch', 'create'] })
-  @IsEnum(['1', '2', '3', '4'], {
-    groups: ['patch', 'create'],
-    message: errorMessage.INVALID_INPUT_ERROR(),
-  })
+  @IsEnum(['1', '2', '3', '4'], { groups: ['patch', 'create'] })
   priority;
 
   @IsOptional({ groups: ['patch', 'create'] })
-  @IsUUID('4', {
-    groups: ['patch', 'create'],
-    message: errorMessage.INVALID_INPUT_ERROR(),
-  })
-  @IsString({ groups: ['patch', 'create'], message: errorMessage.TYPE_ERROR() })
+  @IsUUID('4', { groups: ['patch', 'create'] })
+  @IsString({ groups: ['patch', 'create'] })
   alarmId;
 }
 
