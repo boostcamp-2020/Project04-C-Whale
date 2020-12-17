@@ -340,7 +340,7 @@ describe('update section task positions', () => {
       .sort((task1, task2) => task1.id - task2.id);
     orderedTasks[0] = seeder.sections[2].id;
     const requestBody = { orderedTasks };
-    const expectedError = customError.NOT_FOUND_ERROR(
+    const expectedError = customError.WRONG_RELATION_ERROR(
       'please check projectId, sectionId, tasks Id',
     );
 
