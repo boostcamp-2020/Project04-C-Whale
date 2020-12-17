@@ -49,6 +49,24 @@ describe('get all projects', () => {
       done(err);
     }
   });
+  it('프로젝트가 없는 유저', async done => {
+    // given
+    const expectedUser = seeder.users[2];
+    const expectedProjects = [];
+
+    try {
+      // when
+      const res = await request(app)
+        .get('/api/project')
+        .set('Authorization', `Bearer ${createJWT(expectedUser)}`);
+      const recievedProjects = res.body.projectInfos;
+      // then
+      expect(recievedProjects).toStrictEqual(expectedProjects);
+      done();
+    } catch (err) {
+      done(err);
+    }
+  });
 });
 
 describe('get project by id', () => {
@@ -73,11 +91,71 @@ describe('get project by id', () => {
       done(err);
     }
   });
-  it('invalid id', async done => {
+  it('잘못된 타입의 id로 조회', async done => {
+    // given
+    const expectedProjectId = 77;
+    const expectedUser = seeder.users[0];
+    const expectedError = customError.TYPE_ERROR();
+    try {
+      // when
+      const res = await request(app)
+        .get(`/api/project/${expectedProjectId}`)
+        .set('Authorization', `Bearer ${createJWT(expectedUser)}`);
+      const { message, code } = res.body;
+      // then
+      expect(res.status).toBe(expectedError.status);
+      expect(message).toBe(expectedError.message);
+      expect(code).toBe(expectedError.code);
+      done();
+    } catch (err) {
+      done(err);
+    }
+  });
+  it('잘못된 id로 조회', async done => {
     // given
     const expectedProjectId = 'invalid id';
     const expectedUser = seeder.users[0];
     const expectedError = customError.INVALID_INPUT_ERROR();
+    try {
+      // when
+      const res = await request(app)
+        .get(`/api/project/${expectedProjectId}`)
+        .set('Authorization', `Bearer ${createJWT(expectedUser)}`);
+      const { message, code } = res.body;
+      // then
+      expect(res.status).toBe(expectedError.status);
+      expect(message).toBe(expectedError.message);
+      expect(code).toBe(expectedError.code);
+      done();
+    } catch (err) {
+      done(err);
+    }
+  });
+  it('존재하지 않는 id로 조회', async done => {
+    // given
+    const expectedProjectId = seeder.sections[0].id;
+    const expectedUser = seeder.users[0];
+    const expectedError = customError.NOT_FOUND_ERROR();
+    try {
+      // when
+      const res = await request(app)
+        .get(`/api/project/${expectedProjectId}`)
+        .set('Authorization', `Bearer ${createJWT(expectedUser)}`);
+      const { message, code } = res.body;
+      // then
+      expect(res.status).toBe(expectedError.status);
+      expect(message).toBe(expectedError.message);
+      expect(code).toBe(expectedError.code);
+      done();
+    } catch (err) {
+      done(err);
+    }
+  });
+  it('자신의 project가 아닌 조회', async done => {
+    // given
+    const expectedProjectId = seeder.projects[2].id;
+    const expectedUser = seeder.users[0];
+    const expectedError = customError.FORBIDDEN_ERROR();
     try {
       // when
       const res = await request(app)
