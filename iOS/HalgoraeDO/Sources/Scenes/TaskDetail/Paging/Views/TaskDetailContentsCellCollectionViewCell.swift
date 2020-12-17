@@ -24,5 +24,4 @@ class TaskDetailContentsCellCollectionViewCell: UICollectionViewListCell {
         layer.masksToBounds = true
         contentConfiguration = content
     }
-    
 }

@@ -88,7 +88,6 @@ class TaskDetailViewController: UIViewController {
             pageSegmentsControl.removeSegment(at: 0, animated: false)
             pageSegmentsControl.selectedSegmentIndex = 0
         }
- 
     }
     
     private func setup() {
