@@ -538,12 +538,12 @@ describe('delete section', () => {
     expect(res.body.message).toBe(status.SUCCESS.MSG);
     done();
   });
-  it('자신의 섹션이 아닌 경우 delete', async done => {
+  it('자신의 섹션이 아닌 경우 delete (not found)', async done => {
     // given
     const expectedUser = seeder.users[0];
     const expectedProjectId = seeder.projects[1].id;
     const expectedSectionId = seeder.sections[2].id;
-    const expectedError = customError.FORBIDDEN_ERROR();
+    const expectedError = customError.NOT_FOUND_ERROR('section');
 
     // when
     const res = await request(app)
