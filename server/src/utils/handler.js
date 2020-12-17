@@ -2,6 +2,7 @@ const errorHandler = (res, error) => {
   res.status(error.status).json({
     message: error.message,
     code: error.code,
+    fields: error.fields,
   });
 };
 
