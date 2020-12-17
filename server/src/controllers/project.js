@@ -27,7 +27,7 @@ const getProjectById = asyncTryCatch(async (req, res) => {
 
 const createProject = asyncTryCatch(async (req, res) => {
   try {
-    await validator(ProjectDto, req.body);
+    await validator(ProjectDto, req.body, { groups: ['create'] });
   } catch (errs) {
     const validationError = getTypeError(errs);
     throw validationError;
@@ -42,7 +42,11 @@ const createProject = asyncTryCatch(async (req, res) => {
 const updateProject = asyncTryCatch(async (req, res) => {
   try {
     await validator(ParamsValidator, req.params);
-    await validator(ProjectDto, req.body);
+    if (req.method === 'PUT') {
+      await validator(ProjectDto, req.body, { groups: ['put'] });
+    } else {
+      await validator(ProjectDto, req.body, { groups: ['patch'] });
+    }
   } catch (errs) {
     const validationError = getTypeError(errs);
     throw validationError;

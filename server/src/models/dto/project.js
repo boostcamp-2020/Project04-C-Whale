@@ -1,21 +1,32 @@
-const { IsString, IsHexColor, MinLength, IsBoolean, IsEmpty } = require('class-validator');
+const {
+  IsString,
+  IsHexColor,
+  MinLength,
+  IsBoolean,
+  IsEmpty,
+  IsOptional,
+} = require('class-validator');
 
 class ProjectDto {
-  @IsEmpty()
+  @IsEmpty({ groups: ['create', 'put', 'patch'] })
   id;
 
-  @MinLength(1)
-  @IsString()
+  @IsOptional({ groups: ['patch'] })
+  @MinLength(1, { groups: ['create', 'put', 'patch'] })
+  @IsString({ groups: ['create', 'put', 'patch'] })
   title;
 
-  @IsHexColor()
-  @IsString()
+  @IsOptional({ groups: ['patch'] })
+  @IsHexColor({ groups: ['create', 'put', 'patch'] })
+  @IsString({ groups: ['create', 'put', 'patch'] })
   color;
 
-  @IsBoolean()
+  @IsOptional({ groups: ['patch'] })
+  @IsBoolean({ groups: ['create', 'put', 'patch'] })
   isList;
 
-  @IsBoolean()
+  @IsOptional({ groups: ['patch'] })
+  @IsBoolean({ groups: ['create', 'put', 'patch'] })
   isFavorite;
 }
 
