@@ -153,7 +153,7 @@ describe('create section', () => {
     const expectedUser = seeder.users[0];
     const expectedProjectId = seeder.sections[2].id;
     const requestBody = { title: '새로운 섹션' };
-    const expectedError = customError.NOT_FOUND_ERROR();
+    const expectedError = customError.NOT_FOUND_ERROR('project');
 
     // when
     const res = await request(app)
@@ -175,9 +175,15 @@ describe('update section task positions', () => {
     const expectedUser = seeder.users[0];
     const expectedProjectId = seeder.projects[0].id;
     const expectedSectionId = seeder.sections[0].id;
-    const requestBody = {
-      orderedTasks: [seeder.tasks[2].id, seeder.tasks[1].id, seeder.tasks[0].id],
-    };
+    const orderedTasks = seeder.tasks
+      .filter(task => task.sectionId === expectedSectionId)
+      .map(task => {
+        const { id, ...others } = task;
+        return id;
+      })
+      .sort((task1, task2) => task1.id - task2.id);
+
+    const requestBody = { orderedTasks };
 
     // when
     const res = await request(app)
@@ -284,7 +290,7 @@ describe('update section task positions', () => {
     const requestBody = {
       orderedTasks: [seeder.tasks[2].id, seeder.tasks[1].id, seeder.tasks[0].id],
     };
-    const expectedError = customError.NOT_FOUND_ERROR();
+    const expectedError = customError.NOT_FOUND_ERROR('project');
 
     // when
     const res = await request(app)
@@ -306,7 +312,37 @@ describe('update section task positions', () => {
     const requestBody = {
       orderedTasks: [seeder.tasks[2].id, seeder.tasks[1].id, seeder.tasks[0].id],
     };
-    const expectedError = customError.NOT_FOUND_ERROR();
+    const expectedError = customError.NOT_FOUND_ERROR('section');
+
+    // when
+    const res = await request(app)
+      .patch(`/api/project/${expectedProjectId}/section/${expectedSectionId}/task/position`)
+      .set('Authorization', `Bearer ${createJWT(expectedUser)}`)
+      .send(requestBody);
+
+    // then
+    expect(res.status).toBe(expectedError.status);
+    expect(res.body.code).toBe(expectedError.code);
+    expect(res.body.message).toBe(expectedError.message);
+    done();
+  });
+  it('존재하지 않는 taskId가 포함된 경우', async done => {
+    // given
+    const expectedUser = seeder.users[0];
+    const expectedProjectId = seeder.projects[0].id;
+    const expectedSectionId = seeder.sections[0].id;
+    const orderedTasks = seeder.tasks
+      .filter(task => task.sectionId === expectedSectionId)
+      .map(task => {
+        const { id, ...others } = task;
+        return id;
+      })
+      .sort((task1, task2) => task1.id - task2.id);
+    orderedTasks[0] = seeder.sections[2].id;
+    const requestBody = { orderedTasks };
+    const expectedError = customError.NOT_FOUND_ERROR(
+      'please check projectId, sectionId, tasks Id',
+    );
 
     // when
     const res = await request(app)
@@ -436,7 +472,7 @@ describe('update section', () => {
       .put(`/api/project/${expectedProjectId}/section/${expectedSectionId}`)
       .set('Authorization', `Bearer ${createJWT(expectedUser)}`)
       .send(requestBody);
-    console.log(res.body);
+
     // then
     expect(res.status).toBe(expectedError.status);
     expect(res.body.code).toBe(expectedError.code);
@@ -449,7 +485,7 @@ describe('update section', () => {
     const expectedProjectId = seeder.sections[1].id;
     const expectedSectionId = seeder.sections[0].id;
     const requestBody = { title: 'asd' };
-    const expectedError = customError.NOT_FOUND_ERROR();
+    const expectedError = customError.NOT_FOUND_ERROR('project');
 
     // when
     const res = await request(app)
@@ -469,7 +505,7 @@ describe('update section', () => {
     const expectedProjectId = seeder.projects[0].id;
     const expectedSectionId = seeder.projects[1].id;
     const requestBody = { title: 'hi' };
-    const expectedError = customError.NOT_FOUND_ERROR();
+    const expectedError = customError.NOT_FOUND_ERROR('section');
 
     // when
     const res = await request(app)
@@ -561,7 +597,7 @@ describe('delete section', () => {
     const expectedUser = seeder.users[0];
     const expectedProjectId = seeder.projects[1].id;
     const expectedSectionId = seeder.projects[1].id;
-    const expectedError = customError.NOT_FOUND_ERROR();
+    const expectedError = customError.NOT_FOUND_ERROR('section');
 
     // when
     const res = await request(app)
