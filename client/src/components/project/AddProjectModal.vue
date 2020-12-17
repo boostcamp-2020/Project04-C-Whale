@@ -3,11 +3,12 @@
     <v-dialog
       v-model="dialog"
       persistent
+      max-width="600"
       class="add-project-dialog"
       @click:outside="sendCloseModalEvent"
     >
       <v-card>
-        <v-card-title> 프로젝트 추가 </v-card-title>
+        <v-card-title class="font-weight-bold"> 프로젝트 추가 </v-card-title>
         <v-card-text>
           <v-container class="project-modal">
             <v-row>
