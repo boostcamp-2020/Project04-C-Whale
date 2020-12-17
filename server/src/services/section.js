@@ -1,16 +1,25 @@
 /* eslint-disable no-return-await */
 const sequelize = require('@models');
+const { customError } = require('@utils/custom-error');
 
 const { models } = sequelize;
 const sectionModel = models.section;
 
-const create = async ({ projectId, ...data }) => {
-  const result = await sequelize.transaction(async t => {
+const create = async ({ projectId, userId, ...data }) => {
+  await sequelize.transaction(async t => {
     const project = await models.project.findByPk(projectId, {
       include: sectionModel,
     });
 
-    const maxPosition = project.toJSON().sections.reduce((max, section) => {
+    if (!project) {
+      throw customError.NOT_FOUND_ERROR('project');
+    }
+    console.log(project);
+    if (project.creatorId !== userId) {
+      throw customError.FORBIDDEN_ERROR();
+    }
+
+    const maxPosition = project.sections.reduce((max, section) => {
       return Math.max(max, section.position);
     }, 0);
 
@@ -21,19 +30,20 @@ const create = async ({ projectId, ...data }) => {
     await section.setProject(project, {
       transaction: t,
     });
-    return section;
   });
 
-  return !!result;
+  return true;
 };
 
-const update = async ({ id, ...data }) => {
-  const [result] = await models.section.update(data, { where: { id } });
+const update = async ({ projectId, sectionId, userId, ...data }) => {
+  const [result] = await models.section.update(data, { where: { id: sectionId } });
 
   return result !== 0;
 };
 
-const updateTaskPositions = async orderedTasks => {
+const updateTaskPositions = async ({ projectId, sectionId, userId, ...data }) => {
+  const { orderedTasks } = data;
+
   const result = await sequelize.transaction(async t => {
     return await Promise.all(
       orderedTasks.map(async (taskId, position) => {
@@ -51,8 +61,8 @@ const updateTaskPositions = async orderedTasks => {
   );
 };
 
-const remove = async id => {
-  const result = await sectionModel.destroy({ where: { id } });
+const remove = async ({ projectId, sectionId, userId }) => {
+  const result = await sectionModel.destroy({ where: { id: sectionId } });
 
   return result === 1;
 };
