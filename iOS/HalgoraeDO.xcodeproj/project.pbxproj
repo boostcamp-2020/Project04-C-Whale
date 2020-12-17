@@ -42,7 +42,6 @@
 		4C423896257A2A560068A252 /* ParameterEncoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C423895257A2A560068A252 /* ParameterEncoding.swift */; };
 		4C4238A2257A2D800068A252 /* URLParameterEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4238A1257A2D800068A252 /* URLParameterEncoder.swift */; };
 		4C8AFBB4258A754E00E36379 /* HalgoraeDO.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4C9A03402584E1FF00727F88 /* HalgoraeDO.xcdatamodeld */; };
-		4C8AFBB9258A75E200E36379 /* PersistentMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8AFBB8258A75E200E36379 /* PersistentMock.swift */; };
 		4C8AFBC1258A7D8300E36379 /* TaskListWorkerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8AFBC0258A7D8300E36379 /* TaskListWorkerTests.swift */; };
 		4C8AFBC6258A7DD100E36379 /* TaskListWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3F5673256B8C63006D7C9F /* TaskListWorker.swift */; };
 		4C8AFBCA258A7DDA00E36379 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C42386D257917790068A252 /* NetworkManager.swift */; };
@@ -180,7 +179,6 @@
 		4C423895257A2A560068A252 /* ParameterEncoding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParameterEncoding.swift; sourceTree = "<group>"; };
 		4C4238A1257A2D800068A252 /* URLParameterEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLParameterEncoder.swift; sourceTree = "<group>"; };
 		4C8AFB932589D4E000E36379 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		4C8AFBB8258A75E200E36379 /* PersistentMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistentMock.swift; sourceTree = "<group>"; };
 		4C8AFBC0258A7D8300E36379 /* TaskListWorkerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListWorkerTests.swift; sourceTree = "<group>"; };
 		4C8AFBE9258A7FFC00E36379 /* DataResponsing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataResponsing.swift; sourceTree = "<group>"; };
 		4C8AFC21258AC36900E36379 /* TaskListInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListInteractorTests.swift; sourceTree = "<group>"; };
@@ -425,7 +423,6 @@
 			children = (
 				4C8AFBC5258A7D8900E36379 /* Mock */,
 				4C8AFB932589D4E000E36379 /* Info.plist */,
-				4C8AFBB8258A75E200E36379 /* PersistentMock.swift */,
 				4C8AFBC0258A7D8300E36379 /* TaskListWorkerTests.swift */,
 				4C8AFC21258AC36900E36379 /* TaskListInteractorTests.swift */,
 			);
@@ -655,7 +652,6 @@
 			);
 			name = TaskListTests;
 			productName = TaskListTests;
-			productReference = 4C8AFD08258B1FA500E36379 /* TaskListTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		4CE91512257CCEFA00BCF398 /* ServiceTests */ = {
@@ -673,7 +669,6 @@
 			);
 			name = ServiceTests;
 			productName = ServiceTests;
-			productReference = 4C8AFD07258B1FA500E36379 /* ServiceTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		AAEE20D92564E4A900668FAD /* HalgoraeDO */ = {
@@ -774,8 +769,6 @@
 				4C8AFBE2258A7EE800E36379 /* SessionManagerMock.swift in Sources */,
 				4C8AFC2A258AC5E700E36379 /* TaskListPresenter.swift in Sources */,
 				4C8AFC33258AC63600E36379 /* TaskListViewControllerMock.swift in Sources */,
-				4C8AFBB9258A75E200E36379 /* PersistentMock.swift in Sources */,
-				4C8AFCB0258AD0C100E36379 /* MenuModels.swift in Sources */,
 				4C8AFC2E258AC60300E36379 /* TaskListDisplayLogic.swift in Sources */,
 				4C8AFC22258AC36900E36379 /* TaskListInteractorTests.swift in Sources */,
 				4C8AFC26258AC5D200E36379 /* TaskListInteractor.swift in Sources */,

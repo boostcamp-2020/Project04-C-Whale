@@ -32,7 +32,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "4CE91512257CCEFA00BCF398"
-            BuildableName = "ServiceTests.xctest"
+            BuildableName = "ServiceTests"
             BlueprintName = "ServiceTests"
             ReferencedContainer = "container:HalgoraeDO.xcodeproj">
          </BuildableReference>
@@ -42,8 +42,8 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "4CCD31D8256EBC0000A46D10"
-               BuildableName = "TaskListTests.xctest"
+               BlueprintIdentifier = "4C8AFB8E2589D4E000E36379"
+               BuildableName = "TaskListTests"
                BlueprintName = "TaskListTests"
                ReferencedContainer = "container:HalgoraeDO.xcodeproj">
             </BuildableReference>
@@ -53,7 +53,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "4CE91512257CCEFA00BCF398"
-               BuildableName = "ServiceTests.xctest"
+               BuildableName = "ServiceTests"
                BlueprintName = "ServiceTests"
                ReferencedContainer = "container:HalgoraeDO.xcodeproj">
             </BuildableReference>

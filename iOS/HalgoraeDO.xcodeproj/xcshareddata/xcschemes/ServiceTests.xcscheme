@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "4CE91512257CCEFA00BCF398"
-               BuildableName = "ServiceTests.xctest"
+               BuildableName = "ServiceTests"
                BlueprintName = "ServiceTests"
                ReferencedContainer = "container:HalgoraeDO.xcodeproj">
             </BuildableReference>
@@ -51,7 +51,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "4CE91512257CCEFA00BCF398"
-            BuildableName = "ServiceTests.xctest"
+            BuildableName = "ServiceTests"
             BlueprintName = "ServiceTests"
             ReferencedContainer = "container:HalgoraeDO.xcodeproj">
          </BuildableReference>
