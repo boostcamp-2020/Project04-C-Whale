@@ -24,9 +24,9 @@
 
 <script>
 import { mapGetters } from "vuex";
-import TaskItem from "@/components/project/TaskItem";
-import AddTask from "@/components/project/AddTask";
-import ChildTaskList from "@/components/project/ChildTaskList";
+import TaskItem from "@/components/task/TaskItem";
+import AddTask from "@/components/task/AddTask";
+import ChildTaskList from "@/components/task/ChildTaskList";
 import { getTodayString } from "@/utils/date";
 
 export default {

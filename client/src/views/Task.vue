@@ -22,6 +22,7 @@ import { mapActions, mapState } from "vuex";
 import TaskDetailContainer from "@/components/task/TaskDetailContainer.vue";
 import SpinnerMixin from "@/mixins/SpinnerMixins.js";
 import taskAPI from "@/api/task";
+import bus from "@/utils/bus";
 
 export default {
   name: "Task",
@@ -62,8 +63,10 @@ export default {
       const result = await taskAPI.getTaskById(this.$route.params.taskId);
       this.task = result.data.task;
     }
-    this.fetchComments(this.$route.params.taskId);
-    this.fetchBookmarks(this.$route.params.taskId);
+    bus.$emit("start:spinner");
+    await this.fetchComments(this.$route.params.taskId);
+    await this.fetchBookmarks(this.$route.params.taskId);
+    bus.$emit("end:spinner");
   },
   mixins: [SpinnerMixin],
 };

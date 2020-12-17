@@ -31,7 +31,7 @@ export default {
       isWhale: window.whale ? true : false,
       rules: {
         URL: (value) => {
-          return isValidURLMarkdown(value) || "유효하지 않은 형식입니다.";
+          return isValidURLMarkdown(value) || value === "" || "유효하지 않은 형식입니다.";
         },
       },
     };
