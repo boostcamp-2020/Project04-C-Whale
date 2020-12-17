@@ -5,13 +5,15 @@
     <div v-show="isEmpty">
       <p class="text-center">오늘의 작업이 없습니다! 좋은 하루 되세요</p>
       <v-img src="@/assets/halgoraedo.png"></v-img>
-      <AddTask
-        v-if="managedProject"
-        :projectId="managedProject.id"
-        :sectionId="managedProject.defaultSectionId"
-      />
     </div>
-    <router-view :key="$route.params.taskId"></router-view>
+    <AddTask
+      v-if="managedProject"
+      :projectId="managedProject.id"
+      :sectionId="managedProject.defaultSectionId"
+    />
+    <keep-alive>
+      <router-view :key="$route.params.taskId"></router-view>
+    </keep-alive>
   </div>
 </template>
 

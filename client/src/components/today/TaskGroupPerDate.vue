@@ -11,13 +11,6 @@
         <v-divider />
         <ChildTaskList v-if="task.tasks" :section="task.section" :parentTask="task" class="ml-10" />
       </div>
-
-      <AddTask
-        v-if="isToday"
-        v-show="managedProject"
-        :projectId="managedProject.id"
-        :sectionId="managedProject.defaultSectionId"
-      />
     </v-list>
   </div>
 </template>
