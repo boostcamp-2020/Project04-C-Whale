@@ -1,91 +1,45 @@
 <template>
   <v-list-item>
-    <v-layout row wrap>
-      <div v-if="show" class="task-form-container">
-        <form @submit.prevent="submit">
-          <div class="task-form-data">
-            <v-text-field
-              class="pt-0 mt-0 mb-2"
-              hide-details
-              type="text"
-              v-model="task.title"
-              placeholder="할일을 입력하세요"
+    <div v-if="show" class="task-form-container">
+      <form @submit.prevent="submit">
+        <div class="task-form-data">
+          <v-text-field
+            class="pt-0 mt-0 mb-2"
+            hide-details
+            type="text"
+            v-model="task.title"
+            placeholder="할일을 입력하세요"
+          />
+
+          <div class="task-info">
+            <AddTaskDueDatePicker
+              @pickDueDate="pickDueDate"
+              :dueDate="task.dueDate"
+              v-model="task.dueDate"
             />
-            <div class="task-info">
-              <v-menu :offset-y="true">
-                <template v-slot:activator="{ on }">
-                  <v-btn depressed color="normal" v-on="on" width="120" class="mr-1">
-                    기한:{{ todayStringToKorean(task.dueDate) }}
-                  </v-btn>
-                </template>
-                <v-date-picker v-model="task.dueDate" />
-              </v-menu>
-
-              <v-menu :offset-y="true">
-                <template v-slot:activator="{ on }">
-                  <v-btn depressed color="normal" v-on="on" class="mr-1">
-                    <v-icon color="blue">mdi-inbox</v-icon>
-                    {{ projectTitle }}
-                  </v-btn>
-                </template>
-                <v-list v-if="projectInfos.length > 0">
-                  <v-list-item
-                    v-for="projectInfo in projectInfos"
-                    :key="projectInfo.id"
-                    @click="selectProject(projectInfo)"
-                  >
-                    <v-list-item-icon>
-                      <v-icon color="blue">mdi-inbox</v-icon>
-                    </v-list-item-icon>
-                    <v-list-item-title>{{ projectInfo.title }}</v-list-item-title>
-                  </v-list-item>
-                </v-list>
-              </v-menu>
-              <v-btn depressed color="normal">
-                <v-icon color="red">mdi-alarm</v-icon>
-                <VueTimepicker
-                  v-model="alarm.time"
-                  :format="alarm.format"
-                  class="my-time-picker"
-                  :second-interval="10"
-                />
-              </v-btn>
-            </div>
+            <AddTaskProjectPicker @pickProject="pickProject" :projectId="task.projectId" />
+            <AddTaskAlarmPicker @pickAlarmTime="pickAlarmTime" />
           </div>
-          <v-flex>
-            <v-btn
-              type="submit"
-              depressed
-              color="primary"
-              class="text--white"
-              :disabled="task.title.length === 0"
-              >+ 작업 추가</v-btn
-            >
-            <v-btn @click="closeForm" text color="whaleGreen">취소</v-btn>
-          </v-flex>
-        </form>
-      </div>
+        </div>
 
-      <div v-else class="add-button-container">
-        <v-btn @click="showForm" text color="#777777">
-          <v-icon color="primary" dense class="mr-1"> mdi-plus </v-icon>
-          작업 추가
-        </v-btn>
-        <v-btn v-if="isWhale" @click="showForm('url')" text color="#777777">
-          <v-icon color="primary" dense class="mr-1"> mdi-plus </v-icon>
-          웹사이트를 작업으로 추가
-        </v-btn>
-      </div>
-    </v-layout>
+        <AddTaskButtonContainerAfter :task="task" @closeForm="closeForm" />
+      </form>
+    </div>
+
+    <AddTaskButtonContainerBefore v-else @showForm="showForm" @getUrl="getUrl" />
   </v-list-item>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import { getTodayString } from "@/utils/date";
+import AddTaskButtonContainerBefore from "@/components/task/AddTaskButtonContainerBefore";
+import AddTaskButtonContainerAfter from "@/components/task/AddTaskButtonContainerAfter";
+import AddTaskDueDatePicker from "@/components/task/AddTaskDueDatePicker";
+import AddTaskProjectPicker from "@/components/task/AddTaskProjectPicker";
+import AddTaskAlarmPicker from "@/components/task/AddTaskAlarmPicker";
 import whaleApi from "@/utils/whaleApi";
+import { getTodayString } from "@/utils/date";
 import { getMarkDownUrl } from "@/utils/markdown";
-import VueTimepicker from "vue2-timepicker/src/vue-timepicker.vue";
 
 export default {
   props: {
@@ -96,12 +50,15 @@ export default {
     type: String,
   },
   components: {
-    VueTimepicker,
+    AddTaskButtonContainerBefore,
+    AddTaskButtonContainerAfter,
+    AddTaskDueDatePicker,
+    AddTaskProjectPicker,
+    AddTaskAlarmPicker,
   },
   data() {
     return {
       show: this.initialShow || false,
-      projectTitle: "",
       task: {
         projectId: this.projectId,
         sectionId: this.sectionId,
@@ -109,15 +66,11 @@ export default {
         title: "",
         dueDate: getTodayString(),
       },
-      alarm: {
-        format: "HH시간 mm분 ss초",
-        time: {
-          HH: "00",
-          mm: "00",
-          ss: "00",
-        },
+      alarmTime: {
+        HH: "00",
+        mm: "00",
+        ss: "00",
       },
-      isWhale: window.whale ? true : false,
     };
   },
   computed: {
@@ -125,35 +78,22 @@ export default {
   },
   methods: {
     ...mapActions(["addTask"]),
-    getAlarmTimeInSec() {
-      return (
-        Date.now() +
-        (this.alarm.time.HH * 3600 + this.alarm.time.mm * 60 + this.alarm.time.ss) * 1000
-      );
+
+    showForm() {
+      this.show = !this.show;
     },
-    submitAlarm() {
-      console.log(this.getAlarmTimeInSec() < Date.now());
-      console.log(this.getAlarmTimeInSec());
-      console.log(Date.now());
-      if (this.getAlarmTimeInSec() <= Date.now()) {
+    closeForm() {
+      this.task.title = "";
+
+      if (this.type === "quick") {
+        this.$emit("done");
         return;
       }
-
-      whaleApi.createAlarm({
-        taskTitle: this.task.title,
-        fireTime: this.getAlarmTimeInSec(),
-      });
-
-      this.alarm.time = {
-        HH: "00",
-        mm: "00",
-        ss: "00",
-      };
+      this.show = !this.show;
     },
+
     submit() {
       this.addTask(this.task);
-      console.log(Date.now() - this.getAlarmTimeInSec());
-
       this.submitAlarm();
 
       this.task = {
@@ -165,54 +105,58 @@ export default {
       };
 
       if (this.type === "quick") {
-        this.emitDone();
+        this.$emit("done");
         return;
       }
       this.show = !this.show;
     },
-    showForm(target) {
-      if (target === "url") {
-        whaleApi.getCurrentTabUrl(({ title, url }) => {
-          this.task.title = getMarkDownUrl(title, url);
-        });
-      }
-      this.show = !this.show;
-    },
-    closeForm() {
-      this.task.title = "";
 
-      if (this.type === "quick") {
-        this.emitDone();
+    submitAlarm() {
+      if (this.getAlarmTimeInSec() <= Date.now()) {
         return;
       }
-      this.show = !this.show;
+
+      whaleApi.createAlarm({
+        taskTitle: this.task.title,
+        fireTime: this.getAlarmTimeInSec(),
+      });
+
+      this.alarmTime = {};
     },
-    selectProject(projectInfo) {
-      // TO DO : 에러 처리
+
+    getAlarmTimeInSec() {
+      return (
+        Date.now() + (this.alarmTime.HH * 3600 + this.alarmTime.mm * 60 + this.alarmTime.ss) * 1000
+      );
+    },
+
+    pickAlarmTime(time) {
+      this.alarmTime = time;
+    },
+
+    pickDueDate(date) {
+      this.task.dueDate = date;
+    },
+
+    pickProject(projectInfo) {
       this.task.projectId = projectInfo.id;
       this.task.sectionId = projectInfo.defaultSectionId;
-      this.projectTitle = projectInfo.title;
     },
-    todayStringToKorean(todayString) {
-      const today = new Date(todayString);
-      return `${today.getMonth() + 1}월 ${today.getDate()}일`;
-    },
-    selectAlarm(time) {
-      this.alarmTime = Date.now() + 1000 * time;
-    },
-    emitDone() {
-      this.$emit("done");
+
+    getUrl() {
+      whaleApi.getCurrentTabUrl(({ title, url }) => {
+        this.task.title = getMarkDownUrl(title, url);
+      });
     },
   },
+
   created() {
     if (this.projectId === undefined || this.sectionId === undefined) {
-      //const { title, id, defaultSectionId } = this.managedProject;
-      this.projectTitle = this.managedProject?.title;
       this.task.projectId = this.managedProject?.id;
       this.task.sectionId = this.managedProject?.defaultSectionId;
       return;
     }
-    this.projectTitle = this.projectInfos.find((project) => project.id === this.projectId).title;
+
     this.task.projectId = this.projectId;
     this.task.sectionId = this.sectionId;
   },
@@ -223,6 +167,7 @@ export default {
 .task-form-container {
   width: 100%;
 }
+
 .task-form-data {
   display: flex;
   flex-direction: column;
@@ -233,18 +178,8 @@ export default {
   margin-top: 10px;
   margin-bottom: 10px;
 }
-.add-button-container {
-  display: flex;
-  margin-top: 6px;
-}
+
 input:focus {
   outline: none;
-}
-</style>
-
-<style>
-.my-time-picker * {
-  border: none !important;
-  margin-bottom: 0px !important;
 }
 </style>

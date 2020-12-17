@@ -15,8 +15,6 @@
         :position="index"
         :projectId="project.id"
         :section="section"
-        @sectionDragOver="sectionDragOver"
-        @sectionDrop="sectionDrop"
         class="mb-3 section-container"
       />
     </div>
@@ -66,16 +64,6 @@ export default {
     },
     toggleAddSection() {
       this.showAddSection = !this.showAddSection;
-    },
-    sectionDragOver({ position }) {
-      this.sections = this.sections.filter((section) => section.id !== this.draggingSection.id);
-      this.sections.splice(position, 0, { ...this.draggingSection, dragging: true });
-    },
-    sectionDrop(e) {
-      this.changeSectionPosition({
-        projectId: this.project.id,
-        orderedSections: this.sections.map((section) => section.id),
-      });
     },
   },
   components: {

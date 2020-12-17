@@ -18,6 +18,7 @@
             </v-btn>
           </v-list-item-action>
         </template>
+
         <v-list>
           <v-list-item @click="showAddSection">
             <v-list-item-title>섹션 추가 </v-list-item-title>
@@ -72,8 +73,3 @@ export default {
   },
 };
 </script>
-
-<style>
-.project-header {
-}
-</style>

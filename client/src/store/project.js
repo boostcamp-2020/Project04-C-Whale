@@ -17,13 +17,18 @@ const state = {
 const getters = {
   currentProject: (state) => state.currentProject,
   projectInfos: (state) => state.projectInfos,
+  projectInfoById: (state) => (id) => {
+    return state.projectInfos.find((project) => project.id === id);
+  },
   namedProjectInfos: (state) =>
     state.projectInfos.filter(
       (project) => project.title !== DEFAULT_PROJECT_TITLE && !project.isFavorite
     ),
+  favoriteProjectInfos: (state) => {
+    return state.projectInfos.filter((project) => project.isFavorite);
+  },
   managedProject: (state) =>
     state.projectInfos.find((project) => project.title === DEFAULT_PROJECT_TITLE),
-  favoriteProjectInfos: (state) => state.projectInfos.filter((project) => project.isFavorite),
   projectList: (state) => state.projectList,
 };
 

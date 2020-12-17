@@ -11,7 +11,9 @@
         :sectionId="managedProject.defaultSectionId"
       />
     </div>
-    <router-view :key="$route.params.taskId"></router-view>
+    <keep-alive>
+      <router-view :key="$route.params.taskId"></router-view>
+    </keep-alive>
   </div>
 </template>
 

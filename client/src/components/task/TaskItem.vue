@@ -27,8 +27,6 @@
 
 <script>
 import { mapGetters, mapActions, mapMutations } from "vuex";
-import { ref } from "@vue/composition-api";
-import useDragDropItem from "@/composables/useDragDropItem";
 import VueMarkDown from "vue-markdown";
 import bus from "@/utils/bus";
 
@@ -39,6 +37,7 @@ export default {
     section: Object,
     position: Number,
     dragging: Boolean,
+    showDoneTask: Boolean,
   },
   data() {
     return {
@@ -97,6 +96,7 @@ export default {
         position: offset > 0 ? this.position : this.position + 1,
       });
     },
+
     handleDrop() {
       this.$emit("taskDrop");
     },
@@ -109,18 +109,6 @@ export default {
       return middle;
     },
   },
-  // setup(props, context) {
-  //   const { handleDragStart, handleDragOver, handleDrop, taskItem } = useDragDropItem(
-  //     props,
-  //     context
-  //   );
-  //   return {
-  //     handleDragStart,
-  //     handleDragOver,
-  //     handleDrop,
-  //     taskItem,
-  //   };
-  // },
 };
 </script>
 
@@ -152,5 +140,9 @@ export default {
 
 .mark-down > p {
   margin: 0;
+}
+
+.hide {
+  display: none !important;
 }
 </style>

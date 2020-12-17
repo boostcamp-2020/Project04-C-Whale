@@ -17,7 +17,7 @@
 import TaskItem from "@/components/task/TaskItem";
 
 import { toRefs } from "@vue/composition-api";
-import useDragDropContainer from "@/composables/useDragDropContainer";
+import useDragDropContainer from "@/composables/useDroppable";
 
 export default {
   props: {

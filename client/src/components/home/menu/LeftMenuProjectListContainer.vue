@@ -8,46 +8,15 @@
       </v-list-item>
     </template>
     <v-list-item-group active-class="list-active">
-      <v-list-item
-        v-for="project in projectInfos"
-        :key="project.id"
-        :to="`/project/${project.id}`"
-        class="pl-4"
-        active-class="font-weight-bold list-active"
-      >
-        <v-list-item-icon class="mr-1">
-          <v-icon small :color="project.color">mdi-circle</v-icon>
-        </v-list-item-icon>
-        <v-list-item-content class="px-3">
-          <v-list-item-title class="font-14 white-space-normal">
-            {{ project.title
-            }}<span class="d-inline-block ml-1 task-count">{{ project.taskCount }}</span>
-          </v-list-item-title>
-        </v-list-item-content>
-        <v-menu :offset-y="true">
-          <template v-slot:activator="{ on }">
-            <v-list-item-action class="my-0">
-              <v-btn icon v-on="on" @click.prevent.stop>
-                <v-icon>mdi-dots-horizontal</v-icon>
-              </v-btn>
-            </v-list-item-action>
-          </template>
-          <v-list>
-            <v-list-item @click.stop="openUpdateDialog(project.id)">
-              <v-list-item-title class="font-14">프로젝트 수정 </v-list-item-title>
-            </v-list-item>
-            <v-list-item @click.stop="openDeleteDialog(project.id)">
-              <v-list-item-title class="font-14">프로젝트 삭제 </v-list-item-title>
-            </v-list-item>
-            <v-list-item @click.stop="setFavorite(project.id)">
-              <v-list-item-title class="font-14">즐겨찾기 추가 </v-list-item-title>
-            </v-list-item>
-          </v-list>
-        </v-menu>
-      </v-list-item>
+      <ProjectList
+        @openUpdateDialog="openUpdateDialog"
+        @openDeleteDialog="openDeleteDialog"
+        @setFavorite="setFavorite"
+        :projectInfos="projectInfos"
+      />
 
       <v-list-item
-        @click.stop="addDialog = true"
+        @click="openAddDialog"
         inactive
         class="add-btn pl-4"
         exact-active-class="list-active"
@@ -61,26 +30,29 @@
       </v-list-item>
     </v-list-item-group>
 
-    <AddProjectModal :dialog="addDialog" v-on:handleAddModal="addDialog = !addDialog" />
-    <UpdateProjectModal
+    <ProjectFormModal :dialog="addDialog" @closeModal="addDialog = !addDialog" type="add" />
+
+    <ProjectFormModal
       v-if="projectInfos.find((project) => project.id === projectId)"
+      @closeModal="updateDialog = !updateDialog"
       :dialog="updateDialog"
-      v-on:handleUpdateModal="updateDialog = !updateDialog"
       :projectInfo="projectInfos.find((project) => project.id === projectId)"
+      type="update"
     />
-    <DeleteProjectModal
+
+    <ProjectDeleteModal
       v-if="projectInfos.find((project) => project.id === projectId)"
+      @closeModal="deleteDialog = !deleteDialog"
       :dialog="deleteDialog"
-      v-on:handleDeleteModal="deleteDialog = !deleteDialog"
       :projectInfo="projectInfos.find((project) => project.id === projectId)"
     />
   </v-list-group>
 </template>
 
 <script>
-import AddProjectModal from "@/components/project/AddProjectModal.vue";
-import UpdateProjectModal from "@/components/project/UpdateProjectModal.vue";
-import DeleteProjectModal from "@/components/project/DeleteProjectModal.vue";
+import ProjectList from "@/components/home/menu/LeftMenuProjectList";
+import ProjectFormModal from "@/components/project/ProjectFormModal";
+import ProjectDeleteModal from "@/components/project/ProjectDeleteModal";
 import { mapActions } from "vuex";
 
 export default {
@@ -88,9 +60,9 @@ export default {
     projectInfos: Array,
   },
   components: {
-    AddProjectModal,
-    UpdateProjectModal,
-    DeleteProjectModal,
+    ProjectFormModal,
+    ProjectDeleteModal,
+    ProjectList,
   },
   data() {
     return {
@@ -102,6 +74,9 @@ export default {
   },
   methods: {
     ...mapActions(["updateProject"]),
+    openAddDialog() {
+      this.addDialog = true;
+    },
     openUpdateDialog(projectId) {
       this.projectId = projectId;
       this.updateDialog = true;
