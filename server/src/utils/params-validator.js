@@ -1,24 +1,25 @@
-const { IsString, ValidateIf, IsUUID, IsOptional } = require('class-validator');
+const { IsString, IsUUID, IsOptional } = require('class-validator');
 
 class ParamsValidator {
   @IsOptional()
   @IsUUID('4')
   projectId;
 
-  @ValidateIf(o => typeof o.sectionId !== 'undefined')
+  @IsOptional()
   @IsUUID('4')
   sectionId;
 
-  @ValidateIf(o => typeof o.taskId !== 'undefined')
+  @IsOptional()
   @IsUUID('4')
   taskId;
 
-  @ValidateIf(o => typeof o.commentId !== 'undefined')
+  @IsOptional()
   @IsUUID('4')
   commentId;
 
-  @ValidateIf(o => typeof o.bookmarkId !== 'undefined')
+  @IsOptional()
   @IsString()
+  @IsUUID('4')
   bookmarkId;
 }
 
