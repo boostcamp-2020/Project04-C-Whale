@@ -5,11 +5,11 @@ class CommentDto {
   @IsEmpty({ groups: ['create', 'update'], message: errorMessage.UNNECESSARY_INPUT_ERROR() })
   id;
 
-  @IsString({ groups: ['create', 'update'], message: errorMessage.TYPE_ERROR() })
   @MinLength(1, {
     groups: ['create', 'update'],
     message: errorMessage.INVALID_INPUT_ERROR(),
   })
+  @IsString({ groups: ['create', 'update'], message: errorMessage.TYPE_ERROR() })
   content;
 
   @IsEmpty({

@@ -14,21 +14,21 @@ const { isAfterToday } = require('@utils/validator');
 
 class TaskDto {
   @IsEmpty({ groups: ['create', 'patch'], message: errorMessage.UNNECESSARY_INPUT_ERROR() })
-  @IsString({ groups: ['retrieve'], message: errorMessage.TYPE_ERROR() })
   @IsUUID('4', { groups: ['retrieve'], message: errorMessage.INVALID_INPUT_ERROR() })
+  @IsString({ groups: ['retrieve'], message: errorMessage.TYPE_ERROR() })
   id;
 
   @IsOptional({ groups: ['patch'] })
-  @IsString({ groups: ['create', 'patch'], message: errorMessage.TYPE_ERROR() })
   @MinLength(1, { groups: ['create', 'patch'], message: errorMessage.INVALID_INPUT_ERROR() })
+  @IsString({ groups: ['create', 'patch'], message: errorMessage.TYPE_ERROR() })
   title;
 
   @IsOptional({ groups: ['patch'] })
+  @isAfterToday('dueDate', { groups: ['create', 'patch'], message: errorMessage.DUEDATE_ERROR() })
   @IsDateString(
     { strict: true },
     { groups: ['create', 'patch'], message: errorMessage.TYPE_ERROR() },
   )
-  @isAfterToday('dueDate', { groups: ['create', 'patch'], message: errorMessage.DUEDATE_ERROR() })
   dueDate;
 
   @IsOptional({ groups: ['patch'] })
@@ -40,17 +40,17 @@ class TaskDto {
   isDone;
 
   @IsOptional({ groups: ['create', 'patch'] })
-  @IsString({ groups: ['create', 'patch'], message: errorMessage.TYPE_ERROR() })
   @IsUUID('4', {
     groups: ['create', 'patch'],
     message: errorMessage.INVALID_INPUT_ERROR(),
   })
+  @IsString({ groups: ['create', 'patch'], message: errorMessage.TYPE_ERROR() })
   parentId;
 
   @IsEmpty({ groups: ['create'], message: errorMessage.UNNECESSARY_INPUT_ERROR() })
   @IsOptional({ groups: ['patch'] })
-  @IsString({ groups: ['patch'], message: errorMessage.TYPE_ERROR() })
   @IsUUID('4', { groups: ['patch'], message: errorMessage.INVALID_INPUT_ERROR() })
+  @IsString({ groups: ['patch'], message: errorMessage.TYPE_ERROR() })
   sectionId;
 
   @IsOptional({ groups: ['patch', 'create'] })
@@ -65,6 +65,7 @@ class TaskDto {
     groups: ['patch', 'create'],
     message: errorMessage.INVALID_INPUT_ERROR(),
   })
+  @IsString({ groups: ['patch', 'create'], message: errorMessage.TYPE_ERROR() })
   alarmId;
 }
 

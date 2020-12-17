@@ -5,8 +5,8 @@ class SectionDto {
   @IsUUID('4')
   id;
 
-  @IsString({ groups: ['create', 'update'] }, { message: errorMessage.TYPE_ERROR() })
   @MinLength(1, { groups: ['create', 'update'] }, { message: errorMessage.INVALID_INPUT_ERROR() })
+  @IsString({ groups: ['create', 'update'] }, { message: errorMessage.TYPE_ERROR() })
   title;
 
   @IsInt()

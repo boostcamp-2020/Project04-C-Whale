@@ -6,13 +6,13 @@ class BookmarkDto {
   id;
 
   @IsDefined({ message: errorMessage.NECESSARY_INPUT_ERROR() })
-  @IsString({ message: errorMessage.TYPE_ERROR() })
   @IsUrl({ require_protocol: true }, { message: errorMessage.INVALID_INPUT_ERROR() })
+  @IsString({ message: errorMessage.TYPE_ERROR() })
   url;
 
   @ValidateIf(o => typeof o.title !== 'undefined') // validate if를 잘못 사용, 처음에 걸리는지 나중에 거리는지 체크
-  @IsString({ message: errorMessage.TYPE_ERROR() })
   @MinLength(1, { message: errorMessage.INVALID_INPUT_ERROR() })
+  @IsString({ message: errorMessage.TYPE_ERROR() })
   title;
 
   @IsEmpty({ message: errorMessage.UNNECESSARY_INPUT_ERROR() })
