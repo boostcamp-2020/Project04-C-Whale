@@ -2,22 +2,22 @@ const { IsString, IsEmpty, IsUrl, ValidateIf, MinLength, IsDefined } = require('
 const errorMessage = require('@utils/custom-error').message;
 
 class BookmarkDto {
-  // bookmark는 update가 없으므로, create 때만 검증
-  @IsEmpty({ message: errorMessage.UNNECESSARY_INPUT_ERROR('id') })
+  @IsEmpty({ message: errorMessage.UNNECESSARY_INPUT_ERROR() })
   id;
 
-  @IsDefined({ message: errorMessage.NECESSARY_INPUT_ERROR('url') })
-  @IsString({ message: errorMessage.TYPE_ERROR('url') })
-  @IsUrl({ require_protocol: true }, { message: errorMessage.INVALID_INPUT_ERROR('url') })
+  @IsDefined({ message: errorMessage.NECESSARY_INPUT_ERROR() })
+  @IsString({ message: errorMessage.TYPE_ERROR() })
+  @IsUrl({ require_protocol: true }, { message: errorMessage.INVALID_INPUT_ERROR() })
   url;
 
-  @ValidateIf(o => typeof o.title !== 'undefined')
-  @IsString({ message: errorMessage.TYPE_ERROR('title') })
-  @MinLength(1, { message: errorMessage.INVALID_INPUT_ERROR('title') })
+  @ValidateIf(o => typeof o.title !== 'undefined') // validate if를 잘못 사용, 처음에 걸리는지 나중에 거리는지 체크
+  @IsString({ message: errorMessage.TYPE_ERROR() })
+  @MinLength(1, { message: errorMessage.INVALID_INPUT_ERROR() })
   title;
 
-  @IsEmpty({ message: errorMessage.UNNECESSARY_INPUT_ERROR('taskId') })
+  @IsEmpty({ message: errorMessage.UNNECESSARY_INPUT_ERROR() })
   taskId;
 }
 
 module.exports = BookmarkDto;
+// 기본형으로 쓸 수 있는 것은 기본형으로 쓰는 것을 추천

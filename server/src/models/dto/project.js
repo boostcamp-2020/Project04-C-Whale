@@ -15,21 +15,21 @@ class ProjectDto {
   id;
 
   @ValidateIf(o => !!o.title)
-  @IsString({ groups: ['create'], message: errorMessage.TYPE_ERROR('title') })
-  @MinLength(1, { groups: ['create'], message: errorMessage.INVALID_INPUT_ERROR('title') })
+  @IsString({ groups: ['create'], message: errorMessage.TYPE_ERROR() })
+  @MinLength(1, { groups: ['create'], message: errorMessage.INVALID_INPUT_ERROR() })
   title;
 
   @ValidateIf(o => !!o.color)
-  @IsString({ groups: ['create'], message: errorMessage.TYPE_ERROR('color') })
-  @IsHexColor({ groups: ['created'], message: errorMessage.INVALID_INPUT_ERROR('color') })
+  @IsString({ groups: ['create'], message: errorMessage.TYPE_ERROR() })
+  @IsHexColor({ groups: ['created'], message: errorMessage.INVALID_INPUT_ERROR() })
   color;
 
   @ValidateIf(o => !!o.isList)
-  @IsBoolean({ groups: ['create'], message: errorMessage.TYPE_ERROR('isList') })
+  @IsBoolean({ groups: ['create'], message: errorMessage.TYPE_ERROR() })
   isList;
 
   @ValidateIf(o => !!o.isFavorite)
-  @IsBoolean({ message: errorMessage.TYPE_ERROR('isFavorite') })
+  @IsBoolean({ message: errorMessage.TYPE_ERROR() })
   isFavorite;
 }
 
