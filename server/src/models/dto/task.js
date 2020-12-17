@@ -3,7 +3,7 @@ const {
   IsString,
   IsBoolean,
   MinLength,
-  IsDateString,
+  IsISO8601,
   IsUUID,
   IsOptional,
   IsEmpty,
@@ -26,7 +26,7 @@ class TaskDto {
     groups: ['create', 'patch'],
     message: errorMessage.DUEDATE_ERROR_EN(),
   })
-  @IsDateString({ strict: true }, { groups: ['create', 'patch'] })
+  @IsISO8601({ strict: true }, { groups: ['create', 'patch'] })
   dueDate;
 
   @IsOptional({ groups: ['patch'] })

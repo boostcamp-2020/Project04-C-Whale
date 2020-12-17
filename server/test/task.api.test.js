@@ -317,8 +317,9 @@ describe('patch task with id', () => {
   it('잘못된 duedate 수정', async done => {
     // given
     const taskId = seeder.tasks[0].id;
-    const patchTask = { duedate: new Date('2020-11-11') };
+    const patchTask = { dueDate: new Date('2020-11-11') };
     const expectedError = customError.DUEDATE_ERROR();
+
     // when
     const res = await request(app)
       .patch(`/api/task/${taskId}`)
