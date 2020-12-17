@@ -38,7 +38,7 @@ export default {
       router.replace("/login").catch(() => {});
       return;
     } else if (token) {
-      this.checkUser;
+      this.checkUser();
       return;
     }
   },
