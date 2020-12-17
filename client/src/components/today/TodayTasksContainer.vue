@@ -11,12 +11,13 @@
         :sectionId="managedProject.defaultSectionId"
       />
     </div>
+    <router-view :key="$route.params.taskId"></router-view>
   </div>
 </template>
 
 <script>
 import TaskGroupPerDate from "@/components/today/TaskGroupPerDate";
-import AddTask from "@/components/project/AddTask";
+import AddTask from "@/components/task/AddTask";
 import bus from "@/utils/bus";
 import { mapGetters } from "vuex";
 

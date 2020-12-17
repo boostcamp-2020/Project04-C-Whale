@@ -35,9 +35,9 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
-import ProjectContainerHeader from "./ProjectContainerHeader";
-import SectionContainer from "@/components/project/SectionContainer";
-import AddSection from "@/components/project/AddSection";
+import ProjectContainerHeader from "@/components/project/ProjectContainerHeader";
+import SectionContainer from "@/components/project/section/SectionContainer";
+import AddSection from "@/components/project/section/AddSection";
 import bus from "@/utils/bus";
 
 export default {
