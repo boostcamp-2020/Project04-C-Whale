@@ -10,8 +10,14 @@ const state = {
 
 const getters = {
   currentTask: (state) => state.currentTask,
-  todayTasks: (state) => state.tasks.filter((task) => isToday(task.dueDate) && !task.isDone),
-  expiredTasks: (state) => state.tasks.filter((task) => isExpired(task.dueDate) && !task.isDone),
+  todayTasks: (state) =>
+    [...state.tasks.filter((task) => isToday(task.dueDate) && !task.isDone)].sort(
+      (t1, t2) => new Date(t1.createdAt) - new Date(t2.createdAt)
+    ),
+  expiredTasks: (state) =>
+    [...state.tasks.filter((task) => isExpired(task.dueDate) && !task.isDone)].sort(
+      (t1, t2) => new Date(t1.createdAt) - new Date(t2.createdAt)
+    ),
   taskCount: (state) =>
     state.tasks.filter((task) => (isToday(task.dueDate) || isExpired(task.dueDate)) && !task.isDone)
       .length,
@@ -49,7 +55,7 @@ const actions = {
       await taskAPI.createTask(task);
       await dispatch("fetchCurrentProject", task.projectId);
       await dispatch("fetchAllTasks");
-      await dispatch("fetchProjectInfos");
+      commit("ADD_TASK_COUNT", task.projectId);
     } catch (err) {
       commit("SET_ERROR_ALERT", err.response);
     }
@@ -93,7 +99,6 @@ const actions = {
         orderedTasks,
       });
       await dispatch("fetchCurrentProject", dropTargetContainer.projectId);
-      await dispatch("fetchAllTasks");
 
       commit("SET_SUCCESS_ALERT", "작업 위치가 변경되었습니다.");
     } catch (err) {
