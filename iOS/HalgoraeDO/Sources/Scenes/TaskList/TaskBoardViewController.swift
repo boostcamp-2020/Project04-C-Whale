@@ -17,7 +17,6 @@ class TaskBoardViewController: UIViewController {
     private var interactor: TaskListBusinessLogic?
     private var router: (TaskListRoutingLogic & TaskListDataPassing)?
     private var dataSource: UICollectionViewDiffableDataSource<String, TaskVM>! = nil
-    private let visualEffectView = UIVisualEffectView()
     private var taskAddViewController: TaskAddViewController = TaskAddViewController()
     private var sectionVM: [TaskListModels.SectionVM] = []
     
@@ -226,11 +225,12 @@ extension TaskBoardViewController: TaskAddViewControllerDelegate {
 extension TaskBoardViewController: UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return sectionVM.count + 1 //Section 갯수 + 1
+        let addSectionCell = 1
+        return sectionVM.count + addSectionCell
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 1 //고정
+        return 1
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

@@ -183,11 +183,7 @@ private extension TaskSectionViewCell {
             background.cornerRadius = 8
             background.strokeColor = .systemGray3
             cell.backgroundConfiguration = background
-            cell.layer.shadowColor = UIColor.black.cgColor
-            cell.layer.shadowOffset = CGSize(width: 0, height: 1)
-            cell.layer.shadowRadius = 5.0
-            cell.layer.shadowOpacity = 0.2
-            cell.layer.masksToBounds = false
+            cell.shadow()
         }
         guard let collectionView = collectionView else { return }
         dataSource = UICollectionViewDiffableDataSource<TaskListModels.SectionVM, TaskVM>(collectionView: collectionView, cellProvider: { (collectionview, indexPath, task) -> UICollectionViewCell? in
@@ -270,7 +266,6 @@ extension TaskSectionViewCell: UICollectionViewDragDelegate {
 extension TaskSectionViewCell: UICollectionViewDropDelegate {
     
     func collectionView(_ collectionView: UICollectionView, canHandle session: UIDropSession) -> Bool {
-        
         return session.canLoadObjects(ofClass: NSAttributedString.self)
     }
     

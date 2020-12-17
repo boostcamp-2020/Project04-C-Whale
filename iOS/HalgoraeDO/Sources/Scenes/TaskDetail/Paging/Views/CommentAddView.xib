@@ -65,7 +65,7 @@
     <resources>
         <image name="arrow.up.circle.fill" catalog="system" width="128" height="121"/>
         <namedColor name="halgoraedoDarkBlue">
-            <color red="0.10999999940395355" green="0.17000000178813934" blue="0.50999999046325684" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.10980392156862745" green="0.16862745098039217" blue="0.50980392156862742" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

@@ -20,8 +20,12 @@ class TaskDetailContentsCellCollectionViewCell: UICollectionViewListCell {
         content.text = viewModel?.contents
         content.image = viewModel?.image
         content.imageProperties.tintColor = .halgoraedoDarkBlue
-        layer.cornerRadius = 10
-        layer.masksToBounds = true
+        
+        var background = UIBackgroundConfiguration.listPlainCell()
+        background.cornerRadius = 8
+        background.strokeColor = .systemGray3
+        backgroundConfiguration = background
+        shadow()
         contentConfiguration = content
     }
     
