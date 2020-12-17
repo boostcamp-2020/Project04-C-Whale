@@ -14,7 +14,7 @@ const create = async ({ projectId, userId, ...data }) => {
     if (!project) {
       throw customError.NOT_FOUND_ERROR('project');
     }
-    console.log(project);
+
     if (project.creatorId !== userId) {
       throw customError.FORBIDDEN_ERROR();
     }
@@ -43,6 +43,23 @@ const update = async ({ projectId, sectionId, userId, ...data }) => {
 
 const updateTaskPositions = async ({ projectId, sectionId, userId, ...data }) => {
   const { orderedTasks } = data;
+
+  const project = await models.project.findByPk(projectId);
+  if (!project) {
+    throw customError.NOT_FOUND_ERROR('project');
+  }
+  if (project.creatorId !== userId) {
+    throw customError.FORBIDDEN_ERROR();
+  }
+  const [section] = await project.getSections({ where: { id: sectionId } });
+  if (!section) {
+    throw customError.NOT_FOUND_ERROR('section');
+  }
+
+  const tasks = await section.getTasks();
+  if (!tasks.every(task => orderedTasks.find(orderedTask => orderedTask === task.id))) {
+    throw customError.WRONG_RELATION_ERROR(['please check projectId, sectionId, tasks Id']);
+  }
 
   const result = await sequelize.transaction(async t => {
     return await Promise.all(
