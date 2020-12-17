@@ -60,27 +60,20 @@ import AddTask from "@/components/task/AddTask";
 import { mapActions, mapState } from "vuex";
 
 export default {
-  data: () => ({
-    drawer: null,
-    showQuickAdd: false,
-    darkMode: JSON.parse(localStorage.getItem("darkMode")) || false,
-  }),
   components: {
     Search,
     LeftMenu,
     AddTask,
   },
+  data() {
+    return {
+      drawer: null,
+      showQuickAdd: false,
+      darkMode: JSON.parse(localStorage.getItem("darkMode")) || false,
+    };
+  },
   computed: {
     ...mapState({ user: (state) => state.auth.user }),
-  },
-  methods: {
-    ...mapActions(["logout"]),
-    toggleQuickAdd() {
-      this.showQuickAdd = !this.showQuickAdd;
-    },
-    goHome() {
-      this.$router.push("/today").catch(() => {});
-    },
   },
   watch: {
     darkMode() {
@@ -90,6 +83,15 @@ export default {
   },
   created() {
     this.$vuetify.theme.dark = this.darkMode;
+  },
+  methods: {
+    ...mapActions(["logout"]),
+    toggleQuickAdd() {
+      this.showQuickAdd = !this.showQuickAdd;
+    },
+    goHome() {
+      this.$router.push("/today").catch(() => {});
+    },
   },
 };
 </script>

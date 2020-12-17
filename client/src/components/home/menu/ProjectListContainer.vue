@@ -84,13 +84,13 @@ import DeleteProjectModal from "@/components/project/DeleteProjectModal.vue";
 import { mapActions } from "vuex";
 
 export default {
-  props: {
-    projectInfos: Array,
-  },
   components: {
     AddProjectModal,
     UpdateProjectModal,
     DeleteProjectModal,
+  },
+  props: {
+    projectInfos: Array,
   },
   data() {
     return {
