@@ -12,13 +12,23 @@
     </v-list-item-action>
 
     <v-flex class="task-div d-flex" @click.prevent="moveToTaskDetail()">
-      <v-list-item-content>
-        <v-list-item-title>
+      <v-list-item-content class="d-flex">
+        <v-list-item-title class="d-flex">
           <vue-mark-down
             :class="task.isDone ? 'mark-down text-decoration-line-through' : 'mark-down'"
           >
             {{ task.title }}
           </vue-mark-down>
+          <span
+            v-if="showDate === undefined ? true : showDate"
+            class="d-inline-block font-12 ml-3 align-self-end primary--text"
+          >
+            {{ DateString }}
+          </span>
+          <span v-if="task.section" class="d-inline-block font-12 ml-3 align-self-end">
+            <v-icon x-small :color="task.section.project.color">mdi-circle</v-icon>
+            {{ task.section.project.title }}
+          </span>
         </v-list-item-title>
       </v-list-item-content>
     </v-flex>
@@ -39,6 +49,7 @@ export default {
     section: Object,
     position: Number,
     dragging: Boolean,
+    showDate: Boolean,
   },
   data() {
     return {
@@ -108,6 +119,9 @@ export default {
       const middle = box.top + box.height / 2;
       return middle;
     },
+    DateString() {
+      return new Date(this.task.dueDate).toLocaleDateString();
+    },
   },
   // setup(props, context) {
   //   const { handleDragStart, handleDragOver, handleDrop, taskItem } = useDragDropItem(
@@ -152,5 +166,13 @@ export default {
 
 .mark-down > p {
   margin: 0;
+}
+
+.font-12 {
+  font-size: 12px;
+}
+
+.flex-initial {
+  flex: initial !important;
 }
 </style>

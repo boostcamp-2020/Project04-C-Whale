@@ -24,6 +24,7 @@
         :id="task.id"
         @taskDragOver="taskDragOver"
         @taskDrop="taskDrop"
+        :showDate="true"
       />
       <v-divider />
 
