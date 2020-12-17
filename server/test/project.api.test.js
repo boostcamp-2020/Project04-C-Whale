@@ -77,7 +77,7 @@ describe('get project by id', () => {
     // given
     const expectedProjectId = 'invalid id';
     const expectedUser = seeder.users[0];
-    const expectedError = customError.INVALID_INPUT_ERROR('projectId');
+    const expectedError = customError.INVALID_INPUT_ERROR();
     try {
       // when
       const res = await request(app)

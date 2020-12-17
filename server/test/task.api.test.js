@@ -118,7 +118,7 @@ describe('get task by id', () => {
   it('잘못된 id 값 요청', async done => {
     // given
     const taskId = 'invalidId';
-    const expectedError = customError.INVALID_INPUT_ERROR('taskId');
+    const expectedError = customError.INVALID_INPUT_ERROR();
 
     try {
       // when
@@ -138,7 +138,7 @@ describe('get task by id', () => {
   it('자신의 task id가 아닌 경우', async done => {
     // given
     const taskId = seeder.tasks[0].id;
-    const expectedError = customError.FORBIDDEN_ERROR('task');
+    const expectedError = customError.FORBIDDEN_ERROR();
     try {
       // when
       const res = await request(app)
@@ -230,7 +230,7 @@ describe('patch task with id', () => {
   it('id값이 포함된 수정', async done => {
     // given
     const patchTask = { id: seeder.tasks[0].id, title: '졸리다' };
-    const expectedError = customError.UNNECESSARY_INPUT_ERROR('id');
+    const expectedError = customError.UNNECESSARY_INPUT_ERROR();
     // when
     const res = await request(app)
       .patch(`/api/task/${patchTask.id}`)
@@ -247,7 +247,7 @@ describe('patch task with id', () => {
     // given
     const taskId = seeder.tasks[0].id;
     const patchTask = { title: '' };
-    const expectedError = customError.INVALID_INPUT_ERROR('title');
+    const expectedError = customError.INVALID_INPUT_ERROR();
 
     // when
     const res = await request(app)
@@ -266,7 +266,7 @@ describe('patch task with id', () => {
     // given
     const taskId = seeder.tasks[0].id;
     const patchTask = { parentId: 'invalidId' };
-    const expectedError = customError.INVALID_INPUT_ERROR('parentId');
+    const expectedError = customError.INVALID_INPUT_ERROR();
     // when
     const res = await request(app)
       .patch(`/api/task/${taskId}`)
@@ -284,7 +284,7 @@ describe('patch task with id', () => {
     // given
     const taskId = seeder.tasks[0].id;
     const patchTask = { priority: '5' };
-    const expectedError = customError.INVALID_INPUT_ERROR('priority');
+    const expectedError = customError.INVALID_INPUT_ERROR();
     // when
     const res = await request(app)
       .patch(`/api/task/${taskId}`)
@@ -301,7 +301,7 @@ describe('patch task with id', () => {
     // given
     const taskId = seeder.tasks[0].id;
     const patchTask = { isDone: 'hi' };
-    const expectedError = customError.TYPE_ERROR('isDone');
+    const expectedError = customError.TYPE_ERROR();
     // when
     const res = await request(app)
       .patch(`/api/task/${taskId}`)
@@ -335,7 +335,7 @@ describe('patch task with id', () => {
     // given
     const taskId = seeder.tasks[0].id;
     const patchTask = { isDone: true };
-    const expectedError = customError.FORBIDDEN_ERROR('task');
+    const expectedError = customError.FORBIDDEN_ERROR();
 
     try {
       // when

@@ -65,7 +65,7 @@ describe('get bookmark', () => {
   it('taskId가 uuid가 아닌 경우', async done => {
     // given
     const taskId = 'invalid taskId';
-    const expectedError = customError.INVALID_INPUT_ERROR('taskId');
+    const expectedError = customError.INVALID_INPUT_ERROR();
 
     // when
     const res = await request(app)
@@ -97,7 +97,7 @@ describe('get bookmark', () => {
   it('자신의 taskId가 아닌 경우', async done => {
     // given
     const taskId = seeder.tasks[0].id;
-    const expectedError = customError.FORBIDDEN_ERROR('task');
+    const expectedError = customError.FORBIDDEN_ERROR();
 
     // when
     const res = await request(app)
@@ -149,7 +149,7 @@ describe('post bookmark', () => {
     // given
     const taskId = seeder.tasks[0].id;
     const data = { id: 'hi', url: 'https://www.naver.com', title: '네이버' };
-    const expectedError = customError.UNNECESSARY_INPUT_ERROR('id');
+    const expectedError = customError.UNNECESSARY_INPUT_ERROR();
     // when
     const res = await request(app)
       .post(`/api/task/${taskId}/bookmark`)
@@ -166,7 +166,7 @@ describe('post bookmark', () => {
     // given
     const taskId = seeder.tasks[0].id;
     const data = { taskId, url: 'https://www.naver.com', title: '네이버' };
-    const expectedError = customError.UNNECESSARY_INPUT_ERROR('taskId');
+    const expectedError = customError.UNNECESSARY_INPUT_ERROR();
     // when
     const res = await request(app)
       .post(`/api/task/${taskId}/bookmark`)
@@ -183,7 +183,7 @@ describe('post bookmark', () => {
     // given
     const taskId = seeder.tasks[0].id;
     const data = { url: '배고프다' };
-    const expectedError = customError.INVALID_INPUT_ERROR('url');
+    const expectedError = customError.INVALID_INPUT_ERROR();
 
     // when
     const res = await request(app)
@@ -201,7 +201,7 @@ describe('post bookmark', () => {
     // given
     const taskId = seeder.tasks[0].id;
     const data = { title: '네이버 웨일로 가봅시다!' };
-    const expectedError = customError.NECESSARY_INPUT_ERROR('url');
+    const expectedError = customError.NECESSARY_INPUT_ERROR();
 
     // when
     const res = await request(app)
@@ -219,7 +219,7 @@ describe('post bookmark', () => {
     // given
     const taskId = seeder.tasks[0].id;
     const data = { url: 'https://www.naver.com', title: '' };
-    const expectedError = customError.INVALID_INPUT_ERROR('title');
+    const expectedError = customError.INVALID_INPUT_ERROR();
 
     // when
     const res = await request(app)
@@ -237,7 +237,7 @@ describe('post bookmark', () => {
     // given
     const taskId = 'invalid taskId';
     const data = { url: 'https://www.naver.com', title: '네이버' };
-    const expectedError = customError.INVALID_INPUT_ERROR('taskId');
+    const expectedError = customError.INVALID_INPUT_ERROR();
 
     // when
     const res = await request(app)
@@ -273,7 +273,7 @@ describe('post bookmark', () => {
     // given
     const taskId = seeder.tasks[0].id;
     const data = { url: 'https://www.naver.com', title: 'hi' };
-    const expectedError = customError.FORBIDDEN_ERROR('task');
+    const expectedError = customError.FORBIDDEN_ERROR();
 
     // when
     const res = await request(app)
@@ -308,7 +308,7 @@ describe('delete bookmark', () => {
     // given
     const taskId = 'Invalid taskId';
     const bookmarkId = seeder.bookmarks[0].id;
-    const expectedError = customError.INVALID_INPUT_ERROR('taskId');
+    const expectedError = customError.INVALID_INPUT_ERROR();
 
     // when
     const res = await request(app)
@@ -325,7 +325,7 @@ describe('delete bookmark', () => {
     // given
     const taskId = seeder.tasks[0].id;
     const bookmarkId = 'invalid bookmarkId';
-    const expectedError = customError.INVALID_INPUT_ERROR('bookmarkId');
+    const expectedError = customError.INVALID_INPUT_ERROR();
 
     // when
     const res = await request(app)
@@ -376,7 +376,7 @@ describe('delete bookmark', () => {
     // given
     const taskId = seeder.tasks[0].id;
     const bookmarkId = seeder.bookmarks[2].id;
-    const expectedError = customError.FORBIDDEN_ERROR('task');
+    const expectedError = customError.FORBIDDEN_ERROR();
 
     // when
     const res = await request(app)
@@ -393,7 +393,7 @@ describe('delete bookmark', () => {
     // given
     const taskId = seeder.tasks[0].id;
     const bookmarkId = seeder.bookmarks[2].id;
-    const expectedError = customError.FORBIDDEN_ERROR('bookmark');
+    const expectedError = customError.FORBIDDEN_ERROR();
 
     // when
     const res = await request(app)
@@ -410,7 +410,7 @@ describe('delete bookmark', () => {
     // given
     const taskId = seeder.tasks[0].id;
     const bookmarkId = seeder.bookmarks[3].id;
-    const expectedError = customError.WRONG_RELATION_ERROR('task, bookmark');
+    const expectedError = customError.WRONG_RELATION_ERROR();
 
     // when
     const res = await request(app)
