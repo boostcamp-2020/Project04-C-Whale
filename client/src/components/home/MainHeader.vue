@@ -28,14 +28,17 @@
           </v-app-bar-nav-icon>
         </template>
         <v-list>
-          <v-list-item>
-            <v-list-item-title class="font-14">{{ user.email }}</v-list-item-title>
+          <v-list-item class="d-block">
+            <span class="d-inline-block font-14">{{ user.name }}</span>
+            <v-list-item-title class="font-14"> {{ user.email }}</v-list-item-title>
           </v-list-item>
           <v-list-item>
             <v-switch
               @click.stop
               v-model="darkMode"
               :label="darkMode ? '다크모드 해제' : '다크모드 설정'"
+              class="mt-0"
+              hide-details
             ></v-switch>
           </v-list-item>
           <v-list-item @click="logout">
@@ -111,11 +114,13 @@ export default {
   max-width: 400px !important;
 }
 
-$navigation-drawer-border-width: 0px;
-</style>
-
-<style>
 .dialog {
   overflow-y: visible !important;
 }
+
+.font-12 {
+  font-size: 12px;
+}
+
+$navigation-drawer-border-width: 0px;
 </style>
