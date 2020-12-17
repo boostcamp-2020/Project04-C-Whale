@@ -90,13 +90,16 @@ class TaskSectionViewCell: UICollectionViewCell {
         dataSource.apply(snapShot, to: section, animatingDifferences: true)
     }
     
-    func reloadSnapshot(taskItems: [TaskVM]) {
+    func reloadSnapshot(taskItems: [TaskVM], sectionVM: TaskListModels.SectionVM) {
         var snapshot = NSDiffableDataSourceSectionSnapshot<TaskVM>()
         snapshot.append(taskItems)
+        section = sectionVM
+        self.taskVM = taskItems
         guard let section = section else {
             return
         }
-        dataSource.apply(snapshot, to: section, animatingDifferences: true)
+        
+        dataSource.apply(snapshot, to: section, animatingDifferences: false)
     }
     
     @objc func didChangeRefersh(_ sender: UIRefreshControl) {
@@ -306,12 +309,11 @@ extension TaskSectionViewCell: UICollectionViewDropDelegate {
                 } else {
                     tempDestinationIndex = IndexPath(row: destinationIndexPath.row - 1, section: destinationIndexPath.section)
                 }
-                let sourceSection = dataSource.snapshot().sectionIdentifiers[tempDestinationIndex.section]
-                
+                guard let section = section else { return }
                 if tempDestinationIndex.row == -1 {
-                    taskSectionViewCellDelegate?.taskSectionViewCell(self, sourceSection, sourceSection, sourceTask, nil)
+                    taskSectionViewCellDelegate?.taskSectionViewCell(self, section, section, sourceTask, nil)
                 } else {
-                    taskSectionViewCellDelegate?.taskSectionViewCell(self, sourceSection, sourceSection, sourceTask, sourceSection.tasks[tempDestinationIndex.row])
+                    taskSectionViewCellDelegate?.taskSectionViewCell(self, section, section, sourceTask, section .tasks[tempDestinationIndex.row])
                 }
                 
             } else {
