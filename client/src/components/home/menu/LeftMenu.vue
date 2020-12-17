@@ -17,7 +17,6 @@
 import FavoriteProjectList from "./FavoriteProjectList";
 import ProjectListContainer from "./ProjectListContainer";
 import BookmarkList from "./BookmarkList";
-
 import { mapGetters, mapActions } from "vuex";
 
 export default {
