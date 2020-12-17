@@ -151,9 +151,9 @@ describe('create section', () => {
   it('없는 project인 경우', async done => {
     // given
     const expectedUser = seeder.users[0];
-    const expectedProjectId = seeder.projects[2].id;
+    const expectedProjectId = seeder.sections[2].id;
     const requestBody = { title: '새로운 섹션' };
-    const expectedError = customError.FORBIDDEN_ERROR();
+    const expectedError = customError.NOT_FOUND_ERROR();
 
     // when
     const res = await request(app)
