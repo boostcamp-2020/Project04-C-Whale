@@ -36,4 +36,16 @@ class TaskListInteractorMock: TaskListBusinessLogic {
     func createSection(request: TaskListModels.CreateSection.Request) {
         
     }
+    
+    func updateComplete(request: TaskListModels.FinishTask.Request) {
+            
+    }
+    
+    func updateCompleteAll(request: TaskListModels.FinishTask.Request, projectId: String) {
+        
+    }
+    
+    func dragDropHelper(requset: TaskListModels.DragDropTask.DragDropRequest) {
+        
+    }
 }

@@ -20,4 +20,8 @@ class TaskListPresenterMock: TaskListPresentLogic {
     func presentFinshChanged(response: TaskListModels.FinishTask.Response) {
         
     }
+
+    func presentFinishDragDrop(viewModel: TaskListModels.DragDropTask.ViewModel) {
+        
+    }
 }

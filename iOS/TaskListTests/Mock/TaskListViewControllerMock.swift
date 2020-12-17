@@ -5,7 +5,7 @@
 //  Created by woong on 2020/12/17.
 //
 
-import Foundation
+import UIKit
 
 class TaskListViewControllerMock: TaskListDisplayLogic {
     
@@ -14,6 +14,14 @@ class TaskListViewControllerMock: TaskListDisplayLogic {
     }
     
     func displayFinishChanged(viewModel: TaskListModels.FinishTask.ViewModel) {
+        
+    }
+    
+    func displayFetchTasks(snapshot: NSDiffableDataSourceSectionSnapshot<TaskListModels.TaskVM>, sectionVM: TaskListModels.SectionVM, sectionVMs: [TaskListModels.SectionVM]) {
+        
+    }
+    
+    func displatFinishDragDrop(snapshot: NSDiffableDataSourceSectionSnapshot<TaskListModels.TaskVM>, sectionVM: TaskListModels.SectionVM) {
         
     }
 }
