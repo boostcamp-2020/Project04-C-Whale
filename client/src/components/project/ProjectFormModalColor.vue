@@ -27,13 +27,13 @@ export default {
     prop: "value",
     event: "change",
   },
+  props: {
+    value: String,
+  },
   data() {
     return {
       colors,
     };
-  },
-  props: {
-    value: String,
   },
 };
 </script>

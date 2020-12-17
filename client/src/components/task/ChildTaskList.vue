@@ -20,13 +20,13 @@ import { toRefs } from "@vue/composition-api";
 import useDragDropContainer from "@/composables/useDroppable";
 
 export default {
+  components: {
+    TaskItem,
+  },
   props: {
     projectId: String,
     section: Object,
     parentTask: Object,
-  },
-  components: {
-    TaskItem,
   },
   setup(props) {
     const { parentTask } = toRefs(props);

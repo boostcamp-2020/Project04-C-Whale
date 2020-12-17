@@ -45,6 +45,9 @@ import UpdatableTitle from "@/components/common/UpdatableTitle";
 import bus from "@/utils/bus";
 
 export default {
+  components: {
+    UpdatableTitle,
+  },
   props: {
     project: Object,
   },
@@ -67,9 +70,6 @@ export default {
       this.showDoneTasks = !this.showDoneTasks;
       bus.$emit("toggleDoneTasks", this.showDoneTasks);
     },
-  },
-  components: {
-    UpdatableTitle,
   },
 };
 </script>

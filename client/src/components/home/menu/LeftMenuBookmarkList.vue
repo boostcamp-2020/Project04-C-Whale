@@ -66,7 +66,6 @@ import whaleApi from "@/utils/whaleApi";
 import { mapGetters, mapMutations } from "vuex";
 
 export default {
-  props: {},
   components: {},
   data() {
     return {

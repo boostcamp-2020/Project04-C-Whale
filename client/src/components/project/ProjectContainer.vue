@@ -39,6 +39,11 @@ import AddSection from "@/components/project/section/AddSection";
 import bus from "@/utils/bus";
 
 export default {
+  components: {
+    SectionContainer,
+    ProjectContainerHeader,
+    AddSection,
+  },
   props: {
     project: Object,
     sections: Array,
@@ -51,6 +56,14 @@ export default {
   },
   computed: {
     ...mapGetters(["draggingSection"]),
+  },
+  created() {
+    bus.$on("moveToTaskDetail", (destinationInfo) => {
+      this.$router.push(destinationInfo).catch(() => {});
+    });
+  },
+  beforeDestroy() {
+    bus.$off("moveToTaskDetail");
   },
   methods: {
     ...mapActions(["updateTaskToDone", "updateProject"]),
@@ -65,19 +78,6 @@ export default {
     toggleAddSection() {
       this.showAddSection = !this.showAddSection;
     },
-  },
-  components: {
-    SectionContainer,
-    ProjectContainerHeader,
-    AddSection,
-  },
-  created() {
-    bus.$on("moveToTaskDetail", (destinationInfo) => {
-      this.$router.push(destinationInfo).catch(() => {});
-    });
-  },
-  beforeDestroy() {
-    bus.$off("moveToTaskDetail");
   },
 };
 </script>

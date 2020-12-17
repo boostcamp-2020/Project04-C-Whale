@@ -56,15 +56,15 @@ import ProjectDeleteModal from "@/components/project/ProjectDeleteModal";
 import { mapActions } from "vuex";
 
 export default {
-  props: {
-    managedProject: Object,
-    taskCount: Number,
-    favoriteProjectInfos: Array,
-  },
   components: {
     ProjectFormModal,
     ProjectDeleteModal,
     LeftMenuProjectList,
+  },
+  props: {
+    managedProject: Object,
+    taskCount: Number,
+    favoriteProjectInfos: Array,
   },
   data() {
     return { updateDialog: false, deleteDialog: false, projectId: "" };

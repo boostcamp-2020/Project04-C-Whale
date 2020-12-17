@@ -56,13 +56,13 @@ import ProjectDeleteModal from "@/components/project/ProjectDeleteModal";
 import { mapActions } from "vuex";
 
 export default {
-  props: {
-    projectInfos: Array,
-  },
   components: {
     ProjectFormModal,
     ProjectDeleteModal,
     ProjectList,
+  },
+  props: {
+    projectInfos: Array,
   },
   data() {
     return {

@@ -31,6 +31,9 @@ import VueMarkDown from "vue-markdown";
 import bus from "@/utils/bus";
 
 export default {
+  components: {
+    VueMarkDown,
+  },
   props: {
     task: Object,
     parentTask: Object,
@@ -45,8 +48,13 @@ export default {
       checkBox: this.task.isDone,
     };
   },
-  components: {
-    VueMarkDown,
+  computed: {
+    ...mapGetters(["draggingTask", "dropTargetContainer"]),
+    middleY() {
+      const box = this.$el.getBoundingClientRect();
+      const middle = box.top + box.height / 2;
+      return middle;
+    },
   },
   methods: {
     ...mapActions(["updateTaskToDone"]),
@@ -99,14 +107,6 @@ export default {
 
     handleDrop() {
       this.$emit("taskDrop");
-    },
-  },
-  computed: {
-    ...mapGetters(["draggingTask", "dropTargetContainer"]),
-    middleY() {
-      const box = this.$el.getBoundingClientRect();
-      const middle = box.top + box.height / 2;
-      return middle;
     },
   },
 };

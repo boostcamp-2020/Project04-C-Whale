@@ -33,17 +33,17 @@ export default {
       selectedProject: {},
     };
   },
-  methods: {
-    pickProject(projectInfo) {
-      this.selectedProject = projectInfo;
-      this.$emit("pickProject", projectInfo);
-    },
-  },
   computed: {
     ...mapGetters(["projectInfos", "projectInfoById"]),
   },
   created() {
     this.selectedProject = this.projectInfoById(this.projectId);
+  },
+  methods: {
+    pickProject(projectInfo) {
+      this.selectedProject = projectInfo;
+      this.$emit("pickProject", projectInfo);
+    },
   },
 };
 </script>

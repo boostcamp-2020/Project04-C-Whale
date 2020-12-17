@@ -30,12 +30,12 @@ export default {
     "managedProject",
     "taskCount",
   ]),
-  methods: {
-    ...mapActions(["fetchProjectInfos", "fetchAllTasks"]),
-  },
   created() {
     this.fetchProjectInfos();
     this.fetchAllTasks();
+  },
+  methods: {
+    ...mapActions(["fetchProjectInfos", "fetchAllTasks"]),
   },
 };
 </script>

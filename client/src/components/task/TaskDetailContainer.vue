@@ -39,6 +39,7 @@ import { mapState } from "vuex";
 
 export default {
   components: { TaskItem, TaskDetailTabs },
+  mixins: [SpinnerMixin],
   props: {
     task: Object,
   },
@@ -58,7 +59,6 @@ export default {
       this.$emit("hideTaskModal");
     },
   },
-  mixins: [SpinnerMixin],
 };
 </script>
 
