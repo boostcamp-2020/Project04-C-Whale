@@ -418,3 +418,55 @@ describe('delete task', () => {
     }
   });
 });
+
+describe('MultipleError 케이스', () => {
+  it('요청 데이터 모두 validation에 걸린 경우', async done => {
+    // given
+    const taskId = seeder.tasks[0].id;
+    const patchTask = {
+      title: '', // 1
+      sectionId: { hi: '이거 됐던거같은데' }, // 2
+      dueDate: 'hi', // 1
+      parentId: '뭐야', // 1
+      priority: 55, // 1
+      position: '하이', // 1
+    };
+    const expectedError = customError.MULTIPLE_ERROR();
+
+    try {
+      // when
+      const res = await request(app)
+        .patch(`/api/task/${taskId}`)
+        .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
+        .send(patchTask);
+
+      // then
+      expect(res.status).toBe(expectedError.status);
+      expect(res.body.code).toBe(expectedError.code);
+      expect(res.body.message).toBe(expectedError.message);
+      expect(res.body.fields.length).toBeGreaterThan(Object.keys(patchTask).length);
+      //
+      done();
+    } catch (err) {
+      done(err);
+    }
+  });
+  it('잘못된 title 수정', async done => {
+    // given
+    const taskId = seeder.tasks[0].id;
+    const patchTask = { title: 77 };
+    const expectedError = customError.MULTIPLE_ERROR();
+
+    // when
+    const res = await request(app)
+      .patch(`/api/task/${taskId}`)
+      .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
+      .send(patchTask);
+
+    // then
+    expect(res.status).toBe(expectedError.status);
+    expect(res.body.code).toBe(expectedError.code);
+    expect(res.body.message).toBe(expectedError.message);
+    done();
+  });
+});
