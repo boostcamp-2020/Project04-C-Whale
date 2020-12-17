@@ -1,4 +1,5 @@
 const ProjectDto = require('@models/dto/project');
+const PositionDto = require('@models/dto/position');
 const projectService = require('@services/project');
 const { responseHandler } = require('@utils/handler');
 const { asyncTryCatch } = require('@utils/async-try-catch');
@@ -75,7 +76,7 @@ const deleteProject = asyncTryCatch(async (req, res) => {
 const updateSectionPositions = asyncTryCatch(async (req, res) => {
   try {
     await validator(ParamsValidator, req.params);
-    await validator(ProjectDto, req.body);
+    await validator(PositionDto, req.body);
   } catch (errs) {
     const validationError = getTypeError(errs);
     throw validationError;
