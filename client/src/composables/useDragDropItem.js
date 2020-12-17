@@ -2,17 +2,12 @@ import { ref, watch, computed, onMounted } from "@vue/composition-api";
 import store from "../store";
 
 export default function useDragAndDropItem({ task, parentTask, section, position }, context) {
-  const taskItem = ref(null);
   const draggingTask = computed(() => store.getters.draggingTask);
   const dropTargetContainer = computed(() => store.getters.dropTargetContainer);
-  const middleY = computed(() => {
-    // console.log(taskItem);
-    const box = taskItem.value.$el.getBoundingClientRect();
-    const middle = box.top + box.height / 2;
-    return middle;
-  });
-  // onMounted(() => {
-  //   console.log(taskItem.value);
+  // const middleY = computed(() => {
+  //   const box = taskItem.value.$el.getBoundingClientRect();
+  //   const middle = box.top + box.height / 2;
+  //   return middle;
   // });
   const handleDragStart = () => {
     store.commit("SET_DRAGGING_TASK", task);
@@ -54,5 +49,8 @@ export default function useDragAndDropItem({ task, parentTask, section, position
     handleDragOver,
     handleDrop,
     taskItem,
+    draggingTask,
+    dropTargetContainer,
+    middleY,
   };
 }

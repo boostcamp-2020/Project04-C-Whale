@@ -4,6 +4,21 @@ whale.contextMenus.create({
   contexts: ["selection"],
 });
 
+whale.storage.sync.get((alarms) => {
+  console.log(Date.now());
+  Object.values(alarms).forEach((alarm) => {
+    const isOld = Date.now() > alarm.fireTime;
+
+    if (isOld) {
+      console.log("hhh");
+      return;
+    }
+    whale.alarms.create(alarm.taskTitle, {
+      when: alarm.fireTime,
+    });
+  });
+});
+
 whale.alarms.onAlarm.addListener((alarm) => {
   whale.notifications.create({
     title: `할일: ${alarm.name}`,
@@ -41,8 +56,10 @@ whale.runtime.onMessageExternal.addListener((message, _sender, sendResponse) => 
       break;
 
     case "createAlarm":
-      const { taskId, taskTitle, fireTime } = message.data;
-      whale.storage.sync.set({ taskId: { taskTitle, fireTime } });
+      const { taskTitle, fireTime } = message.data;
+
+      whale.storage.sync.set({ [taskTitle]: { taskTitle, fireTime } });
+
       whale.alarms.create(taskTitle, {
         when: fireTime,
       });
