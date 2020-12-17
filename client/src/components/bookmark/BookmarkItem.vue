@@ -1,5 +1,5 @@
 <template>
-  <v-list-item :href="bookmark.url">
+  <v-list-item :href="bookmark.url" target="_blank">
     <v-list-item-icon>
       <v-icon color="primary">mdi-book</v-icon>
     </v-list-item-icon>

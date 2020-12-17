@@ -42,6 +42,7 @@
             v-for="bookmark in task.bookmarks"
             :key="bookmark.id"
             :href="bookmark.url"
+            target="_blank"
             class="pl-4"
             active-class="font-weight-bold list-active"
           >

@@ -56,7 +56,7 @@
             <v-btn
               type="submit"
               depressed
-              color="whaleGreen"
+              color="primary"
               class="text--white"
               :disabled="task.title.length === 0"
               >+ 작업 추가</v-btn
@@ -82,9 +82,9 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import { getTodayString } from "../../utils/date";
-import whaleApi from "../../utils/whaleApi";
-import { getMarkDownUrl } from "../../utils/markdown";
+import { getTodayString } from "@/utils/date";
+import whaleApi from "@/utils/whaleApi";
+import { getMarkDownUrl } from "@/utils/markdown";
 import VueTimepicker from "vue2-timepicker/src/vue-timepicker.vue";
 
 export default {

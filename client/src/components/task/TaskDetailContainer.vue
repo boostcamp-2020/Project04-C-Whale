@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import TaskItem from "@/components/project/TaskItem";
+import TaskItem from "@/components/task/TaskItem";
 import TaskDetailTabs from "@/components/task/TaskDetailTabs";
 import SpinnerMixin from "@/mixins/SpinnerMixins";
 import { mapState } from "vuex";

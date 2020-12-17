@@ -12,6 +12,7 @@
 import { mapActions, mapGetters } from "vuex";
 import ProjectContainer from "../components/project/ProjectContainer";
 import SpinnerMixin from "@/mixins/SpinnerMixins.js";
+import bus from "@/utils/bus";
 
 export default {
   components: { ProjectContainer },
@@ -24,8 +25,10 @@ export default {
   computed: {
     ...mapGetters(["projectList"]),
   },
-  created() {
-    this.fetchCurrentProject(this.$route.params.projectId);
+  async created() {
+    bus.$emit("start:spinner");
+    await this.fetchCurrentProject(this.$route.params.projectId);
+    bus.$emit("end:spinner");
   },
   mixins: [SpinnerMixin],
 };

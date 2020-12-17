@@ -35,10 +35,10 @@
 </template>
 
 <script>
-import AddTask from "@/components/project/AddTask";
-import TaskItem from "@/components/project/TaskItem";
+import AddTask from "@/components/task/AddTask";
+import TaskItem from "@/components/task/TaskItem";
 import UpdatableTitle from "@/components/common/UpdatableTitle";
-import ChildTaskList from "@/components/project/ChildTaskList";
+import ChildTaskList from "@/components/task/ChildTaskList";
 import { toRefs } from "@vue/composition-api";
 import useDragDropContainer from "@/composables/useDragDropContainer";
 import bus from "@/utils/bus";

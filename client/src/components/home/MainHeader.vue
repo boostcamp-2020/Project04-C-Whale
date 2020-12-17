@@ -51,9 +51,9 @@
 </template>
 
 <script>
-import Search from "@/components/task/Search";
-import LeftMenu from "@/components/menu/LeftMenu";
-import AddTask from "@/components/project/AddTask";
+import Search from "@/components/home/MainHeaderSearchTask";
+import LeftMenu from "@/components/home/menu/LeftMenu";
+import AddTask from "@/components/task/AddTask";
 import { mapActions, mapState } from "vuex";
 
 export default {
