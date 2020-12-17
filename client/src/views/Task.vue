@@ -3,6 +3,7 @@
     class="task-detail"
     v-show="dialog"
     v-model="dialog"
+    max-width="800"
     :retain-focus="false"
     @click:outside="hideTaskModal()"
   >
@@ -72,10 +73,6 @@ export default {
 };
 </script>
 <style>
-.v-dialog {
-  max-height: 80% !important;
-}
-
 @media screen and (max-width: 720px) {
   .v-dialog {
     width: 80%;
