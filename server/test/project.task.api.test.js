@@ -123,7 +123,7 @@ describe('post task', () => {
     const expectedProjectId = seeder.projects[0].id;
     const expectedSectionId = seeder.sections[0].id;
     const expectedParentId = 'wrongId';
-    const expectedError = customError.INVALID_INPUT_ERROR('parentId');
+    const expectedError = customError.INVALID_INPUT_ERROR();
     const newTask = {
       title: '할일',
       priority: priorities[0].id,
@@ -148,7 +148,7 @@ describe('post task', () => {
     const expectedId = seeder.projects[1].id;
     const expectedProjectId = seeder.projects[0].id;
     const expectedSectionId = seeder.sections[0].id;
-    const expectedError = customError.UNNECESSARY_INPUT_ERROR('id');
+    const expectedError = customError.UNNECESSARY_INPUT_ERROR();
     const newTask = {
       id: expectedId,
       title: '할일',
@@ -173,7 +173,7 @@ describe('post task', () => {
     // given
     const expectedProjectId = seeder.projects[0].id;
     const expectedSectionId = seeder.sections[0].id;
-    const expectedError = customError.UNNECESSARY_INPUT_ERROR('sectionId');
+    const expectedError = customError.UNNECESSARY_INPUT_ERROR();
     const newTask = {
       title: '할일',
       sectionId: expectedSectionId,
@@ -198,7 +198,7 @@ describe('post task', () => {
     // given
     const expectedProjectId = seeder.projects[0].id;
     const expectedSectionId = seeder.sections[0].id;
-    const expectedError = customError.INVALID_INPUT_ERROR('title');
+    const expectedError = customError.INVALID_INPUT_ERROR();
     const newTask = {
       title: '',
       priority: priorities[0].id,
@@ -222,7 +222,7 @@ describe('post task', () => {
     // given
     const expectedProjectId = 'wrongId';
     const expectedSectionId = seeder.sections[0].id;
-    const expectedError = customError.INVALID_INPUT_ERROR('projectId');
+    const expectedError = customError.INVALID_INPUT_ERROR();
     const newTask = {
       title: '할일',
       priority: priorities[0].id,
@@ -246,7 +246,7 @@ describe('post task', () => {
     // given
     const expectedProjectId = seeder.projects[0].id;
     const expectedSectionId = 'Invalid sectionId';
-    const expectedError = customError.INVALID_INPUT_ERROR('sectionId');
+    const expectedError = customError.INVALID_INPUT_ERROR();
     const newTask = {
       title: '할일',
       priority: priorities[0].id,
@@ -318,7 +318,7 @@ describe('post task', () => {
     // given
     const expectedProjectId = seeder.projects[0].id;
     const expectedSectionId = seeder.sections[0].id;
-    const expectedError = customError.FORBIDDEN_ERROR('project');
+    const expectedError = customError.FORBIDDEN_ERROR();
     const newTask = {
       title: '할일',
       priority: priorities[0].id,
@@ -342,7 +342,7 @@ describe('post task', () => {
     // given
     const expectedProjectId = seeder.projects[2].id;
     const expectedSectionId = seeder.sections[0].id;
-    const expectedError = customError.FORBIDDEN_ERROR('section');
+    const expectedError = customError.FORBIDDEN_ERROR();
     const newTask = {
       title: '할일',
       priority: priorities[0].id,
@@ -366,7 +366,7 @@ describe('post task', () => {
     // given
     const expectedProjectId = seeder.projects[0].id;
     const expectedSectionId = seeder.sections[1].id;
-    const expectedError = customError.WRONG_RELATION_ERROR('project, section');
+    const expectedError = customError.WRONG_RELATION_ERROR();
     const newTask = {
       title: '할일',
       priority: priorities[0].id,

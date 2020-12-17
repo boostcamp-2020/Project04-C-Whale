@@ -7,12 +7,12 @@
     @click:outside="hideTaskModal()"
   >
     <keep-alive>
-      <task-detail-container
+      <TaskDetailContainer
         v-if="tasks && tasks.length !== 0"
         @hideTaskModal="hideTaskModal"
         :task="task"
         :key="$route.params.taskId"
-      ></task-detail-container>
+      />
     </keep-alive>
   </v-dialog>
 </template>
