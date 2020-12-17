@@ -1,15 +1,16 @@
 <template>
   <div>
-    <TaskItem
-      v-for="(childTask, index) in tasks"
-      :key="childTask.id"
-      :section="section"
-      :parentTask="parentTask"
-      :task="childTask"
-      :position="index"
-      @taskDragOver="taskDragOver"
-      @taskDrop="taskDrop"
-    />
+    <div v-for="(childTask, index) in tasks" :key="childTask.id">
+      <TaskItem
+        v-if="shouldShow(childTask)"
+        :section="section"
+        :parentTask="parentTask"
+        :task="childTask"
+        :position="index"
+        @taskDragOver="taskDragOver"
+        @taskDrop="taskDrop"
+      />
+    </div>
   </div>
 </template>
 
@@ -27,6 +28,7 @@ export default {
     projectId: String,
     section: Object,
     parentTask: Object,
+    showDoneTask: Boolean,
   },
   setup(props) {
     const { parentTask } = toRefs(props);
@@ -37,6 +39,14 @@ export default {
       taskDragOver,
       taskDrop,
     };
+  },
+  methods: {
+    shouldShow(task) {
+      if (this.showDoneTask) {
+        return true;
+      }
+      return task.isDone ? false : true;
+    },
   },
 };
 </script>

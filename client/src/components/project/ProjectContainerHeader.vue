@@ -30,8 +30,8 @@
             <v-list-item-title>보기 형태: 보드 </v-list-item-title>
           </v-list-item>
           <v-list-item @click="filterIsDone">
-            <v-list-item-title
-              >{{ showDoneTasks ? "완료한 작업 숨기기" : "완료한 작업 표시" }}
+            <v-list-item-title>
+              {{ showDoneTask ? "완료한 작업 숨기기" : "완료한 작업 표시" }}
             </v-list-item-title>
           </v-list-item>
         </v-list>
@@ -42,7 +42,6 @@
 
 <script>
 import UpdatableTitle from "@/components/common/UpdatableTitle";
-import bus from "@/utils/bus";
 
 export default {
   components: {
@@ -50,6 +49,7 @@ export default {
   },
   props: {
     project: Object,
+    showDoneTask: Boolean,
   },
   data: function () {
     return {
@@ -67,8 +67,7 @@ export default {
       this.$emit("showAddSection");
     },
     filterIsDone() {
-      this.showDoneTasks = !this.showDoneTasks;
-      bus.$emit("toggleDoneTasks", this.showDoneTasks);
+      this.$emit("toggleShowDoneTask");
     },
   },
 };

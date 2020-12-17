@@ -4,17 +4,19 @@
       @selectListView="changeToListView"
       @selectBoardView="changeToBoardView"
       @showAddSection="toggleAddSection"
+      @toggleShowDoneTask="toggleShowDoneTask"
       :project="project"
+      :showDoneTask="showDoneTask"
     />
 
     <div :class="{ 'board-view': boardView }" class="section-container">
       <SectionContainer
-        v-for="(section, index) in project.sections"
+        v-for="section in project.sections"
         :key="section.id"
         :id="section.id"
-        :position="index"
         :projectId="project.id"
         :section="section"
+        :showDoneTask="showDoneTask"
         class="mb-3 section-container"
       />
     </div>
@@ -32,7 +34,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions } from "vuex";
 import ProjectContainerHeader from "@/components/project/ProjectContainerHeader";
 import SectionContainer from "@/components/project/section/SectionContainer";
 import AddSection from "@/components/project/section/AddSection";
@@ -52,10 +54,8 @@ export default {
     return {
       boardView: !this.project.isList,
       showAddSection: false,
+      showDoneTask: false,
     };
-  },
-  computed: {
-    ...mapGetters(["draggingSection"]),
   },
   created() {
     bus.$on("moveToTaskDetail", (destinationInfo) => {
@@ -77,6 +77,9 @@ export default {
     },
     toggleAddSection() {
       this.showAddSection = !this.showAddSection;
+    },
+    toggleShowDoneTask() {
+      this.showDoneTask = !this.showDoneTask;
     },
   },
 };

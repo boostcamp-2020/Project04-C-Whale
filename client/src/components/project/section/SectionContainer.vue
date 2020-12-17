@@ -15,7 +15,13 @@
         @taskDrop="taskDrop"
       />
       <v-divider v-if="shouldShow(task)" />
-      <ChildTaskList v-if="task.tasks" :section="section" :parentTask="task" class="ml-10" />
+      <ChildTaskList
+        v-if="task.tasks"
+        :section="section"
+        :parentTask="task"
+        :showDoneTask="showDoneTask"
+        class="ml-10"
+      />
     </div>
 
     <AddTask :projectId="projectId" :sectionId="section.id" />
@@ -29,8 +35,6 @@ import UpdatableTitle from "@/components/common/UpdatableTitle";
 import ChildTaskList from "@/components/task/ChildTaskList";
 import { toRefs } from "@vue/composition-api";
 import useDroppable from "@/composables/useDroppable";
-import bus from "@/utils/bus";
-import { mapGetters } from "vuex";
 
 export default {
   components: {
@@ -42,26 +46,7 @@ export default {
   props: {
     projectId: String,
     section: Object,
-    position: Number,
-  },
-  data() {
-    return {
-      showDoneTasks: false,
-    };
-  },
-  computed: {
-    ...mapGetters(["draggingSection"]),
-    todoTasks() {
-      return this.tasks.filter((task) => !task.isDone);
-    },
-  },
-  created() {
-    bus.$on("toggleDoneTasks", (showDoneTasks) => {
-      this.showDoneTasks = showDoneTasks;
-    });
-  },
-  beforeDestroy() {
-    bus.$off("toggleDoneTasks");
+    showDoneTask: Boolean,
   },
   setup(props) {
     const { section } = toRefs(props);
@@ -75,7 +60,7 @@ export default {
   },
   methods: {
     shouldShow(task) {
-      if (this.showDoneTasks) {
+      if (this.showDoneTask) {
         return true;
       }
       return task.isDone ? false : true;
