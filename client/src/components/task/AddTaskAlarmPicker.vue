@@ -2,8 +2,8 @@
   <v-btn depressed color="normal">
     <v-icon color="red"> mdi-alarm </v-icon>
     <VueTimepicker
-      @input="pickTime"
-      v-model="time"
+      @input="$emit('input', $event)"
+      :value="value"
       :format="timePickerFormat"
       :minute-interval="10"
       :second-interval="10"
@@ -14,24 +14,18 @@
 
 <script>
 import VueTimepicker from "vue2-timepicker/src/vue-timepicker.vue";
+
 export default {
   components: {
     VueTimepicker,
   },
+  props: {
+    value: Object,
+  },
   data() {
     return {
-      time: {
-        HH: "00",
-        mm: "00",
-        ss: "00",
-      },
       timePickerFormat: "HH시간 mm분 ss초",
     };
-  },
-  methods: {
-    pickTime(data) {
-      this.$emit("pickAlarmTime", data);
-    },
   },
 };
 </script>

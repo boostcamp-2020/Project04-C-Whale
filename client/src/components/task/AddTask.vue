@@ -12,13 +12,9 @@
           />
 
           <div class="task-info">
-            <AddTaskDueDatePicker
-              @pickDueDate="pickDueDate"
-              :dueDate="task.dueDate"
-              v-model="task.dueDate"
-            />
+            <AddTaskDueDatePicker v-model="task.dueDate" />
             <AddTaskProjectPicker @pickProject="pickProject" :projectId="task.projectId" />
-            <AddTaskAlarmPicker @pickAlarmTime="pickAlarmTime" />
+            <AddTaskAlarmPicker v-model="this.alarmTime" />
           </div>
         </div>
 
@@ -76,6 +72,16 @@ export default {
   computed: {
     ...mapGetters(["projectInfos", "managedProject"]),
   },
+  created() {
+    if (this.projectId === undefined || this.sectionId === undefined) {
+      this.task.projectId = this.managedProject?.id;
+      this.task.sectionId = this.managedProject?.defaultSectionId;
+      return;
+    }
+
+    this.task.projectId = this.projectId;
+    this.task.sectionId = this.sectionId;
+  },
   methods: {
     ...mapActions(["addTask"]),
 
@@ -121,21 +127,17 @@ export default {
         fireTime: this.getAlarmTimeInSec(),
       });
 
-      this.alarmTime = {};
+      this.alarmTime = {
+        HH: "00",
+        mm: "00",
+        ss: "00",
+      };
     },
 
     getAlarmTimeInSec() {
       return (
         Date.now() + (this.alarmTime.HH * 3600 + this.alarmTime.mm * 60 + this.alarmTime.ss) * 1000
       );
-    },
-
-    pickAlarmTime(time) {
-      this.alarmTime = time;
-    },
-
-    pickDueDate(date) {
-      this.task.dueDate = date;
     },
 
     pickProject(projectInfo) {
@@ -148,17 +150,6 @@ export default {
         this.task.title = getMarkDownUrl(title, url);
       });
     },
-  },
-
-  created() {
-    if (this.projectId === undefined || this.sectionId === undefined) {
-      this.task.projectId = this.managedProject?.id;
-      this.task.sectionId = this.managedProject?.defaultSectionId;
-      return;
-    }
-
-    this.task.projectId = this.projectId;
-    this.task.sectionId = this.sectionId;
   },
 };
 </script>
