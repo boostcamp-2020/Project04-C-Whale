@@ -105,16 +105,34 @@ const findOrCreate = async data => {
   return createResult;
 };
 
-const update = async ({ id, ...data }) => {
-  const result = await projectModel.update(data, { where: { id } });
+const update = async ({ projectId, userId, ...data }) => {
+  const project = await projectModel.findByPk(projectId);
+  if (!project) {
+    throw customError.NOT_FOUND_ERROR('project');
+  }
+  if (project.creatorId !== userId) {
+    throw customError.FORBIDDEN_ERROR();
+  }
 
-  return result === 1;
+  project.update(data, { where: { id: projectId } });
+  project.save();
+
+  return true;
 };
 
-const remove = async ({ id }) => {
-  const result = await projectModel.destroy({ where: { id } });
+const remove = async ({ projectId, userId }) => {
+  const project = await projectModel.findByPk(projectId);
+  if (!project) {
+    throw customError.NOT_FOUND_ERROR('project');
+  }
+  if (project.creatorId !== userId) {
+    throw customError.FORBIDDEN_ERROR();
+  }
 
-  return result === 1;
+  project.destroy();
+  project.save();
+
+  return true;
 };
 
 const updateSectionPositions = async orderedSections => {
