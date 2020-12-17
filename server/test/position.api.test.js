@@ -122,7 +122,7 @@ describe('update project section positions', () => {
     const expectedProjectId = seeder.tasks[2].id;
     const orderedSections = getOrderedSections(expectedProjectId);
     const requestBody = { orderedSections };
-    const expectedError = customError.FORBIDDEN_ERROR();
+    const expectedError = customError.NOT_FOUND_ERROR();
 
     // when
     const res = await request(app)
