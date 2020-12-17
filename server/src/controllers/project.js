@@ -82,7 +82,7 @@ const updateSectionPositions = asyncTryCatch(async (req, res) => {
   }
 
   const { id: userId } = req.user;
-  await projectService.updateSectionPositions(...req.body, ...req.params, userId);
+  await projectService.updateSectionPositions({ ...req.body, ...req.params, userId });
 
   responseHandler(res, 200, { message: 'ok' });
 });
