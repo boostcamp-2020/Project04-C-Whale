@@ -575,6 +575,87 @@ describe('update PUT project', () => {
       done(err);
     }
   });
+  it('존재하지 않는 project PUT', async done => {
+    // given
+    const expectedProjectId = seeder.sections[0].id;
+    const requestBody = {
+      title: 'PUT으로 변경된 프로젝트',
+      color: '#FFA7A7',
+      isList: true,
+      isFavorite: true,
+    };
+    const expectedUser = seeder.users[0];
+    const expectedError = customError.NOT_FOUND_ERROR();
+    try {
+      // when
+      const res = await request(app)
+        .put(`/api/project/${expectedProjectId}`)
+        .set('Authorization', `Bearer ${createJWT(expectedUser)}`)
+        .send(requestBody);
+
+      // then
+      expect(res.status).toBe(expectedError.status);
+      expect(res.body.message).toBe(expectedError.message);
+      expect(res.body.code).toBe(expectedError.code);
+      done();
+    } catch (err) {
+      done(err);
+    }
+  });
+  it('잘못된 projectId PUT', async done => {
+    // given
+    const expectedProjectId = 'invalidId';
+    const requestBody = {
+      title: 'PUT으로 변경된 프로젝트',
+      color: '#FFA7A7',
+      isList: true,
+      isFavorite: true,
+    };
+    const expectedUser = seeder.users[0];
+    const expectedError = customError.INVALID_INPUT_ERROR();
+    try {
+      // when
+      const res = await request(app)
+        .put(`/api/project/${expectedProjectId}`)
+        .set('Authorization', `Bearer ${createJWT(expectedUser)}`)
+        .send(requestBody);
+
+      // then
+      expect(res.status).toBe(expectedError.status);
+      expect(res.body.message).toBe(expectedError.message);
+      expect(res.body.code).toBe(expectedError.code);
+      done();
+    } catch (err) {
+      done(err);
+    }
+  });
+  it('자신의 project가 아닌 PUT', async done => {
+    // given
+    const expectedProjectId = seeder.projects[2].id;
+    const requestBody = {
+      title: 'PUT으로 변경된 프로젝트',
+      color: '#FFA7A7',
+      isList: true,
+      isFavorite: true,
+    };
+    const expectedUser = seeder.users[0];
+    const expectedError = customError.FORBIDDEN_ERROR();
+    try {
+      // when
+      const res = await request(app)
+        .put(`/api/project/${expectedProjectId}`)
+        .set('Authorization', `Bearer ${createJWT(expectedUser)}`)
+        .send(requestBody);
+
+      // then
+      expect(res.status).toBe(expectedError.status);
+      expect(res.body.message).toBe(expectedError.message);
+      expect(res.body.code).toBe(expectedError.code);
+      done();
+    } catch (err) {
+      done(err);
+    }
+  });
 });
 describe('update PATCH project', () => {
   it('update project PATCH', async done => {
@@ -761,6 +842,81 @@ describe('update PATCH project', () => {
       done(err);
     }
   });
+  it('존재하지 않는 project PATCH', async done => {
+    // given
+    const expectedUser = seeder.users[0];
+    const expectedProjectId = seeder.sections[0].id;
+    const requestBody = {
+      title: 'PATCH로 변경된 프로젝트!!',
+    };
+    const expectedError = customError.NOT_FOUND_ERROR('project');
+
+    try {
+      // when
+      const res = await request(app)
+        .patch(`/api/project/${expectedProjectId}`)
+        .set('Authorization', `Bearer ${createJWT(expectedUser)}`)
+        .send(requestBody);
+
+      // then
+      expect(res.status).toBe(expectedError.status);
+      expect(res.body.message).toBe(expectedError.message);
+      expect(res.body.code).toBe(expectedError.code);
+      done();
+    } catch (err) {
+      done(err);
+    }
+  });
+  it('잘못된 값의 project ID PATCH', async done => {
+    // given
+    const expectedUser = seeder.users[0];
+    const expectedProjectId = 'invalidId';
+    const requestBody = {
+      title: 'PATCH로 변경된 프로젝트!!',
+    };
+    const expectedError = customError.INVALID_INPUT_ERROR();
+
+    try {
+      // when
+      const res = await request(app)
+        .patch(`/api/project/${expectedProjectId}`)
+        .set('Authorization', `Bearer ${createJWT(expectedUser)}`)
+        .send(requestBody);
+
+      // then
+      expect(res.status).toBe(expectedError.status);
+      expect(res.body.message).toBe(expectedError.message);
+      expect(res.body.code).toBe(expectedError.code);
+      done();
+    } catch (err) {
+      done(err);
+    }
+  });
+  it('자신의 project가 아닌 PATCH', async done => {
+    // given
+    const expectedUser = seeder.users[0];
+    const expectedProjectId = seeder.projects[2].id;
+    const requestBody = {
+      title: 'PATCH로 변경된 프로젝트!!',
+    };
+    const expectedError = customError.FORBIDDEN_ERROR();
+
+    try {
+      // when
+      const res = await request(app)
+        .patch(`/api/project/${expectedProjectId}`)
+        .set('Authorization', `Bearer ${createJWT(expectedUser)}`)
+        .send(requestBody);
+
+      // then
+      expect(res.status).toBe(expectedError.status);
+      expect(res.body.message).toBe(expectedError.message);
+      expect(res.body.code).toBe(expectedError.code);
+      done();
+    } catch (err) {
+      done(err);
+    }
+  });
 });
 
 describe('delete project', () => {
@@ -825,7 +981,7 @@ describe('delete project', () => {
   it('자신의 프로젝트가 아닌 삭제 요청', async done => {
     // given
     const expectedUser = seeder.users[0];
-    const expectedProjectId = seeder.projects[2];
+    const expectedProjectId = seeder.projects[2].id;
     const expectedError = customError.FORBIDDEN_ERROR();
     try {
       // when
