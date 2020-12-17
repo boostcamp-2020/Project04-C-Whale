@@ -317,13 +317,17 @@ private extension TaskListViewController {
 
 extension TaskListViewController: TaskListDisplayLogic {
     
-    func displatFinishDragDrop(snapshot: NSDiffableDataSourceSectionSnapshot<TaskVM>, sectionVM: TaskListModels.SectionVM) {
+    func displayFinishDragDrop(viewModel: TaskListModels.DragDropTask.ViewModel) {
+        guard let snapshot = viewModel.snapshot,
+              let sectionVM = viewModel.sectionVM
+        else { return }
+        
         dataSource.apply(snapshot, to: sectionVM)
     }
     
-    func displayFetchTasks(snapshot: NSDiffableDataSourceSectionSnapshot<TaskVM>, sectionVM: TaskListModels.SectionVM, sectionVMs: [TaskListModels.SectionVM]) {
+    func displayFetchTasks(viewModel: TaskListModels.FetchTasks.ViewModel) {
         DispatchQueue.main.async {
-            self.dataSource.apply(snapshot, to: sectionVM, animatingDifferences: false)
+            self.dataSource.apply(viewModel.snapshot, to: viewModel.sectionVM, animatingDifferences: false)
         }
     }
     
@@ -466,7 +470,7 @@ extension TaskListViewController: UICollectionViewDropDelegate {
             }
             
             let destinationCell = collectionView.cellForItem(at: tempDestinationIndex) as? TaskCollectionViewListCell
-            interactor?.dragDropHelper(requset: .init(projectId: project.id, sourceIndexPath: sourceIndexPath, destinationIndexPath: tempDestinationIndex, childCheck: childCheck, dataSource: dataSource, destinationCell: destinationCell))
+            interactor?.dragDropForList(requset: .init(projectId: project.id, sourceIndexPath: sourceIndexPath, destinationIndexPath: tempDestinationIndex, childCheck: childCheck, dataSource: dataSource, destinationCell: destinationCell))
             coordinator.drop(item.dragItem, toItemAt: destinationIndexPath)
         }
     }
@@ -497,9 +501,8 @@ private extension TaskListViewController {
         guard let startIndex = startIndex,
               let startPoint = startPoint,
               let collectionView = taskListCollectionView
-        else {
-            return false
-        }
+        else { return false }
+        
         if destination.row == 0 { return true }
         
         var tempDestinationIndex: IndexPath
@@ -517,9 +520,7 @@ private extension TaskListViewController {
         
         guard let sourceTask = (collectionView.cellForItem(at: startIndex) as? TaskCollectionViewListCell)?.taskViewModel,
               let destinationCell = collectionView.cellForItem(at: tempDestinationIndex) as? TaskCollectionViewListCell
-        else {
-            return false
-        }
+        else { return false }
         
         if destinationCell.indentationLevel == 1 {
             childCheck = 0
