@@ -36,9 +36,22 @@ const create = async ({ projectId, userId, ...data }) => {
 };
 
 const update = async ({ projectId, sectionId, userId, ...data }) => {
-  const [result] = await models.section.update(data, { where: { id: sectionId } });
+  const project = await models.project.findByPk(projectId);
+  if (!project) {
+    throw customError.NOT_FOUND_ERROR('project');
+  }
+  if (project.creatorId !== userId) {
+    throw customError.FORBIDDEN_ERROR();
+  }
 
-  return result !== 0;
+  const [section] = await project.getSections({ where: { id: sectionId } });
+  if (!section) {
+    throw customError.NOT_FOUND_ERROR('section');
+  }
+  await section.update(data, { where: { id: sectionId } });
+  section.save();
+
+  return true;
 };
 
 const updateTaskPositions = async ({ projectId, sectionId, userId, ...data }) => {
