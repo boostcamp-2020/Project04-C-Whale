@@ -43,7 +43,7 @@ const retrieveProjects = async userId => {
   return projects;
 };
 
-const retrieveById = async ({ projectId, userId, ...rest }) => {
+const retrieveById = async ({ projectId, userId }) => {
   const project = await projectModel.findByPk(projectId, {
     attributes: ['id', 'title', 'isList'],
     include: {
@@ -95,6 +95,14 @@ const create = async data => {
   });
 
   return result;
+};
+
+const findOrCreate = async data => {
+  const [result] = await projectModel.findAll({ where: data });
+  if (result) return true;
+
+  const createResult = await create(data);
+  return createResult;
 };
 
 const update = async ({ projectId, userId, ...data }) => {
@@ -163,6 +171,7 @@ module.exports = {
   retrieveProjects,
   retrieveById,
   create,
+  findOrCreate,
   update,
   remove,
   updateSectionPositions,
