@@ -75,6 +75,7 @@
 		4C1AA5CD258C3CFC001E1E13 /* TaskDetailContentsCellCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1AA5CC258C3CFC001E1E13 /* TaskDetailContentsCellCollectionViewCell.swift */; };
 		4C1AA5EB258CB748001E1E13 /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA19EF322576846100E59017 /* UIColor+.swift */; };
 		4C1AA604258CBB84001E1E13 /* UIImage+scaled.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1AA603258CBB84001E1E13 /* UIImage+scaled.swift */; };
+		4C1AA642258CBDD3001E1E13 /* UIImage+scaled.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1AA603258CBB84001E1E13 /* UIImage+scaled.swift */; };
 		4C3F5665256B8117006D7C9F /* TaskListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3F5664256B8117006D7C9F /* TaskListViewController.swift */; };
 		4C3F566A256B82F2006D7C9F /* TaskBoardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3F5669256B82F2006D7C9F /* TaskBoardViewController.swift */; };
 		4C3F566F256B8C2B006D7C9F /* TaskListInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3F566E256B8C2B006D7C9F /* TaskListInteractor.swift */; };
@@ -187,14 +188,14 @@
 		4C0CA635256EAC5200E66045 /* TaskListDisplayLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListDisplayLogic.swift; sourceTree = "<group>"; };
 		4C1AA39C258B3A33001E1E13 /* HalgoraeDO.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HalgoraeDO.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C1AA3A9258B3A9D001E1E13 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		4C1AA3DF258B3B37001E1E13 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4C1AA560258B446D001E1E13 /* PersistentMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PersistentMock.swift; path = TaskListTests/PersistentMock.swift; sourceTree = SOURCE_ROOT; };
 		4C1AA598258C2F83001E1E13 /* TaskListPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListPresenterTests.swift; sourceTree = "<group>"; };
 		4C1AA5BE258C367C001E1E13 /* TaskDetailCommentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TaskDetailCommentCell.swift; path = Paging/Views/TaskDetailCommentCell.swift; sourceTree = "<group>"; };
 		4C1AA5CC258C3CFC001E1E13 /* TaskDetailContentsCellCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskDetailContentsCellCollectionViewCell.swift; sourceTree = "<group>"; };
-		4C1AA5FE258CBA5D001E1E13 /* ServiceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ServiceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		4C1AA5FF258CBA5D001E1E13 /* TaskListTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TaskListTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		4C1AA5FE258CBA5D001E1E13 /* ServiceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = ServiceTests.xctest; path = "/Users/os/woong/iOS/Boostcamp2020/group_final/Project04-C-Whale/iOS/build/Debug-iphoneos/ServiceTests.xctest"; sourceTree = "<absolute>"; };
+		4C1AA5FF258CBA5D001E1E13 /* TaskListTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = TaskListTests.xctest; path = "/Users/os/woong/iOS/Boostcamp2020/group_final/Project04-C-Whale/iOS/build/Debug-iphoneos/TaskListTests.xctest"; sourceTree = "<absolute>"; };
 		4C1AA603258CBB84001E1E13 /* UIImage+scaled.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+scaled.swift"; sourceTree = "<group>"; };
+		4C1AA634258CBD73001E1E13 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4C3F5664256B8117006D7C9F /* TaskListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListViewController.swift; sourceTree = "<group>"; };
 		4C3F5669256B82F2006D7C9F /* TaskBoardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskBoardViewController.swift; sourceTree = "<group>"; };
 		4C3F566E256B8C2B006D7C9F /* TaskListInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListInteractor.swift; sourceTree = "<group>"; };
@@ -341,11 +342,11 @@
 		4C1AA3DC258B3B37001E1E13 /* TaskListTests */ = {
 			isa = PBXGroup;
 			children = (
+				4C1AA634258CBD73001E1E13 /* Info.plist */,
 				4C8AFBC5258A7D8900E36379 /* Mock */,
 				4C8AFBC0258A7D8300E36379 /* TaskListWorkerTests.swift */,
 				4C8AFC21258AC36900E36379 /* TaskListInteractorTests.swift */,
 				4C1AA598258C2F83001E1E13 /* TaskListPresenterTests.swift */,
-				4C1AA3DF258B3B37001E1E13 /* Info.plist */,
 			);
 			path = TaskListTests;
 			sourceTree = "<group>";
@@ -623,8 +624,6 @@
 				4C1AA39C258B3A33001E1E13 /* HalgoraeDO.app */,
 				4C1AA3A6258B3A9D001E1E13 /* ServiceTests */,
 				4C1AA3DC258B3B37001E1E13 /* TaskListTests */,
-				4C1AA5FE258CBA5D001E1E13 /* ServiceTests.xctest */,
-				4C1AA5FF258CBA5D001E1E13 /* TaskListTests.xctest */,
 			);
 			sourceTree = "<group>";
 		};
@@ -874,6 +873,7 @@
 				4C1AA4E2258B40B2001E1E13 /* TaskList.swift in Sources */,
 				4C1AA419258B3B94001E1E13 /* DataRequestMock.swift in Sources */,
 				4C1AA51B258B4177001E1E13 /* TaskContentConfigure.swift in Sources */,
+				4C1AA642258CBDD3001E1E13 /* UIImage+scaled.swift in Sources */,
 				4C1AA55C258B43AD001E1E13 /* Bookmark+CoreDataProperties.swift in Sources */,
 				4C1AA460258B3E47001E1E13 /* TaskListViewControllerSpy.swift in Sources */,
 				4C1AA47E258B3E8F001E1E13 /* Section+CoreDataProperties.swift in Sources */,
