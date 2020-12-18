@@ -234,13 +234,6 @@ class TaskAddViewController: UIViewController {
         }
         
         delegate?.taskAddViewControllerDidDone(self)
-        
-//        var object: [String: Any] = [:]
-//        object.updateValue(text, forKey: "taskTitle")
-//        // object.updateValue(dueDate, forKey: "dueDate")
-//        object.updateValue(priority, forKey: "priority")
-//        object.updateValue(section, forKey: "section")
-//        NotificationCenter.default.post(name: Notification.Name(rawValue: "addTask"), object: object)
     }
 }
 

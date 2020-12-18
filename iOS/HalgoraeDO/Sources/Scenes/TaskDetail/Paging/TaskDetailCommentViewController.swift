@@ -83,15 +83,10 @@ private extension TaskDetailCommentViewController {
     }
     
     func generateLayout() -> UICollectionViewLayout {
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                               heightDimension: .estimated(44))
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(44))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                              heightDimension: .estimated(44))
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize,
-                                                         subitems: [item])
-        
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(44))
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
         let section = NSCollectionLayoutSection(group: group)
         section.contentInsets = .init(top: 8, leading: 16, bottom: 0, trailing: 16)
         section.interGroupSpacing = 8

@@ -40,7 +40,6 @@ class TaskSectionViewCell: UICollectionViewCell {
         let view = UIView()
         view.backgroundColor = .halgoraedoMint
         view.layer.cornerRadius = 2
-        view.layer.masksToBounds = true
         
         return view
     }()
@@ -80,11 +79,10 @@ class TaskSectionViewCell: UICollectionViewCell {
         collectionView?.refreshControl = refreshControl
     }
     
-    func configure(section: TaskListModels.SectionVM, sectionNum: Int) {
-        #warning("코드 개선 필요!! 노션작성을 위해 section을 임시 생성")
+    func configure(section: TaskListModels.SectionVM) {
         self.section = section
         taskVM = section.tasks
-        self.sectionNum = sectionNum
+        sectionNum = section.tasks.count
         sectionName = section.title
         let snapShot = snapshot(taskItems: section.tasks)
         dataSource.apply(snapShot, to: section, animatingDifferences: true)

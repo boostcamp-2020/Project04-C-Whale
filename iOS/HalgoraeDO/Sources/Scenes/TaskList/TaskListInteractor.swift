@@ -59,7 +59,6 @@ extension TaskListInteractor: TaskListBusinessLogic {
         viewModels.forEach { viewModel in
             guard let data = TaskListModels.TaskUpdateFields(title: viewModel.title, isDone: viewModel.isCompleted).encodeData else { return }
             worker.request(endPoint: TaskEndPoint.taskUpdate(id: viewModel.id, task: data)) { (project: Response<String>?) in }
-            
         }
         let tasks = taskList.tasks(taskVMs: viewModels)
         presenter.presentFinshChanged(response: .init(tasks: tasks))
