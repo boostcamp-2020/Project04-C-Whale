@@ -116,6 +116,7 @@ class TaskListViewController: UIViewController {
         }
         selectedTasks.removeAll()
         set(editingMode: false)
+        
         self.interactor?.updateCompleteAll(request: .init(displayedTasks: selectItemTemp), projectId: project.id)
     }
     
@@ -142,11 +143,6 @@ class TaskListViewController: UIViewController {
     // MARK: IBActions
     
     @IBAction private func didTapMoreButton(_ sender: UIBarButtonItem) {
-        guard !isEditing else {
-            setEditing(false, animated: true)
-            return
-        }
-        
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         let showBoardAction = UIAlertAction(title: "보드로 보기", style: .default) { (_: UIAlertAction) in
             guard let vc = self.storyboard?.instantiateViewController(identifier: String(describing: TaskBoardViewController.self), creator: { coder -> TaskBoardViewController? in

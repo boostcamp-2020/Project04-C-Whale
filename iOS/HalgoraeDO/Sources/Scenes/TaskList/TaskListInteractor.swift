@@ -132,7 +132,7 @@ extension TaskListInteractor: TaskListBusinessLogic {
             return
         }
         
-        worker.requestPatchAndPatch(patch: TaskEndPoint.taskUpdate(id: request.taskId, task: moveSectionData), endPoint: TaskEndPoint.moveIntoSection(projectId: projectId, sectionId: request.sectionId, request: taskMoveData)){ (response: Response<String>?) in
+        worker.requestAndRequest(endPoint: TaskEndPoint.taskUpdate(id: request.taskId, task: moveSectionData), endPoint: TaskEndPoint.moveIntoSection(projectId: projectId, sectionId: request.sectionId, request: taskMoveData)){ (response: Response<String>?) in
         }//섹션의 root items모두 전송
     }
 }

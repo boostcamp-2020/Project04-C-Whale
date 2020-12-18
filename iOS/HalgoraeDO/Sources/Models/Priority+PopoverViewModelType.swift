@@ -19,10 +19,10 @@ extension Priority {
     
     var color: UIColor {
         switch self {
-            case .one: return .red
-            case .two: return .blue
-            case .three: return .orange
-            case .four: return .black
+            case .one: return UIColor(hexFromString: "#F15F5F")
+            case .two: return UIColor(hexFromString: "#6799FF")
+            case .three: return UIColor(hexFromString: "#F2CB61")
+            case .four: return UIColor(hexFromString: "#5D5D5D")
         }
     }
     

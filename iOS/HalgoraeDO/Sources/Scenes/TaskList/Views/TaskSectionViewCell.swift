@@ -93,10 +93,7 @@ class TaskSectionViewCell: UICollectionViewCell {
         snapshot.append(taskItems)
         section = sectionVM
         self.taskVM = taskItems
-        guard let section = section else {
-            return
-        }
-        
+        guard let section = section else { return }
         dataSource.apply(snapshot, to: section, animatingDifferences: false)
     }
     
