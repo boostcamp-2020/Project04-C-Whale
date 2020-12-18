@@ -24,6 +24,7 @@ class DataRequestMock: DataResponsing {
         case unableToDecode = "We could not decode the response."
     }
     
+    var delay: Double = 0
     var mockData: Data?
     var mockURL: URL?
     var response: NetworkResponse?
@@ -42,7 +43,7 @@ class DataRequestMock: DataResponsing {
     }
     
     func responseURL(completionHandler: @escaping (URL?, String?) -> Void) -> Self {
-        DispatchQueue.main.asyncAfter(deadline: .now()+1) {
+        DispatchQueue.main.asyncAfter(deadline: .now()+delay) {
             completionHandler(self.mockURL, self.response?.rawValue)
         }
         return self
