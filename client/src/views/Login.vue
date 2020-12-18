@@ -6,6 +6,9 @@
         <a :href="OAuthURL">
           <img width="200" src="../assets/naverlogin.png" />
         </a>
+        <a :href="OAuthGoogleURL">
+          <img width="200" src="../assets/googlelogin.png" />
+        </a>
       </div>
       <alert></alert>
     </v-layout>
@@ -22,6 +25,7 @@ export default {
   data() {
     return {
       OAuthURL: process.env.VUE_APP_SERVER_URL + "/api/user/oauth/naver",
+      OAuthGoogleURL: process.env.VUE_APP_SERVER_URL + "/api/user/oauth/google",
     };
   },
   mixins: [SpinnerMixin],
