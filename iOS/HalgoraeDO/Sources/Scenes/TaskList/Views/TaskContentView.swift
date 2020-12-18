@@ -44,7 +44,6 @@ class TaskContentView: UIView, UIContentView {
         button.setImage(checkImage, for: .selected)
         button.addTarget(self, action: #selector(didTapCompleteButton(_:)), for: .touchUpInside)
         button.imageView?.contentMode = .scaleAspectFit
-        button.layer.masksToBounds = false
         
         return button
     }()

@@ -8,7 +8,7 @@
 import UIKit
 
 protocol TaskListDisplayLogic {
-    func displayFetchTasks(snapshot: NSDiffableDataSourceSectionSnapshot<TaskListModels.TaskVM>, sectionVM: TaskListModels.SectionVM, sectionVMs: [TaskListModels.SectionVM])
+    func displayFetchTasks(viewModel: TaskListModels.FetchTasks.ViewModel)
     func displayFinishChanged(viewModel: TaskListModels.FinishTask.ViewModel)
-    func displatFinishDragDrop(snapshot: NSDiffableDataSourceSectionSnapshot<TaskListModels.TaskVM>, sectionVM: TaskListModels.SectionVM)
+    func displayFinishDragDrop(viewModel: TaskListModels.DragDropTask.ViewModel)
 }

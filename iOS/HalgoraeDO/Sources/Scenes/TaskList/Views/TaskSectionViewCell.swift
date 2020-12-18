@@ -90,13 +90,16 @@ class TaskSectionViewCell: UICollectionViewCell {
         dataSource.apply(snapShot, to: section, animatingDifferences: true)
     }
     
-    func reloadSnapshot(taskItems: [TaskVM]) {
+    func reloadSnapshot(taskItems: [TaskVM], sectionVM: TaskListModels.SectionVM) {
         var snapshot = NSDiffableDataSourceSectionSnapshot<TaskVM>()
         snapshot.append(taskItems)
+        section = sectionVM
+        self.taskVM = taskItems
         guard let section = section else {
             return
         }
-        dataSource.apply(snapshot, to: section, animatingDifferences: true)
+        
+        dataSource.apply(snapshot, to: section, animatingDifferences: false)
     }
     
     @objc func didChangeRefersh(_ sender: UIRefreshControl) {
@@ -183,11 +186,7 @@ private extension TaskSectionViewCell {
             background.cornerRadius = 8
             background.strokeColor = .systemGray3
             cell.backgroundConfiguration = background
-            cell.layer.shadowColor = UIColor.black.cgColor
-            cell.layer.shadowOffset = CGSize(width: 0, height: 1)
-            cell.layer.shadowRadius = 5.0
-            cell.layer.shadowOpacity = 0.2
-            cell.layer.masksToBounds = false
+            cell.shadow()
         }
         guard let collectionView = collectionView else { return }
         dataSource = UICollectionViewDiffableDataSource<TaskListModels.SectionVM, TaskVM>(collectionView: collectionView, cellProvider: { (collectionview, indexPath, task) -> UICollectionViewCell? in
@@ -270,7 +269,6 @@ extension TaskSectionViewCell: UICollectionViewDragDelegate {
 extension TaskSectionViewCell: UICollectionViewDropDelegate {
     
     func collectionView(_ collectionView: UICollectionView, canHandle session: UIDropSession) -> Bool {
-        
         return session.canLoadObjects(ofClass: NSAttributedString.self)
     }
     
@@ -311,12 +309,11 @@ extension TaskSectionViewCell: UICollectionViewDropDelegate {
                 } else {
                     tempDestinationIndex = IndexPath(row: destinationIndexPath.row - 1, section: destinationIndexPath.section)
                 }
-                let sourceSection = dataSource.snapshot().sectionIdentifiers[tempDestinationIndex.section]
-                
+                guard let section = section else { return }
                 if tempDestinationIndex.row == -1 {
-                    taskSectionViewCellDelegate?.taskSectionViewCell(self, sourceSection, sourceSection, sourceTask, nil)
+                    taskSectionViewCellDelegate?.taskSectionViewCell(self, section, section, sourceTask, nil)
                 } else {
-                    taskSectionViewCellDelegate?.taskSectionViewCell(self, sourceSection, sourceSection, sourceTask, sourceSection.tasks[tempDestinationIndex.row])
+                    taskSectionViewCellDelegate?.taskSectionViewCell(self, section, section, sourceTask, section .tasks[tempDestinationIndex.row])
                 }
                 
             } else {
