@@ -30,7 +30,7 @@ describe('user api', () => {
           if (err) {
             throw err;
           }
-          const user = res.body;
+          const { user } = res.body;
           // then
           expect(user).toStrictEqual(expectedUser);
           done();

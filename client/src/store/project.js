@@ -17,13 +17,18 @@ const state = {
 const getters = {
   currentProject: (state) => state.currentProject,
   projectInfos: (state) => state.projectInfos,
+  projectInfoById: (state) => (id) => {
+    return state.projectInfos.find((project) => project.id === id);
+  },
   namedProjectInfos: (state) =>
     state.projectInfos.filter(
       (project) => project.title !== DEFAULT_PROJECT_TITLE && !project.isFavorite
     ),
+  favoriteProjectInfos: (state) => {
+    return state.projectInfos.filter((project) => project.isFavorite);
+  },
   managedProject: (state) =>
     state.projectInfos.find((project) => project.title === DEFAULT_PROJECT_TITLE),
-  favoriteProjectInfos: (state) => state.projectInfos.filter((project) => project.isFavorite),
   projectList: (state) => state.projectList,
 };
 
@@ -119,7 +124,7 @@ const actions = {
       commit("SET_ERROR_ALERT", err.response);
     }
   },
-  
+
   async addProject({ dispatch, commit }, data) {
     try {
       const response = await projectAPI.createProject(data);
@@ -127,6 +132,18 @@ const actions = {
 
       commit("SET_SUCCESS_ALERT", "프로젝트가 생성되었습니다.");
       router.push("/project/" + response.data.projectId);
+    } catch (err) {
+      commit("SET_ERROR_ALERT", err.response);
+    }
+  },
+  async changeSectionPosition({ dispatch, commit }, { projectId, orderedSections }) {
+    try {
+      await projectAPI.updateSectionPosition(projectId, {
+        orderedSections,
+      });
+      await dispatch("fetchCurrentProject", projectId);
+
+      commit("SET_SUCCESS_ALERT", "섹션 위치가 변경되었습니다.");
     } catch (err) {
       commit("SET_ERROR_ALERT", err.response);
     }

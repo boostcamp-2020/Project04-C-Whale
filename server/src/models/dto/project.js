@@ -1,35 +1,32 @@
 const {
   IsString,
-  ValidateIf,
   IsHexColor,
-  IsUUID,
   MinLength,
   IsBoolean,
+  IsEmpty,
+  IsOptional,
 } = require('class-validator');
-const errorMessage = require('@utils/error-messages');
 
 class ProjectDto {
-  @ValidateIf(o => !!o.id)
-  @IsString()
-  @IsUUID('4')
+  @IsEmpty({ groups: ['create', 'put', 'patch'] })
   id;
 
-  @ValidateIf(o => !!o.title)
-  @IsString({ groups: ['create'], message: errorMessage.TYPE_ERROR('title') })
-  @MinLength(1, { groups: ['create'], message: errorMessage.INVALID_INPUT_ERROR('title') })
+  @IsOptional({ groups: ['patch'] })
+  @MinLength(1, { groups: ['create', 'put', 'patch'] })
+  @IsString({ groups: ['create', 'put', 'patch'] })
   title;
 
-  @ValidateIf(o => !!o.color)
-  @IsString({ groups: ['create'], message: errorMessage.TYPE_ERROR('color') })
-  @IsHexColor({ groups: ['created'], message: errorMessage.INVALID_INPUT_ERROR('color') })
+  @IsOptional({ groups: ['patch'] })
+  @IsHexColor({ groups: ['create', 'put', 'patch'] })
+  @IsString({ groups: ['create', 'put', 'patch'] })
   color;
 
-  @ValidateIf(o => !!o.isList)
-  @IsBoolean({ groups: ['create'], message: errorMessage.TYPE_ERROR('isList') })
+  @IsOptional({ groups: ['patch'] })
+  @IsBoolean({ groups: ['create', 'put', 'patch'] })
   isList;
 
-  @ValidateIf(o => !!o.isFavorite)
-  @IsBoolean({ message: errorMessage.TYPE_ERROR('isFavorite') })
+  @IsOptional({ groups: ['patch'] })
+  @IsBoolean({ groups: ['create', 'put', 'patch'] })
   isFavorite;
 }
 

@@ -1,8 +1,8 @@
 <template>
   <v-app v-if="isAuth">
-    <my-header />
+    <Header />
     <v-main>
-      <div class="router-view-container">
+      <div class="router-view-container px-4 py-4">
         <keep-alive>
           <router-view :key="$route.params.projectId"></router-view>
         </keep-alive>
@@ -13,16 +13,16 @@
 </template>
 
 <script>
-import Header from "@/components/common/Header";
+import Header from "@/components/home/MainHeader";
 import Alert from "@/components/common/Alert";
-import ListMixin from "@/mixins/ListMixins.js";
+import SpinnerMixin from "@/mixins/SpinnerMixins.js";
 
 import { mapState } from "vuex";
 
 export default {
   name: "Home",
   components: {
-    "my-header": Header,
+    Header,
     Alert,
   },
   computed: {
@@ -30,14 +30,14 @@ export default {
       isAuth: (state) => state.auth.isAuth,
     }),
   },
-  mixins: [ListMixin],
+  mixins: [SpinnerMixin],
 };
 </script>
 
 <style>
 .router-view-container {
-  padding: 10px 20%;
   display: flex;
   justify-content: center;
+  height: 100%;
 }
 </style>

@@ -146,15 +146,40 @@ const tasks = [
     createdAt: new Date(),
     updatedAt: new Date(),
   },
+  {
+    id: '3efbb242-f0f6-442f-9c25-28fbc11f35a3',
+    sectionId: sections[1].id,
+    parentId: null,
+    title: '작업 7',
+    dueDate: new Date(),
+    position: 1,
+    isDone: false,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
 ];
 
 const comments = [
   {
     id: '6200bcb9-f871-439b-9507-57abbde3d468',
     content: '댓글 1',
-    taskId: 'cd62f93c-9233-46a9-a5cf-ec18ad5a36f4',
+    taskId: tasks[1].id,
     createdAt: new Date(),
     updatedAt: new Date(),
+  },
+  {
+    id: 'f7aeb64f-1aaf-4c0a-b962-dbfa6c4bb629',
+    content: '댓글 2',
+    taskId: tasks[1].id,
+    createdAt: new Date('2020-12-13'),
+    updatedAt: new Date('2020-12-13'),
+  },
+  {
+    id: '47811107-b2ca-42f8-8a39-20e765694a4a',
+    content: '댓글 3',
+    taskId: tasks[2].id,
+    createdAt: new Date('2020-12-13'),
+    updatedAt: new Date('2020-12-13'),
   },
 ];
 
@@ -162,14 +187,32 @@ const bookmarks = [
   {
     id: 'cb8eb131-ad2e-4677-a4e5-c8ec078b28e8',
     url: 'https://www.uuidgenerator.net/version4',
+    title: 'uuid 생성 사이트',
+    taskId: tasks[0].id,
     createdAt: new Date(),
     updatedAt: new Date(),
   },
-];
-
-const alarms = [
   {
-    id: 'e23a789c-ce37-45bd-bb6b-20602edfe221',
+    id: '660ea855-0657-443e-9a5f-69a314512d71',
+    url: 'https://www.naver.com',
+    title: '네이버',
+    taskId: tasks[2].id,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    id: '4fcb6ba3-e11a-4512-8dbc-d04b826e2b35',
+    url: 'https://www.google.com',
+    title: '구글',
+    taskId: tasks[5].id,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    id: 'b72f37ae-830b-4621-8f47-fac685bda931',
+    url: 'https://www.amazon.com',
+    title: '아마존',
+    taskId: tasks[6].id,
     createdAt: new Date(),
     updatedAt: new Date(),
   },
@@ -182,7 +225,6 @@ module.exports = {
   sections,
   comments,
   bookmarks,
-  alarms,
   up: async () => {
     const queryInterface = sequelize.getQueryInterface();
     await queryInterface.bulkInsert('user', users, {});
@@ -191,7 +233,6 @@ module.exports = {
     await queryInterface.bulkInsert('task', tasks, {});
     await queryInterface.bulkInsert('comment', comments, {});
     await queryInterface.bulkInsert('bookmark', bookmarks, {});
-    await queryInterface.bulkInsert('alarm', alarms, {});
   },
   down: async () => {
     const queryInterface = sequelize.getQueryInterface();
@@ -201,6 +242,5 @@ module.exports = {
     await queryInterface.bulkDelete('section', null, {});
     await queryInterface.bulkDelete('comment', null, {});
     await queryInterface.bulkDelete('bookmark', null, {});
-    await queryInterface.bulkDelete('alarm', null, {});
   },
 };

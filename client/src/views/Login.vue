@@ -14,7 +14,7 @@
 
 <script>
 import Alert from "@/components/common/Alert";
-import ListMixin from "@/mixins/ListMixins.js";
+import SpinnerMixin from "@/mixins/SpinnerMixins.js";
 
 export default {
   components: { Alert },
@@ -24,7 +24,7 @@ export default {
       OAuthURL: process.env.VUE_APP_SERVER_URL + "/api/user/oauth/naver",
     };
   },
-  mixins: [ListMixin],
+  mixins: [SpinnerMixin],
 };
 </script>
 

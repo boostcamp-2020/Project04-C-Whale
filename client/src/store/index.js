@@ -6,9 +6,10 @@ import task from "./task";
 import alert from "./alert";
 import dragAndDrop from "./dragAndDrop";
 import comment from "./comment";
+import bookmark from "./bookmark";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  modules: { auth, project, task, alert, dragAndDrop, comment },
+  modules: { auth, project, task, alert, dragAndDrop, comment, bookmark },
 });

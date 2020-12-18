@@ -9,13 +9,17 @@ const myAxios = axios.create({
 
 myAxios.interceptors.request.use((config) => {
   config.headers.Authorization = "Bearer " + localStorage.getItem("token");
-  bus.$emit("start:spinner");
+  if (config.method === "get" && config.url !== "/task" && config.url !== "/project") {
+    bus.$emit("start:spinner");
+  }
   return config;
 });
 
 myAxios.interceptors.response.use(
   (res) => {
-    bus.$emit("end:spinner");
+    if (res.config.method === "get") {
+      bus.$emit("end:spinner");
+    }
     return res;
   },
   (error) => {

@@ -5,8 +5,8 @@ import Today from "@/views/Today.vue";
 import Project from "@/views/Project.vue";
 import Home from "@/views/Home.vue";
 import Task from "@/views/Task";
+import NotFound from "@/views/NotFound";
 import userAPI from "@/api/user";
-import bus from "@/utils/bus.js";
 
 Vue.use(VueRouter);
 
@@ -18,7 +18,6 @@ const requireAuth = () => (from, to, next) => {
 };
 
 const redirectHome = () => async (from, to, next) => {
-  bus.$emit("start:spinner");
   try {
     await userAPI.authorize();
     return next("/");
@@ -66,6 +65,11 @@ const routes = [
         ],
       },
     ],
+  },
+  {
+    path: "*",
+    name: "NotFound",
+    component: NotFound,
   },
 ];
 

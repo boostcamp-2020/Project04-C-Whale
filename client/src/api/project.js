@@ -22,8 +22,11 @@ const projectAPI = {
   updateSection(projectId, sectionId, data) {
     return myAxios.put(`/project/${projectId}/section/${sectionId}`, data);
   },
+  updateSectionPosition(projectId, data) {
+    return myAxios.patch(`/project/${projectId}/section/position`, data);
+  },
   updateTaskPosition(projectId, sectionId, data) {
-    return myAxios.patch(`/project/${projectId}/section/${sectionId}/position`, data);
+    return myAxios.patch(`/project/${projectId}/section/${sectionId}/task/position`, data);
   },
   deleteProject(projectId) {
     return myAxios.delete(`/project/${projectId}`);

@@ -12,7 +12,7 @@
       </form>
     </div>
     <div v-else @click="toggle">
-      <p>{{ originalTitle }}</p>
+      <p class="mb-0">{{ originalTitle }}</p>
     </div>
   </div>
 </template>
@@ -21,12 +21,22 @@
 import { mapActions } from "vuex";
 
 export default {
-  props: ["originalTitle", "type", "parent"],
+  props: {
+    originalTitle: String,
+    type: String,
+    parent: Object,
+  },
   data() {
     return {
       showForm: false,
       newTitle: this.originalTitle,
     };
+  },
+  watch: {
+    originalTitle() {
+      this.newTitle = this.originalTitle;
+      this.showForm = false;
+    },
   },
   methods: {
     ...mapActions(["updateProjectTitle", "updateSectionTitle"]),
@@ -63,12 +73,6 @@ export default {
           break;
       }
       this.toggle();
-    },
-  },
-  watch: {
-    originalTitle: function () {
-      this.newTitle = this.originalTitle;
-      this.showForm = false;
     },
   },
 };

@@ -16,6 +16,6 @@ module.exports = sequelize => {
         type: DataTypes.INTEGER,
       },
     },
-    { tableName: 'section' },
+    { charset: 'utf8', collate: 'utf8_unicode_ci', tableName: 'section' },
   );
 };

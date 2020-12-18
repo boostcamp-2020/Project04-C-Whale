@@ -20,6 +20,6 @@ module.exports = sequelize => {
         type: DataTypes.ENUM('naver', 'apple'),
       },
     },
-    { tableName: 'user' },
+    { charset: 'utf8', collate: 'utf8_unicode_ci', tableName: 'user' },
   );
 };

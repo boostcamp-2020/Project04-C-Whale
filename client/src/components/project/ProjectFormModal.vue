@@ -5,38 +5,19 @@
       persistent
       max-width="600"
       class="add-project-dialog"
-      @click:outside="sendCloseModalEvent"
+      @click:outside="closeModal"
     >
       <v-card>
-        <v-card-title> 프로젝트 추가 </v-card-title>
+        <v-card-title class="font-weight-bold"> 프로젝트 {{ typeKorean }} </v-card-title>
         <v-card-text>
-          <v-container>
+          <v-container class="project-modal">
             <v-row>
               <v-col cols="12" sm="12" md="12">
-                <v-text-field
-                  v-model="newProject.title"
-                  class="mb-0 font-weight-bold"
-                  label="프로젝트 이름"
-                ></v-text-field>
+                <ProjectFormModalTitle v-model="newProject.title" />
               </v-col>
+
               <v-col cols="12" sm="12" md="12">
-                <v-select
-                  v-model="newProject.color"
-                  :items="colors"
-                  label="프로젝트 색상"
-                  class="font-weight-bold"
-                >
-                  <template slot="item" slot-scope="{ item }">
-                    <v-list-item-group class="color-list-item d-flex">
-                      <v-list-item-icon>
-                        <v-icon :color="item.value">mdi-circle</v-icon>
-                      </v-list-item-icon>
-                      <v-list-item-content class="py-2">
-                        <v-list-item-title class="font-14">{{ item.text }}</v-list-item-title>
-                      </v-list-item-content>
-                    </v-list-item-group>
-                  </template>
-                </v-select>
+                <ProjectFormModalColor v-model="newProject.color" />
               </v-col>
 
               <v-col cols="12" sm="12" md="12">
@@ -58,53 +39,65 @@
             </v-row>
           </v-container>
         </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="black darken-1" text @click="sendCloseModalEvent"> 취소 </v-btn>
-          <v-btn
-            color="whaleGreen"
-            text
-            @click="addNewProject"
-            :disabled="newProject.title.length == 0"
-          >
-            추가
-          </v-btn>
-        </v-card-actions>
+
+        <ProjectFormModalButtonContainer
+          @closeModal="closeModal"
+          @submit="submit"
+          :newProject="newProject"
+          :typeKorean="typeKorean"
+        />
       </v-card>
     </v-dialog>
   </v-row>
 </template>
 
 <script>
-import { colors } from "@/utils/color";
 import { mapActions, mapMutations } from "vuex";
+import ProjectFormModalTitle from "@/components/project/ProjectFormModalTitle";
+import ProjectFormModalColor from "@/components/project/ProjectFormModalColor";
+import ProjectFormModalButtonContainer from "@/components/project/ProjectFormModalButtonContainer";
+
+const types = {
+  ADD: "add",
+  UPDATE: "update",
+};
 
 export default {
   props: {
     dialog: Boolean,
+    type: String,
+    projectInfo: Object,
+  },
+  components: {
+    ProjectFormModalTitle,
+    ProjectFormModalColor,
+    ProjectFormModalButtonContainer,
   },
   data() {
     return {
       newProject: {
-        title: "",
-        color: null,
-        isFavorite: false,
-        isList: true,
+        title: this.type === types.UPDATE ? this.projectInfo.title : "",
+        color: this.type === types.UPDATE ? this.projectInfo.color : "",
+        isFavorite: this.type === types.UPDATE ? this.projectInfo.isFavorite : false,
+        isList: this.type === types.UPDATE ? this.projectInfo.isList : true,
       },
-      colors,
+      typeKorean: this.type === types.UPDATE ? "수정" : "추가",
     };
   },
   methods: {
-    ...mapActions(["addProject"]),
+    ...mapActions(["addProject", "updateProject"]),
     ...mapMutations(["SET_ERROR_ALERT"]),
     clearProject() {
       this.newProject = { title: "", color: null, isFavorite: false, isList: true };
     },
-    sendCloseModalEvent() {
-      this.clearProject();
-      this.$emit("handleAddModal");
+    closeModal() {
+      if (this.type === types.ADD) {
+        this.clearProject();
+      }
+
+      this.$emit("closeModal");
     },
-    addNewProject() {
+    submit() {
       const defaultProjectTitle = "관리함";
       if (this.newProject.title === defaultProjectTitle) {
         this.SET_ERROR_ALERT({
@@ -121,23 +114,36 @@ export default {
         });
         return;
       }
-      this.addProject(this.newProject);
-      this.clearProject();
-      this.$emit("handleAddModal");
+
+      if (this.type === types.UPDATE) {
+        this.updateProject({
+          projectId: this.projectInfo.id,
+          data: this.newProject,
+        });
+      } else {
+        this.addProject(this.newProject);
+      }
+
+      this.closeModal();
     },
   },
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .v-dialog {
   min-height: auto !important;
 }
-.color-list-item {
-  min-height: 36px;
+
+.project-modal {
+  min-width: auto !important;
 }
 
-.v-text-field input {
-  margin-bottom: 0;
+.v-dialog.add-project-dialog {
+  width: 100% !important;
+}
+
+.color-list-item {
+  min-height: 36px;
 }
 </style>
