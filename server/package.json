@@ -40,6 +40,7 @@
     "morgan": "~1.9.1",
     "mysql2": "^2.2.5",
     "passport": "^0.4.1",
+    "passport-google-oauth20": "^2.0.0",
     "passport-jwt": "^4.0.0",
     "passport-naver": "^1.0.6",
     "sequelize": "^6.3.5",

@@ -11,6 +11,11 @@ const createJWT = user => {
 
 const passportNaverAuthenticate = passport.authenticate('naver', { session: false });
 
+const passportGoogleAuthenticate = passport.authenticate('google', {
+  scope: ['profile', 'email'],
+  session: false,
+});
+
 const authenticateUser = (req, res, next) => {
   passport.authenticate('jwt', { session: false }, (err, user) => {
     try {
@@ -29,4 +34,9 @@ const authenticateUser = (req, res, next) => {
   })(req, res, next);
 };
 
-module.exports = { createJWT, passportNaverAuthenticate, authenticateUser };
+module.exports = {
+  createJWT,
+  passportNaverAuthenticate,
+  passportGoogleAuthenticate,
+  authenticateUser,
+};
