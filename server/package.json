@@ -9,6 +9,7 @@
     "seed": "npx sequelize-cli db:seed:all",
     "unseed": "npx sequelize-cli db:seed:undo:all",
     "test": "jest --detectOpenHandles --forceExit",
+    "coverage": "npm test -- --coverage",
     "concurrent": "concurrently \"npm run dev\" \"npm run serve --prefix ../client\""
   },
   "jest": {
