@@ -34,10 +34,6 @@ class SignInViewController: UIViewController {
         webAuthSession?.presentationContextProvider = self
         webAuthSession?.start()
     }
-    @IBAction func didTapTestSignInButton(_ sender: UIButton) {
-        AuthManager.shared.userToken = ProcessInfo.processInfo.environment["token"]
-        switchRootViewController()
-    }
     
     func switchRootViewController() {
         guard let rootNavigationController = storyboard?.instantiateViewController(identifier: "MenuNavigationController", creator: { (coder) -> UINavigationController? in
