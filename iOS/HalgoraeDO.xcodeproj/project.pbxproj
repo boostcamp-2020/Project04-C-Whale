@@ -121,7 +121,6 @@
 		4C9A047F258672FF00727F88 /* APIStorageType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9A047E258672FF00727F88 /* APIStorageType.swift */; };
 		4C9A0484258675FA00727F88 /* DefaultEndPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9A0483258675FA00727F88 /* DefaultEndPoint.swift */; };
 		4C9A0489258732B400727F88 /* EndPointStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9A0488258732B400727F88 /* EndPointStorage.swift */; };
-		4C9A04972587659A00727F88 /* TaskStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9A04962587659A00727F88 /* TaskStorage.swift */; };
 		4C9A04C725883A2F00727F88 /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9A04C625883A2F00727F88 /* Response.swift */; };
 		4C9A05202589729000727F88 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9A051F2589729000727F88 /* AuthManager.swift */; };
 		4CCD3248256F847800A46D10 /* PopoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CCD3247256F847800A46D10 /* PopoverViewController.swift */; };
@@ -249,7 +248,6 @@
 		4C9A047E258672FF00727F88 /* APIStorageType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIStorageType.swift; sourceTree = "<group>"; };
 		4C9A0483258675FA00727F88 /* DefaultEndPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultEndPoint.swift; sourceTree = "<group>"; };
 		4C9A0488258732B400727F88 /* EndPointStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndPointStorage.swift; sourceTree = "<group>"; };
-		4C9A04962587659A00727F88 /* TaskStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskStorage.swift; sourceTree = "<group>"; };
 		4C9A04C625883A2F00727F88 /* Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
 		4C9A04D3258847C400727F88 /* Task+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Task+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		4C9A051F2589729000727F88 /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
@@ -516,7 +514,6 @@
 				4C9A03502584EFD000727F88 /* PersistentContainer.swift */,
 				4C9A03552584F17C00727F88 /* Storage.swift */,
 				4C9A047E258672FF00727F88 /* APIStorageType.swift */,
-				4C9A04962587659A00727F88 /* TaskStorage.swift */,
 				4C9A035A2584F1B300727F88 /* ProjectStorage.swift */,
 				4C9A0488258732B400727F88 /* EndPointStorage.swift */,
 				4C9A051F2589729000727F88 /* AuthManager.swift */,
@@ -928,7 +925,6 @@
 				4CE915D9257F228400BCF398 /* TaskEndPoint.swift in Sources */,
 				4C4236E02574DF980068A252 /* ConfirmActionView.swift in Sources */,
 				4C3F5705256CF8B9006D7C9F /* TaskContentView.swift in Sources */,
-				4C9A04972587659A00727F88 /* TaskStorage.swift in Sources */,
 				AA19EF332576846100E59017 /* UIColor+.swift in Sources */,
 				4C9A037E2585E2CA00727F88 /* NetworkMonitor.swift in Sources */,
 				AA46A98B2588783400D343B1 /* Project+CoreDataClass.swift in Sources */,
