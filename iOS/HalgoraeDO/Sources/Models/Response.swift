@@ -24,3 +24,7 @@ struct Response<T: Decodable>: Decodable {
         self.comments = comments
     }
 }
+
+extension Response: Encodable where T: Encodable {
+    
+}

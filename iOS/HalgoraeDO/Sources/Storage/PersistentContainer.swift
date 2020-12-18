@@ -7,7 +7,7 @@
 
 import CoreData
 
-final class PersistentContainer: NSPersistentContainer {
+final class PersistentContainer: NSPersistentContainer, PersistentProviding {
     
     // MARK: - Constants
     

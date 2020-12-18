@@ -9,7 +9,7 @@ import UIKit
 
 class TaskCommentCell: UICollectionViewListCell {
     
-    var viewModel: TaskDetailModels.CommentVM? {
+    var viewModel: TaskDetailModels.ContentsVM? {
         didSet {
             updateConfiguration(using: .init(traitCollection: .current))
         }

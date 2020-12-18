@@ -338,22 +338,6 @@ extension TaskListViewController: TaskListDisplayLogic {
         currentSnapshot.deleteItems(completedTasks)
         dataSource.apply(currentSnapshot)
     }
-    
-    // MARK: Helper Functions
-    
-    func filterCompletedIfNeeded(for displayedTasks: [TaskListModels.TaskVM]) -> [TaskListModels.TaskVM] {
-        #warning("사용되지 않는 함수 => 삭제요청")
-        guard !shouldDisplayDoneTasks else { return displayedTasks }
-        var filteredTasks = [TaskListModels.TaskVM]()
-        for task in displayedTasks {
-            guard !task.isCompleted else { continue }
-            var task = task
-            task.subItems = task.subItems.filter { !$0.isCompleted }
-            filteredTasks.append(task)
-        }
-        
-        return filteredTasks
-    }
 }
 
 // MARK:  - UICollectionView Delegate
