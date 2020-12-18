@@ -1,6 +1,6 @@
 /* eslint-disable no-return-await */
 const sequelize = require('@models');
-const { isTaskOwner, isProjectOwner, isSectionOwner } = require('@services/authority-check');
+const { isTaskOwner, isProjectOwner } = require('@services/authority-check');
 const { customError } = require('@utils/custom-error');
 
 const { models } = sequelize;
@@ -29,7 +29,7 @@ const retrieveById = async ({ id, userId }) => {
     throw error;
   }
   if (!(await isTaskOwner({ id, userId }))) {
-    const error = customError.FORBIDDEN_ERROR('task');
+    const error = customError.FORBIDDEN_ERROR();
     throw error;
   }
   return task;
@@ -82,23 +82,14 @@ const create = async ({ projectId, sectionId, userId, ...taskData }) => {
     throw error;
   }
   if (!(await isProjectOwner({ id: projectId, userId }))) {
-    const error = customError.FORBIDDEN_ERROR('project');
+    const error = customError.FORBIDDEN_ERROR('');
     throw error;
   }
 
   const result = await sequelize.transaction(async t => {
-    const section = await models.section.findByPk(sectionId, { include: 'tasks' });
+    const [section] = await project.getSections({ include: 'tasks', where: { id: sectionId } });
     if (!section) {
       const error = customError.NOT_FOUND_ERROR('section');
-      throw error;
-    }
-    if (!(await isSectionOwner({ id: sectionId, userId }))) {
-      const error = customError.FORBIDDEN_ERROR('section');
-      throw error;
-    }
-
-    if (section.projectId !== projectId) {
-      const error = customError.WRONG_RELATION_ERROR('project, section');
       throw error;
     }
 
@@ -121,36 +112,38 @@ const update = async taskData => {
   const { id, dueDate, userId, ...rest } = taskData;
 
   const result = await sequelize.transaction(async t => {
-    try {
-      const task = await taskModel.findByPk(id, { transaction: t });
-      if (!task) {
-        const error = customError.NOT_FOUND_ERROR('task');
-        throw error;
-      }
-
-      if (!(await isTaskOwner({ id, userId }))) {
-        const error = customError.FORBIDDEN_ERROR('task');
-        throw error;
-      }
-
-      await task.update({ dueDate, ...rest });
-
-      task.save();
-      return true;
-    } catch (err) {
-      t.rollback();
-      throw err;
+    const task = await taskModel.findByPk(id);
+    if (!task) {
+      throw customError.NOT_FOUND_ERROR('task');
     }
+
+    if (!(await isTaskOwner({ id, userId }))) {
+      throw customError.FORBIDDEN_ERROR();
+    }
+
+    await task.update({ dueDate, ...rest }, { transaction: t });
+
+    return true;
   });
 
   return result;
 };
 
-const updateChildTaskPositions = async (parentId, orderedTasks) => {
-  const result = await sequelize.transaction(async t => {
+const updateChildTaskPositions = async ({ parentId, userId, ...rest }) => {
+  const { orderedTasks } = rest;
+  const task = await taskModel.findByPk(parentId);
+
+  if (!task) {
+    throw customError.NOT_FOUND_ERROR('task');
+  }
+  if (!(await isTaskOwner({ id: parentId, userId }))) {
+    throw customError.FORBIDDEN_ERROR();
+  }
+
+  await sequelize.transaction(async t => {
     return await Promise.all(
       orderedTasks.map(async (taskId, position) => {
-        return await models.task.update(
+        return await taskModel.update(
           { position, parentId },
           { where: { id: taskId } },
           { transaction: t },
@@ -159,9 +152,7 @@ const updateChildTaskPositions = async (parentId, orderedTasks) => {
     );
   });
 
-  return (
-    result.length === orderedTasks.length && result.every(countArray => countArray.length !== 0)
-  );
+  return true;
 };
 
 const remove = async id => {
