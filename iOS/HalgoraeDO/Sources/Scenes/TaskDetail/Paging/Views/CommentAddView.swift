@@ -35,10 +35,7 @@ class CommentAddView: UIView {
         addSubview(contentView)
         contentView.frame = self.bounds
         contentsTextView.layer.cornerRadius = 10
-        contentView.layer.shadowRadius = 5
-        contentView.layer.shadowColor = UIColor.lightGray.cgColor
-        contentView.layer.shadowOffset = .zero
-        contentView.layer.shadowOpacity = 0.4
+        contentView.shadow()
         contentsTextView.delegate = self
     }
     

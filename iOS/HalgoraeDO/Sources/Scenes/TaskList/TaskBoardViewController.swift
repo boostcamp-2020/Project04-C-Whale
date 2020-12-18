@@ -17,7 +17,6 @@ class TaskBoardViewController: UIViewController {
     private var interactor: TaskListBusinessLogic?
     private var router: (TaskListRoutingLogic & TaskListDataPassing)?
     private var dataSource: UICollectionViewDiffableDataSource<String, TaskVM>! = nil
-    private let visualEffectView = UIVisualEffectView()
     private var taskAddViewController: TaskAddViewController = TaskAddViewController()
     private var sectionVM: [TaskListModels.SectionVM] = []
     
@@ -226,11 +225,12 @@ extension TaskBoardViewController: TaskAddViewControllerDelegate {
 extension TaskBoardViewController: UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return sectionVM.count + 1 //Section 갯수 + 1
+        let addSectionCell = 1
+        return sectionVM.count + addSectionCell
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 1 //고정
+        return 1
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -251,17 +251,27 @@ extension TaskBoardViewController: UICollectionViewDataSource {
 // MARK: - TaskList Display Logic
 
 extension TaskBoardViewController: TaskListDisplayLogic {
-    func displayFetchTasks(snapshot: NSDiffableDataSourceSectionSnapshot<TaskListModels.TaskVM>, sectionVM: TaskListModels.SectionVM, sectionVMs: [TaskListModels.SectionVM]) {
-        self.sectionVM = sectionVMs
+    
+    func displayFetchTasks(viewModel: TaskListModels.FetchTasks.ViewModel) {
+        self.sectionVM = viewModel.sectionVMs
         DispatchQueue.main.async {
             self.taskBoardCollectionView.reloadData()
         }
     }
-
-    func displatFinishDragDrop(snapshot: NSDiffableDataSourceSectionSnapshot<TaskVM>, sectionVM: TaskListModels.SectionVM) {
-        
-    }
     
+    func displayFinishDragDrop(viewModel: TaskListModels.DragDropTask.ViewModel) {
+        guard let sectionIndex = viewModel.sectionIndex,
+              let tasks = viewModel.tasks,
+              let newSectionVM = viewModel.sectionVMs
+        else { return }
+        self.sectionVM = newSectionVM
+        guard let sectionCell = taskBoardCollectionView.cellForItem(at: IndexPath(row: 0, section: sectionIndex)) as? TaskSectionViewCell else {
+            taskBoardCollectionView.reloadItems(at: [IndexPath(row: 0, section: sectionIndex)])
+            return
+        }
+        sectionCell.reloadSnapshot(taskItems: tasks, sectionVM: newSectionVM[sectionIndex])
+    }
+
     func displayFinishChanged(viewModel: TaskListModels.FinishTask.ViewModel) {
         
     }
@@ -280,100 +290,7 @@ extension TaskBoardViewController: TaskSectionViewCellDelegate {
     }
     
     func taskSectionViewCell(_ taskSectionViewCell: TaskSectionViewCell, _ sourceSection: TaskListModels.SectionVM, _ destinationSection: TaskListModels.SectionVM, _ sourceTask: TaskListModels.TaskVM, _ destinationTask: TaskListModels.TaskVM?) {
-        
-        guard let destinationTask = destinationTask else { //맨 위에 insert
-            if sourceSection == destinationSection { //같은 collectionview
-                for i in 0..<sectionVM.count where sectionVM[i].id == sourceSection.id {
-                    var newTasks = removeTaskFromTasks(sourceSection.tasks, sourceTask.id)
-                    newTasks.insert(sourceTask, at: 0)
-                    sectionVM[i].tasks = newTasks
-                    taskBoardCollectionView.reloadItems(at: [IndexPath(row: 0, section: i)])
-                    dragDropHelper(sectionId: destinationSection.id, sourceTask: sourceTask, sendTasks: sectionVM[i].tasks)
-                }
-                
-                return
-            }
-            for i in 0..<sectionVM.count { //다른 collectionview
-                if sectionVM[i].id == sourceSection.id {
-                    sectionVM[i].tasks = removeTaskFromTasks(sourceSection.tasks, sourceTask.id)
-                    taskBoardCollectionView.reloadItems(at: [IndexPath(row: 0, section: i)])
-                } else if sectionVM[i].id == destinationSection.id {
-                    var newItems = destinationSection.tasks
-                    newItems.insert(sourceTask, at: 0)
-                    sectionVM[i].tasks = newItems
-                    let sectionCell = taskBoardCollectionView.cellForItem(at: IndexPath(row: 0, section: i)) as? TaskSectionViewCell
-                    sectionCell?.reloadSnapshot(taskItems: newItems)
-                    dragDropHelper(sectionId: destinationSection.id, sourceTask: sourceTask, sendTasks: sectionVM[i].tasks)
-                    //taskBoardCollectionView.reloadItems(at: [IndexPath(row: 0, section: i)])
-                }
-            }
-            
-            return
-        }
-        
-        if sourceSection == destinationSection { //같은 collectionview
-            for i in 0..<sectionVM.count where sectionVM[i].id == sourceSection.id {
-                let newTasks = removeTaskFromTasks(sourceSection.tasks, sourceTask.id)
-                sectionVM[i].tasks = addTaskAtTasks(newTasks, sourceTask, destinationTask.id)
-                taskBoardCollectionView.reloadItems(at: [IndexPath(row: 0, section: i)])
-                dragDropHelper(sectionId: destinationSection.id, sourceTask: sourceTask, sendTasks: sectionVM[i].tasks)
-            }
-            return
-        }
-        for i in 0..<sectionVM.count  { //다른 collectionview
-            if sectionVM[i].id == sourceSection.id {
-                sectionVM[i].tasks = removeTaskFromTasks(sourceSection.tasks, sourceTask.id)
-                taskBoardCollectionView.reloadItems(at: [IndexPath(row: 0, section: i)])
-            } else if sectionVM[i].id == destinationSection.id {
-                sectionVM[i].tasks = addTaskAtTasks(destinationSection.tasks, sourceTask, destinationTask.id)
-                let sectionCell = taskBoardCollectionView.cellForItem(at: IndexPath(row: 0, section: i)) as? TaskSectionViewCell
-                sectionCell?.reloadSnapshot(taskItems: sectionVM[i].tasks)
-                dragDropHelper(sectionId: destinationSection.id, sourceTask: sourceTask, sendTasks: sectionVM[i].tasks)
-                // taskBoardCollectionView.reloadItems(at: [IndexPath(row: 0, section: i)])
-            }
-        }
-    }
-    
-    private func dragDropHelper(sectionId: String, sourceTask: TaskVM, sendTasks: [TaskVM]) {
-        var taskIds: [String] = []
-        for task in sendTasks {
-            taskIds.append(task.id)
-        }
-        interactor?.fetchDragDrop(request: .init(projectId: project.id, sectionId: sectionId, taskId: sourceTask.id, parentTaskId: nil, taskMoveSection: .init(sectionId: sectionId), taskMoveFields: .init(orderedTasks: taskIds))) //섹션간 이동 함수 사용
-    }
-    
-    private func removeTaskFromTasks(_ taskItems: [TaskVM], _ sourceId: String) -> [TaskVM] {
-        var tempItems: [TaskVM] = []
-        for i in 0..<taskItems.count {
-            let tempSubitems =  taskItems[i].subItems.filter {
-                $0.id != sourceId
-            }
-            
-            var tempItem = taskItems[i]
-            tempItem.subItems = tempSubitems
-            if taskItems[i].id != sourceId {
-                tempItems.append(tempItem)
-            }
-        }
-        
-        return tempItems
-    }
-    
-    private func addTaskAtTasks(_ taskItems: [TaskVM], _ source: TaskVM, _ destinationId: String) -> [TaskVM] {
-        var tempItems: [TaskVM] = []
-        for i in 0..<taskItems.count {
-            tempItems.append(taskItems[i])
-            if !taskItems[i].subItems.isEmpty {
-                tempItems[i].subItems = addTaskAtTasks(taskItems[i].subItems, source, destinationId)
-            }
-            if taskItems[i].id == destinationId {
-                var tempItem = taskItems
-                tempItem.insert(source, at: i + 1)
-                return tempItem
-            }
-        }
-        
-        return tempItems
+        interactor?.dragDropForBoard(requset: .init(projectId: project.id, sectionViewModel: sectionVM, sourceSection: sourceSection, destinationSection: destinationSection, sourceTask: sourceTask, destinationTask: destinationTask))
     }
 }
 

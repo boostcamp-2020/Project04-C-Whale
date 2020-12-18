@@ -152,6 +152,7 @@
 		AA46A98F2588783400D343B1 /* Task+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA46A9852588783400D343B1 /* Task+CoreDataClass.swift */; };
 		AA46A9B1258878DA00D343B1 /* EndPointMO+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9A04792586718700727F88 /* EndPointMO+CoreDataProperties.swift */; };
 		AA46A9B2258878DA00D343B1 /* EndPointMO+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9A046E25865A0000727F88 /* EndPointMO+CoreDataClass.swift */; };
+		AA53CDE0258B489F002977F6 /* UIView+shadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA53CDDF258B489F002977F6 /* UIView+shadow.swift */; };
 		AA5432D5258A4E620086DD70 /* TaskDragDropInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA5432D4258A4E620086DD70 /* TaskDragDropInteractor.swift */; };
 		AA6D84B8258739B600019373 /* BookmarkEndPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA6D84B7258739B600019373 /* BookmarkEndPoint.swift */; };
 		AAA74C74257DAE00004FC883 /* AddProjectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA74C73257DAE00004FC883 /* AddProjectViewController.swift */; };
@@ -286,6 +287,7 @@
 		AA46A9832588783400D343B1 /* Comment+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Comment+CoreDataClass.swift"; sourceTree = "<group>"; };
 		AA46A9842588783400D343B1 /* Comment+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Comment+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		AA46A9852588783400D343B1 /* Task+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Task+CoreDataClass.swift"; sourceTree = "<group>"; };
+		AA53CDDF258B489F002977F6 /* UIView+shadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+shadow.swift"; sourceTree = "<group>"; };
 		AA5432D4258A4E620086DD70 /* TaskDragDropInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDragDropInteractor.swift; sourceTree = "<group>"; };
 		AA6D84B7258739B600019373 /* BookmarkEndPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkEndPoint.swift; sourceTree = "<group>"; };
 		AAA74C73257DAE00004FC883 /* AddProjectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProjectViewController.swift; sourceTree = "<group>"; };
@@ -565,6 +567,7 @@
 				4C423726257640470068A252 /* UIViewController+segueIdentifier.swift */,
 				4C42374C25778AE80068A252 /* Date+.swift */,
 				4C9A03822585EB4000727F88 /* Encodable+encodeData.swift */,
+				AA53CDDF258B489F002977F6 /* UIView+shadow.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -895,6 +898,7 @@
 				4CCD3248256F847800A46D10 /* PopoverViewController.swift in Sources */,
 				4C423727257640470068A252 /* UIViewController+segueIdentifier.swift in Sources */,
 				4C9A035B2584F1B300727F88 /* ProjectStorage.swift in Sources */,
+				AA53CDE0258B489F002977F6 /* UIView+shadow.swift in Sources */,
 				4C9A047F258672FF00727F88 /* APIStorageType.swift in Sources */,
 				4C9A043925863CF800727F88 /* TaskList.swift in Sources */,
 				4C3F568C256B93D5006D7C9F /* TaskCollectionViewListCell.swift in Sources */,

@@ -1,4 +1,4 @@
-//
+//l
 //  TaskListModels.swift
 //  HalgoraeDO
 //
@@ -21,7 +21,9 @@ enum TaskListModels {
         }
         
         struct ViewModel {
-            var sectionVMs: [SectionVM]
+            var snapshot: NSDiffableDataSourceSectionSnapshot<TaskListModels.TaskVM>
+            var sectionVM: TaskListModels.SectionVM
+            var sectionVMs: [TaskListModels.SectionVM]
         }
     }
     
@@ -97,7 +99,7 @@ enum TaskListModels {
     }
     
     enum DragDropTask {
-        struct DragDropRequest {
+        struct RequestForList {
             var projectId: String
             var sourceIndexPath: IndexPath
             var destinationIndexPath: IndexPath
@@ -106,9 +108,48 @@ enum TaskListModels {
             var destinationCell: TaskCollectionViewListCell?
         }
         
-        struct ViewModel {
-            var displayedTasks: [TaskVM]
+        struct RequestForBoard {
+            var projectId: String
+            var sectionViewModel: [TaskListModels.SectionVM]
             var sourceSection: TaskListModels.SectionVM
+            var destinationSection: TaskListModels.SectionVM
+            var sourceTask: TaskListModels.TaskVM
+            var destinationTask: TaskListModels.TaskVM?
+        }
+        
+        struct Response {
+            var displayedTasks: [TaskVM]
+            var sectionVMs: [TaskListModels.SectionVM]?
+            var sourceSection: TaskListModels.SectionVM?
+            var sectionIndex: Int?
+            init(displayedTasks: [TaskVM],
+                 sectionVMs: [TaskListModels.SectionVM]? = nil,
+                 sourceSection: TaskListModels.SectionVM? = nil,
+                 sectionIndex: Int? = nil) {
+                self.displayedTasks = displayedTasks
+                self.sectionVMs = sectionVMs
+                self.sourceSection = sourceSection
+                self.sectionIndex = sectionIndex
+            }
+        }
+        
+        struct ViewModel {
+            var snapshot: NSDiffableDataSourceSectionSnapshot<TaskListModels.TaskVM>?
+            var sectionVM: TaskListModels.SectionVM?
+            var sectionVMs: [TaskListModels.SectionVM]?
+            var sectionIndex: Int?
+            var tasks: [TaskVM]?
+            init(snapshot: NSDiffableDataSourceSectionSnapshot<TaskListModels.TaskVM>? = nil,
+                 sectionVM: TaskListModels.SectionVM? = nil,
+                 sectionVMs: [TaskListModels.SectionVM]? = nil,
+                 sectionIndex: Int? = nil,
+                 tasks: [TaskVM]? = nil) {
+                self.snapshot = snapshot
+                self.sectionVM = sectionVM
+                self.sectionVMs = sectionVMs
+                self.sectionIndex = sectionIndex
+                self.tasks = tasks
+            }
         }
     }
     

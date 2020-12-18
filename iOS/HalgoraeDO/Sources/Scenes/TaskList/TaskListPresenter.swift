@@ -11,7 +11,7 @@ protocol TaskListPresentLogic {
     func presentFetchTasks(response: TaskListModels.FetchTasks.Response)
     func presentFetchTasksForAll(response: TaskListModels.FetchTasks.Response)
     func presentFinshChanged(response: TaskListModels.FinishTask.Response)
-    func presentFinishDragDrop(viewModel: TaskListModels.DragDropTask.ViewModel) 
+    func presentFinishDragDrop(response: TaskListModels.DragDropTask.Response)
 }
 
 class TaskListPresenter {
@@ -40,7 +40,7 @@ extension TaskListPresenter: TaskListPresentLogic {
     
         for sectionVM in tempSectionVM {
             let sectionSnapshot = self.generateSnapshot(taskItems: sectionVM.tasks)
-            viewController.displayFetchTasks(snapshot: sectionSnapshot, sectionVM: sectionVM, sectionVMs: tempSectionVM)
+            viewController.displayFetchTasks(viewModel: .init(snapshot: sectionSnapshot, sectionVM: sectionVM, sectionVMs: tempSectionVM))
         }
     }
     
@@ -48,7 +48,7 @@ extension TaskListPresenter: TaskListPresentLogic {
         let sectionVMs = response.sections.compactMap { TaskListModels.SectionVM(section: $0) }
         for sectionVM in sectionVMs {
             let sectionSnapshot = self.generateSnapshot(taskItems: sectionVM.tasks)
-            viewController.displayFetchTasks(snapshot: sectionSnapshot, sectionVM: sectionVM, sectionVMs: sectionVMs)
+            viewController.displayFetchTasks(viewModel: .init(snapshot: sectionSnapshot, sectionVM: sectionVM, sectionVMs: sectionVMs))
         }
     }
     
@@ -59,9 +59,15 @@ extension TaskListPresenter: TaskListPresentLogic {
         viewController.displayFinishChanged(viewModel: .init(displayedTasks: taskViewModels))
     }
     
-    func presentFinishDragDrop(viewModel: TaskListModels.DragDropTask.ViewModel) {
-        let sourceSnapShot = generateSnapshot(taskItems: viewModel.displayedTasks)
-        viewController.displatFinishDragDrop(snapshot: sourceSnapShot, sectionVM: viewModel.sourceSection)
+    func presentFinishDragDrop(response: TaskListModels.DragDropTask.Response) {
+        var viewModel: TaskListModels.DragDropTask.ViewModel
+        if let section = response.sourceSection {
+            let sourceSnapShot = generateSnapshot(taskItems: response.displayedTasks)
+            viewModel = .init(snapshot: sourceSnapShot, sectionVM: section)
+        } else {
+            viewModel = .init(sectionVMs: response.sectionVMs, sectionIndex: response.sectionIndex, tasks: response.displayedTasks)
+        }
+        viewController.displayFinishDragDrop(viewModel: viewModel)
     }
     
     private func generateSnapshot(taskItems: [TaskVM]) -> NSDiffableDataSourceSectionSnapshot<TaskVM> {

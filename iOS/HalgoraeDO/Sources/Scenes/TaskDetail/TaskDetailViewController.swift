@@ -26,7 +26,6 @@ class TaskDetailViewController: UIViewController {
         var pages: [UIViewController] = []
         pages.append(instance(name: "\(TaskDetailBookmarkViewController.self)"))
         pages.append(instance(name: "\(TaskDetailCommentViewController.self)"))
-        
         if task.parentId == nil {
             pages.append(instance(name: "\(TaskDetailSubTasksViewController.self)"))
         }

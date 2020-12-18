@@ -33,7 +33,7 @@ class TaskDragDropInteractor {
         return snapshot
     }
     
-    func dropHelper(projectId: String, childCheck: Int, sourceIndexPath: IndexPath, destinationIndexPath: IndexPath,
+    func dropHelperForList(projectId: String, childCheck: Int, sourceIndexPath: IndexPath, destinationIndexPath: IndexPath,
                     dataSource: UICollectionViewDiffableDataSource<TaskListModels.SectionVM, TaskVM>, destinationCell: TaskCollectionViewListCell?) -> TaskListModels.MoveTask.Request? {
         guard let sourceTask = dataSource.itemIdentifier(for: sourceIndexPath)
         else {
@@ -46,12 +46,12 @@ class TaskDragDropInteractor {
         
         guard let destinationTask = dataSource.itemIdentifier(for: destinationIndexPath)
         else {//섹션 상단에 추가시
-            presenter.presentFinishDragDrop(viewModel: .init(displayedTasks: tasksAfterRemove, sourceSection: sourceSection))
+            presenter.presentFinishDragDrop(response: .init(displayedTasks: tasksAfterRemove, sourceSection: sourceSection))
             var newItems = dataSource.snapshot(for: destinationSection).rootItems
             newItems.insert(sourceTask, at: 0)
             let destinationSnapShot = generateSnapshot(taskItems: newItems)
             dataSource.apply(destinationSnapShot, to: destinationSection)
-            presenter.presentFinishDragDrop(viewModel: .init(displayedTasks: newItems, sourceSection: destinationSection))
+            presenter.presentFinishDragDrop(response: .init(displayedTasks: newItems, sourceSection: destinationSection))
             return dragDropApiHelper(projectId: projectId, sectionId: destinationSection.id, sourceTask: sourceTask, sendTasks: dataSource.snapshot(for: destinationSection).rootItems)
         }
         var newItems: [TaskVM]
@@ -63,17 +63,67 @@ class TaskDragDropInteractor {
             } else { //child check필요 없이 그냥 넣기
                 newItems = addTaskAtTasks(tasksAfterRemove, tempItem, destinationTask.id)
             }
-            presenter.presentFinishDragDrop(viewModel: .init(displayedTasks: newItems, sourceSection: sourceSection))
+            presenter.presentFinishDragDrop(response: .init(displayedTasks: newItems, sourceSection: sourceSection))
         } else { //다른 section 일때
             if destinationTask.parentPosition == nil && childCheck == 1 { //부모 작업의 바로 아래에 append
                 newItems = addTaskAtFirstOfSubitems(dataSource.snapshot(for: destinationSection).rootItems, sourceTask, destinationTask, destinationIndexPath, destinationCell)
             } else { //child check필요 없이 그냥 넣기
                 newItems = addTaskAtTasks(dataSource.snapshot(for: destinationSection).rootItems, tempItem, destinationTask.id)
             }
-            presenter.presentFinishDragDrop(viewModel: .init(displayedTasks: tasksAfterRemove, sourceSection: sourceSection))
-            presenter.presentFinishDragDrop(viewModel: .init(displayedTasks: newItems, sourceSection: destinationSection))
+            presenter.presentFinishDragDrop(response: .init(displayedTasks: tasksAfterRemove, sourceSection: sourceSection))
+            presenter.presentFinishDragDrop(response: .init(displayedTasks: newItems, sourceSection: destinationSection))
         }
         return dragDropApiHelper(projectId: projectId, sectionId: destinationSection.id, sourceTask: sourceTask, allTasks: dataSource.snapshot(for: destinationSection).rootItems)
+    }
+    
+    func dropHelperForBoard(projectId: String, sectionViewModel: [TaskListModels.SectionVM], sourceSection: TaskListModels.SectionVM, destinationSection: TaskListModels.SectionVM, sourceTask: TaskListModels.TaskVM, destinationTask: TaskListModels.TaskVM?) -> TaskListModels.MoveTask.Request? {
+        var sectionVM = sectionViewModel
+        guard let destinationTask = destinationTask else { //맨 위에 insert
+            if sourceSection == destinationSection { //같은 collectionview
+                for i in 0..<sectionVM.count where sectionVM[i].id == sourceSection.id {
+                    var newTasks = removeTaskFromTasks(sourceSection.tasks, sourceTask.id)
+                    newTasks.insert(sourceTask, at: 0)
+                    sectionVM[i].tasks = newTasks
+                    presenter.presentFinishDragDrop(response: .init(displayedTasks: sectionVM[i].tasks, sectionVMs: sectionVM, sectionIndex: i))
+                    return dragDropApiHelper(projectId: projectId, sectionId: destinationSection.id, sourceTask: sourceTask, sendTasks: sectionVM[i].tasks)
+                }
+                return nil
+            }
+            for i in 0..<sectionVM.count { //다른 collectionview
+                if sectionVM[i].id == sourceSection.id {
+                    sectionVM[i].tasks = removeTaskFromTasks(sourceSection.tasks, sourceTask.id)
+                    presenter.presentFinishDragDrop(response: .init(displayedTasks: sectionVM[i].tasks, sectionVMs: sectionVM, sectionIndex: i))
+                } else if sectionVM[i].id == destinationSection.id {
+                    var newItems = destinationSection.tasks
+                    newItems.insert(sourceTask, at: 0)
+                    sectionVM[i].tasks = newItems
+                    presenter.presentFinishDragDrop(response: .init(displayedTasks: sectionVM[i].tasks, sectionVMs: sectionVM, sectionIndex: i))
+                    return dragDropApiHelper(projectId: projectId, sectionId: destinationSection.id, sourceTask: sourceTask, sendTasks: sectionVM[i].tasks)
+                }
+            }
+            return nil
+        }
+        
+        if sourceSection == destinationSection { //같은 collectionview
+            for i in 0..<sectionVM.count where sectionVM[i].id == sourceSection.id {
+                let newTasks = removeTaskFromTasks(sourceSection.tasks, sourceTask.id)
+                sectionVM[i].tasks = addTaskAtTasks(newTasks, sourceTask, destinationTask.id)
+                presenter.presentFinishDragDrop(response: .init(displayedTasks: sectionVM[i].tasks, sectionVMs: sectionVM, sectionIndex: i))
+                return dragDropApiHelper(projectId: projectId, sectionId: destinationSection.id, sourceTask: sourceTask, sendTasks: sectionVM[i].tasks)
+            }
+            return nil
+        }
+        for i in 0..<sectionVM.count  { //다른 collectionview
+            if sectionVM[i].id == sourceSection.id {
+                sectionVM[i].tasks = removeTaskFromTasks(sourceSection.tasks, sourceTask.id)
+                presenter.presentFinishDragDrop(response: .init(displayedTasks: sectionVM[i].tasks, sectionVMs: sectionVM, sectionIndex: i))
+            } else if sectionVM[i].id == destinationSection.id {
+                sectionVM[i].tasks = addTaskAtTasks(destinationSection.tasks, sourceTask, destinationTask.id)
+                presenter.presentFinishDragDrop(response: .init(displayedTasks: sectionVM[i].tasks, sectionVMs: sectionVM, sectionIndex: i))
+                return dragDropApiHelper(projectId: projectId, sectionId: destinationSection.id, sourceTask: sourceTask, sendTasks: sectionVM[i].tasks)
+            }
+        }
+        return nil
     }
     
     private func dragDropApiHelper(projectId: String, sectionId: String, sourceTask: TaskVM, sendTasks: [TaskVM]) -> TaskListModels.MoveTask.Request {//섹션 상단 (하위 X)
