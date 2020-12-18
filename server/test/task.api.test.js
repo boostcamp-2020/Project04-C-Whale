@@ -375,16 +375,12 @@ describe('patch task with id', () => {
       done(err);
     }
   });
-  // TODO: 작성해야할 테스트
-  // parentId가 task가 아닌 userId, projectId 와 같은 다른 id인 경우
-  // project a - section a - task a 인 작업을
-  // project a - section b - task a 로 수정 요청이 들어오는 경우 // 이런거는 create에서도 케이스 추가 해줘야한다
 });
 
 describe('delete task', () => {
   it('delete task 일반', async done => {
     // given
-    const taskId = seeder.tasks[0].id;
+    const taskId = seeder.tasks[1].id;
     try {
       // when
       const res = await request(app)

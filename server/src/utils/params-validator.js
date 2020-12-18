@@ -18,7 +18,6 @@ class ParamsValidator {
   commentId;
 
   @IsOptional()
-  @IsString()
   @IsUUID('4')
   bookmarkId;
 }

@@ -43,7 +43,7 @@ const retrieveProjects = async userId => {
   return projects;
 };
 
-const retrieveById = async ({ projectId, userId, ...rest }) => {
+const retrieveById = async ({ projectId, userId }) => {
   const project = await projectModel.findByPk(projectId, {
     attributes: ['id', 'title', 'isList'],
     include: {
@@ -97,6 +97,14 @@ const create = async data => {
   return result;
 };
 
+const findOrCreate = async data => {
+  const [result] = await projectModel.findAll({ where: data });
+  if (result) return true;
+
+  const createResult = await create(data);
+  return createResult;
+};
+
 const update = async ({ projectId, userId, ...data }) => {
   const project = await projectModel.findByPk(projectId);
   if (!project) {
@@ -136,16 +144,8 @@ const updateSectionPositions = async ({ projectId, userId, ...data }) => {
   if (project.creatorId !== userId) {
     throw customError.FORBIDDEN_ERROR();
   }
-  const sections = await project.getSections();
-  if (
-    !sections.every(section =>
-      orderedSections.find(orderedSectionId => orderedSectionId === section.id),
-    )
-  ) {
-    throw customError.WRONG_RELATION_ERROR(['please check projectId, sectionId']);
-  }
 
-  const result = await sequelize.transaction(async t => {
+  await sequelize.transaction(async t => {
     return await Promise.all(
       orderedSections.map(async (sectionId, position) => {
         return await models.section.update(
@@ -157,12 +157,13 @@ const updateSectionPositions = async ({ projectId, userId, ...data }) => {
     );
   });
 
-  return result.length === orderedSections.length;
+  return true;
 };
 module.exports = {
   retrieveProjects,
   retrieveById,
   create,
+  findOrCreate,
   update,
   remove,
   updateSectionPositions,

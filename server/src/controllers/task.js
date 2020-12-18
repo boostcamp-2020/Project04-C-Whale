@@ -1,4 +1,5 @@
 const TaskDto = require('@models/dto/task');
+const PositionDto = require('@models/dto/position');
 const taskService = require('@services/task');
 const { validator, getTypeError } = require('@utils/validator');
 const { asyncTryCatch } = require('@utils/async-try-catch');
@@ -57,8 +58,17 @@ const updateTask = asyncTryCatch(async (req, res) => {
 });
 
 const updateChildTaskPositions = asyncTryCatch(async (req, res) => {
-  const parentId = req.params.taskId;
-  await taskService.updateChildTaskPositions(parentId, req.body.orderedTasks);
+  try {
+    await validator(ParamsValidator, req.params);
+    await validator(PositionDto, req.body);
+  } catch (errs) {
+    const validationError = getTypeError(errs);
+    throw validationError;
+  }
+
+  const { taskId: parentId } = req.params;
+  const { id: userId } = req.user;
+  await taskService.updateChildTaskPositions({ ...req.body, parentId, userId });
 
   responseHandler(res, 200, { message: 'ok' });
 });
