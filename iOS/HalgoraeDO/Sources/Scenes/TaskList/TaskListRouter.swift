@@ -33,8 +33,7 @@ extension TaskListRouter: TaskListRoutingLogic {
     func routeToTaskDetailFromBoard(for taskVM: TaskListModels.TaskVM, at indexPath: IndexPath) {
         guard let sourceVC = boardViewController,
             let task = dataStore.taskList.task(taskVM: taskVM, indexPath: indexPath),
-            let destinationVC = sourceVC.storyboard?.instantiateViewController(identifier: "\(TaskDetailViewController.self)",
-                                                                                creator: { (coder) -> TaskDetailViewController? in
+            let destinationVC = sourceVC.storyboard?.instantiateViewController(identifier: "\(TaskDetailViewController.self)", creator: { (coder) -> TaskDetailViewController? in
                 return TaskDetailViewController(coder: coder, task: task)
             })
         else {
@@ -47,8 +46,7 @@ extension TaskListRouter: TaskListRoutingLogic {
     func routeToTaskDetail(for taskVM: TaskListModels.TaskVM, at indexPath: IndexPath) {
         guard let sourceVC = listViewController,
             let task = dataStore.taskList.task(taskVM: taskVM, indexPath: indexPath),
-            let destinationVC = listViewController?.storyboard?.instantiateViewController(identifier: "\(TaskDetailViewController.self)",
-                                                                                creator: { (coder) -> TaskDetailViewController? in
+            let destinationVC = listViewController?.storyboard?.instantiateViewController(identifier: "\(TaskDetailViewController.self)", creator: { (coder) -> TaskDetailViewController? in
                 return TaskDetailViewController(coder: coder, task: task)
             })
         else {
@@ -57,7 +55,6 @@ extension TaskListRouter: TaskListRoutingLogic {
         
         navigateToTaskDetail(source: sourceVC, destination: destinationVC)
     }
-    
     
     func routeToTaskDetail(segue: UIStoryboardSegue?) {
         guard let sourceVC = listViewController,

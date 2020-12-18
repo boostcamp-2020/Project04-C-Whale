@@ -752,12 +752,16 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="launch" translatesAutoresizingMaskIntoConstraints="NO" id="fIw-9q-dry">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                            </imageView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="ZpR-SY-TEj">
-                                <rect key="frame" x="30" y="666" width="354" height="126"/>
+                                <rect key="frame" x="30" y="740" width="354" height="52"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="m5i-tf-U8X" customClass="BorderRadiusButton" customModule="HalgoraeDO" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="354" height="48"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="354" height="52"/>
                                         <color key="backgroundColor" systemColor="systemGreenColor"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                         <inset key="contentEdgeInsets" minX="10" minY="15" maxX="10" maxY="15"/>
                                         <state key="normal" title="네이버로 로그인하기">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -774,53 +778,25 @@
                                             <action selector="didTapNaverLogicButton:" destination="08p-Js-HRL" eventType="touchUpInside" id="LJz-gp-XEF"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="k2T-h5-Xxk" customClass="BorderRadiusButton" customModule="HalgoraeDO" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="78" width="354" height="48"/>
-                                        <color key="backgroundColor" name="halgoraedoDarkBlue"/>
-                                        <state key="normal" title="테스트 입장 🐳">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        </state>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="radius">
-                                                <real key="value" value="6"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                        <connections>
-                                            <action selector="didTapTestSignInButton:" destination="08p-Js-HRL" eventType="touchUpInside" id="uBW-UR-Gze"/>
-                                        </connections>
-                                    </button>
                                 </subviews>
                             </stackView>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="whale" translatesAutoresizingMaskIntoConstraints="NO" id="h0F-tA-Tfm">
-                                <rect key="frame" x="107" y="278" width="200" height="200"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="200" id="mZq-9h-LOZ"/>
-                                    <constraint firstAttribute="width" secondItem="h0F-tA-Tfm" secondAttribute="height" multiplier="1:1" id="mkJ-0v-tUj"/>
-                                </constraints>
-                            </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="할고래DO" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zQA-oE-oqT">
-                                <rect key="frame" x="156" y="488" width="102" height="30"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="25"/>
-                                <color key="textColor" name="halgoraedoDarkBlue"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="8qh-xZ-7AG"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="8qh-xZ-7AG" firstAttribute="bottom" secondItem="ZpR-SY-TEj" secondAttribute="bottom" constant="70" id="2GJ-Hm-JGk"/>
+                            <constraint firstItem="fIw-9q-dry" firstAttribute="leading" secondItem="8qh-xZ-7AG" secondAttribute="leading" id="8Sa-Ox-YZ7"/>
                             <constraint firstItem="8qh-xZ-7AG" firstAttribute="trailing" secondItem="ZpR-SY-TEj" secondAttribute="trailing" constant="30" id="9bj-Yu-WU5"/>
-                            <constraint firstItem="zQA-oE-oqT" firstAttribute="centerX" secondItem="swf-Yq-uwk" secondAttribute="centerX" id="Op1-VW-Dfe"/>
-                            <constraint firstItem="h0F-tA-Tfm" firstAttribute="centerY" secondItem="swf-Yq-uwk" secondAttribute="centerY" constant="-70" id="aOm-i9-DQD"/>
-                            <constraint firstItem="h0F-tA-Tfm" firstAttribute="centerX" secondItem="swf-Yq-uwk" secondAttribute="centerX" id="bP6-MC-bRS"/>
-                            <constraint firstItem="zQA-oE-oqT" firstAttribute="top" secondItem="h0F-tA-Tfm" secondAttribute="bottom" constant="10" id="glY-iQ-jdG"/>
+                            <constraint firstItem="fIw-9q-dry" firstAttribute="bottom" secondItem="swf-Yq-uwk" secondAttribute="bottom" id="9ed-Ew-IxU"/>
+                            <constraint firstItem="fIw-9q-dry" firstAttribute="top" secondItem="swf-Yq-uwk" secondAttribute="top" id="EZZ-DX-xOg"/>
+                            <constraint firstItem="fIw-9q-dry" firstAttribute="trailing" secondItem="8qh-xZ-7AG" secondAttribute="trailing" id="GJt-6T-750"/>
                             <constraint firstItem="ZpR-SY-TEj" firstAttribute="leading" secondItem="8qh-xZ-7AG" secondAttribute="leading" constant="30" id="kDX-Ze-CvR"/>
                         </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iOt-ea-8YE" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-617" y="-972"/>
+            <point key="canvasLocation" x="-617.39130434782612" y="-972.32142857142856"/>
         </scene>
         <!--Popover View Controller-->
         <scene sceneID="Om4-0D-nar">
@@ -922,9 +898,9 @@
         <image name="circle.fill" catalog="system" width="128" height="121"/>
         <image name="ellipsis" catalog="system" width="128" height="37"/>
         <image name="flag.fill" catalog="system" width="128" height="121"/>
+        <image name="launch" width="1242" height="2688"/>
         <image name="point.topleft.down.curvedto.point.bottomright.up" catalog="system" width="121" height="128"/>
         <image name="square.and.pencil" catalog="system" width="128" height="115"/>
-        <image name="whale" width="180" height="180"/>
         <image name="xmark.circle.fill" catalog="system" width="128" height="121"/>
         <namedColor name="halgoraedoBackground">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

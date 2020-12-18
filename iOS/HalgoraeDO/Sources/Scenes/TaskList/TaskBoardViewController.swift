@@ -54,7 +54,7 @@ class TaskBoardViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.prefersLargeTitles = false
-        interactor?.fetchTasks(request: .init(projectId: project.id))
+        interactor?.fetchTasks(request: .init(projectId: project.id ))
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -181,7 +181,6 @@ private extension TaskBoardViewController {
             section = NSCollectionLayoutSection(group: group)
             section.orthogonalScrollingBehavior = .paging
             section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10)
-            
             return section
         }
         
@@ -236,7 +235,7 @@ extension TaskBoardViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if indexPath.section < sectionVM.count {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "section-reuse-identifier", for: indexPath) as! TaskSectionViewCell
-            cell.configure(section: sectionVM[indexPath.section], sectionNum: indexPath.section)
+            cell.configure(section: sectionVM[indexPath.section])
             cell.taskSectionViewCellDelegate = self
             return cell
         } else {
