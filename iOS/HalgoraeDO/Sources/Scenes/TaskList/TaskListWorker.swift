@@ -28,30 +28,8 @@ class TaskListWorker {
         }
     }
     
-    func requestPatchAndPatch<T: Decodable>(patch patchEndPoint: EndPointType, endPoint: EndPointType, completion: @escaping (T?) -> Void) {
+    func requestAndRequest<T: Decodable>(endPoint patchEndPoint: EndPointType, endPoint: EndPointType, completion: @escaping (T?) -> Void) {
         networkManager.fetchData(patchEndPoint) { [weak self] (message: Response<String>?, error) in
-            guard error == nil else {
-                #if DEBUG
-                print(error ?? "error is null")
-                #endif
-                completion(nil)
-                return
-            }
-            self?.networkManager.fetchData(endPoint) { (response: T?, error: NetworkError?) in
-                guard error == nil else {
-                    #if DEBUG
-                    print(error ?? "error is null")
-                    #endif
-                    completion(nil)
-                    return
-                }
-                completion(response)
-            }
-        }
-    }
-    
-    func requestPostAndGetTask<T: Decodable>(post postEndPoint: EndPointType, endPoint: ProjectEndPoint, completion: @escaping (T?) -> Void) {
-        networkManager.fetchData(postEndPoint) { [weak self] (message: Response<String>?, error) in
             guard error == nil else {
                 #if DEBUG
                 print(error ?? "error is null")

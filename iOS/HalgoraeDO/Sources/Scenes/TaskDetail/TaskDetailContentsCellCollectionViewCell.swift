@@ -28,5 +28,4 @@ class TaskDetailContentsCellCollectionViewCell: UICollectionViewListCell {
         shadow()
         contentConfiguration = content
     }
-    
 }
