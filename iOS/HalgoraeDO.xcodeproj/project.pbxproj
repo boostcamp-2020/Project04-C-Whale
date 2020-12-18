@@ -31,10 +31,9 @@
 		4C1AA450258B3E09001E1E13 /* DataResponsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8AFBE9258A7FFC00E36379 /* DataResponsing.swift */; };
 		4C1AA454258B3E0A001E1E13 /* DataResponsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8AFBE9258A7FFC00E36379 /* DataResponsing.swift */; };
 		4C1AA458258B3E15001E1E13 /* URLParameterEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4238A1257A2D800068A252 /* URLParameterEncoder.swift */; };
-		4C1AA45C258B3E45001E1E13 /* TaskListPresenterMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8AFC37258AC65400E36379 /* TaskListPresenterMock.swift */; };
-		4C1AA460258B3E47001E1E13 /* TaskListViewControllerMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8AFC32258AC63600E36379 /* TaskListViewControllerMock.swift */; };
-		4C1AA464258B3E4A001E1E13 /* TaskListInteractorMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8AFC3C258AC69800E36379 /* TaskListInteractorMock.swift */; };
-		4C1AA468258B3E4C001E1E13 /* TaskListWorkerMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8AFC41258AC70E00E36379 /* TaskListWorkerMock.swift */; };
+		4C1AA45C258B3E45001E1E13 /* TaskListPresenterSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8AFC37258AC65400E36379 /* TaskListPresenterSpy.swift */; };
+		4C1AA460258B3E47001E1E13 /* TaskListViewControllerSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8AFC32258AC63600E36379 /* TaskListViewControllerSpy.swift */; };
+		4C1AA464258B3E4A001E1E13 /* TaskListInteractorSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8AFC3C258AC69800E36379 /* TaskListInteractorSpy.swift */; };
 		4C1AA472258B3E6A001E1E13 /* TaskListDisplayLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0CA635256EAC5200E66045 /* TaskListDisplayLogic.swift */; };
 		4C1AA476258B3E70001E1E13 /* TaskListModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3F567D256B8CB3006D7C9F /* TaskListModels.swift */; };
 		4C1AA47A258B3E76001E1E13 /* Section+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA46A9822588783400D343B1 /* Section+CoreDataClass.swift */; };
@@ -228,14 +227,12 @@
 		4C8AFBC0258A7D8300E36379 /* TaskListWorkerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListWorkerTests.swift; sourceTree = "<group>"; };
 		4C8AFBE9258A7FFC00E36379 /* DataResponsing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataResponsing.swift; sourceTree = "<group>"; };
 		4C8AFC21258AC36900E36379 /* TaskListInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListInteractorTests.swift; sourceTree = "<group>"; };
-		4C8AFC32258AC63600E36379 /* TaskListViewControllerMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListViewControllerMock.swift; sourceTree = "<group>"; };
-		4C8AFC37258AC65400E36379 /* TaskListPresenterMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListPresenterMock.swift; sourceTree = "<group>"; };
-		4C8AFC3C258AC69800E36379 /* TaskListInteractorMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListInteractorMock.swift; sourceTree = "<group>"; };
-		4C8AFC41258AC70E00E36379 /* TaskListWorkerMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListWorkerMock.swift; sourceTree = "<group>"; };
+		4C8AFC32258AC63600E36379 /* TaskListViewControllerSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListViewControllerSpy.swift; sourceTree = "<group>"; };
+		4C8AFC37258AC65400E36379 /* TaskListPresenterSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListPresenterSpy.swift; sourceTree = "<group>"; };
+		4C8AFC3C258AC69800E36379 /* TaskListInteractorSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListInteractorSpy.swift; sourceTree = "<group>"; };
 		4C9A02B62581542E00727F88 /* CommentAddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentAddView.swift; sourceTree = "<group>"; };
 		4C9A02BB2581543600727F88 /* CommentAddView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CommentAddView.xib; sourceTree = "<group>"; };
 		4C9A02C82581725100727F88 /* CommentEndPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentEndPoint.swift; sourceTree = "<group>"; };
-		4C9A02DE2582214800727F88 /* TaskDetailContentsCellCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDetailContentsCellCollectionViewCell.swift; sourceTree = "<group>"; };
 		4C9A03412584E1FF00727F88 /* HalgoraeDO.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = HalgoraeDO.xcdatamodel; sourceTree = "<group>"; };
 		4C9A03502584EFD000727F88 /* PersistentContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistentContainer.swift; sourceTree = "<group>"; };
 		4C9A03552584F17C00727F88 /* Storage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
@@ -489,10 +486,9 @@
 			isa = PBXGroup;
 			children = (
 				4C1AA560258B446D001E1E13 /* PersistentMock.swift */,
-				4C8AFC32258AC63600E36379 /* TaskListViewControllerMock.swift */,
-				4C8AFC37258AC65400E36379 /* TaskListPresenterMock.swift */,
-				4C8AFC3C258AC69800E36379 /* TaskListInteractorMock.swift */,
-				4C8AFC41258AC70E00E36379 /* TaskListWorkerMock.swift */,
+				4C8AFC32258AC63600E36379 /* TaskListViewControllerSpy.swift */,
+				4C8AFC37258AC65400E36379 /* TaskListPresenterSpy.swift */,
+				4C8AFC3C258AC69800E36379 /* TaskListInteractorSpy.swift */,
 			);
 			path = Mock;
 			sourceTree = "<group>";
@@ -847,7 +843,7 @@
 				4C1AA476258B3E70001E1E13 /* TaskListModels.swift in Sources */,
 				4C1AA43C258B3DCF001E1E13 /* SessionManager.swift in Sources */,
 				4C1AA565258B44D7001E1E13 /* PopoverViewModelType.swift in Sources */,
-				4C1AA464258B3E4A001E1E13 /* TaskListInteractorMock.swift in Sources */,
+				4C1AA464258B3E4A001E1E13 /* TaskListInteractorSpy.swift in Sources */,
 				4C1AA4CE258B408B001E1E13 /* Priority.swift in Sources */,
 				4C1AA513258B4167001E1E13 /* TaskCollectionViewListCell.swift in Sources */,
 				4C1AA3EA258B3B41001E1E13 /* TaskListInteractorTests.swift in Sources */,
@@ -856,13 +852,12 @@
 				4C1AA4A5258B3F72001E1E13 /* URLParameterEncoder.swift in Sources */,
 				4C1AA4DA258B40A3001E1E13 /* NetworkManager.swift in Sources */,
 				4C1AA517258B416D001E1E13 /* TaskEndPoint.swift in Sources */,
-				4C1AA468258B3E4C001E1E13 /* TaskListWorkerMock.swift in Sources */,
 				4C1AA3E8258B3B41001E1E13 /* TaskListWorkerTests.swift in Sources */,
 				4C1AA482258B3E92001E1E13 /* Project+CoreDataClass.swift in Sources */,
 				4C1AA472258B3E6A001E1E13 /* TaskListDisplayLogic.swift in Sources */,
 				4C1AA49D258B3F35001E1E13 /* MenuModels.swift in Sources */,
 				4C1AA44C258B3DFE001E1E13 /* ParameterEncoding.swift in Sources */,
-				4C1AA45C258B3E45001E1E13 /* TaskListPresenterMock.swift in Sources */,
+				4C1AA45C258B3E45001E1E13 /* TaskListPresenterSpy.swift in Sources */,
 				4C1AA4DE258B40AC001E1E13 /* Response.swift in Sources */,
 				4C1AA561258B446D001E1E13 /* PersistentMock.swift in Sources */,
 				4C1AA4A9258B3F7B001E1E13 /* DataRequest.swift in Sources */,
@@ -876,7 +871,7 @@
 				4C1AA419258B3B94001E1E13 /* DataRequestMock.swift in Sources */,
 				4C1AA51B258B4177001E1E13 /* TaskContentConfigure.swift in Sources */,
 				4C1AA55C258B43AD001E1E13 /* Bookmark+CoreDataProperties.swift in Sources */,
-				4C1AA460258B3E47001E1E13 /* TaskListViewControllerMock.swift in Sources */,
+				4C1AA460258B3E47001E1E13 /* TaskListViewControllerSpy.swift in Sources */,
 				4C1AA47E258B3E8F001E1E13 /* Section+CoreDataProperties.swift in Sources */,
 				4C1AA409258B3B8E001E1E13 /* EndPointMock.swift in Sources */,
 				4C1AA4F5258B40FA001E1E13 /* TaskDragDropInteractor.swift in Sources */,
