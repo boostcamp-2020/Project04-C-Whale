@@ -16,6 +16,16 @@ afterAll(async done => {
   done();
 });
 
+const getOrderedTasks = taskId => {
+  return seeder.tasks
+    .filter(task => task.parentId === taskId)
+    .map(task => {
+      const { id } = task;
+      return id;
+    })
+    .sort((task1, task2) => task1.id - task2.id);
+};
+
 const getOrderedSections = expectedProjectId => {
   return seeder.sections
     .filter(section => section.projectId === expectedProjectId)
@@ -143,7 +153,6 @@ describe('update project section positions', () => {
     const orderedSections = getOrderedSections(expectedProjectId);
     orderedSections.splice(0, 1, seeder.tasks[0].id);
     const requestBody = { orderedSections };
-    const expectedError = customError.WRONG_RELATION_ERROR();
 
     // when
     const res = await request(app)
@@ -152,9 +161,8 @@ describe('update project section positions', () => {
       .send(requestBody);
 
     // then
-    expect(res.status).toBe(expectedError.status);
-    expect(res.body.code).toBe(expectedError.code);
-    expect(res.body.message).toBe(expectedError.message);
+    expect(res.status).toBe(status.SUCCESS.CODE);
+    expect(res.body.message).toBe(status.SUCCESS.MSG);
     done();
   });
 });
@@ -319,9 +327,6 @@ describe('update section task positions', () => {
     const orderedTasks = getOrederedTasks(expectedSectionId);
     orderedTasks.splice(0, 1, seeder.sections[2].id);
     const requestBody = { orderedTasks };
-    const expectedError = customError.WRONG_RELATION_ERROR(
-      'please check projectId, sectionId, tasks Id',
-    );
 
     // when
     const res = await request(app)
@@ -330,9 +335,104 @@ describe('update section task positions', () => {
       .send(requestBody);
 
     // then
+    expect(res.status).toBe(status.SUCCESS.CODE);
+    expect(res.body.message).toBe(status.SUCCESS.MSG);
+    done();
+  });
+});
+
+describe('childTask position update patch', () => {
+  it('childTask position update 일반 patch', async done => {
+    // given
+    const taskId = seeder.tasks[0].id;
+    const orderedTasks = getOrderedTasks(taskId);
+    const patchData = { orderedTasks };
+
+    // when
+    const res = await request(app)
+      .patch(`/api/task/${taskId}/position`)
+      .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
+      .send(patchData);
+
+    // then
+    expect(res.status).toBe(status.SUCCESS.CODE);
+    expect(res.body.message).toBe(status.SUCCESS.MSG);
+    done();
+  });
+  it('잘못된 parentId patch', async done => {
+    // given
+    const taskId = 'invalidId';
+    const orderedTasks = getOrderedTasks(taskId);
+    const patchData = { orderedTasks };
+    const expectedError = customError.INVALID_INPUT_ERROR();
+
+    // when
+    const res = await request(app)
+      .patch(`/api/task/${taskId}/position`)
+      .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
+      .send(patchData);
+
+    // then
     expect(res.status).toBe(expectedError.status);
     expect(res.body.code).toBe(expectedError.code);
     expect(res.body.message).toBe(expectedError.message);
+    done();
+  });
+  it('존재하지 않는 parentId patch', async done => {
+    // given
+    const taskId = seeder.sections[0].id;
+    const orderedTasks = getOrderedTasks(taskId);
+    const patchData = { orderedTasks };
+    const expectedError = customError.NOT_FOUND_ERROR('task');
+
+    // when
+    const res = await request(app)
+      .patch(`/api/task/${taskId}/position`)
+      .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
+      .send(patchData);
+
+    // then
+    expect(res.status).toBe(expectedError.status);
+    expect(res.body.code).toBe(expectedError.code);
+    expect(res.body.message).toBe(expectedError.message);
+    done();
+  });
+  it('잘못된 childTasksId patch', async done => {
+    // given
+    const taskId = seeder.tasks[0].id;
+    const orderedTasks = getOrderedTasks(taskId);
+    orderedTasks.splice(0, 1, 'hi');
+    const patchData = { orderedTasks };
+    const expectedError = customError.INVALID_INPUT_ERROR();
+
+    // when
+    const res = await request(app)
+      .patch(`/api/task/${taskId}/position`)
+      .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
+      .send(patchData);
+
+    // then
+    expect(res.status).toBe(expectedError.status);
+    expect(res.body.code).toBe(expectedError.code);
+    expect(res.body.message).toBe(expectedError.message);
+    done();
+  });
+  it('존재하지 않는 childTasksId가 껴있는 경우 patch', async done => {
+    // given
+    const taskId = seeder.tasks[0].id;
+    const orderedTasks = getOrderedTasks(taskId);
+    orderedTasks.splice(0, 1, seeder.sections[0].id);
+    const patchData = { orderedTasks };
+
+    // when
+    const res = await request(app)
+      .patch(`/api/task/${taskId}/position`)
+      .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
+      .send(patchData);
+
+    // then
+    expect(res.status).toBe(status.SUCCESS.CODE);
+    expect(res.body.message).toBe(status.SUCCESS.MSG);
     done();
   });
 });

@@ -338,11 +338,11 @@ describe('post task', () => {
     expect(res.body.message).toBe(expectedError.message);
     done();
   });
-  it('자신의 섹션 아닌 경우', async done => {
+  it('자신의 섹션 아닌 경우 (NOT FOUND)', async done => {
     // given
     const expectedProjectId = seeder.projects[2].id;
     const expectedSectionId = seeder.sections[0].id;
-    const expectedError = customError.FORBIDDEN_ERROR();
+    const expectedError = customError.NOT_FOUND_ERROR('section');
     const newTask = {
       title: '할일',
       priority: priorities[0].id,
@@ -362,11 +362,11 @@ describe('post task', () => {
     expect(res.body.message).toBe(expectedError.message);
     done();
   });
-  it('잘못된 관계의 프로젝트와 섹션의 경우', async done => {
+  it('잘못된 관계의 프로젝트와 섹션의 경우 (NOT FOUND)', async done => {
     // given
     const expectedProjectId = seeder.projects[0].id;
     const expectedSectionId = seeder.sections[1].id;
-    const expectedError = customError.WRONG_RELATION_ERROR();
+    const expectedError = customError.NOT_FOUND_ERROR('section');
     const newTask = {
       title: '할일',
       priority: priorities[0].id,
