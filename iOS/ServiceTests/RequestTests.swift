@@ -57,7 +57,7 @@ class RequestTests: XCTestCase {
         // When
         let _ = dataRequest.responseData { (_, error) in
             // Then
-            XCTAssertEqual(error, DataRequest.NetworkResponse.badURL.rawValue)
+            XCTAssertEqual(error, DataRequest.NetworkResponse.failed.rawValue)
         }
     }
     
@@ -71,6 +71,4 @@ class RequestTests: XCTestCase {
         // Then
         XCTAssertEqual(responseRequest.request.url, url)
     }
-    
-    
 }

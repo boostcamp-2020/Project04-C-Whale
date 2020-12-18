@@ -7,26 +7,12 @@
 
 import Foundation
 
-protocol DataResponsing {
-    
-    var session: URLSession { get }
-    var request: URLRequest { get }
-    @discardableResult
-    func responseData(completionHandler: @escaping (Data?, String?) -> Void) -> Self
-    @discardableResult
-    func responseURL(completionHandler: @escaping (URL?, String?) -> Void) -> Self
-}
-
 class DataRequest {
     
     // MARK: - Constants
     
     enum NetworkResponse: String {
         case success
-        case badURL = "Bad URL"
-        case authenticationError = "You need to be authenticated first."
-        case badRequest = "Bad request"
-        case outdated = "The url you requested is outdated."
         case failed = "Network request failed."
         case noData = "Response returned with no data to decode."
         case unableToDecode = "We could not decode the response."

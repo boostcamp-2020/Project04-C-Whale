@@ -39,18 +39,20 @@ class TaskBoardSupplementaryView: UICollectionReusableView {
         let moreButton = UIButton()
         let moreImage = UIImage(systemName: "ellipsis", withConfiguration: UIImage.SymbolConfiguration(pointSize: 20, weight: .bold, scale: .medium))
         
-        addSubview(sectionLabel)
-        addSubview(rowNumberLabel)
-        addSubview(moreButton)
         moreButton.setImage(moreImage, for: .normal)
         moreButton.tintColor = .gray
         sectionLabel.text = sectionName
         sectionLabel.font = UIFont.boldSystemFont(ofSize: CGFloat(20))
         rowNumberLabel.text = "\(rowNum)"
-        
         moreButton.translatesAutoresizingMaskIntoConstraints = false
         sectionLabel.translatesAutoresizingMaskIntoConstraints = false
         rowNumberLabel.translatesAutoresizingMaskIntoConstraints = false
+
+        
+        addSubview(sectionLabel)
+        addSubview(rowNumberLabel)
+        addSubview(moreButton)
+        
         NSLayoutConstraint.activate([
             sectionLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
             sectionLabel.trailingAnchor.constraint(equalTo: rowNumberLabel.leadingAnchor, constant: 20),

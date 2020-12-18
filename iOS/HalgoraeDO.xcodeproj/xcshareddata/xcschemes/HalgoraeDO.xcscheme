@@ -26,25 +26,15 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      shouldUseLaunchSchemeArgsEnv = "YES"
-      codeCoverageEnabled = "YES">
-      <CodeCoverageTargets>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "4CE91512257CCEFA00BCF398"
-            BuildableName = "ServiceTests.xctest"
-            BlueprintName = "ServiceTests"
-            ReferencedContainer = "container:HalgoraeDO.xcodeproj">
-         </BuildableReference>
-      </CodeCoverageTargets>
+      shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
          <TestableReference
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "4CCD31D8256EBC0000A46D10"
-               BuildableName = "TaskListTests.xctest"
-               BlueprintName = "TaskListTests"
+               BlueprintIdentifier = "4C1AA3A4258B3A9D001E1E13"
+               BuildableName = "ServiceTests.xctest"
+               BlueprintName = "ServiceTests"
                ReferencedContainer = "container:HalgoraeDO.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -52,9 +42,9 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "4CE91512257CCEFA00BCF398"
-               BuildableName = "ServiceTests.xctest"
-               BlueprintName = "ServiceTests"
+               BlueprintIdentifier = "4C1AA3DA258B3B37001E1E13"
+               BuildableName = "TaskListTests.xctest"
+               BlueprintName = "TaskListTests"
                ReferencedContainer = "container:HalgoraeDO.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -80,13 +70,6 @@
             ReferencedContainer = "container:HalgoraeDO.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
-      <EnvironmentVariables>
-         <EnvironmentVariable
-            key = "token"
-            value = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhZjU3OTAyLWM4NDEtNGMxMy1hNmRhLTkwOGVjMjJlYjEwNCIsImVtYWlsIjoiY2N3MTAyMS5kZXZAZ21haWwuY29tIiwibmFtZSI6bnVsbCwicHJvdmlkZXIiOiJuYXZlciIsImlhdCI6MTYwODA3Mzc0MX0.CfQEJe8L_lI4l8ux-X263aRmXUDWY3gBd8P5be71XI8"
-            isEnabled = "YES">
-         </EnvironmentVariable>
-      </EnvironmentVariables>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
