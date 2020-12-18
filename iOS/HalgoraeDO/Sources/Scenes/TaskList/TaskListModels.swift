@@ -9,7 +9,7 @@ import UIKit
 
 enum TaskListModels {
     
-    // MARK:  - Usecases
+    // MARK: - Usecases
     
     enum FetchTasks {
         struct Request {

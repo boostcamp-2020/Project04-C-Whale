@@ -80,11 +80,13 @@ extension TaskListInteractor: TaskListBusinessLogic {
         else {
             return
         }
-        worker.requestPostAndGetTask(post: TaskEndPoint.taskUpdate(id: viewModel.id, task: data),
-                                     endPoint: .get(projectId: projectId)) { [weak self] (response: Response<Project>?) in
+        
+        worker.requestAndRequest(endPoint: TaskEndPoint.taskUpdate(id: viewModel.id, task: data),
+                                     endPoint: ProjectEndPoint.get(projectId: projectId)) { [weak self] (response: Response<Project>?) in
             self?.taskList.sections = response?.project?.sections?.array as? [Section] ?? []
             self?.presenter.presentFetchTasks(response: TaskListModels.FetchTasks.Response(sections: self?.taskList.sections ?? []))
         }
+        
     }
     
     func createTask(request: TaskListModels.CreateTask.Request) {
@@ -92,8 +94,8 @@ extension TaskListInteractor: TaskListBusinessLogic {
         let taskCreateEndpoint = TaskEndPoint.create(projectId: request.projectId,
                                                  sectionId: request.sectionId,
                                                  request: data)
-        worker.requestPostAndGetTask(post: taskCreateEndpoint,
-                                     endPoint: .get(projectId: request.projectId)) { [weak self] (response: Response<Project>?) in
+        worker.requestAndRequest(endPoint: taskCreateEndpoint,
+                                     endPoint: ProjectEndPoint.get(projectId: request.projectId)) { [weak self] (response: Response<Project>?) in
             self?.taskList.sections = response?.project?.sections?.array as? [Section] ?? []
             self?.presenter.presentFetchTasks(response: TaskListModels.FetchTasks.Response(sections: self?.taskList.sections ?? []))
         }
@@ -103,8 +105,8 @@ extension TaskListInteractor: TaskListBusinessLogic {
         guard let data = request.sectionFields.encodeData else { return }
         let sectionCreateEndPoint = TaskEndPoint.sectionCreate(projectId: request.projectId,
                                                                request: data)
-        worker.requestPostAndGetTask(post: sectionCreateEndPoint,
-                                     endPoint: .get(projectId: request.projectId)) { [weak self] (response: Response<Project>?) in
+        worker.requestAndRequest(endPoint: sectionCreateEndPoint,
+                                     endPoint: ProjectEndPoint.get(projectId: request.projectId)) { [weak self] (response: Response<Project>?) in
             self?.taskList.sections = response?.project?.sections?.array as? [Section] ?? []
             self?.presenter.presentFetchTasks(response: TaskListModels.FetchTasks.Response(sections: self?.taskList.sections ?? []))
         }
@@ -125,13 +127,13 @@ extension TaskListInteractor: TaskListBusinessLogic {
         
         guard let projectId = request.projectId else {//task 하위에
             guard let parentTaskId = request.parentTaskId else { return }
-            worker.requestPatchAndPatch(patch: TaskEndPoint.taskUpdate(id: request.taskId, task: moveSectionData), endPoint: TaskEndPoint.moveIntoTask(taskId: parentTaskId, request: taskMoveData)){ (response: Response<String>?) in
+            worker.requestAndRequest(endPoint: TaskEndPoint.taskUpdate(id: request.taskId, task: moveSectionData), endPoint: TaskEndPoint.moveIntoTask(taskId: parentTaskId, request: taskMoveData)){ (response: Response<String>?) in
             }
            return
         }
         
         //섹션의 root items모두 전송
-        worker.requestPatchAndPatch(patch: TaskEndPoint.taskUpdate(id: request.taskId, task: moveSectionData), endPoint: TaskEndPoint.moveIntoSection(projectId: projectId, sectionId: request.sectionId, request: taskMoveData)){ (response: Response<String>?) in
+        worker.requestAndRequest(endPoint: TaskEndPoint.taskUpdate(id: request.taskId, task: moveSectionData), endPoint: TaskEndPoint.moveIntoSection(projectId: projectId, sectionId: request.sectionId, request: taskMoveData)){ (response: Response<String>?) in
         }
     }
 }

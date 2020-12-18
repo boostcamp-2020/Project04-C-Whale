@@ -35,12 +35,16 @@ class DataRequestMock: DataResponsing {
     }
     
     func responseData(completionHandler: @escaping (Data?, String?) -> Void) -> Self {
-        completionHandler(mockData, response?.rawValue)
+        DispatchQueue.main.asyncAfter(deadline: .now()+1) {
+            completionHandler(self.mockData, self.response?.rawValue)
+        }
         return self
     }
     
     func responseURL(completionHandler: @escaping (URL?, String?) -> Void) -> Self {
-        completionHandler(mockURL, response?.rawValue)
+        DispatchQueue.main.asyncAfter(deadline: .now()+1) {
+            completionHandler(self.mockURL, self.response?.rawValue)
+        }
         return self
     }
 }

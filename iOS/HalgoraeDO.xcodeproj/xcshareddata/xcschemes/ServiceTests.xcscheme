@@ -14,7 +14,7 @@
             buildForAnalyzing = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "4CE91512257CCEFA00BCF398"
+               BlueprintIdentifier = "4C1AA3A4258B3A9D001E1E13"
                BuildableName = "ServiceTests.xctest"
                BlueprintName = "ServiceTests"
                ReferencedContainer = "container:HalgoraeDO.xcodeproj">
@@ -50,7 +50,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "4CE91512257CCEFA00BCF398"
+            BlueprintIdentifier = "4C1AA3A4258B3A9D001E1E13"
             BuildableName = "ServiceTests.xctest"
             BlueprintName = "ServiceTests"
             ReferencedContainer = "container:HalgoraeDO.xcodeproj">

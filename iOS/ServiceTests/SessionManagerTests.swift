@@ -18,6 +18,11 @@ class SessionManagerTests: XCTestCase {
         codableMock = CodableMock(name: "woongs", age: 20)
     }
     
+    override func tearDownWithError() throws {
+        defaultSession = nil
+        codableMock = nil
+    }
+    
     func testRequest_baseURL_DefaultSession() {
         // Given
         let endPoint = EndPointMock.test()

@@ -9,6 +9,8 @@ import UIKit
 
 class TaskListViewController: UIViewController {
     
+    private var interactor: TaskListBusinessLogic?
+    private var router: (TaskListRoutingLogic & TaskListDataPassing)?
     // MARK:  - Constants
     
     typealias TaskVM = TaskListModels.TaskVM
@@ -16,8 +18,6 @@ class TaskListViewController: UIViewController {
     // MARK: - Properties
     
     var project: Project
-    private var interactor: TaskListBusinessLogic?
-    private var router: (TaskListRoutingLogic & TaskListDataPassing)?
     private var dataSource: UICollectionViewDiffableDataSource<TaskListModels.SectionVM, TaskVM>! = nil
     private var shouldDisplayDoneTasks = false
     private var presentConfirmActionWorkItem: DispatchWorkItem?
@@ -75,14 +75,15 @@ class TaskListViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        interactor?.fetchTasks(request: .init(projectId: project.id ))
+        interactor?.fetchTasks(request: .init(projectId: project.id))
     }
     
     // MARK: - Initialize
     
     private func configureLogic() {
         let presenter = TaskListPresenter(viewController: self)
-        let interactor = TaskListInteractor(presenter: presenter, worker: TaskListWorker(sessionManager: SessionManager(configuration: .default)))
+        let interactor = TaskListInteractor(presenter: presenter,
+                                            worker: TaskListWorker(sessionManager: SessionManager(configuration: .default)))
         self.interactor = interactor
         router = TaskListRouter(viewController: self, dataStore: interactor)
     }
@@ -277,9 +278,6 @@ private extension TaskListViewController {
             cell.indentationWidth = 25
             cell.finishHandler = { [weak self] taskVM in
                 guard let self = self else { return }
-                #warning("개선!==========")
-                var selectedVM = taskVM
-                // selectedVM.isCompleted = !selectedVM.isCompleted
                 self.slideRightConfirmActionViewWillDismiss(targetView: self.confirmActionView)
                 self.confirmActionView.backHandler = { [weak self] in
                     var cancelTask = taskVM
@@ -288,7 +286,9 @@ private extension TaskListViewController {
                     self?.interactor?.updateComplete(request: .init(displayedTasks: [cancelTask]))
                     self?.confirmActionView.isHidden = true
                 }
-                self.interactor?.updateComplete(request: .init(displayedTasks: [selectedVM]))
+                
+                // self.interactor?.changeFinish(request: .init(displayedTasks: [selectedVM]))
+                
             }
             let disclosureOptions = UICellAccessory.OutlineDisclosureOptions(style: .automatic)
             cell.accessories = taskItem.subItems.isEmpty ? [] : [.outlineDisclosure(options: disclosureOptions)]
