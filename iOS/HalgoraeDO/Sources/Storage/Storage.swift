@@ -8,15 +8,26 @@
 import Foundation
 import CoreData
 
+protocol PersistentProviding {
+    var mainContext: NSManagedObjectContext { get }
+    var childContext: NSManagedObjectContext { get }
+}
+
 class Storage {
-    let mainContext = PersistentContainer.shared.mainContext
-    let childContext = PersistentContainer.shared.childContext
+    
+    let mainContext: NSManagedObjectContext
+    let childContext: NSManagedObjectContext
     
     enum StorageError: Error {
         case create(String)
         case read(String)
         case update(String)
         case delete(String)
+    }
+    
+    init(container: PersistentProviding = PersistentContainer.shared) {
+        self.mainContext = container.mainContext
+        self.childContext = container.childContext
     }
     
     // MARK: - Core Data Saving support
