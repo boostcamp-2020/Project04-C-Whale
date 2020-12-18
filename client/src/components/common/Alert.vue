@@ -19,13 +19,13 @@ export default {
   computed: {
     ...mapState({ alert: (state) => state.alert.alert }),
   },
-  methods: {
-    ...mapMutations(["CLEAR_ALERT"]),
-  },
   beforeUpdate() {
     if (this.alert.message) {
       setTimeout(() => this.CLEAR_ALERT(), 3000);
     }
+  },
+  methods: {
+    ...mapMutations(["CLEAR_ALERT"]),
   },
 };
 </script>

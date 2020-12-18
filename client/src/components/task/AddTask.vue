@@ -14,7 +14,7 @@
           <div class="task-info">
             <AddTaskDueDatePicker v-model="task.dueDate" />
             <AddTaskProjectPicker @pickProject="pickProject" :projectId="task.projectId" />
-            <AddTaskAlarmPicker v-model="this.alarmTime" />
+            <AddTaskAlarmPicker v-model="alarmTime" />
           </div>
         </div>
 
@@ -97,7 +97,6 @@ export default {
       }
       this.show = !this.show;
     },
-
     submit() {
       this.addTask(this.task);
       this.submitAlarm();
@@ -116,7 +115,6 @@ export default {
       }
       this.show = !this.show;
     },
-
     submitAlarm() {
       if (this.getAlarmTimeInSec() <= Date.now()) {
         return;
@@ -133,18 +131,15 @@ export default {
         ss: "00",
       };
     },
-
     getAlarmTimeInSec() {
       return (
         Date.now() + (this.alarmTime.HH * 3600 + this.alarmTime.mm * 60 + this.alarmTime.ss) * 1000
       );
     },
-
     pickProject(projectInfo) {
       this.task.projectId = projectInfo.id;
       this.task.sectionId = projectInfo.defaultSectionId;
     },
-
     getUrl() {
       whaleApi.getCurrentTabUrl(({ title, url }) => {
         this.task.title = getMarkDownUrl(title, url);

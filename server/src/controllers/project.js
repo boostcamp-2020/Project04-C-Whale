@@ -1,8 +1,10 @@
 const ProjectDto = require('@models/dto/project');
+const PositionDto = require('@models/dto/position');
 const projectService = require('@services/project');
 const { responseHandler } = require('@utils/handler');
 const { asyncTryCatch } = require('@utils/async-try-catch');
-const { validator, getErrorMsg } = require('@utils/validator');
+const { validator, getTypeError } = require('@utils/validator');
+const ParamsValidator = require('@utils/params-validator');
 
 const getProjects = asyncTryCatch(async (req, res) => {
   const projectInfos = await projectService.retrieveProjects(req.user.id);
@@ -10,83 +12,84 @@ const getProjects = asyncTryCatch(async (req, res) => {
   responseHandler(res, 200, { projectInfos });
 });
 
-const getTodayProject = asyncTryCatch(async (req, res) => {
-  const todayProject = await projectService.retrieveTodayProject();
-
-  responseHandler(res, 200, { todayProject });
-});
-
 const getProjectById = asyncTryCatch(async (req, res) => {
-  const project = await projectService.retrieveById(req.params.projectId);
+  try {
+    await validator(ParamsValidator, req.params);
+  } catch (errs) {
+    const validationError = getTypeError(errs);
+    throw validationError;
+  }
+
+  const { id: userId } = req.user;
+  const project = await projectService.retrieveById({ ...req.params, userId });
 
   responseHandler(res, 200, { project });
 });
 
 const createProject = asyncTryCatch(async (req, res) => {
-  const { id: creatorId } = req.user;
-
   try {
     await validator(ProjectDto, req.body, { groups: ['create'] });
   } catch (errs) {
-    const message = getErrorMsg(errs);
-    const err = new Error(message);
-    err.status = 400;
-    throw err;
+    const validationError = getTypeError(errs);
+    throw validationError;
   }
 
-  const projectId = await projectService.create({ creatorId, ...req.body });
+  const { id: creatorId } = req.user;
+  const projectId = await projectService.create({ ...req.body, creatorId });
 
   responseHandler(res, 201, { message: 'ok', projectId });
 });
 
 const updateProject = asyncTryCatch(async (req, res) => {
   try {
-    await validator(ProjectDto, { id: req.params.projectId, ...req.body });
+    await validator(ParamsValidator, req.params);
+    if (req.method === 'PUT') {
+      await validator(ProjectDto, req.body, { groups: ['put'] });
+    } else {
+      await validator(ProjectDto, req.body, { groups: ['patch'] });
+    }
   } catch (errs) {
-    const message = getErrorMsg(errs);
-    const err = new Error(message);
-    err.status = 400;
-    throw err;
+    const validationError = getTypeError(errs);
+    throw validationError;
   }
 
-  await projectService.update({ id: req.params.projectId, ...req.body });
+  const { id: userId } = req.user;
+  await projectService.update({ ...req.body, ...req.params, userId });
 
   responseHandler(res, 200, { message: 'ok' });
 });
 
 const deleteProject = asyncTryCatch(async (req, res) => {
   try {
-    await validator(ProjectDto, { id: req.params.projectId });
+    await validator(ParamsValidator, req.params);
   } catch (errs) {
-    const message = getErrorMsg(errs);
-    const err = new Error(message);
-    err.status = 400;
-    throw err;
+    const validationError = getTypeError(errs);
+    throw validationError;
   }
 
-  await projectService.remove({ id: req.params.projectId });
+  const { id: userId } = req.user;
+  await projectService.remove({ ...req.params, userId });
 
   responseHandler(res, 200, { message: 'ok' });
 });
 
 const updateSectionPositions = asyncTryCatch(async (req, res) => {
   try {
-    await validator(ProjectDto, { id: req.params.projectId });
+    await validator(ParamsValidator, req.params);
+    await validator(PositionDto, req.body);
   } catch (errs) {
-    const message = getErrorMsg(errs);
-    const err = new Error(message);
-    err.status = 400;
-    throw err;
+    const validationError = getTypeError(errs);
+    throw validationError;
   }
 
-  await projectService.updateSectionPositions(req.body.orderedSections);
+  const { id: userId } = req.user;
+  await projectService.updateSectionPositions({ ...req.body, ...req.params, userId });
 
   responseHandler(res, 200, { message: 'ok' });
 });
 
 module.exports = {
   getProjects,
-  getTodayProject,
   getProjectById,
   createProject,
   updateProject,

@@ -4,7 +4,7 @@
       v-for="project in projectInfos"
       :key="project.id"
       :to="`/project/${project.id}`"
-      class="pl-4"
+      class="pl-4 max-224"
       active-class="font-weight-bold list-active"
     >
       <v-list-item-icon class="mr-1">
@@ -55,3 +55,9 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.max-224 {
+  max-width: 224px !important;
+}
+</style>

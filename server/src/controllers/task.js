@@ -9,7 +9,6 @@ const getTaskById = asyncTryCatch(async (req, res) => {
   const id = req.params.taskId;
   try {
     await validator(ParamsValidator, req.params);
-    await validator(TaskDto, { id }, { groups: ['retrieve'] });
   } catch (errs) {
     const validationError = getTypeError(errs);
     throw validationError;
@@ -29,7 +28,7 @@ const getAllTasks = asyncTryCatch(async (req, res) => {
 const createTask = asyncTryCatch(async (req, res) => {
   try {
     await validator(ParamsValidator, req.params);
-    await validator(TaskDto, req.body, { groups: ['create'] });
+    await validator(TaskDto, req.body);
   } catch (errs) {
     const validationError = getTypeError(errs);
     throw validationError;

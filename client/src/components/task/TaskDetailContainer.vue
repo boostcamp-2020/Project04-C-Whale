@@ -20,7 +20,7 @@
     </div>
     <div class="px-4 task-detail-tabs">
       <TaskDetailTabs
-        :tasks="task.tasks"
+        :parentTask="task"
         :comments="commentsMap[this.$route.params.taskId]"
         :bookmarks="bookmarkMap[this.$route.params.taskId]"
         :projectId="$route.params.projectId"

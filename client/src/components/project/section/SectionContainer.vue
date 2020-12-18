@@ -13,6 +13,7 @@
         :id="task.id"
         @taskDragOver="taskDragOver"
         @taskDrop="taskDrop"
+        :showDate="true"
       />
       <v-divider v-if="shouldShow(task)" />
       <ChildTaskList

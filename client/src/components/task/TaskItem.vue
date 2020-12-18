@@ -12,13 +12,23 @@
     </v-list-item-action>
 
     <v-flex class="task-div d-flex" @click.prevent="moveToTaskDetail()">
-      <v-list-item-content>
-        <v-list-item-title>
+      <v-list-item-content class="d-flex">
+        <v-list-item-title class="d-flex">
           <vue-mark-down
             :class="task.isDone ? 'mark-down text-decoration-line-through' : 'mark-down'"
           >
             {{ task.title }}
           </vue-mark-down>
+          <span
+            v-if="showDate === undefined ? true : showDate"
+            class="d-inline-block font-10 ml-3 align-self-end primary--text"
+          >
+            {{ dateString }}
+          </span>
+          <span v-if="task.section" class="d-inline-block font-12 ml-3 align-self-end">
+            <v-icon x-small :color="task.section.project.color">mdi-circle</v-icon>
+            {{ task.section.project.title }}
+          </span>
         </v-list-item-title>
       </v-list-item-content>
     </v-flex>
@@ -40,7 +50,7 @@ export default {
     section: Object,
     position: Number,
     dragging: Boolean,
-    showDoneTask: Boolean,
+    showDate: Boolean,
   },
   data() {
     return {
@@ -54,6 +64,9 @@ export default {
       const box = this.$el.getBoundingClientRect();
       const middle = box.top + box.height / 2;
       return middle;
+    },
+    dateString() {
+      return new Date(this.task.dueDate).toLocaleDateString();
     },
   },
   methods: {
@@ -142,7 +155,11 @@ export default {
   margin: 0;
 }
 
-.hide {
-  display: none !important;
+.font-10 {
+  font-size: 10px;
+}
+
+.flex-initial {
+  flex: initial !important;
 }
 </style>

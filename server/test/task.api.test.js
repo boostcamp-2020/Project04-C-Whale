@@ -118,7 +118,7 @@ describe('get task by id', () => {
   it('잘못된 id 값 요청', async done => {
     // given
     const taskId = 'invalidId';
-    const expectedError = customError.INVALID_INPUT_ERROR('taskId');
+    const expectedError = customError.INVALID_INPUT_ERROR();
 
     try {
       // when
@@ -138,7 +138,7 @@ describe('get task by id', () => {
   it('자신의 task id가 아닌 경우', async done => {
     // given
     const taskId = seeder.tasks[0].id;
-    const expectedError = customError.FORBIDDEN_ERROR('task');
+    const expectedError = customError.FORBIDDEN_ERROR();
     try {
       // when
       const res = await request(app)
@@ -230,7 +230,7 @@ describe('patch task with id', () => {
   it('id값이 포함된 수정', async done => {
     // given
     const patchTask = { id: seeder.tasks[0].id, title: '졸리다' };
-    const expectedError = customError.UNNECESSARY_INPUT_ERROR('id');
+    const expectedError = customError.UNNECESSARY_INPUT_ERROR();
     // when
     const res = await request(app)
       .patch(`/api/task/${patchTask.id}`)
@@ -247,7 +247,7 @@ describe('patch task with id', () => {
     // given
     const taskId = seeder.tasks[0].id;
     const patchTask = { title: '' };
-    const expectedError = customError.INVALID_INPUT_ERROR('title');
+    const expectedError = customError.INVALID_INPUT_ERROR();
 
     // when
     const res = await request(app)
@@ -266,7 +266,7 @@ describe('patch task with id', () => {
     // given
     const taskId = seeder.tasks[0].id;
     const patchTask = { parentId: 'invalidId' };
-    const expectedError = customError.INVALID_INPUT_ERROR('parentId');
+    const expectedError = customError.INVALID_INPUT_ERROR();
     // when
     const res = await request(app)
       .patch(`/api/task/${taskId}`)
@@ -284,7 +284,7 @@ describe('patch task with id', () => {
     // given
     const taskId = seeder.tasks[0].id;
     const patchTask = { priority: '5' };
-    const expectedError = customError.INVALID_INPUT_ERROR('priority');
+    const expectedError = customError.INVALID_INPUT_ERROR();
     // when
     const res = await request(app)
       .patch(`/api/task/${taskId}`)
@@ -301,7 +301,7 @@ describe('patch task with id', () => {
     // given
     const taskId = seeder.tasks[0].id;
     const patchTask = { isDone: 'hi' };
-    const expectedError = customError.TYPE_ERROR('isDone');
+    const expectedError = customError.TYPE_ERROR();
     // when
     const res = await request(app)
       .patch(`/api/task/${taskId}`)
@@ -317,8 +317,9 @@ describe('patch task with id', () => {
   it('잘못된 duedate 수정', async done => {
     // given
     const taskId = seeder.tasks[0].id;
-    const patchTask = { duedate: new Date('2020-11-11') };
+    const patchTask = { dueDate: new Date('2020-11-11') };
     const expectedError = customError.DUEDATE_ERROR();
+
     // when
     const res = await request(app)
       .patch(`/api/task/${taskId}`)
@@ -335,7 +336,7 @@ describe('patch task with id', () => {
     // given
     const taskId = seeder.tasks[0].id;
     const patchTask = { isDone: true };
-    const expectedError = customError.FORBIDDEN_ERROR('task');
+    const expectedError = customError.FORBIDDEN_ERROR();
 
     try {
       // when
@@ -416,5 +417,57 @@ describe('delete task', () => {
     } catch (err) {
       done(err);
     }
+  });
+});
+
+describe('MultipleError 케이스', () => {
+  it('요청 데이터 모두 validation에 걸린 경우', async done => {
+    // given
+    const taskId = seeder.tasks[0].id;
+    const patchTask = {
+      title: '', // 1
+      sectionId: { hi: '이거 됐던거같은데' }, // 2
+      dueDate: 'hi', // 1
+      parentId: '뭐야', // 1
+      priority: 55, // 1
+      position: '하이', // 1
+    };
+    const expectedError = customError.MULTIPLE_ERROR();
+
+    try {
+      // when
+      const res = await request(app)
+        .patch(`/api/task/${taskId}`)
+        .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
+        .send(patchTask);
+
+      // then
+      expect(res.status).toBe(expectedError.status);
+      expect(res.body.code).toBe(expectedError.code);
+      expect(res.body.message).toBe(expectedError.message);
+      expect(res.body.fields.length).toBeGreaterThan(Object.keys(patchTask).length);
+      //
+      done();
+    } catch (err) {
+      done(err);
+    }
+  });
+  it('잘못된 title 수정', async done => {
+    // given
+    const taskId = seeder.tasks[0].id;
+    const patchTask = { title: 77 };
+    const expectedError = customError.MULTIPLE_ERROR();
+
+    // when
+    const res = await request(app)
+      .patch(`/api/task/${taskId}`)
+      .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
+      .send(patchTask);
+
+    // then
+    expect(res.status).toBe(expectedError.status);
+    expect(res.body.code).toBe(expectedError.code);
+    expect(res.body.message).toBe(expectedError.message);
+    done();
   });
 });
