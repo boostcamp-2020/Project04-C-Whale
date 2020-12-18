@@ -144,16 +144,8 @@ const updateSectionPositions = async ({ projectId, userId, ...data }) => {
   if (project.creatorId !== userId) {
     throw customError.FORBIDDEN_ERROR();
   }
-  const sections = await project.getSections();
-  if (
-    !sections.every(section =>
-      orderedSections.find(orderedSectionId => orderedSectionId === section.id),
-    )
-  ) {
-    throw customError.WRONG_RELATION_ERROR(['please check projectId, sectionId']);
-  }
 
-  const result = await sequelize.transaction(async t => {
+  await sequelize.transaction(async t => {
     return await Promise.all(
       orderedSections.map(async (sectionId, position) => {
         return await models.section.update(
@@ -165,7 +157,7 @@ const updateSectionPositions = async ({ projectId, userId, ...data }) => {
     );
   });
 
-  return result.length === orderedSections.length;
+  return true;
 };
 module.exports = {
   retrieveProjects,
