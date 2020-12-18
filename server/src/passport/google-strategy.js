@@ -1,6 +1,6 @@
 const GoogleStrategy = require('passport-google-oauth20');
 const userService = require('@services/user');
-const { models } = require('@models');
+const projectService = require('@services/project');
 
 const data = {
   clientID: process.env.GOOGLE_CLIENT_ID,
@@ -13,10 +13,7 @@ const getGoogleUser = async (accessToken, refreshToken, profile, done) => {
   try {
     const { email, nickname: name } = profile._json;
     const [user] = await userService.retrieveOrCreate({ email, name, provider: GOOGLE });
-    await models.project.findOrCreate({
-      where: { creatorId: user.id },
-      defaults: { creatorId: user.id, title: '관리함', isList: true },
-    });
+    await projectService.findOrCreate({ creatorId: user.id, title: '관리함', isList: true });
 
     return done(null, user.toJSON());
   } catch (err) {
