@@ -7,17 +7,10 @@
       </v-list-item>
 
       <div v-for="task in tasks" :key="task.id" class="task-container">
-        <TaskItem :section="task.section" :task="task" :id="task.id" />
+        <TaskItem :section="task.section" :task="task" :id="task.id" :showDate="type !== 'today'" />
         <v-divider />
         <ChildTaskList v-if="task.tasks" :section="task.section" :parentTask="task" class="ml-10" />
       </div>
-
-      <AddTask
-        v-if="isToday"
-        v-show="managedProject"
-        :projectId="managedProject.id"
-        :sectionId="managedProject.defaultSectionId"
-      />
     </v-list>
   </div>
 </template>
@@ -25,12 +18,11 @@
 <script>
 import { mapGetters } from "vuex";
 import TaskItem from "@/components/task/TaskItem";
-import AddTask from "@/components/task/AddTask";
 import ChildTaskList from "@/components/task/ChildTaskList";
 import { getTodayString } from "@/utils/date";
 
 export default {
-  components: { TaskItem, AddTask, ChildTaskList },
+  components: { TaskItem, ChildTaskList },
   props: {
     tasks: Array,
     type: String,

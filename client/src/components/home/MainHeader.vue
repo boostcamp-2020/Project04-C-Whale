@@ -28,14 +28,17 @@
           </v-app-bar-nav-icon>
         </template>
         <v-list>
-          <v-list-item>
-            <v-list-item-title class="font-14">{{ user.email }}</v-list-item-title>
+          <v-list-item class="d-block">
+            <span class="d-inline-block font-14">{{ user.name }}</span>
+            <v-list-item-title class="font-14"> {{ user.email }}</v-list-item-title>
           </v-list-item>
           <v-list-item>
             <v-switch
               @click.stop
               v-model="darkMode"
               :label="darkMode ? '다크모드 해제' : '다크모드 설정'"
+              class="mt-0"
+              hide-details
             ></v-switch>
           </v-list-item>
           <v-list-item @click="logout">
@@ -57,27 +60,20 @@ import AddTask from "@/components/task/AddTask";
 import { mapActions, mapState } from "vuex";
 
 export default {
-  data: () => ({
-    drawer: null,
-    showQuickAdd: false,
-    darkMode: JSON.parse(localStorage.getItem("darkMode")) || false,
-  }),
   components: {
     Search,
     LeftMenu,
     AddTask,
   },
+  data() {
+    return {
+      drawer: null,
+      showQuickAdd: false,
+      darkMode: JSON.parse(localStorage.getItem("darkMode")) || false,
+    };
+  },
   computed: {
     ...mapState({ user: (state) => state.auth.user }),
-  },
-  methods: {
-    ...mapActions(["logout"]),
-    toggleQuickAdd() {
-      this.showQuickAdd = !this.showQuickAdd;
-    },
-    goHome() {
-      this.$router.push("/today").catch(() => {});
-    },
   },
   watch: {
     darkMode() {
@@ -87,6 +83,15 @@ export default {
   },
   created() {
     this.$vuetify.theme.dark = this.darkMode;
+  },
+  methods: {
+    ...mapActions(["logout"]),
+    toggleQuickAdd() {
+      this.showQuickAdd = !this.showQuickAdd;
+    },
+    goHome() {
+      this.$router.push("/today").catch(() => {});
+    },
   },
 };
 </script>
@@ -111,11 +116,13 @@ export default {
   max-width: 400px !important;
 }
 
-$navigation-drawer-border-width: 0px;
-</style>
-
-<style>
 .dialog {
   overflow-y: visible !important;
 }
+
+.font-12 {
+  font-size: 12px;
+}
+
+$navigation-drawer-border-width: 0px;
 </style>

@@ -3,6 +3,7 @@
     class="task-detail"
     v-show="dialog"
     v-model="dialog"
+    max-width="800"
     :retain-focus="false"
     @click:outside="hideTaskModal()"
   >
@@ -63,19 +64,13 @@ export default {
       const result = await taskAPI.getTaskById(this.$route.params.taskId);
       this.task = result.data.task;
     }
-    bus.$emit("start:spinner");
     await this.fetchComments(this.$route.params.taskId);
     await this.fetchBookmarks(this.$route.params.taskId);
-    bus.$emit("end:spinner");
   },
   mixins: [SpinnerMixin],
 };
 </script>
 <style>
-.v-dialog {
-  max-height: 80% !important;
-}
-
 @media screen and (max-width: 720px) {
   .v-dialog {
     width: 80%;

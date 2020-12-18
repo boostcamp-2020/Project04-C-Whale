@@ -25,10 +25,8 @@ export default {
   computed: {
     ...mapGetters(["projectList"]),
   },
-  async created() {
-    bus.$emit("start:spinner");
-    await this.fetchCurrentProject(this.$route.params.projectId);
-    bus.$emit("end:spinner");
+  created() {
+    this.fetchCurrentProject(this.$route.params.projectId);
   },
   mixins: [SpinnerMixin],
 };

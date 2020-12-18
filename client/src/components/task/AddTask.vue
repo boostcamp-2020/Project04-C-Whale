@@ -41,7 +41,7 @@
                   </v-list-item>
                 </v-list>
               </v-menu>
-              <v-btn depressed color="normal" v-on="on">
+              <v-btn depressed color="normal">
                 <v-icon color="red">mdi-alarm</v-icon>
                 <VueTimepicker
                   v-model="alarm.time"
@@ -147,6 +147,10 @@ export default {
         ss: "00",
       };
     },
+    todayStringToKorean(todayString) {
+      const today = new Date(todayString);
+      return `${today.getMonth() + 1}월 ${today.getDate()}일`;
+    },
     submit() {
       this.addTask(this.task);
       console.log(Date.now() - this.getAlarmTimeInSec());
@@ -189,10 +193,6 @@ export default {
       this.task.projectId = projectInfo.id;
       this.task.sectionId = projectInfo.defaultSectionId;
       this.projectTitle = projectInfo.title;
-    },
-    todayStringToKorean(todayString) {
-      const today = new Date(todayString);
-      return `${today.getMonth() + 1}월 ${today.getDate()}일`;
     },
     selectAlarm(time) {
       this.alarmTime = Date.now() + 1000 * time;

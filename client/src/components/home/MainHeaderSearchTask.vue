@@ -43,16 +43,6 @@ export default {
     };
   },
   computed: {
-    fields() {
-      if (!this.model) return [];
-
-      return Object.keys(this.model).map((key) => {
-        return {
-          key,
-          value: this.model[key] || "n/a",
-        };
-      });
-    },
     items() {
       return this.tasks.map((task) => {
         const title =
@@ -64,7 +54,6 @@ export default {
       });
     },
   },
-
   watch: {
     model(task) {
       this.$router.push({
@@ -76,9 +65,7 @@ export default {
       if (this.tasks.length > 0 || this.isLoading) {
         return;
       }
-
       this.isLoading = true;
-
       const res = await taskAPI.getAllTasks();
       this.tasks = res.data.tasks.filter((task) => !task.isDone);
       this.isLoading = false;

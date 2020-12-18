@@ -5,13 +5,15 @@
     </v-tab>
     <!-- 하위 작업-->
     <v-tab-item>
-      <ChildTaskList
-        v-if="isParent"
-        :tasks="tasks"
-        :projectId="projectId"
-        :sectionId="sectionId"
-        :parentId="parentId"
-      />
+      <div v-if="isParent">
+        <ChildTaskList
+          :parentTask="parentTask"
+          :projectId="projectId"
+          :sectionId="sectionId"
+          :parentId="parentId"
+        />
+        <AddTask :projectId="projectId" :sectionId="sectionId" :parentId="parentId" />
+      </div>
       <div v-else class="py-3">
         <p class="text-center">하위작업을 더이상 생성할 수 없습니다</p>
         <v-img src="@/assets/halgoraedo.png"></v-img>
@@ -32,6 +34,7 @@
 import ChildTaskList from "@/components/task/ChildTaskList";
 import CommentList from "@/components/comment/CommentList";
 import BookmarkList from "@/components/bookmark/BookmarkList";
+import AddTask from "./AddTask.vue";
 
 export default {
   props: {
@@ -41,6 +44,7 @@ export default {
     projectId: String,
     sectionId: String,
     isParent: Boolean,
+    parentTask: Object,
   },
   data() {
     return {
@@ -64,7 +68,7 @@ export default {
     this.tabList.comment.count = this.comments ? this.comments.length : 0;
     this.tabList.bookmark.count = this.bookmarks ? this.bookmarks.length : 0;
   },
-  components: { ChildTaskList, CommentList, BookmarkList },
+  components: { ChildTaskList, CommentList, BookmarkList, AddTask },
 };
 </script>
 
