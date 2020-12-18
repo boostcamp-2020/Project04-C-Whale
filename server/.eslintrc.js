@@ -8,8 +8,12 @@ module.exports = {
   },
   plugins: ['prettier', 'jest'],
   extends: ['airbnb-base', 'eslint-config-prettier', 'prettier'],
+  parser: '@babel/eslint-parser',
   parserOptions: {
     ecmaVersion: 12,
+    babelOptions: {
+      configFile: './server/.babelrc.js',
+    },
   },
   rules: {
     'prettier/prettier': [

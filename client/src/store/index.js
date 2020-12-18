@@ -1,22 +1,15 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import auth from "./auth";
+import project from "./project";
+import task from "./task";
+import alert from "./alert";
+import dragAndDrop from "./dragAndDrop";
+import comment from "./comment";
+import bookmark from "./bookmark";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  state: {
-    accessToken: null,
-  },
-  mutations: {
-    LOGIN(state, { accessToken }) {
-      state.accessToken = accessToken;
-      localStorage.setItem("token", accessToken);
-    },
-    LOGOUT(state) {
-      state.accessToken = null;
-      localStorage.removeItem("token");
-    },
-  },
-  actions: {},
-  modules: {},
+  modules: { auth, project, task, alert, dragAndDrop, comment, bookmark },
 });

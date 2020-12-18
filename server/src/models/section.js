@@ -12,7 +12,10 @@ module.exports = sequelize => {
       title: {
         type: DataTypes.STRING,
       },
+      position: {
+        type: DataTypes.INTEGER,
+      },
     },
-    { tableName: 'section' },
+    { charset: 'utf8', collate: 'utf8_unicode_ci', tableName: 'section' },
   );
 };

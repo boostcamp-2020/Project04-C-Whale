@@ -3,7 +3,7 @@ name: Discussion
 about: 회의를 하면서 고민 사항 및 결정 사항을 이슈로 등록해주세요.
 title: ''
 labels: discussion
-assignees: SANGYOONLEE, chelwoong, Zinyon, pjy0416, shkilo
+assignees: chelwoong, pjy0416, SANGYOONLEE, shkilo, Zinyon
 
 ---
 

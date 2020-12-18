@@ -1,9 +1,10 @@
 module.exports = {
   transpileDependencies: ["vuetify"],
+  lintOnSave: false,
   chainWebpack: (config) => {
-    config.module.rule('eslint').use('eslint-loader').tap((options) => {
-      options.fix = true;
-      return options;
-    })
-  }
+    config.plugin("html").tap((args) => {
+      args[0].title = "할고래DO";
+      return args;
+    });
+  },
 };

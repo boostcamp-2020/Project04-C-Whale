@@ -9,11 +9,14 @@ module.exports = sequelize => {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
       },
+      title: {
+        type: DataTypes.STRING,
+      },
       url: {
         allowNull: false,
         type: DataTypes.STRING,
       },
     },
-    { tableName: 'bookmark' },
+    { charset: 'utf8', collate: 'utf8_unicode_ci', tableName: 'bookmark' },
   );
 };

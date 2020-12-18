@@ -1,11 +1,33 @@
 <template>
-  <div>
-    <div>Project View</div>
-  </div>
+  <v-col cols="12" sm="12" lg="10" md="10">
+    <project-container
+      v-if="projectList[$route.params.projectId]"
+      :project="projectList[$route.params.projectId]"
+      :sections="projectList[$route.params.projectId].sections"
+    />
+  </v-col>
 </template>
 
 <script>
+import { mapActions, mapGetters } from "vuex";
+import ProjectContainer from "../components/project/ProjectContainer";
+import SpinnerMixin from "@/mixins/SpinnerMixins.js";
+import bus from "@/utils/bus";
+
 export default {
-  name: "Project",
+  components: { ProjectContainer },
+  methods: {
+    ...mapActions(["fetchCurrentProject"]),
+  },
+  data() {
+    return {};
+  },
+  computed: {
+    ...mapGetters(["projectList"]),
+  },
+  created() {
+    this.fetchCurrentProject(this.$route.params.projectId);
+  },
+  mixins: [SpinnerMixin],
 };
 </script>

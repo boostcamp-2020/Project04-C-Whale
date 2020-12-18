@@ -13,6 +13,10 @@ module.exports = sequelize => {
         allowNull: false,
         type: DataTypes.STRING,
       },
+      color: {
+        allowNull: true,
+        type: DataTypes.STRING,
+      },
       isList: {
         allowNull: false,
         type: DataTypes.BOOLEAN,
@@ -22,6 +26,6 @@ module.exports = sequelize => {
         defaultValue: false,
       },
     },
-    { tableName: 'project' },
+    { charset: 'utf8', collate: 'utf8_unicode_ci', tableName: 'project' },
   );
 };
