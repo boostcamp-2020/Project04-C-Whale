@@ -1,29 +1,28 @@
 <template>
   <div>
-    <FavoriteProjectList
+    <LeftMenuFavoriteProjectList
       v-if="managedProject && favoriteProjectInfos"
       :managed-project="managedProject"
       :task-count="taskCount"
       :favorite-project-infos="favoriteProjectInfos"
     />
-    <ProjectListContainer :project-infos="namedProjectInfos" />
-    <BookmarkList />
-    <!-- <LabelList :labels="labels" />
-    <FilterList :priorities="priorities" /> -->
+    <LeftMenuProjectListContainer :project-infos="namedProjectInfos" />
+    <LeftMenuBookmarkList />
   </div>
 </template>
 
 <script>
-import FavoriteProjectList from "./FavoriteProjectList";
-import ProjectListContainer from "./ProjectListContainer";
-import BookmarkList from "./BookmarkList";
+import LeftMenuFavoriteProjectList from "./LeftMenuFavoriteProjectList";
+import LeftMenuProjectListContainer from "./LeftMenuProjectListContainer";
+import LeftMenuBookmarkList from "./LeftMenuBookmarkList";
+
 import { mapGetters, mapActions } from "vuex";
 
 export default {
   components: {
-    FavoriteProjectList,
-    ProjectListContainer,
-    BookmarkList,
+    LeftMenuFavoriteProjectList,
+    LeftMenuProjectListContainer,
+    LeftMenuBookmarkList,
   },
   computed: mapGetters([
     "namedProjectInfos",

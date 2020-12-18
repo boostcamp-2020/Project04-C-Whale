@@ -1,6 +1,17 @@
 import { ref, watch, computed } from "@vue/composition-api";
 import store from "../store";
 
+const changeDraggingTaskPosition = (tasks, draggingTask, position) => {
+  const newTasks = tasks.filter((task) => {
+    return task.id !== draggingTask.id;
+  });
+  newTasks.splice(position, 0, {
+    ...draggingTask,
+    dragging: true,
+  });
+  return newTasks;
+};
+
 export default function useDragAndDrop({ parent }) {
   let tasks = ref(parent.value.tasks);
   const draggingTask = computed(() => store.getters.draggingTask);
@@ -12,8 +23,7 @@ export default function useDragAndDrop({ parent }) {
       return;
     }
 
-    tasks.value = tasks.value.filter((task) => task.id !== draggingTask.value.id);
-    tasks.value.splice(position, 0, { ...draggingTask.value, dragging: true });
+    tasks.value = changeDraggingTaskPosition(tasks.value, draggingTask.value, position);
   };
 
   const taskDrop = () => {

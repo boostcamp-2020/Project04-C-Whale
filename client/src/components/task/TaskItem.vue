@@ -21,9 +21,9 @@
           </vue-mark-down>
           <span
             v-if="showDate === undefined ? true : showDate"
-            class="d-inline-block font-12 ml-3 align-self-end primary--text"
+            class="d-inline-block font-10 ml-3 align-self-end primary--text"
           >
-            {{ DateString }}
+            {{ dateString }}
           </span>
           <span v-if="task.section" class="d-inline-block font-12 ml-3 align-self-end">
             <v-icon x-small :color="task.section.project.color">mdi-circle</v-icon>
@@ -37,12 +37,13 @@
 
 <script>
 import { mapGetters, mapActions, mapMutations } from "vuex";
-import { ref } from "@vue/composition-api";
-import useDragDropItem from "@/composables/useDragDropItem";
 import VueMarkDown from "vue-markdown";
 import bus from "@/utils/bus";
 
 export default {
+  components: {
+    VueMarkDown,
+  },
   props: {
     task: Object,
     parentTask: Object,
@@ -57,8 +58,16 @@ export default {
       checkBox: this.task.isDone,
     };
   },
-  components: {
-    VueMarkDown,
+  computed: {
+    ...mapGetters(["draggingTask", "dropTargetContainer"]),
+    middleY() {
+      const box = this.$el.getBoundingClientRect();
+      const middle = box.top + box.height / 2;
+      return middle;
+    },
+    dateString() {
+      return new Date(this.task.dueDate).toLocaleDateString();
+    },
   },
   methods: {
     ...mapActions(["updateTaskToDone"]),
@@ -80,7 +89,7 @@ export default {
       bus.$emit("moveToTaskDetail", destinationInfo);
     },
 
-    handleDragStart(e) {
+    handleDragStart() {
       this.SET_DRAGGING_TASK(this.task);
     },
 
@@ -108,33 +117,11 @@ export default {
         position: offset > 0 ? this.position : this.position + 1,
       });
     },
+
     handleDrop() {
       this.$emit("taskDrop");
     },
   },
-  computed: {
-    ...mapGetters(["draggingTask", "dropTargetContainer"]),
-    middleY() {
-      const box = this.$el.getBoundingClientRect();
-      const middle = box.top + box.height / 2;
-      return middle;
-    },
-    DateString() {
-      return new Date(this.task.dueDate).toLocaleDateString();
-    },
-  },
-  // setup(props, context) {
-  //   const { handleDragStart, handleDragOver, handleDrop, taskItem } = useDragDropItem(
-  //     props,
-  //     context
-  //   );
-  //   return {
-  //     handleDragStart,
-  //     handleDragOver,
-  //     handleDrop,
-  //     taskItem,
-  //   };
-  // },
 };
 </script>
 
@@ -168,8 +155,8 @@ export default {
   margin: 0;
 }
 
-.font-12 {
-  font-size: 12px;
+.font-10 {
+  font-size: 10px;
 }
 
 .flex-initial {

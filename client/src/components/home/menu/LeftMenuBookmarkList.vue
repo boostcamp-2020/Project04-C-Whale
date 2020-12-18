@@ -17,7 +17,7 @@
         sub-group
       >
         <template v-slot:activator>
-          <v-list-item class="pl-4">
+          <v-list-item class="pl-4 max-180">
             <v-list-item-content>
               <v-list-item-title class="font-14">{{ task.title }}</v-list-item-title>
             </v-list-item-content>
@@ -88,4 +88,8 @@ export default {
 };
 </script>
 
-<style lang="scss"></style>
+<style scoped>
+.max-180 {
+  max-width: 180px !important;
+}
+</style>

@@ -4,19 +4,19 @@
       @selectListView="changeToListView"
       @selectBoardView="changeToBoardView"
       @showAddSection="toggleAddSection"
+      @toggleShowDoneTask="toggleShowDoneTask"
       :project="project"
+      :showDoneTask="showDoneTask"
     />
 
     <div :class="{ 'board-view': boardView }" class="section-container">
       <SectionContainer
-        v-for="(section, index) in project.sections"
+        v-for="section in project.sections"
         :key="section.id"
         :id="section.id"
-        :position="index"
         :projectId="project.id"
         :section="section"
-        @sectionDragOver="sectionDragOver"
-        @sectionDrop="sectionDrop"
+        :showDoneTask="showDoneTask"
         class="mb-3 section-container"
       />
     </div>
@@ -34,13 +34,18 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions } from "vuex";
 import ProjectContainerHeader from "@/components/project/ProjectContainerHeader";
 import SectionContainer from "@/components/project/section/SectionContainer";
 import AddSection from "@/components/project/section/AddSection";
 import bus from "@/utils/bus";
 
 export default {
+  components: {
+    SectionContainer,
+    ProjectContainerHeader,
+    AddSection,
+  },
   props: {
     project: Object,
     sections: Array,
@@ -49,10 +54,16 @@ export default {
     return {
       boardView: !this.project.isList,
       showAddSection: false,
+      showDoneTask: false,
     };
   },
-  computed: {
-    ...mapGetters(["draggingSection"]),
+  created() {
+    bus.$on("moveToTaskDetail", (destinationInfo) => {
+      this.$router.push(destinationInfo).catch(() => {});
+    });
+  },
+  beforeDestroy() {
+    bus.$off("moveToTaskDetail");
   },
   methods: {
     ...mapActions(["updateTaskToDone", "updateProject"]),
@@ -67,29 +78,9 @@ export default {
     toggleAddSection() {
       this.showAddSection = !this.showAddSection;
     },
-    sectionDragOver({ position }) {
-      this.sections = this.sections.filter((section) => section.id !== this.draggingSection.id);
-      this.sections.splice(position, 0, { ...this.draggingSection, dragging: true });
+    toggleShowDoneTask() {
+      this.showDoneTask = !this.showDoneTask;
     },
-    sectionDrop(e) {
-      this.changeSectionPosition({
-        projectId: this.project.id,
-        orderedSections: this.sections.map((section) => section.id),
-      });
-    },
-  },
-  components: {
-    SectionContainer,
-    ProjectContainerHeader,
-    AddSection,
-  },
-  created() {
-    bus.$on("moveToTaskDetail", (destinationInfo) => {
-      this.$router.push(destinationInfo).catch(() => {});
-    });
-  },
-  beforeDestroy() {
-    bus.$off("moveToTaskDetail");
   },
 };
 </script>

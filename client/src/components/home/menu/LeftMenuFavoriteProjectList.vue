@@ -11,6 +11,7 @@
           </v-list-item-title>
         </v-list-item-content>
       </v-list-item>
+
       <v-list-item class="pl-4" :to="`/today`">
         <v-list-item-icon class="mr-1">
           <v-icon small color="red">mdi-calendar-today</v-icon>
@@ -21,51 +22,27 @@
           </v-list-item-title>
         </v-list-item-content>
       </v-list-item>
-      <v-list-item
-        v-for="favoriteProjectInfo in favoriteProjectInfos"
-        class="pl-4"
-        :key="favoriteProjectInfo.id"
-        :to="`/project/${favoriteProjectInfo.id}`"
-      >
-        <v-list-item-icon class="mr-1">
-          <v-icon small :color="favoriteProjectInfo.color">mdi-circle</v-icon>
-        </v-list-item-icon>
-        <v-list-item-content class="px-3">
-          <v-list-item-title class="font-14 white-space-normal">
-            {{ favoriteProjectInfo.title }} <span>{{ favoriteProjectInfo.taskCount }}</span>
-          </v-list-item-title>
-        </v-list-item-content>
-        <v-menu :offset-y="true">
-          <template v-slot:activator="{ on }">
-            <v-list-item-action class="my-0">
-              <v-btn icon v-on="on" @click.prevent.stop="">
-                <v-icon>mdi-dots-horizontal</v-icon>
-              </v-btn>
-            </v-list-item-action>
-          </template>
-          <v-list>
-            <v-list-item @click.stop="openUpdateDialog(favoriteProjectInfo.id)">
-              <v-list-item-title class="font-14">프로젝트 수정 </v-list-item-title>
-            </v-list-item>
-            <v-list-item @click.stop="openDeleteDialog(favoriteProjectInfo.id)">
-              <v-list-item-title class="font-14">프로젝트 삭제 </v-list-item-title>
-            </v-list-item>
-            <v-list-item @click.stop="setFavorite(favoriteProjectInfo.id)">
-              <v-list-item-title class="font-14">즐겨찾기 해제 </v-list-item-title>
-            </v-list-item>
-          </v-list>
-        </v-menu>
-      </v-list-item>
-      <UpdateProjectModal
-        v-if="favoriteProjectInfos.find((project) => project.id === projectId)"
-        :dialog="updateDialog"
-        v-on:handleUpdateModal="updateDialog = !updateDialog"
-        :projectInfo="favoriteProjectInfos.find((project) => project.id === projectId)"
+
+      <LeftMenuProjectList
+        @openUpdateDialog="openUpdateDialog"
+        @openDeleteDialog="openDeleteDialog"
+        @setFavorite="setFavorite"
+        :projectInfos="favoriteProjectInfos"
+        type="favorite"
       />
-      <DeleteProjectModal
+
+      <ProjectFormModal
         v-if="favoriteProjectInfos.find((project) => project.id === projectId)"
+        @closeModal="updateDialog = !updateDialog"
+        :dialog="updateDialog"
+        :projectInfo="favoriteProjectInfos.find((project) => project.id === projectId)"
+        type="update"
+      />
+
+      <ProjectDeleteModal
+        v-if="favoriteProjectInfos.find((project) => project.id === projectId)"
+        @closeModal="deleteDialog = !deleteDialog"
         :dialog="deleteDialog"
-        v-on:handleDeleteModal="deleteDialog = !deleteDialog"
         :projectInfo="favoriteProjectInfos.find((project) => project.id === projectId)"
       />
     </v-list-item-group>
@@ -73,14 +50,16 @@
 </template>
 
 <script>
-import UpdateProjectModal from "@/components/project/UpdateProjectModal.vue";
-import DeleteProjectModal from "@/components/project/DeleteProjectModal.vue";
+import LeftMenuProjectList from "@/components/home/menu/LeftMenuProjectList";
+import ProjectFormModal from "@/components/project/ProjectFormModal";
+import ProjectDeleteModal from "@/components/project/ProjectDeleteModal";
 import { mapActions } from "vuex";
 
 export default {
   components: {
-    UpdateProjectModal,
-    DeleteProjectModal,
+    ProjectFormModal,
+    ProjectDeleteModal,
+    LeftMenuProjectList,
   },
   props: {
     managedProject: Object,

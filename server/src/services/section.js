@@ -69,11 +69,6 @@ const updateTaskPositions = async ({ projectId, sectionId, userId, ...data }) =>
     throw customError.NOT_FOUND_ERROR('section');
   }
 
-  const tasks = await section.getTasks();
-  if (!tasks.every(task => orderedTasks.find(orderedTask => orderedTask === task.id))) {
-    throw customError.WRONG_RELATION_ERROR(['please check projectId, sectionId, tasks Id']);
-  }
-
   const result = await sequelize.transaction(async t => {
     return await Promise.all(
       orderedTasks.map(async (taskId, position) => {
