@@ -1,7 +1,9 @@
 # Project04-C-Whale
 
 <p align="center">
+  <img src="https://user-images.githubusercontent.com/23303023/102599910-7ece1400-4161-11eb-8cc5-a3323bc0ca0b.gif">
 <img src="https://user-images.githubusercontent.com/18397630/102030254-5ce93000-3df5-11eb-906e-60b3c040ccaf.png">
+  
 </p>
 
 
