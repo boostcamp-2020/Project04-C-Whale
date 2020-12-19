@@ -205,9 +205,6 @@ private extension TaskListViewController {
     func configureCollectionView() {
         taskListCollectionView.collectionViewLayout = generateLayout()
         taskListCollectionView.allowsMultipleSelectionDuringEditing = true
-        taskListCollectionView.delegate = self
-        taskListCollectionView.dragDelegate = self
-        taskListCollectionView.dropDelegate = self
         taskListCollectionView.dragInteractionEnabled = true
         taskListCollectionView.refreshControl = refreshControl
     }
