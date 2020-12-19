@@ -79,6 +79,7 @@
 		4C1AA647258D139A001E1E13 /* MenuGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1AA646258D139A001E1E13 /* MenuGenerator.swift */; };
 		4C1AA64C258D1555001E1E13 /* SimpleAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1AA64B258D1555001E1E13 /* SimpleAlertController.swift */; };
 		4C1AA657258D9DFE001E1E13 /* LineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1AA656258D9DFE001E1E13 /* LineView.swift */; };
+		4C1AA669258DE8AC001E1E13 /* TaskListGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1AA668258DE8AC001E1E13 /* TaskListGenerator.swift */; };
 		4C1AA66E258DFC83001E1E13 /* UIView+SlideRight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1AA66D258DFC83001E1E13 /* UIView+SlideRight.swift */; };
 		4C3F5665256B8117006D7C9F /* TaskListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3F5664256B8117006D7C9F /* TaskListViewController.swift */; };
 		4C3F566A256B82F2006D7C9F /* TaskBoardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3F5669256B82F2006D7C9F /* TaskBoardViewController.swift */; };
@@ -203,6 +204,7 @@
 		4C1AA650258D98FD001E1E13 /* ServiceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ServiceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C1AA651258D98FD001E1E13 /* TaskListTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TaskListTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C1AA656258D9DFE001E1E13 /* LineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineView.swift; sourceTree = "<group>"; };
+		4C1AA668258DE8AC001E1E13 /* TaskListGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListGenerator.swift; sourceTree = "<group>"; };
 		4C1AA66D258DFC83001E1E13 /* UIView+SlideRight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+SlideRight.swift"; sourceTree = "<group>"; };
 		4C3F5664256B8117006D7C9F /* TaskListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListViewController.swift; sourceTree = "<group>"; };
 		4C3F5669256B82F2006D7C9F /* TaskBoardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskBoardViewController.swift; sourceTree = "<group>"; };
@@ -430,6 +432,7 @@
 				AA19EF1A25756C3200E59017 /* AddSectionViewCell.swift */,
 				AA19EF242576488B00E59017 /* TaskBoardSupplementaryView.swift */,
 				4C1AA656258D9DFE001E1E13 /* LineView.swift */,
+				4C1AA668258DE8AC001E1E13 /* TaskListGenerator.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -957,6 +960,7 @@
 				AA19EF252576488B00E59017 /* TaskBoardSupplementaryView.swift in Sources */,
 				4C9A0489258732B400727F88 /* EndPointStorage.swift in Sources */,
 				4CE915D9257F228400BCF398 /* TaskEndPoint.swift in Sources */,
+				4C1AA669258DE8AC001E1E13 /* TaskListGenerator.swift in Sources */,
 				4C4236E02574DF980068A252 /* ConfirmActionView.swift in Sources */,
 				4C3F5705256CF8B9006D7C9F /* TaskContentView.swift in Sources */,
 				AA19EF332576846100E59017 /* UIColor+.swift in Sources */,
