@@ -68,7 +68,7 @@ class TaskBoardViewController: UIViewController {
         let presenter = TaskListPresenter(viewController: self)
         let interactor = TaskListInteractor(presenter: presenter, worker: TaskListWorker(sessionManager: SessionManager(configuration: .default)))
         self.interactor = interactor
-        self.router = TaskListRouter(viewController: nil, boardViewController: self, dataStore: interactor)
+        self.router = TaskListRouter(boardViewController: self, dataStore: interactor)
         
     }
     

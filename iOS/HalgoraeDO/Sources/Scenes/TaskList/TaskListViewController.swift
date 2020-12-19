@@ -84,7 +84,7 @@ class TaskListViewController: UIViewController {
         let interactor = TaskListInteractor(presenter: presenter,
                                             worker: TaskListWorker(sessionManager: SessionManager(configuration: .default)))
         self.interactor = interactor
-        router = TaskListRouter(viewController: self, dataStore: interactor)
+        router = TaskListRouter(listViewController: self, dataStore: interactor)
     }
     
     // MARK: - Methods

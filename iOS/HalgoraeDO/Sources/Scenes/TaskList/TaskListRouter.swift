@@ -23,8 +23,8 @@ class TaskListRouter: TaskListDataPassing {
     weak var boardViewController: TaskBoardViewController?
     var dataStore: TaskListDataStore
     
-    init(viewController: TaskListViewController?, boardViewController: TaskBoardViewController? = nil, dataStore: TaskListDataStore) {
-        self.listViewController = viewController
+    init(listViewController: TaskListViewController? = nil, boardViewController: TaskBoardViewController? = nil, dataStore: TaskListDataStore) {
+        self.listViewController = listViewController
         self.boardViewController = boardViewController
         self.dataStore = dataStore
     }
