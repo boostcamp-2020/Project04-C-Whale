@@ -90,23 +90,21 @@ class TaskBoardViewController: UIViewController {
     }
     
     private func addSectionAlert() {
-        let alert = UIAlertController(title: "섹션 추가", message: "예. 3주차 할일", preferredStyle: .alert)
-        let ok = UIAlertAction(title: "OK", style: .default) { (ok) in
-            guard let sectionName = alert.textFields?[0].text,
-                  sectionName != ""
-            else {
-                return
-            }
-            let projectId = self.project.id
-            let sectionFields = TaskListModels.SectionFields(title: sectionName)
-            self.interactor?.createSection(request: .init(projectId: projectId, sectionFields: sectionFields))
-        }
-        let cancel = UIAlertAction(title: "cancel", style: .cancel)
+        let alert = SimpleAlertController(title: "섹션 추가", message: "예. 3주차 할일", preferredStyle: .alert)
+        alert.configureActions([
+            UIAlertAction(title: "OK", style: .default) { (ok) in
+                guard let sectionName = alert.textFields?[0].text,
+                      sectionName != ""
+                else { return }
+                let sectionFields = TaskListModels.SectionFields(title: sectionName)
+                self.interactor?.createSection(request: .init(projectId: self.project.id, sectionFields: sectionFields))
+            },
+            UIAlertAction(title: "cancel", style: .cancel)
+        ])
         alert.addTextField { (textField) in
             textField.placeholder = "섹션 이름을 입력해주세요."
         }
-        alert.addAction(cancel)
-        alert.addAction(ok)
+        
         self.present(alert, animated: true, completion: nil)
     }
     
