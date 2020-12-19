@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="08p-Js-HRL">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="08p-Js-HRL">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -28,6 +28,11 @@
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells/>
+                                <connections>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="pB1-ow-Hbu"/>
+                                    <outlet property="dragDelegate" destination="BYZ-38-t0r" id="LSz-eA-Y1H"/>
+                                    <outlet property="dropDelegate" destination="BYZ-38-t0r" id="sEr-sl-9aw"/>
+                                </connections>
                             </collectionView>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bvh-S3-6Iw">
                                 <rect key="frame" x="0.0" y="813" width="414" height="49"/>
@@ -845,7 +850,7 @@
             </objects>
             <point key="canvasLocation" x="1086" y="-598"/>
         </scene>
-        <!--Menu View Controller-->
+        <!--메뉴-->
         <scene sceneID="RZa-X0-sHu">
             <objects>
                 <viewController id="6fM-V1-Fbv" customClass="MenuViewController" customModule="HalgoraeDO" customModuleProvider="target" sceneMemberID="viewController">
@@ -863,6 +868,9 @@
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells/>
+                                <connections>
+                                    <outlet property="delegate" destination="6fM-V1-Fbv" id="CBB-dM-pNP"/>
+                                </connections>
                             </collectionView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="qIh-dh-kCn"/>
@@ -874,7 +882,7 @@
                             <constraint firstItem="qIh-dh-kCn" firstAttribute="bottom" secondItem="i1l-sl-RpB" secondAttribute="bottom" id="yHP-dr-uKZ"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" largeTitleDisplayMode="never" id="QCA-8H-c9B"/>
+                    <navigationItem key="navigationItem" title="메뉴" largeTitleDisplayMode="never" id="QCA-8H-c9B"/>
                     <connections>
                         <outlet property="menuCollectionView" destination="i1l-sl-RpB" id="SnW-CE-hhg"/>
                     </connections>

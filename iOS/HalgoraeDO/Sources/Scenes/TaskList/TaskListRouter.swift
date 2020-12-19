@@ -10,6 +10,8 @@ import UIKit
 protocol TaskListRoutingLogic {
     func routeToTaskDetail(for taskVM: TaskListModels.TaskVM, at indexPath: IndexPath)
     func routeToTaskDetailFromBoard(for taskVM: TaskListModels.TaskVM, at indexPath: IndexPath)
+    func routeToBoard(project: Project)
+    func routeToList(project: Project)
 }
 
 protocol TaskListDataPassing {
@@ -21,14 +23,32 @@ class TaskListRouter: TaskListDataPassing {
     weak var boardViewController: TaskBoardViewController?
     var dataStore: TaskListDataStore
     
-    init(viewController: TaskListViewController?, boardViewController: TaskBoardViewController? = nil, dataStore: TaskListDataStore) {
-        self.listViewController = viewController
+    init(listViewController: TaskListViewController? = nil, boardViewController: TaskBoardViewController? = nil, dataStore: TaskListDataStore) {
+        self.listViewController = listViewController
         self.boardViewController = boardViewController
         self.dataStore = dataStore
     }
 }
 
 extension TaskListRouter: TaskListRoutingLogic {
+    func routeToList(project: Project) {
+        guard let boardVC = boardViewController,
+              let listVC = boardVC.storyboard?.instantiateViewController(identifier: String(describing: TaskListViewController.self), creator: { coder -> TaskListViewController? in
+            return TaskListViewController(coder: coder, project: project)
+        }) else { return }
+
+        navigationToSwitch(source: boardVC, destination: listVC)
+    }
+    
+    func routeToBoard(project: Project) {
+        guard let listVC = listViewController,
+            let boardVC = listVC.storyboard?.instantiateViewController(identifier: String(describing: TaskBoardViewController.self), creator: { coder -> TaskBoardViewController? in
+            return TaskBoardViewController(coder: coder, project: project)
+        }) else { return }
+
+        navigationToSwitch(source: listVC, destination: boardVC)
+    }
+    
     
     func routeToTaskDetailFromBoard(for taskVM: TaskListModels.TaskVM, at indexPath: IndexPath) {
         guard let sourceVC = boardViewController,
@@ -68,7 +88,13 @@ extension TaskListRouter: TaskListRoutingLogic {
     
     // MARK: Navigation
     
-    func navigateToTaskDetail(source: UIViewController, destination: TaskDetailViewController) {
+    private func navigateToTaskDetail(source: UIViewController, destination: TaskDetailViewController) {
         source.present(destination, animated: true, completion: nil)
+    }
+    
+    private func navigationToSwitch(source: UIViewController, destination: UIViewController) {
+        let nav = source.navigationController
+        nav?.popViewController(animated: false)
+        nav?.pushViewController(destination, animated: false)
     }
 }
