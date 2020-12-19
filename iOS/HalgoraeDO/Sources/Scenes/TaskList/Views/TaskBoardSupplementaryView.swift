@@ -11,20 +11,65 @@ class TaskBoardSupplementaryView: UICollectionReusableView {
     
     var section: Int = 0
     
+    // MARK: - Views
+    
+    var contentView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.layer.backgroundColor = UIColor.white.cgColor
+        
+        return view
+    }()
+    
+    var sectionLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont.boldSystemFont(ofSize: CGFloat(20))
+        
+        return label
+    }()
+    
+    var rowNumberLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        
+        return label
+    }()
+    
+    var moreButton: UIButton = {
+        let moreImage = UIImage(systemName: "ellipsis", withConfiguration: UIImage.SymbolConfiguration(pointSize: 20, weight: .bold, scale: .medium))
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(moreImage, for: .normal)
+        button.tintColor = .gray
+        
+        return button
+    }()
+    
+    var addTaskButton: UIButton = {
+        let plusImage = UIImage(systemName: "plus", withConfiguration: UIImage.SymbolConfiguration(pointSize: 22, weight: .bold, scale: .medium))
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(plusImage, for: .normal)
+        button.setTitleColor(.systemGray, for: .normal)
+        button.setTitle(" 작업 추가", for: .normal)
+        button.tintColor = .halgoraedoDarkBlue
+        
+        return button
+    }()
+    
     // MARK: - View Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        let view = UIView()
-        addSubview(view)
-        view.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(contentView)
+
         NSLayoutConstraint.activate([
-            view.leadingAnchor.constraint(equalTo: leadingAnchor),
-            view.trailingAnchor.constraint(equalTo: trailingAnchor),
-            view.topAnchor.constraint(equalTo: topAnchor, constant: 50),
-            view.bottomAnchor.constraint(equalTo: bottomAnchor)
+            contentView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            contentView.topAnchor.constraint(equalTo: topAnchor, constant: 50),
+            contentView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
-        layer.backgroundColor = UIColor.white.cgColor
     }
     
     required init?(coder: NSCoder) {
@@ -34,21 +79,9 @@ class TaskBoardSupplementaryView: UICollectionReusableView {
     // MARK: - Initialize
     
     func configureHeader(sectionName: String, rowNum: Int) {
-        let sectionLabel = UILabel()
-        let rowNumberLabel = UILabel()
-        let moreButton = UIButton()
-        let moreImage = UIImage(systemName: "ellipsis", withConfiguration: UIImage.SymbolConfiguration(pointSize: 20, weight: .bold, scale: .medium))
-        
-        moreButton.setImage(moreImage, for: .normal)
-        moreButton.tintColor = .gray
         sectionLabel.text = sectionName
-        sectionLabel.font = UIFont.boldSystemFont(ofSize: CGFloat(20))
         rowNumberLabel.text = "\(rowNum)"
-        moreButton.translatesAutoresizingMaskIntoConstraints = false
-        sectionLabel.translatesAutoresizingMaskIntoConstraints = false
-        rowNumberLabel.translatesAutoresizingMaskIntoConstraints = false
 
-        
         addSubview(sectionLabel)
         addSubview(rowNumberLabel)
         addSubview(moreButton)
@@ -67,18 +100,12 @@ class TaskBoardSupplementaryView: UICollectionReusableView {
     }
     
     func configureFooter() {
-        let addTaskButton = UIButton()
-        let plusImage = UIImage(systemName: "plus", withConfiguration: UIImage.SymbolConfiguration(pointSize: 22, weight: .bold, scale: .medium))
         addSubview(addTaskButton)
-        addTaskButton.translatesAutoresizingMaskIntoConstraints = false
-        addTaskButton.setImage(plusImage, for: .normal)
-        addTaskButton.setTitleColor(.systemGray, for: .normal)
-        addTaskButton.setTitle(" 작업 추가", for: .normal)
-        addTaskButton.tintColor = .halgoraedoDarkBlue
         addTaskButton.addTarget(self, action: #selector(priorityPopover), for: .touchUpInside)
+        
         NSLayoutConstraint.activate([
-            addTaskButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 30),
             addTaskButton.topAnchor.constraint(equalTo: topAnchor, constant: 10),
+            addTaskButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 30),
             addTaskButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10)
         ])
     }
