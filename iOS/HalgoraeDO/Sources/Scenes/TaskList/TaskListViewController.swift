@@ -17,7 +17,7 @@ class TaskListViewController: UIViewController {
     
     // MARK: - Properties
     
-    var project: Project
+    private var project: Project
     private var dataSource: UICollectionViewDiffableDataSource<TaskListModels.SectionVM, TaskVM>! = nil
     private var shouldDisplayDoneTasks = false
     private var presentConfirmActionWorkItem: DispatchWorkItem?
@@ -57,6 +57,7 @@ class TaskListViewController: UIViewController {
     init?(coder: NSCoder, project: Project) {
         self.project = project
         super.init(coder: coder)
+        title = project.title
     }
     
     required init?(coder: NSCoder) {
@@ -66,7 +67,6 @@ class TaskListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = project.title
         configureCollectionView()
         configureDataSource()
         configureLogic()

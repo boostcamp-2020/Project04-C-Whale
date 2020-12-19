@@ -13,7 +13,7 @@ class TaskBoardViewController: UIViewController {
     
     // MARK: - Properties
     
-    var project: Project
+    private var project: Project
     private var interactor: TaskListBusinessLogic?
     private var router: (TaskListRoutingLogic & TaskListDataPassing)?
     private var dataSource: UICollectionViewDiffableDataSource<String, TaskVM>! = nil
@@ -36,6 +36,7 @@ class TaskBoardViewController: UIViewController {
     init?(coder: NSCoder, project: Project) {
         self.project = project
         super.init(coder: coder)
+        title = project.title
     }
     
     required init?(coder: NSCoder) {

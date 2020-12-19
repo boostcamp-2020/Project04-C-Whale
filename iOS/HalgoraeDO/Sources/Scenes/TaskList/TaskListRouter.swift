@@ -34,22 +34,18 @@ extension TaskListRouter: TaskListRoutingLogic {
     func routeToList(project: Project) {
         guard let boardVC = boardViewController,
               let listVC = boardVC.storyboard?.instantiateViewController(identifier: String(describing: TaskListViewController.self), creator: { coder -> TaskListViewController? in
-            return TaskListViewController(coder: coder)
+            return TaskListViewController(coder: coder, project: project)
         }) else { return }
-        listVC.project = project
-        listVC.title = project.title
-        
+
         navigationToSwitch(source: boardVC, destination: listVC)
     }
     
     func routeToBoard(project: Project) {
         guard let listVC = listViewController,
             let boardVC = listVC.storyboard?.instantiateViewController(identifier: String(describing: TaskBoardViewController.self), creator: { coder -> TaskBoardViewController? in
-            return TaskBoardViewController(coder: coder)
+            return TaskBoardViewController(coder: coder, project: project)
         }) else { return }
-        boardVC.project = project
-        boardVC.title = project.title
-        
+
         navigationToSwitch(source: listVC, destination: boardVC)
     }
     
