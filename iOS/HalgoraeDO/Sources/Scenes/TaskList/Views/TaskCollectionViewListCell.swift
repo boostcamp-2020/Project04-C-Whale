@@ -16,7 +16,7 @@ class TaskCollectionViewListCell: UICollectionViewListCell {
             updateConfiguration(using: .init(traitCollection: .current))
         }
     }
-    var finishHandler: ((TaskListModels.TaskVM) -> Void)?
+    var doneHandler: ((TaskCollectionViewListCell?, TaskListModels.TaskVM) -> Void)?
     
     // MARK: - Methods
 
@@ -31,7 +31,7 @@ class TaskCollectionViewListCell: UICollectionViewListCell {
             taskContentView.completeHandler = { [weak self] isCompleted in
                 self?.taskViewModel?.isCompleted = isCompleted
                 guard let viewModel = self?.taskViewModel else { return }
-                self?.finishHandler?(viewModel)
+                self?.doneHandler?(self, viewModel)
             }
         }
     }
