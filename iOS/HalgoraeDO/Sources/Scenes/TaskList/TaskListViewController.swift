@@ -18,6 +18,7 @@ class TaskListViewController: UIViewController {
     // MARK: - Properties
     
     private var project: Project
+    private var generator = TaskListGenerator()
     private var dataSource: UICollectionViewDiffableDataSource<TaskListModels.SectionVM, TaskVM>! = nil
     private var shouldDisplayDoneTasks = false
     private var presentConfirmActionWorkItem: DispatchWorkItem?
@@ -73,6 +74,32 @@ class TaskListViewController: UIViewController {
     
     // MARK: - Initialize
     
+    private func configureCollectionView() {
+        taskListCollectionView.collectionViewLayout = generateLayout()
+        taskListCollectionView.allowsMultipleSelectionDuringEditing = true
+        taskListCollectionView.dragInteractionEnabled = true
+        taskListCollectionView.refreshControl = refreshControl
+    }
+    
+    private func configureDataSource() {
+        let cellRegistration = generator.registration.normal { [weak self] cell, taskVM in
+            guard let self = self else { return }
+            self.showCofirmToastAndDismiss { [weak self] in
+                var cancelTask = taskVM
+                cancelTask.isCompleted = !cancelTask.isCompleted
+                cell?.taskViewModel = cancelTask
+                self?.interactor?.updateComplete(request: .init(displayedTasks: [cancelTask]))
+                self?.confirmActionView.isHidden = true
+            }
+            self.interactor?.updateComplete(request: .init(displayedTasks: [taskVM]))
+        }
+
+        dataSource = UICollectionViewDiffableDataSource<TaskListModels.SectionVM, TaskVM>(collectionView: taskListCollectionView, cellProvider: { (collectionView, indexPath, task) -> UICollectionViewCell? in
+            return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: task)
+        })
+        configureDataSourceForHeader(dataSource)
+    }
+    
     private func configureLogic() {
         let presenter = TaskListPresenter(viewController: self)
         let interactor = TaskListInteractor(presenter: presenter,
@@ -101,7 +128,20 @@ class TaskListViewController: UIViewController {
         moreButton.title = editingMode ? "취소" : "More"
     }
     
-    @objc func tapAllCheckToolBarItem(_ sender: UIBarButtonItem) {
+    private func showCofirmToastAndDismiss(backHandler: (() -> Void)?) {
+        confirmActionView.slideRight()
+        confirmActionView.backHandler = backHandler
+        
+        presentConfirmActionWorkItem?.cancel()
+        presentConfirmActionWorkItem = DispatchWorkItem { self.confirmActionView.isHidden = true }
+        if let workItem = presentConfirmActionWorkItem {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: workItem)
+        }
+    }
+    
+    // MARK: Selectors
+    
+    @objc private func tapAllCheckToolBarItem(_ sender: UIBarButtonItem) {
         var selectItemTemp: [TaskVM] = []
         for selectedItem in selectedTasks {
             var tempSelectItem = selectedItem
@@ -114,23 +154,10 @@ class TaskListViewController: UIViewController {
         self.interactor?.updateCompleteAll(request: .init(displayedTasks: selectItemTemp), projectId: project.id)
     }
     
-    private func slideRightConfirmActionViewWillDismiss(targetView: UIView,
-                                                        withDuration duration: TimeInterval = 0.5,
-                                                        delay: TimeInterval = 0,
-                                                        usingSpringWithDamping dampingRatio: CGFloat = 0.7,
-                                                        initialSpringVelocity velocity: CGFloat = 0.5,
-                                                        options: UIView.AnimationOptions = [.curveEaseIn],
-                                                        dismiss deadline: DispatchTime = .now() + 3) {
-        targetView.transform = .init(translationX: -targetView.frame.maxX, y: 0)
-        targetView.isHidden = false
-        UIView.animate(withDuration: duration, delay: delay, usingSpringWithDamping: dampingRatio, initialSpringVelocity: velocity, options: options) {
-            targetView.transform = .identity
-        }
-        
-        self.presentConfirmActionWorkItem?.cancel()
-        self.presentConfirmActionWorkItem = DispatchWorkItem { targetView.isHidden = true }
-        if let workItem = self.presentConfirmActionWorkItem {
-            DispatchQueue.main.asyncAfter(deadline: deadline, execute: workItem)
+    @objc private func didChangeRefersh(_ sender: UIRefreshControl) {
+        interactor?.fetchTasks(request: .init(projectId: project.id))
+        DispatchQueue.main.async {
+            sender.endRefreshing()
         }
     }
     
@@ -175,9 +202,7 @@ class TaskListViewController: UIViewController {
             UIAlertAction(title: "OK", style: .default) { (ok) in
                 guard let sectionName = alert.textFields?[0].text,
                       sectionName != ""
-                else {
-                    return
-                }
+                else { return }
                 let sectionFields = TaskListModels.SectionFields(title: sectionName)
                 self.interactor?.createSection(request: .init(projectId: self.project.id, sectionFields: sectionFields))
             },
@@ -189,25 +214,11 @@ class TaskListViewController: UIViewController {
 
         self.present(alert, animated: true, completion: nil)
     }
-    
-    @objc func didChangeRefersh(_ sender: UIRefreshControl) {
-        interactor?.fetchTasks(request: .init(projectId: project.id))
-        DispatchQueue.main.async {
-            sender.endRefreshing()
-        }
-    }
 }
 
 // MARK: - Configure CollectionView Layout
 
 private extension TaskListViewController {
-    
-    func configureCollectionView() {
-        taskListCollectionView.collectionViewLayout = generateLayout()
-        taskListCollectionView.allowsMultipleSelectionDuringEditing = true
-        taskListCollectionView.dragInteractionEnabled = true
-        taskListCollectionView.refreshControl = refreshControl
-    }
     
     func generateLayout() -> UICollectionViewLayout {
         var listConfiguration = UICollectionLayoutListConfiguration(appearance: .plain)
@@ -236,32 +247,6 @@ private extension TaskListViewController {
 // MARK: - Configure CollectionView Data Source
 
 private extension TaskListViewController {
-    
-    func configureDataSource() {
-        let cellRegistration = UICollectionView.CellRegistration<TaskCollectionViewListCell, TaskVM> { (cell, _: IndexPath, taskItem) in
-            cell.taskViewModel = taskItem
-            cell.indentationWidth = 25
-            cell.finishHandler = { [weak self] taskVM in
-                guard let self = self else { return }
-                self.slideRightConfirmActionViewWillDismiss(targetView: self.confirmActionView)
-                self.confirmActionView.backHandler = { [weak self] in
-                    var cancelTask = taskVM
-                    cancelTask.isCompleted = !cancelTask.isCompleted
-                    cell.taskViewModel = cancelTask
-                    self?.interactor?.updateComplete(request: .init(displayedTasks: [cancelTask]))
-                    self?.confirmActionView.isHidden = true
-                }
-                self.interactor?.updateComplete(request: .init(displayedTasks: [taskVM]))
-            }
-            let disclosureOptions = UICellAccessory.OutlineDisclosureOptions(style: .automatic)
-            cell.accessories = taskItem.subItems.isEmpty ? [] : [.outlineDisclosure(options: disclosureOptions)]
-        }
-        
-        dataSource = UICollectionViewDiffableDataSource<TaskListModels.SectionVM, TaskVM>(collectionView: taskListCollectionView, cellProvider: { (collectionView, indexPath, task) -> UICollectionViewCell? in
-            return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: task)
-        })
-        configureDataSourceForHeader(dataSource)
-    }
     
     func configureDataSourceForHeader(_ dataSource: UICollectionViewDiffableDataSource<TaskListModels.SectionVM, TaskListModels.TaskVM>) {
         let headerRegistration = UICollectionView.SupplementaryRegistration
