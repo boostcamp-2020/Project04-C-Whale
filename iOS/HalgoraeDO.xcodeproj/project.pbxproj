@@ -76,7 +76,9 @@
 		4C1AA5EB258CB748001E1E13 /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA19EF322576846100E59017 /* UIColor+.swift */; };
 		4C1AA604258CBB84001E1E13 /* UIImage+scaled.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1AA603258CBB84001E1E13 /* UIImage+scaled.swift */; };
 		4C1AA642258CBDD3001E1E13 /* UIImage+scaled.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1AA603258CBB84001E1E13 /* UIImage+scaled.swift */; };
+		4C1AA647258D139A001E1E13 /* MenuCellGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1AA646258D139A001E1E13 /* MenuCellGenerator.swift */; };
 		4C1AA64C258D1555001E1E13 /* SimpleAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1AA64B258D1555001E1E13 /* SimpleAlertController.swift */; };
+		4C1AA657258D9DFE001E1E13 /* LineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1AA656258D9DFE001E1E13 /* LineView.swift */; };
 		4C3F5665256B8117006D7C9F /* TaskListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3F5664256B8117006D7C9F /* TaskListViewController.swift */; };
 		4C3F566A256B82F2006D7C9F /* TaskBoardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3F5669256B82F2006D7C9F /* TaskBoardViewController.swift */; };
 		4C3F566F256B8C2B006D7C9F /* TaskListInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3F566E256B8C2B006D7C9F /* TaskListInteractor.swift */; };
@@ -197,7 +199,9 @@
 		4C1AA5FF258CBA5D001E1E13 /* TaskListTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = TaskListTests.xctest; path = "/Users/os/woong/iOS/Boostcamp2020/group_final/Project04-C-Whale/iOS/build/Debug-iphoneos/TaskListTests.xctest"; sourceTree = "<absolute>"; };
 		4C1AA603258CBB84001E1E13 /* UIImage+scaled.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+scaled.swift"; sourceTree = "<group>"; };
 		4C1AA634258CBD73001E1E13 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4C1AA646258D139A001E1E13 /* MenuCellGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuCellGenerator.swift; sourceTree = "<group>"; };
 		4C1AA64B258D1555001E1E13 /* SimpleAlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleAlertController.swift; sourceTree = "<group>"; };
+		4C1AA656258D9DFE001E1E13 /* LineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineView.swift; sourceTree = "<group>"; };
 		4C3F5664256B8117006D7C9F /* TaskListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListViewController.swift; sourceTree = "<group>"; };
 		4C3F5669256B82F2006D7C9F /* TaskBoardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskBoardViewController.swift; sourceTree = "<group>"; };
 		4C3F566E256B8C2B006D7C9F /* TaskListInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListInteractor.swift; sourceTree = "<group>"; };
@@ -406,6 +410,7 @@
 				AA19EF162575680500E59017 /* TaskSectionViewCell.swift */,
 				AA19EF1A25756C3200E59017 /* AddSectionViewCell.swift */,
 				AA19EF242576488B00E59017 /* TaskBoardSupplementaryView.swift */,
+				4C1AA656258D9DFE001E1E13 /* LineView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -577,6 +582,7 @@
 		4CCD32752570A4E300A46D10 /* Menu */ = {
 			isa = PBXGroup;
 			children = (
+				4C1AA65E258DB644001E1E13 /* Views */,
 				4CCD32762570A4EF00A46D10 /* MenuViewController.swift */,
 				4CE91604257F81B600BCF398 /* MenuInteractor.swift */,
 				4CE91609257F81BD00BCF398 /* MenuWorker.swift */,
@@ -933,6 +939,7 @@
 				4C4236E02574DF980068A252 /* ConfirmActionView.swift in Sources */,
 				4C3F5705256CF8B9006D7C9F /* TaskContentView.swift in Sources */,
 				AA19EF332576846100E59017 /* UIColor+.swift in Sources */,
+				4C1AA647258D139A001E1E13 /* MenuCellGenerator.swift in Sources */,
 				4C9A037E2585E2CA00727F88 /* NetworkMonitor.swift in Sources */,
 				AA46A98B2588783400D343B1 /* Project+CoreDataClass.swift in Sources */,
 				AA354C2A2570002600072657 /* TaskAddViewController.swift in Sources */,
@@ -947,6 +954,7 @@
 				4C0CA636256EAC5200E66045 /* TaskListDisplayLogic.swift in Sources */,
 				4C4238602578D70D0068A252 /* EndPointType.swift in Sources */,
 				4C423751257792690068A252 /* BorderRadiusButton.swift in Sources */,
+				4C1AA657258D9DFE001E1E13 /* LineView.swift in Sources */,
 				4C42372325763B1C0068A252 /* TaskDetailPresenter.swift in Sources */,
 				AA5432D5258A4E620086DD70 /* TaskDragDropInteractor.swift in Sources */,
 				4C9A02B72581542E00727F88 /* CommentAddView.swift in Sources */,

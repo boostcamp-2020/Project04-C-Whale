@@ -120,67 +120,18 @@ private extension MenuViewController {
     }
     
     func configureDataSource() {
+        let cellGenerator = MenuCellGenerator()
         dataSource = UICollectionViewDiffableDataSource<Section, ProjectVM>(collectionView: menuCollectionView) {
-            (collectionView, indexPath, item) -> UICollectionViewCell? in
+            [weak self] (collectionView, indexPath, item) -> UICollectionViewCell? in
             guard let section = Section(rawValue: indexPath.section) else { fatalError() }
             switch section {
             case .normal:
-                let cellRegistration = indexPath.row == 0 ? self.configuredNormalCell() : self.configuredProjectCell()
+                let cellRegistration = indexPath.row == 0 ? cellGenerator.registrateNormal() : cellGenerator.registrateProject()
                 return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: item)
             case .project:
-                let cellRegistration = indexPath.row == 0 ? self.configuredProjectHeaderCell() : self.configuredProjectCell()
+                let cellRegistration = indexPath.row == 0 ? cellGenerator.registrateHeader(addSelector: #selector(self?.tabAddProject(_:))) : cellGenerator.registrateProject()
                 return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: item)
             }
-        }
-    }
-    
-    func configuredNormalCell() -> UICollectionView.CellRegistration<UICollectionViewListCell, ProjectVM> {
-        return UICollectionView.CellRegistration<UICollectionViewListCell, ProjectVM> { (cell, indexPath, project) in
-            var content = cell.defaultContentConfiguration()
-            content.text = project.title
-            content.image = UIImage(systemName: "calendar")
-            content.imageProperties.tintColor = .halgoraedoDarkBlue
-            content.textProperties.font = .systemFont(ofSize: 20, weight: .medium)
-            content.directionalLayoutMargins = .zero
-            cell.contentConfiguration = content
-            let taskNum = UILabel()
-            taskNum.text = "\(project.taskCount)"
-            cell.accessories.append(.customView(configuration: .init(customView: taskNum, placement: .trailing())))
-        }
-    }
-    
-    func configuredProjectHeaderCell() -> UICollectionView.CellRegistration<UICollectionViewListCell, ProjectVM> {
-        return UICollectionView.CellRegistration<UICollectionViewListCell, ProjectVM> { (cell, indexPath, project) in
-            var content = cell.defaultContentConfiguration()
-            content.text = project.title
-            cell.contentConfiguration = content
-            var backgroundColor = UIBackgroundConfiguration.listPlainCell()
-            backgroundColor.backgroundColor = .systemGray6
-            cell.backgroundConfiguration = backgroundColor
-            cell.accessories = [.outlineDisclosure()]
-            let addProjectImage = UIImage(systemName: "plus")
-            let addProjectButton = UIButton()
-            addProjectButton.setImage(addProjectImage, for: .normal)
-            addProjectButton.alpha = 0.5
-            addProjectButton.tintColor = .gray
-            addProjectButton.addTarget(self, action: #selector(self.tabAddProject), for: .touchUpInside)
-            cell.accessories.append(.customView(configuration: .init(customView: addProjectButton, placement: .trailing())))
-        }
-    }
-    
-    func configuredProjectCell() -> UICollectionView.CellRegistration<UICollectionViewListCell, ProjectVM> {
-        return UICollectionView.CellRegistration<UICollectionViewListCell, ProjectVM> { (cell, indexPath, project) in
-            var content = cell.defaultContentConfiguration()
-            content.text = project.title
-            content.textProperties.font = .systemFont(ofSize: 17, weight: .light)
-            cell.contentConfiguration = content
-            cell.indentationLevel = 0
-            let taskNum = UILabel()
-            taskNum.text = "\(project.taskCount)"
-            let starAccessory = UIImageView(image: UIImage(systemName: "star.fill"))
-            starAccessory.tintColor = UIColor(hexFromString: project.color)
-            cell.accessories.append(.customView(configuration: .init(customView: taskNum, placement: .trailing())))
-            cell.accessories.append(.customView(configuration: .init(customView: starAccessory, placement: .leading())))
         }
     }
     
