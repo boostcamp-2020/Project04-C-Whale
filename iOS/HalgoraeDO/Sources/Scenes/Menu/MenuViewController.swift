@@ -22,6 +22,7 @@ class MenuViewController: UIViewController {
     private var dataSource: UICollectionViewDiffableDataSource<Section, ProjectVM>!
     private var interactor: MenuBusinessLogic?
     private var rotuer: (MenuDataPassing & MenuRoutingLogic)?
+    private var generator = MenuGenerator()
     
     // MARK: Views
     
@@ -61,6 +62,25 @@ class MenuViewController: UIViewController {
     
     func configureCollectionView() {
         menuCollectionView.collectionViewLayout = createLayout()
+        menuCollectionView.refreshControl = refreshControl
+    }
+    
+    func configureDataSource() {
+        dataSource = UICollectionViewDiffableDataSource<Section, ProjectVM>(collectionView: menuCollectionView) {
+            [weak self] (collectionView, indexPath, item) -> UICollectionViewCell? in
+            guard let self = self,
+                let section = Section(rawValue: indexPath.section)
+            else { return nil }
+            
+            switch section {
+            case .normal:
+                let cellRegistration = indexPath.row == 0 ? self.generator.registration.normal() : self.generator.registration.project()
+                return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: item)
+            case .project:
+                let cellRegistration = indexPath.row == 0 ? self.generator.registration.header(addSelector: #selector(self.tabAddProject(_:))) : self.generator.registration.project()
+                return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: item)
+            }
+        }
     }
     
     // MARK: - Methods
@@ -70,6 +90,12 @@ class MenuViewController: UIViewController {
         DispatchQueue.main.async {
             self.refreshControl.endRefreshing()
         }
+    }
+    
+    @objc private func tabAddProject(_ sender: UIButton) {
+        guard let addProjectViewController = storyboard?.instantiateViewController(identifier: "\(AddProjectViewController.self)") as? AddProjectViewController else { return }
+        addProjectViewController.addProjectViewControllerDelegate = self
+        self.present(addProjectViewController, animated: true, completion: nil)
     }
     
     private func deleteSnapshot(for items: [ProjectVM]) {
@@ -90,48 +116,17 @@ class MenuViewController: UIViewController {
 
 private extension MenuViewController {
     
-    func configureCollectionView() {
-        menuCollectionView.collectionViewLayout = createLayout()
-        menuCollectionView.refreshControl = refreshControl
-    }
-    
     func createLayout() -> UICollectionViewLayout {
-        let config = UICollectionViewCompositionalLayoutConfiguration()
-        config.interSectionSpacing = 5
-        config.scrollDirection = .vertical
-        let sectionProvider = { (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
-            let section: NSCollectionLayoutSection
-            var configuration = UICollectionLayoutListConfiguration(appearance: .plain)
-            configuration.leadingSwipeActionsConfigurationProvider = { [weak self] (indexPath) in
-                guard indexPath.row != 0,
-                    let self = self,
-                    let item = self.dataSource.itemIdentifier(for: indexPath)
-                else {
-                    return nil
-                }
-                return self.leadingSwipeAction(item)
-            }
-            section = NSCollectionLayoutSection.list(using: configuration, layoutEnvironment: layoutEnvironment)
-            return section
+        var configuration = UICollectionLayoutListConfiguration(appearance: .plain)
+        configuration.leadingSwipeActionsConfigurationProvider = { [weak self] (indexPath) in
+            guard let self = self,
+                indexPath.row != 0,
+                let item = self.dataSource.itemIdentifier(for: indexPath)
+            else { return nil }
+            return self.leadingSwipeAction(item)
         }
-    
-        return UICollectionViewCompositionalLayout(sectionProvider: sectionProvider, configuration: config)
-    }
-    
-    func configureDataSource() {
-        let cellGenerator = MenuCellGenerator()
-        dataSource = UICollectionViewDiffableDataSource<Section, ProjectVM>(collectionView: menuCollectionView) {
-            [weak self] (collectionView, indexPath, item) -> UICollectionViewCell? in
-            guard let section = Section(rawValue: indexPath.section) else { fatalError() }
-            switch section {
-            case .normal:
-                let cellRegistration = indexPath.row == 0 ? cellGenerator.registrateNormal() : cellGenerator.registrateProject()
-                return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: item)
-            case .project:
-                let cellRegistration = indexPath.row == 0 ? cellGenerator.registrateHeader(addSelector: #selector(self?.tabAddProject(_:))) : cellGenerator.registrateProject()
-                return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: item)
-            }
-        }
+        
+        return generator.configureLayout(configuration: configuration)
     }
     
     func applySnapshot(projects: [Section: [ProjectVM]]) {
@@ -162,14 +157,6 @@ private extension MenuViewController {
         starAction.backgroundColor = .halgoraedoDarkBlue
 
         return UISwipeActionsConfiguration(actions: [starAction])
-    }
-    
-    // MARK: Help Function
-    
-    @objc func tabAddProject(_ sender: UIButton) {
-        guard let addProjectViewController = storyboard?.instantiateViewController(identifier: "AddProjectViewController") as? AddProjectViewController else { return }
-        addProjectViewController.addProjectViewControllerDelegate = self
-        self.present(addProjectViewController, animated: true, completion: nil)
     }
 }
 
