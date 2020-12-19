@@ -75,7 +75,7 @@ class TaskListViewController: UIViewController {
     // MARK: - Initialize
     
     private func configureCollectionView() {
-        taskListCollectionView.collectionViewLayout = generateLayout()
+        taskListCollectionView.collectionViewLayout = generator.configureLayout(leadingSwipeAction: editAction(at:))
         taskListCollectionView.allowsMultipleSelectionDuringEditing = true
         taskListCollectionView.dragInteractionEnabled = true
         taskListCollectionView.refreshControl = refreshControl
@@ -97,7 +97,12 @@ class TaskListViewController: UIViewController {
         dataSource = UICollectionViewDiffableDataSource<TaskListModels.SectionVM, TaskVM>(collectionView: taskListCollectionView, cellProvider: { (collectionView, indexPath, task) -> UICollectionViewCell? in
             return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: task)
         })
-        configureDataSourceForHeader(dataSource)
+        
+        dataSource.supplementaryViewProvider = { [weak self] (view, kind, index) in
+            guard let self = self else { return nil }
+            let sections = self.dataSource.snapshot().sectionIdentifiers
+            return self.taskListCollectionView.dequeueConfiguredReusableSupplementary(using: self.generator.registration.header(sections: sections), for: index)
+        }
     }
     
     private func configureLogic() {
@@ -136,6 +141,20 @@ class TaskListViewController: UIViewController {
         presentConfirmActionWorkItem = DispatchWorkItem { self.confirmActionView.isHidden = true }
         if let workItem = presentConfirmActionWorkItem {
             DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: workItem)
+        }
+    }
+    
+    private func editAction(at indexPath: IndexPath) -> UIContextualAction {
+        return UIContextualAction(style: .normal, title: "Edit") { [weak self] (action, view, completion) in
+            guard let self = self else { return }
+            if !self.isEditing {
+                self.setEditing(true, animated: true)
+            }
+
+            let section = self.dataSource.snapshot().sectionIdentifiers[indexPath.section]
+            let taskItem = self.dataSource.snapshot(for: section).items[indexPath.row]
+            self.selectedTasks.insert(taskItem)
+            self.taskListCollectionView.selectItem(at: indexPath, animated: true, scrollPosition: .init())
         }
     }
     
@@ -215,51 +234,6 @@ class TaskListViewController: UIViewController {
         self.present(alert, animated: true, completion: nil)
     }
 }
-
-// MARK: - Configure CollectionView Layout
-
-private extension TaskListViewController {
-    
-    func generateLayout() -> UICollectionViewLayout {
-        var listConfiguration = UICollectionLayoutListConfiguration(appearance: .plain)
-        listConfiguration.leadingSwipeActionsConfigurationProvider = { indexPath in
-            let editAction = UIContextualAction(style: .normal, title: "Edit") { [weak self] (action, view, completion) in
-                guard let self = self else { return }
-                if !self.isEditing {
-                    self.setEditing(true, animated: true)
-                }
-
-                let section = self.dataSource.snapshot().sectionIdentifiers[indexPath.section]
-                let taskItem = self.dataSource.snapshot(for: section).items[indexPath.row]
-                self.selectedTasks.insert(taskItem)
-                self.taskListCollectionView.selectItem(at: indexPath, animated: true, scrollPosition: .init())
-            }
-            
-            return UISwipeActionsConfiguration(actions: [editAction])
-        }
-        listConfiguration.headerMode = .supplementary
-        let layout = UICollectionViewCompositionalLayout.list(using: listConfiguration)
-        
-        return layout
-    }
-}
-
-// MARK: - Configure CollectionView Data Source
-
-private extension TaskListViewController {
-    
-    func configureDataSourceForHeader(_ dataSource: UICollectionViewDiffableDataSource<TaskListModels.SectionVM, TaskListModels.TaskVM>) {
-        let headerRegistration = UICollectionView.SupplementaryRegistration
-        <TaskBoardSupplementaryView>(elementKind: "Header") {
-            (supplementaryView, string, indexPath) in
-            supplementaryView.configureHeader(sectionName: dataSource.snapshot().sectionIdentifiers[indexPath.section].title, rowNum: dataSource.snapshot().sectionIdentifiers[indexPath.section].tasks.count)
-        }
-        dataSource.supplementaryViewProvider = { (view, kind, index) in
-            return self.taskListCollectionView.dequeueConfiguredReusableSupplementary(using: headerRegistration, for: index)
-        }
-    }
-}
-
 
 // MARK: - TaskList Display Logic
 
