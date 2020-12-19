@@ -46,7 +46,6 @@ class MenuViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        title = "할고래DO"
         interactor?.fetchProjects()
     }
     
@@ -93,8 +92,6 @@ class MenuViewController: UIViewController {
 private extension MenuViewController {
     
     func configureCollectionView() {
-        menuCollectionView.delegate = self
-        menuCollectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         menuCollectionView.collectionViewLayout = createLayout()
         menuCollectionView.refreshControl = refreshControl
     }
