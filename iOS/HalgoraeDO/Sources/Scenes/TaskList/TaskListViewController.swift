@@ -37,13 +37,7 @@ class TaskListViewController: UIViewController {
     @IBOutlet weak private var moreButton: UIBarButtonItem!
     @IBOutlet weak private var editToolBar: UIToolbar!
     @IBOutlet weak private var confirmActionView: ConfirmActionView!
-    private var lineView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .halgoraedoMint
-        view.layer.cornerRadius = 2
-        
-        return view
-    }()
+    private var lineView = LineView()
     private var refreshControl: UIRefreshControl = {
         let refreshControl = UIRefreshControl()
         refreshControl.tintColor = .halgoraedoMint

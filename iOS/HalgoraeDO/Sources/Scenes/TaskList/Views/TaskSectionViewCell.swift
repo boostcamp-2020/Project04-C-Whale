@@ -36,13 +36,7 @@ class TaskSectionViewCell: UICollectionViewCell {
     private var sectionName: String = ""
     private var taskVM: [TaskVM] = []
     private var section: TaskListModels.SectionVM?
-    private var lineView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .halgoraedoMint
-        view.layer.cornerRadius = 2
-        
-        return view
-    }()
+    private var lineView = LineView()
     var tapHandler: ((TaskVM) -> Void)?
     
     private lazy var refreshControl: UIRefreshControl = {
