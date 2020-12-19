@@ -76,7 +76,7 @@
 		4C1AA5EB258CB748001E1E13 /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA19EF322576846100E59017 /* UIColor+.swift */; };
 		4C1AA604258CBB84001E1E13 /* UIImage+scaled.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1AA603258CBB84001E1E13 /* UIImage+scaled.swift */; };
 		4C1AA642258CBDD3001E1E13 /* UIImage+scaled.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1AA603258CBB84001E1E13 /* UIImage+scaled.swift */; };
-		4C1AA647258D139A001E1E13 /* MenuCellGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1AA646258D139A001E1E13 /* MenuCellGenerator.swift */; };
+		4C1AA647258D139A001E1E13 /* MenuGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1AA646258D139A001E1E13 /* MenuGenerator.swift */; };
 		4C1AA64C258D1555001E1E13 /* SimpleAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1AA64B258D1555001E1E13 /* SimpleAlertController.swift */; };
 		4C1AA657258D9DFE001E1E13 /* LineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1AA656258D9DFE001E1E13 /* LineView.swift */; };
 		4C3F5665256B8117006D7C9F /* TaskListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3F5664256B8117006D7C9F /* TaskListViewController.swift */; };
@@ -193,14 +193,14 @@
 		4C1AA3A9258B3A9D001E1E13 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4C1AA560258B446D001E1E13 /* PersistentMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PersistentMock.swift; path = TaskListTests/PersistentMock.swift; sourceTree = SOURCE_ROOT; };
 		4C1AA598258C2F83001E1E13 /* TaskListPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListPresenterTests.swift; sourceTree = "<group>"; };
-		4C1AA5BE258C367C001E1E13 /* TaskDetailCommentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TaskDetailCommentCell.swift; path = Paging/Views/TaskDetailCommentCell.swift; sourceTree = "<group>"; };
+		4C1AA5BE258C367C001E1E13 /* TaskDetailCommentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskDetailCommentCell.swift; sourceTree = "<group>"; };
 		4C1AA5CC258C3CFC001E1E13 /* TaskDetailContentsCellCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskDetailContentsCellCollectionViewCell.swift; sourceTree = "<group>"; };
-		4C1AA5FE258CBA5D001E1E13 /* ServiceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = ServiceTests.xctest; path = "/Users/os/woong/iOS/Boostcamp2020/group_final/Project04-C-Whale/iOS/build/Debug-iphoneos/ServiceTests.xctest"; sourceTree = "<absolute>"; };
-		4C1AA5FF258CBA5D001E1E13 /* TaskListTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = TaskListTests.xctest; path = "/Users/os/woong/iOS/Boostcamp2020/group_final/Project04-C-Whale/iOS/build/Debug-iphoneos/TaskListTests.xctest"; sourceTree = "<absolute>"; };
 		4C1AA603258CBB84001E1E13 /* UIImage+scaled.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+scaled.swift"; sourceTree = "<group>"; };
 		4C1AA634258CBD73001E1E13 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		4C1AA646258D139A001E1E13 /* MenuCellGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuCellGenerator.swift; sourceTree = "<group>"; };
+		4C1AA646258D139A001E1E13 /* MenuGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuGenerator.swift; sourceTree = "<group>"; };
 		4C1AA64B258D1555001E1E13 /* SimpleAlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleAlertController.swift; sourceTree = "<group>"; };
+		4C1AA650258D98FD001E1E13 /* ServiceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ServiceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		4C1AA651258D98FD001E1E13 /* TaskListTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TaskListTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C1AA656258D9DFE001E1E13 /* LineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineView.swift; sourceTree = "<group>"; };
 		4C3F5664256B8117006D7C9F /* TaskListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListViewController.swift; sourceTree = "<group>"; };
 		4C3F5669256B82F2006D7C9F /* TaskBoardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskBoardViewController.swift; sourceTree = "<group>"; };
@@ -357,6 +357,23 @@
 			path = TaskListTests;
 			sourceTree = "<group>";
 		};
+		4C1AA655258D9DDF001E1E13 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				4C1AA5CC258C3CFC001E1E13 /* TaskDetailContentsCellCollectionViewCell.swift */,
+				4C1AA5BE258C367C001E1E13 /* TaskDetailCommentCell.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		4C1AA65E258DB644001E1E13 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				4C1AA646258D139A001E1E13 /* MenuGenerator.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		4C3F55AD2564EE74006D7C9F /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
@@ -437,8 +454,7 @@
 		4C4236F625761A410068A252 /* TaskDetail */ = {
 			isa = PBXGroup;
 			children = (
-				4C1AA5CC258C3CFC001E1E13 /* TaskDetailContentsCellCollectionViewCell.swift */,
-				4C1AA5BE258C367C001E1E13 /* TaskDetailCommentCell.swift */,
+				4C1AA655258D9DDF001E1E13 /* Views */,
 				4C4237162576340D0068A252 /* Paging */,
 				4C4236FD25761AA00068A252 /* TaskDetailViewController.swift */,
 				4C42371A25763B080068A252 /* TaskDetailInteractor.swift */,
@@ -633,6 +649,8 @@
 				4C1AA39C258B3A33001E1E13 /* HalgoraeDO.app */,
 				4C1AA3A6258B3A9D001E1E13 /* ServiceTests */,
 				4C1AA3DC258B3B37001E1E13 /* TaskListTests */,
+				4C1AA650258D98FD001E1E13 /* ServiceTests.xctest */,
+				4C1AA651258D98FD001E1E13 /* TaskListTests.xctest */,
 			);
 			sourceTree = "<group>";
 		};
@@ -705,7 +723,7 @@
 			);
 			name = ServiceTests;
 			productName = ServiceTests;
-			productReference = 4C1AA5FE258CBA5D001E1E13 /* ServiceTests.xctest */;
+			productReference = 4C1AA650258D98FD001E1E13 /* ServiceTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		4C1AA3DA258B3B37001E1E13 /* TaskListTests */ = {
@@ -723,7 +741,7 @@
 			);
 			name = TaskListTests;
 			productName = TaskListTests;
-			productReference = 4C1AA5FF258CBA5D001E1E13 /* TaskListTests.xctest */;
+			productReference = 4C1AA651258D98FD001E1E13 /* TaskListTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		AAEE20D92564E4A900668FAD /* HalgoraeDO */ = {
@@ -939,7 +957,7 @@
 				4C4236E02574DF980068A252 /* ConfirmActionView.swift in Sources */,
 				4C3F5705256CF8B9006D7C9F /* TaskContentView.swift in Sources */,
 				AA19EF332576846100E59017 /* UIColor+.swift in Sources */,
-				4C1AA647258D139A001E1E13 /* MenuCellGenerator.swift in Sources */,
+				4C1AA647258D139A001E1E13 /* MenuGenerator.swift in Sources */,
 				4C9A037E2585E2CA00727F88 /* NetworkMonitor.swift in Sources */,
 				AA46A98B2588783400D343B1 /* Project+CoreDataClass.swift in Sources */,
 				AA354C2A2570002600072657 /* TaskAddViewController.swift in Sources */,

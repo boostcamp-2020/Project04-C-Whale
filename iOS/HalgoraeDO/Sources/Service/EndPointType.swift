@@ -27,8 +27,7 @@ enum HTTPMethod: String {
 /// body와 queryItems
 /// - body: encoding Data
 /// - queryItems: [String: Any]
-typealias HTTPTask = (body: Data?,
-                      queryItems: Parameters?)
+typealias HTTPTask = (body: Data?, queryItems: Parameters?)
 typealias HTTPHeaders = [String: String]
 
 
