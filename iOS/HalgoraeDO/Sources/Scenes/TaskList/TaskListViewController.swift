@@ -143,49 +143,28 @@ class TaskListViewController: UIViewController {
     // MARK: IBActions
     
     @IBAction private func didTapMoreButton(_ sender: UIBarButtonItem) {
-        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        let showBoardAction = UIAlertAction(title: "보드로 보기", style: .default) { (_: UIAlertAction) in
-            guard let vc = self.storyboard?.instantiateViewController(identifier: String(describing: TaskBoardViewController.self), creator: { coder -> TaskBoardViewController? in
-                return TaskBoardViewController(coder: coder)
-            }) else {
-                return
-            }
-            vc.project = self.project
-            vc.title = self.project.title
-            let nav = self.navigationController
-            nav?.popViewController(animated: false)
-            nav?.pushViewController(vc, animated: false)
-        }
+        let alert = SimpleAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        alert.configureActions([
+            UIAlertAction(title: "보드로 보기", style: .default, handler: { _ in
+                self.router?.routeToBoard(project: self.project)
+            }),
+            UIAlertAction(title: "섹션 추가", style: .default, handler: { _ in
+                self.addSectionAlert()
+            }),
+            UIAlertAction(title: "작업 선택", style: .default, handler: { _ in
+                self.setEditing(true, animated: true)
+            }),
+            UIAlertAction(title: shouldDisplayDoneTasks ? "완료된 항목 숨기기" : "완료된 항목 보기", style: .default, handler: { _ in
+                self.shouldDisplayDoneTasks.toggle()
+                if self.shouldDisplayDoneTasks{
+                    self.interactor?.fetchTasksForComplete(request: .init(projectId: self.project.id))
+                } else {
+                    self.interactor?.fetchTasks(request: .init(projectId: self.project.id))
+                }
+            }),
+            UIAlertAction(title: "취소", style: .cancel, handler: nil)
+        ])
         
-        let addSectionAction = UIAlertAction(title: "섹션 추가", style: .default) { (_: UIAlertAction) in
-            self.addSectionAlert()
-        }
-        
-        let selectTaskAction = UIAlertAction(title: "작업 선택", style: .default) { (_: UIAlertAction) in
-            self.setEditing(true, animated: true)
-        }
-        
-        let changeCompletedDisplayTitle = shouldDisplayDoneTasks ? "완료된 항목 숨기기" : "완료된 항목 보기"
-        let changeCompletedDisplayAction = UIAlertAction(title: changeCompletedDisplayTitle, style: .default) { (_: UIAlertAction) in
-            self.shouldDisplayDoneTasks.toggle()
-            if self.shouldDisplayDoneTasks{
-                self.interactor?.fetchTasksForComplete(request: .init(projectId: self.project.id))
-            } else {
-                self.interactor?.fetchTasks(request: .init(projectId: self.project.id))
-            }
-        }
-        
-        let cancelAction = UIAlertAction(title: "취소", style: .cancel) { (_: UIAlertAction) in }
-
-        [
-            showBoardAction,
-            addSectionAction,
-            selectTaskAction,
-            changeCompletedDisplayAction,
-            cancelAction
-        ].forEach {
-            alert.addAction($0)
-        }
         present(alert, animated: true, completion: nil)
     }
     

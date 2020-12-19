@@ -118,36 +118,23 @@ class TaskBoardViewController: UIViewController {
             return
         }
         
-        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        let showBoardAction = UIAlertAction(title: "목록으로 보기", style: .default) { (_: UIAlertAction) in
-            guard let vc = self.storyboard?.instantiateViewController(identifier: String(describing: TaskListViewController.self), creator: { coder -> TaskListViewController? in
-                return TaskListViewController(coder: coder)
-            }) else {
-                return
-            }
-            vc.project = self.project
-            let nav = self.navigationController
-            nav?.popViewController(animated: false)
-            nav?.pushViewController(vc, animated: false)
-        }
+        let alert = SimpleAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        alert.configureActions([
+            UIAlertAction(title: "목록으로 보기", style: .default, handler: { _ in
+                self.router?.routeToList(project: self.project)
+            }),
+            UIAlertAction(title: "섹션 추가", style: .default, handler: { _ in
+                self.addSectionAlert()
+            }),
+            UIAlertAction(title: "작업 추가", style: .default) { (_: UIAlertAction) in
+                self.showAddTaskView(sectionNum: 0)
+            },
+            UIAlertAction(title: "작업 선택", style: .default, handler: { _ in
+                self.setEditing(true, animated: true)
+            }),
+            UIAlertAction(title: "취소", style: .cancel, handler: nil)
+        ])
         
-        let addSectionAction = UIAlertAction(title: "섹션 추가", style: .default) { (_: UIAlertAction) in
-            self.addSectionAlert()
-        }
-        
-        let addTaskAction = UIAlertAction(title: "작업 추가", style: .default) { (_: UIAlertAction) in
-            self.showAddTaskView(sectionNum: 0)
-        }
-        
-        let selectTaskAction = UIAlertAction(title: "작업 선택", style: .default) { (_: UIAlertAction) in
-            self.setEditing(true, animated: true)
-        }
-        
-        let cancelAction = UIAlertAction(title: "취소", style: .cancel) { (_: UIAlertAction) in
-            
-        }
-        
-        [showBoardAction, addSectionAction, addTaskAction, selectTaskAction, cancelAction].forEach { alert.addAction($0) }
         present(alert, animated: true, completion: nil)
     }
 }
