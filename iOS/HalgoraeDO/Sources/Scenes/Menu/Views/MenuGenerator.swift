@@ -11,7 +11,7 @@ class MenuGenerator {
     
     typealias ProjectVM = MenuModels.ProjectVM
     
-    var registration = Registration()
+    var registration = CellRegistration()
     
     func configureLayout(configuration: UICollectionLayoutListConfiguration) -> UICollectionViewLayout {
         let config = UICollectionViewCompositionalLayoutConfiguration()
@@ -26,7 +26,7 @@ class MenuGenerator {
 }
 
 extension MenuGenerator {
-    struct Registration {
+    struct CellRegistration {
         func normal() -> UICollectionView.CellRegistration<UICollectionViewListCell, ProjectVM> {
             return UICollectionView.CellRegistration<UICollectionViewListCell, ProjectVM> { (cell, indexPath, project) in
                 var content = cell.defaultContentConfiguration()

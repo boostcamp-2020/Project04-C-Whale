@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol TaskSectionViewCellDelegate {
+protocol TaskSectionViewCellDelegate: class {
     func taskSectionViewCell(_ taskSectionViewCell: TaskSectionViewCell,
                              _ sourceSection: TaskListModels.SectionVM,
                        _ destinationSection: TaskListModels.SectionVM,
@@ -27,18 +27,20 @@ class TaskSectionViewCell: UICollectionViewCell {
     
     // MARK: - Properties
     
-    var taskSectionViewCellDelegate: TaskSectionViewCellDelegate?
+    weak var taskSectionViewCellDelegate: TaskSectionViewCellDelegate?
     private var sectionNum: Int = -1
     private var startIndex: IndexPath?
     private var startPoint: CGPoint?
-    private var collectionView: UICollectionView?
     private var dataSource: UICollectionViewDiffableDataSource<TaskListModels.SectionVM, TaskVM>! = nil
     private var sectionName: String = ""
     private var taskVM: [TaskVM] = []
     private var section: TaskListModels.SectionVM?
-    private var lineView = LineView()
     var tapHandler: ((TaskVM) -> Void)?
     
+    // MARK: View
+    
+    private var collectionView: UICollectionView?
+    private var lineView = LineView()
     private lazy var refreshControl: UIRefreshControl = {
         let refreshControl = UIRefreshControl()
         refreshControl.tintColor = .halgoraedoMint
@@ -56,6 +58,7 @@ class TaskSectionViewCell: UICollectionViewCell {
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
+        configureForReuse()
     }
     
     override func prepareForReuse() {
@@ -65,12 +68,37 @@ class TaskSectionViewCell: UICollectionViewCell {
     
     // MARK: - Initialize
     
-    func configureForReuse() {
+    private func configureForReuse() {
         taskVM = []
-        collectionView?.removeFromSuperview()
         configureCollectionView()
         configureDataSource()
         collectionView?.refreshControl = refreshControl
+    }
+    
+    private func configureCollectionView() {
+        collectionView?.removeFromSuperview()
+        collectionView = createCollectionView()
+        guard let collectionView = collectionView else { return }
+        contentView.addSubview(collectionView)
+        
+        NSLayoutConstraint.activate([
+            collectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            collectionView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20),
+        ])
+    }
+    
+    private func createCollectionView() -> UICollectionView {
+        let collectionView = UICollectionView(frame: contentView.frame, collectionViewLayout: generateLayout())
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.backgroundColor = .clear
+        collectionView.dragDelegate = self
+        collectionView.dropDelegate = self
+        collectionView.delegate = self
+        collectionView.dragInteractionEnabled = true
+        
+        return collectionView
     }
     
     func configure(section: TaskListModels.SectionVM) {
@@ -86,12 +114,12 @@ class TaskSectionViewCell: UICollectionViewCell {
         var snapshot = NSDiffableDataSourceSectionSnapshot<TaskVM>()
         snapshot.append(taskItems)
         section = sectionVM
-        self.taskVM = taskItems
+        taskVM = taskItems
         guard let section = section else { return }
         dataSource.apply(snapshot, to: section, animatingDifferences: false)
     }
     
-    @objc func didChangeRefersh(_ sender: UIRefreshControl) {
+    @objc private func didChangeRefersh(_ sender: UIRefreshControl) {
         taskSectionViewCellDelegate?.taskSectionViewCellDidPullToRefresh(self)
         DispatchQueue.main.async {
             self.refreshControl.endRefreshing()
@@ -102,25 +130,7 @@ class TaskSectionViewCell: UICollectionViewCell {
 // MARK: - Configure CollectionView Layout
 
 private extension TaskSectionViewCell {
-    
-    func configureCollectionView() {
-        collectionView = UICollectionView(frame: contentView.frame, collectionViewLayout: generateLayout())
-        guard let collectionView = collectionView else { return }
-        contentView.addSubview(collectionView)
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            collectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            collectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            collectionView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20),
-        ])
-        collectionView.backgroundColor = .clear
-        collectionView.dragDelegate = self
-        collectionView.dropDelegate = self
-        collectionView.delegate = self
-        collectionView.dragInteractionEnabled = true
-    }
-    
+
     func generateLayout() -> UICollectionViewLayout {
         let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(50)))
         let group = NSCollectionLayoutGroup.vertical(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(50)), subitems: [item])
@@ -162,7 +172,7 @@ private extension TaskSectionViewCell {
     func configureDataSource() {
         let cellRegistration = UICollectionView.CellRegistration<TaskCollectionViewListCell, TaskVM> { [weak self] (cell, _: IndexPath, taskItem) in
             cell.taskViewModel = taskItem
-            cell.finishHandler = { [weak self] task in
+            cell.doneHandler = { [weak self] cell, task in
                 guard let self = self else { return }
                 var currentSnapshot = self.dataSource.snapshot()
                 if task.isCompleted {
