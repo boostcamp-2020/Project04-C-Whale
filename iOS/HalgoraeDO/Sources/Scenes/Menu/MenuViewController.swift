@@ -39,7 +39,6 @@ class MenuViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureLogic()
-        configureNavItem()
         configureCollectionView()
         configureDataSource()
     }
@@ -60,8 +59,8 @@ class MenuViewController: UIViewController {
         self.rotuer = MenuRouter(dataStore: interactor, viewController: self)
     }
     
-    func configureNavItem() {
-        navigationItem.title = "메뉴"
+    func configureCollectionView() {
+        menuCollectionView.collectionViewLayout = createLayout()
     }
     
     // MARK: - Methods

@@ -850,7 +850,7 @@
             </objects>
             <point key="canvasLocation" x="1086" y="-598"/>
         </scene>
-        <!--Menu View Controller-->
+        <!--메뉴-->
         <scene sceneID="RZa-X0-sHu">
             <objects>
                 <viewController id="6fM-V1-Fbv" customClass="MenuViewController" customModule="HalgoraeDO" customModuleProvider="target" sceneMemberID="viewController">
@@ -882,7 +882,7 @@
                             <constraint firstItem="qIh-dh-kCn" firstAttribute="bottom" secondItem="i1l-sl-RpB" secondAttribute="bottom" id="yHP-dr-uKZ"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" largeTitleDisplayMode="never" id="QCA-8H-c9B"/>
+                    <navigationItem key="navigationItem" title="메뉴" largeTitleDisplayMode="never" id="QCA-8H-c9B"/>
                     <connections>
                         <outlet property="menuCollectionView" destination="i1l-sl-RpB" id="SnW-CE-hhg"/>
                     </connections>
