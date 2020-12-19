@@ -76,6 +76,7 @@
 		4C1AA5EB258CB748001E1E13 /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA19EF322576846100E59017 /* UIColor+.swift */; };
 		4C1AA604258CBB84001E1E13 /* UIImage+scaled.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1AA603258CBB84001E1E13 /* UIImage+scaled.swift */; };
 		4C1AA642258CBDD3001E1E13 /* UIImage+scaled.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1AA603258CBB84001E1E13 /* UIImage+scaled.swift */; };
+		4C1AA64C258D1555001E1E13 /* SimpleAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1AA64B258D1555001E1E13 /* SimpleAlertController.swift */; };
 		4C3F5665256B8117006D7C9F /* TaskListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3F5664256B8117006D7C9F /* TaskListViewController.swift */; };
 		4C3F566A256B82F2006D7C9F /* TaskBoardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3F5669256B82F2006D7C9F /* TaskBoardViewController.swift */; };
 		4C3F566F256B8C2B006D7C9F /* TaskListInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3F566E256B8C2B006D7C9F /* TaskListInteractor.swift */; };
@@ -196,6 +197,7 @@
 		4C1AA5FF258CBA5D001E1E13 /* TaskListTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = TaskListTests.xctest; path = "/Users/os/woong/iOS/Boostcamp2020/group_final/Project04-C-Whale/iOS/build/Debug-iphoneos/TaskListTests.xctest"; sourceTree = "<absolute>"; };
 		4C1AA603258CBB84001E1E13 /* UIImage+scaled.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+scaled.swift"; sourceTree = "<group>"; };
 		4C1AA634258CBD73001E1E13 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4C1AA64B258D1555001E1E13 /* SimpleAlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleAlertController.swift; sourceTree = "<group>"; };
 		4C3F5664256B8117006D7C9F /* TaskListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListViewController.swift; sourceTree = "<group>"; };
 		4C3F5669256B82F2006D7C9F /* TaskBoardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskBoardViewController.swift; sourceTree = "<group>"; };
 		4C3F566E256B8C2B006D7C9F /* TaskListInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListInteractor.swift; sourceTree = "<group>"; };
@@ -371,6 +373,7 @@
 				4C4236DA2574DF420068A252 /* ConfirmActionView */,
 				4C3F573E256D2263006D7C9F /* RoundButton.swift */,
 				4C423750257792690068A252 /* BorderRadiusButton.swift */,
+				4C1AA64B258D1555001E1E13 /* SimpleAlertController.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -911,6 +914,7 @@
 				AA19EF172575680600E59017 /* TaskSectionViewCell.swift in Sources */,
 				4CE91605257F81B600BCF398 /* MenuInteractor.swift in Sources */,
 				4C42371F25763B100068A252 /* TaskDetailWorker.swift in Sources */,
+				4C1AA64C258D1555001E1E13 /* SimpleAlertController.swift in Sources */,
 				4C42370D25762FC10068A252 /* TaskDetailCommentViewController.swift in Sources */,
 				4C1AA5CD258C3CFC001E1E13 /* TaskDetailContentsCellCollectionViewCell.swift in Sources */,
 				4C9A03832585EB4000727F88 /* Encodable+encodeData.swift in Sources */,
