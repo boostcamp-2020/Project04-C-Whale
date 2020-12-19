@@ -61,7 +61,7 @@ class MenuViewController: UIViewController {
     }
     
     func configureCollectionView() {
-        menuCollectionView.collectionViewLayout = createLayout()
+        menuCollectionView.collectionViewLayout = configureLayout()
         menuCollectionView.refreshControl = refreshControl
     }
     
@@ -116,7 +116,7 @@ class MenuViewController: UIViewController {
 
 private extension MenuViewController {
     
-    func createLayout() -> UICollectionViewLayout {
+    func configureLayout() -> UICollectionViewLayout {
         var configuration = UICollectionLayoutListConfiguration(appearance: .plain)
         configuration.leadingSwipeActionsConfigurationProvider = { [weak self] (indexPath) in
             guard let self = self,
