@@ -12,14 +12,16 @@ import WebKit
 class SignInViewController: UIViewController {
     
     private var webAuthSession: ASWebAuthenticationSession?
+    private var loginUrlString = "http://101.101.210.222:3000/api/user/oauth/naver"
+    private var appURLScheme = "halgoraedoios"
 
     @IBAction private func didTapNaverLogicButton(_ sender: UIButton) {
-        guard let url = URL(string: "http://101.101.210.222:3000/api/user/oauth/naver"),
+        guard let url = URL(string: loginUrlString),
               UIApplication.shared.canOpenURL(url) else {
             return
         }
         
-        let callBackURLScheme = "halgoraedoios"
+        let callBackURLScheme = appURLScheme
         webAuthSession = ASWebAuthenticationSession.init(url: url, callbackURLScheme: callBackURLScheme, completionHandler: { [weak self] (callBack:URL?, error:Error?) in
 
             guard error == nil, let successURL = callBack else {
