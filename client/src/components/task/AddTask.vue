@@ -158,8 +158,7 @@ export default {
   display: flex;
   flex-direction: column;
   border: 1px solid #ddd;
-  min-width: 440px;
-  padding: 15px;
+  padding: 12px;
   border-radius: 5px;
   margin-top: 10px;
   margin-bottom: 10px;

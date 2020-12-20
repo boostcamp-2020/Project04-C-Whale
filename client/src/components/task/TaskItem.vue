@@ -130,9 +130,9 @@ export default {
   height: 1px;
 }
 
-.container {
+/* .container {
   min-width: 500px;
-}
+} */
 
 .done-checkbox {
   border-radius: 100%;
