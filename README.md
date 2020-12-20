@@ -61,6 +61,9 @@ http://halgoraedo.kro.kr
 
 
 ## 🖥 기술 스택
+
+#### WEB
+
 <p align="center">
   <img src="https://user-images.githubusercontent.com/59331444/102723999-89e69700-434f-11eb-9e43-b8a8cf49459d.png">  
 </p>
