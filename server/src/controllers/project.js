@@ -1,158 +1,91 @@
-const sequelize = require('@models');
-const { Op } = require('sequelize');
-
-const { models } = sequelize;
+const ProjectDto = require('@models/dto/project');
+const PositionDto = require('@models/dto/position');
+const projectService = require('@services/project');
 const { responseHandler } = require('@utils/handler');
 const { asyncTryCatch } = require('@utils/async-try-catch');
-const getTodayStartEnd = require('@utils/today-start-end');
+const { validator, getTypeError } = require('@utils/validator');
+const ParamsValidator = require('@utils/params-validator');
 
 const getProjects = asyncTryCatch(async (req, res) => {
-  const projects = await models.project.findAll({
-    attributes: ['id', 'title', [sequelize.fn('COUNT', sequelize.col('tasks.id')), 'taskCount']],
-    include: {
-      model: models.task,
-      attributes: [],
-    },
-    group: ['project.id'],
-  });
+  const projectInfos = await projectService.retrieveProjects(req.user.id);
 
-  const { todayStart, todayEnd } = getTodayStartEnd();
-
-  const todayProject = {
-    title: '오늘',
-  };
-  todayProject.taskCount = await models.task.count({
-    where: {
-      dueDate: {
-        [Op.and]: {
-          [Op.gt]: todayStart,
-          [Op.lt]: todayEnd,
-        },
-      },
-    },
-  });
-  projects.push(todayProject);
-
-  responseHandler(res, 201, projects);
+  responseHandler(res, 200, { projectInfos });
 });
 
 const getProjectById = asyncTryCatch(async (req, res) => {
-  const project = await models.project.findByPk(req.params.projectId, {
-    attributes: ['id', 'title', 'isList'],
-    include: {
-      model: models.section,
-      include: {
-        model: models.task,
-        where: { parentId: null },
-        include: ['priority', 'labels', 'alarm', 'tasks'],
-      },
-    },
-    order: [
-      [models.section, models.task, 'position', 'ASC'],
-      [models.section, models.task, models.task, 'position', 'ASC'],
-    ],
-  });
+  try {
+    await validator(ParamsValidator, req.params);
+  } catch (errs) {
+    const validationError = getTypeError(errs);
+    throw validationError;
+  }
 
-  responseHandler(res, 201, project);
+  const { id: userId } = req.user;
+  const project = await projectService.retrieveById({ ...req.params, userId });
+
+  responseHandler(res, 200, { project });
 });
 
 const createProject = asyncTryCatch(async (req, res) => {
-  await sequelize.transaction(async t => {
-    const project = await models.project.create(req.body, {
-      transaction: t,
-    });
-    const section = await models.section.create(
-      {},
-      {
-        transaction: t,
-      },
-    );
-    await section.setProject(project, {
-      transaction: t,
-    });
-  });
+  try {
+    await validator(ProjectDto, req.body, { groups: ['create'] });
+  } catch (errs) {
+    const validationError = getTypeError(errs);
+    throw validationError;
+  }
 
-  responseHandler(res, 201, {
-    message: 'ok',
-  });
+  const { id: creatorId } = req.user;
+  const projectId = await projectService.create({ ...req.body, creatorId });
+
+  responseHandler(res, 201, { message: 'ok', projectId });
 });
 
 const updateProject = asyncTryCatch(async (req, res) => {
-  await models.project.update(req.body, {
-    where: {
-      id: req.params.projectId,
-    },
-  });
-  responseHandler(res, 201, {
-    message: 'ok',
-  });
+  try {
+    await validator(ParamsValidator, req.params);
+    if (req.method === 'PUT') {
+      await validator(ProjectDto, req.body, { groups: ['put'] });
+    } else {
+      await validator(ProjectDto, req.body, { groups: ['patch'] });
+    }
+  } catch (errs) {
+    const validationError = getTypeError(errs);
+    throw validationError;
+  }
+
+  const { id: userId } = req.user;
+  await projectService.update({ ...req.body, ...req.params, userId });
+
+  responseHandler(res, 200, { message: 'ok' });
 });
 
 const deleteProject = asyncTryCatch(async (req, res) => {
-  await models.project.destroy({
-    where: {
-      id: req.params.projectId,
-    },
-  });
-  responseHandler(res, 201, {
-    message: 'ok',
-  });
+  try {
+    await validator(ParamsValidator, req.params);
+  } catch (errs) {
+    const validationError = getTypeError(errs);
+    throw validationError;
+  }
+
+  const { id: userId } = req.user;
+  await projectService.remove({ ...req.params, userId });
+
+  responseHandler(res, 200, { message: 'ok' });
 });
 
-const createSection = asyncTryCatch(async (req, res) => {
-  await sequelize.transaction(async t => {
-    const project = await models.project.findByPk(req.params.projectId);
-    const section = await models.section.create(req.body, {
-      transaction: t,
-    });
-    await section.setProject(project, {
-      transaction: t,
-    });
-  });
+const updateSectionPositions = asyncTryCatch(async (req, res) => {
+  try {
+    await validator(ParamsValidator, req.params);
+    await validator(PositionDto, req.body);
+  } catch (errs) {
+    const validationError = getTypeError(errs);
+    throw validationError;
+  }
 
-  responseHandler(res, 201, {
-    message: 'ok',
-  });
-});
+  const { id: userId } = req.user;
+  await projectService.updateSectionPositions({ ...req.body, ...req.params, userId });
 
-const updateSectionTaskPositions = asyncTryCatch(async (req, res) => {
-  const { orderedTasks } = req.body;
-
-  await sequelize.transaction(async t => {
-    await Promise.all(
-      orderedTasks.map(async (taskId, position) => {
-        await models.task.update({ position }, { where: { id: taskId } }, { transaction: t });
-      }),
-    );
-  });
-
-  responseHandler(res, 201, {
-    message: 'ok',
-  });
-});
-
-const updateSection = asyncTryCatch(async (req, res) => {
-  await models.section.update(req.body, {
-    where: {
-      id: req.params.sectionId,
-    },
-  });
-
-  responseHandler(res, 201, {
-    message: 'ok',
-  });
-});
-
-const deleteSection = asyncTryCatch(async (req, res) => {
-  await models.project.destroy({
-    where: {
-      id: req.params.sectionId,
-    },
-  });
-
-  responseHandler(res, 201, {
-    message: 'ok',
-  });
+  responseHandler(res, 200, { message: 'ok' });
 });
 
 module.exports = {
@@ -161,8 +94,5 @@ module.exports = {
   createProject,
   updateProject,
   deleteProject,
-  createSection,
-  updateSection,
-  updateSectionTaskPositions,
-  deleteSection,
+  updateSectionPositions,
 };

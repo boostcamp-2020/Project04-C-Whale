@@ -1,68 +1,67 @@
 //
-//  TaskListWorkerTests.swift
-//  TaskListWorkerTests
+//  WorkerTests.swift
+//  TaskListTests
 //
-//  Created by woong on 2020/11/25.
+//  Created by woong on 2020/12/17.
 //
 
 import XCTest
 
 class TaskListWorkerTests: XCTestCase {
     
-    func test_numberOfSelectedTasks_init() {
-        // When
-        let worker = TaskListWorker()
-        
-        // Then
-        XCTAssertEqual(worker.selectedTasks.count, 0)
+    let mock = CodableMock(name: "woongs", age: 20)
+    var mockRequest: DataRequestMock!
+    var sessionMock: SessionManagerMock!
+
+    override func setUpWithError() throws {
+        let mockData = try? JSONEncoder().encode(mock)
+        self.mockRequest = DataRequestMock(mockData: mockData)
+        self.sessionMock = SessionManagerMock(request: mockRequest)
     }
     
-    func test_editingMode_false_init() {
+    func testInit() {
         // When
-        let worker = TaskListWorker()
+        let worker = TaskListWorker(sessionManager: sessionMock)
         
         // Then
-        XCTAssertEqual(worker.isEditingMode, false)
+        XCTAssertNotNil(worker)
     }
     
-    func test_append_editingMode_on() {
+    func testRequest_sucess() {
         // Given
-        let worker = TaskListWorker()
-        worker.isEditingMode = true
+        let worker = TaskListWorker(sessionManager: sessionMock)
+        let mockEndPoint = EndPointMock.test()
         
         // When
-        worker.append(selected: Task(title: "test"))
-        
-        // Then
-        XCTAssertEqual(worker.selectedTasks.count, 1)
+        worker.request(endPoint: mockEndPoint) { (response: CodableMock?) in
+            // Then
+            XCTAssertEqual(self.mock, response)
+        }
     }
     
-    func test_remove_onEditingMode() {
+    func testRequest_fail() {
         // Given
-        let worker = TaskListWorker()
-        worker.isEditingMode = true
-        let task = Task(title: "test")
-        
+        let failMock = CodableMock(name: "hi", age: 30)
+        let worker = TaskListWorker(sessionManager: sessionMock)
+        let mockEndPoint = EndPointMock.test()
+
         // When
-        worker.append(selected: task)
-        worker.remove(selected: task)
-        
-        // Then
-        XCTAssertEqual(worker.selectedTasks.count, 0)
+        worker.request(endPoint: mockEndPoint) { (response: CodableMock?) in
+            // Then
+            XCTAssertNotEqual(self.mock, failMock)
+        }
     }
     
-    func test_selectedTasks_empty_turnOffEditingMode_success() {
+    func testRequest_resultIsEmpty() {
         // Given
-        let worker = TaskListWorker()
-        worker.isEditingMode = true
-        worker.append(selected: Task(title: "1"))
-        worker.append(selected: Task(title: "1"))
-        worker.append(selected: Task(title: "1"))
-        
+        sessionMock.request.mockData = nil
+        let worker = TaskListWorker(sessionManager: sessionMock)
+        let mockEndPoint = EndPointMock.test()
+
         // When
-        worker.isEditingMode = false
-        
-        // Then
-        XCTAssertEqual(worker.selectedTasks.isEmpty, true)
+        worker.request(endPoint: mockEndPoint) { (response: CodableMock?) in
+            // Then
+            XCTAssertEqual(response, nil)
+        }
     }
 }

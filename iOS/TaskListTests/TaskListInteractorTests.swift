@@ -1,91 +1,89 @@
 //
 //  TaskListInteractorTests.swift
-//  TaskListInteractorTests
+//  TaskListTests
 //
-//  Created by woong on 2020/11/26.
+//  Created by woong on 2020/12/17.
 //
 
 import XCTest
+import CoreData
 
 class TaskListInteractorTests: XCTestCase {
     
-    var interactor: TaskListInteractor!
+    var viewController: TaskListViewControllerSpy!
     var presenter: TaskListPresenterSpy!
     var worker: TaskListWorker!
+    var sessionManager: SessionManagerMock!
+    var interactor: TaskListInteractor!
+    var context: NSManagedObjectContext {
+        return PersistentContainerMock.shared.childContext
+    }
+    
+    func dummyProject(projectId: String) -> Project {
+        let projectId = projectId
+        let project = Project(context: context)
+        project.id = projectId
+        let sections = [Section(context: context)]
+        let testTasks = [
+            Task(context: context),
+            Task(context: context),
+            Task(context: context)
+        ]
+        testTasks.enumerated().forEach {
+            $0.element.title = "\($0.offset)"
+        }
+        sections.forEach { $0.tasks = NSOrderedSet(array: testTasks) }
+        project.sections = NSOrderedSet(array: sections)
+        return project
+    }
 
     override func setUpWithError() throws {
-        // Given
+        viewController = TaskListViewControllerSpy()
         presenter = TaskListPresenterSpy()
-        worker = TaskListWorker()
+        sessionManager = SessionManagerMock(request: DataRequestMock())
+        worker = TaskListWorker(sessionManager: sessionManager)
         interactor = TaskListInteractor(presenter: presenter, worker: worker)
     }
     
-    func test_change_editingMode_true() {
-        // When
-        interactor.change(editingMode: true, animated: true)
-        
-        // Then
-        XCTAssertEqual(worker.isEditingMode, true)
-        XCTAssertEqual(presenter.setEditingMode, true)
+    override func tearDownWithError() throws {
+        viewController = nil
+        presenter = nil
+        worker = nil
+        sessionManager = nil
     }
     
-    func test_change_editingMode_false() {
-        // When
-        interactor.change(editingMode: false, animated: true)
-        
+    func testInit() {
         // Then
-        XCTAssertEqual(worker.isEditingMode, false)
-        XCTAssertEqual(presenter.setEditingMode, true)
+        XCTAssertNotNil(viewController)
+        XCTAssertNotNil(presenter)
+        XCTAssertNotNil(worker)
+        XCTAssertNotNil(sessionManager)
     }
     
-    func test_select_oneTask_editingMode() {
-        // When
-        interactor.change(editingMode: true, animated: true)
-        interactor.select(task: Task(title: "1"))
-        
-        // Then
-        XCTAssertEqual(worker.selectedTasks.count, 1)
-        XCTAssertEqual(presenter.presentNumberOfSelectedTasks, 1)
-    }
-    
-    func test_select_task_notEditingMode() {
-        // When
-        interactor.change(editingMode: false, animated: true)
-        let task = Task(title: "1")
-        interactor.select(task: task)
-        
-        // Then
-        XCTAssertNotNil(presenter.presentDetail_task)
-        XCTAssertEqual(task, presenter.presentDetail_task)
-    }
-    
-    func test_deSelect_hasThreeTask_editingMode() {
+    func test_FetchTasks_response_sectionsOfproject_success() {
         // Given
-        interactor.change(editingMode: true, animated: true)
-        let t3 = Task(title: "3")
-        worker.append(selected: Task(title: "1"))
-        worker.append(selected: Task(title: "2"))
-        worker.append(selected: t3)
+        let projectId = "p1"
+        let responseProject = dummyProject(projectId: projectId)
+        let response = Response(project: responseProject)
+        sessionManager.request.mockData = response.encodeData
         
         // When
-        interactor.deSelect(task: t3)
-
+        interactor.fetchTasks(request: .init(projectId: projectId))
         // Then
-        XCTAssertEqual(worker.selectedTasks.count, 2)
-        XCTAssertEqual(presenter.presentNumberOfSelectedTasks, 2)
+        XCTAssertEqual(presenter.presentFetchTasksResponse?.sections, responseProject.sections?.array as? [Section])
     }
     
-    func test_deSelect_hasThreeTask_not_editingMode_success() {
+    func test_fetchTasksForComplete() {
         // Given
-        interactor.change(editingMode: false, animated: true)
-        let t1 = Task(title: "1")
-        worker.append(selected: t1)
+        let projectId = "p1"
+        let responseProject = dummyProject(projectId: projectId)
+        let response = Response(project: responseProject)
+        sessionManager.request.mockData = response.encodeData
         
         // When
-        interactor.deSelect(task: t1)
-
+        interactor.fetchTasksForComplete(request: .init(projectId: projectId))
+        
         // Then
-        XCTAssertEqual(worker.selectedTasks.count, 1)
-        XCTAssertEqual(presenter.presentNumberOfSelectedTasks, -1)
+        XCTAssertEqual(presenter.presentFetchTasksResponse?.sections, responseProject.sections?.array as? [Section])
     }
 }

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
+        <capability name="Image references" minToolsVersion="12.0"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CommentAddView" customModule="HalgoraeDO" customModuleProvider="target">
+            <connections>
+                <outlet property="contentView" destination="iN0-l3-epB" id="Nea-u7-SkQ"/>
+                <outlet property="contentsTextView" destination="nu8-y0-ILr" id="mfg-77-9Wy"/>
+                <outlet property="textViewHeighConstraint" destination="FwZ-Hv-3iZ" id="CEa-0H-Ifm"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="491" height="76"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KIs-JC-Orx">
+                    <rect key="frame" x="449" y="34" width="34" height="34"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="34" id="HZx-Uv-rKq"/>
+                        <constraint firstAttribute="width" secondItem="KIs-JC-Orx" secondAttribute="height" multiplier="1:1" id="lZa-Uk-K2e"/>
+                    </constraints>
+                    <color key="tintColor" name="halgoraedoDarkBlue"/>
+                    <state key="normal">
+                        <imageReference key="image" image="arrow.up.circle.fill" catalog="system" renderingMode="template"/>
+                        <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large"/>
+                    </state>
+                    <connections>
+                        <action selector="didTapDoneButton:" destination="-1" eventType="touchUpInside" id="uJR-J6-VQl"/>
+                    </connections>
+                </button>
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="755" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="nu8-y0-ILr">
+                    <rect key="frame" x="8" y="8" width="433" height="60"/>
+                    <color key="backgroundColor" systemColor="systemGray5Color"/>
+                    <constraints>
+                        <constraint firstAttribute="height" priority="750" constant="34" id="FwZ-Hv-3iZ"/>
+                    </constraints>
+                    <color key="textColor" systemColor="labelColor"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                </textView>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="nu8-y0-ILr" secondAttribute="bottom" constant="8" id="JZF-mt-hQS"/>
+                <constraint firstItem="nu8-y0-ILr" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="8" id="OYu-gy-Hrq"/>
+                <constraint firstItem="nu8-y0-ILr" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="V2e-OM-CBR"/>
+                <constraint firstItem="KIs-JC-Orx" firstAttribute="bottom" secondItem="nu8-y0-ILr" secondAttribute="bottom" id="Xwh-6d-yu5"/>
+                <constraint firstItem="KIs-JC-Orx" firstAttribute="leading" secondItem="nu8-y0-ILr" secondAttribute="trailing" constant="8" id="dmm-PI-6hV"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="KIs-JC-Orx" secondAttribute="trailing" constant="8" id="xMl-jl-NsO"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="193.47826086956522" y="-218.30357142857142"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="arrow.up.circle.fill" catalog="system" width="128" height="121"/>
+        <namedColor name="halgoraedoDarkBlue">
+            <color red="0.10980392156862745" green="0.16862745098039217" blue="0.50980392156862742" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemGray5Color">
+            <color red="0.89803921568627454" green="0.89803921568627454" blue="0.91764705882352937" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
+</document>

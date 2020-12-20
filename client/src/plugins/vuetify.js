@@ -7,8 +7,9 @@ export default new Vuetify({
   theme: {
     themes: {
       light: {
-        whaleGreen: "#b7e1cd",
-        whaleBlue: "#161c70",
+        whaleGreen: "#07C4A3",
+        whaleBlue: "#1C2B82",
+        primary: "#07C4A3",
       },
     },
   },

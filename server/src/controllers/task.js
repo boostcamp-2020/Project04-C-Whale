@@ -1,115 +1,89 @@
-const sequelize = require('@models');
-const { models } = require('@models');
+const TaskDto = require('@models/dto/task');
+const PositionDto = require('@models/dto/position');
+const taskService = require('@services/task');
+const { validator, getTypeError } = require('@utils/validator');
 const { asyncTryCatch } = require('@utils/async-try-catch');
 const { responseHandler } = require('@utils/handler');
-const { isValidDueDate } = require('@utils/date');
+const ParamsValidator = require('@utils/params-validator');
 
 const getTaskById = asyncTryCatch(async (req, res) => {
-  const task = await models.task.findByPk(req.params.taskId, {
-    include: [
-      'labels',
-      'priority',
-      'alarm',
-      'bookmarks',
-      {
-        model: models.task,
-        include: ['labels', 'priority', 'alarm', 'bookmarks'],
-      },
-    ],
-    order: [[models.task, 'position', 'ASC']],
-  });
-
-  responseHandler(res, 201, task);
-});
-
-const createOrUpdateTask = asyncTryCatch(async (req, res) => {
-  const { labelIdList, dueDate, ...rest } = req.body;
-
-  if (!isValidDueDate(dueDate)) {
-    const err = new Error('유효하지 않은 dueDate');
-    err.status = 400;
-    throw err;
+  const id = req.params.taskId;
+  try {
+    await validator(ParamsValidator, req.params);
+  } catch (errs) {
+    const validationError = getTypeError(errs);
+    throw validationError;
   }
 
-  const { taskId } = req.params;
-  await sequelize.transaction(async t => {
-    let task;
-    if (taskId !== undefined) {
-      await models.task.update(
-        { dueDate, ...rest },
-        {
-          where: { id: taskId },
-        },
-        { transaction: t },
-      );
-      task = await models.task.findByPk(taskId, { transaction: t });
-    }
+  const task = await taskService.retrieveById({ id, userId: req.user.id });
 
-    task = await models.task.create({ dueDate, ...rest }, { transaction: t });
-    await task.setLabels(JSON.parse(labelIdList), { transaction: t });
-  });
+  responseHandler(res, 200, { task });
+});
 
+const getAllTasks = asyncTryCatch(async (req, res) => {
+  const tasks = await taskService.retrieveAll(req.user.id);
+
+  responseHandler(res, 200, { tasks });
+});
+
+const createTask = asyncTryCatch(async (req, res) => {
+  try {
+    await validator(ParamsValidator, req.params);
+    await validator(TaskDto, req.body);
+  } catch (errs) {
+    const validationError = getTypeError(errs);
+    throw validationError;
+  }
+  const { projectId, sectionId } = req.params;
+  const task = { ...req.body, projectId, sectionId, userId: req.user.id };
+
+  await taskService.create(task);
   responseHandler(res, 201, { message: 'ok' });
 });
 
-const deleteTask = asyncTryCatch(async (req, res) => {
-  await models.task.destroy({
-    where: {
-      id: req.params.taskId,
-    },
-  });
-
-  responseHandler(res, 201, {
-    message: 'ok',
-  });
-});
-
-const getComments = asyncTryCatch(async (req, res) => {
-  const task = await models.task.findByPk(req.params.taskId);
-  const comments = await task.getComments();
-
-  responseHandler(res, 201, comments);
-});
-
-const createComment = asyncTryCatch(async (req, res) => {
+const updateTask = asyncTryCatch(async (req, res) => {
   const { taskId } = req.params;
-  await models.comment.create({ ...req.body, taskId });
+  const task = { ...req.body };
 
-  responseHandler(res, 201, {
-    message: 'ok',
-  });
+  try {
+    await validator(ParamsValidator, req.params);
+    await validator(TaskDto, task, { groups: ['patch'] });
+  } catch (errs) {
+    const validationError = getTypeError(errs);
+    throw validationError;
+  }
+
+  await taskService.update({ id: taskId, userId: req.user.id, ...task });
+  responseHandler(res, 200, { message: 'ok' });
 });
 
-const updateComment = asyncTryCatch(async (req, res) => {
-  await models.comment.update(req.body, {
-    where: {
-      id: req.params.commentId,
-    },
-  });
+const updateChildTaskPositions = asyncTryCatch(async (req, res) => {
+  try {
+    await validator(ParamsValidator, req.params);
+    await validator(PositionDto, req.body);
+  } catch (errs) {
+    const validationError = getTypeError(errs);
+    throw validationError;
+  }
 
-  responseHandler(res, 201, {
-    message: 'ok',
-  });
+  const { taskId: parentId } = req.params;
+  const { id: userId } = req.user;
+  await taskService.updateChildTaskPositions({ ...req.body, parentId, userId });
+
+  responseHandler(res, 200, { message: 'ok' });
 });
 
-const deleteComment = asyncTryCatch(async (req, res) => {
-  await models.comment.destroy({
-    where: {
-      id: req.params.commentId,
-    },
-  });
-
-  responseHandler(res, 201, {
-    message: 'ok',
-  });
+const deleteTask = asyncTryCatch(async (req, res) => {
+  await validator(ParamsValidator, req.params);
+  await taskService.remove(req.params.taskId);
+  responseHandler(res, 200, { message: 'ok' });
 });
 
 module.exports = {
   getTaskById,
-  createOrUpdateTask,
+  getAllTasks,
+  createTask,
+  updateTask,
   deleteTask,
-  getComments,
-  createComment,
-  updateComment,
-  deleteComment,
+  updateChildTaskPositions,
 };

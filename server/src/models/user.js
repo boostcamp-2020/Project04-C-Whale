@@ -17,9 +17,9 @@ module.exports = sequelize => {
       },
       provider: {
         allowNull: false,
-        type: DataTypes.ENUM('naver', 'apple'),
+        type: DataTypes.ENUM('naver', 'apple', 'google'),
       },
     },
-    { tableName: 'user' },
+    { charset: 'utf8', collate: 'utf8_unicode_ci', tableName: 'user' },
   );
 };

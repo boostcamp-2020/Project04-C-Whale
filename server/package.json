@@ -1,13 +1,16 @@
 {
   "name": "halgoraedo",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./src/app.js",
-    "dev": "nodemon ./src/app.js",
+    "build": "babel src --out-dir dist",
+    "start": "forever ./dist/app.js",
+    "dev": "nodemon --exec babel-node ./src/app.js",
     "seed": "npx sequelize-cli db:seed:all",
     "unseed": "npx sequelize-cli db:seed:undo:all",
-    "test": "jest --detectOpenHandles --forceExit"
+    "test": "jest --detectOpenHandles --forceExit",
+    "coverage": "npm test -- --coverage",
+    "concurrent": "concurrently \"npm run dev\" \"npm run serve --prefix ../client\""
   },
   "jest": {
     "moduleNameMapper": {
@@ -20,12 +23,16 @@
       "^@utils/(.*)$": "<rootDir>/src/utils/$1",
       "^@routes(.*)$": "<rootDir>/src/routes/$1",
       "^@routes/(.*)$": "<rootDir>/src/routes/$1",
+      "^@services/(.*)$": "<rootDir>/src/services/$1",
       "^@controllers/(.*)$": "<rootDir>/src/controllers/$1",
       "^@passport(.*)$": "<rootDir>/src/passport/$1",
       "^@passport/(.*)$": "<rootDir>/src/passport/$1"
     }
   },
   "dependencies": {
+    "class-transformer": "^0.3.1",
+    "class-validator": "^0.12.2",
+    "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "~4.16.1",
     "forever": "^3.0.4",
@@ -34,6 +41,7 @@
     "morgan": "~1.9.1",
     "mysql2": "^2.2.5",
     "passport": "^0.4.1",
+    "passport-google-oauth20": "^2.0.0",
     "passport-jwt": "^4.0.0",
     "passport-naver": "^1.0.6",
     "sequelize": "^6.3.5",
@@ -41,6 +49,14 @@
     "uuid": "^8.3.1"
   },
   "devDependencies": {
+    "@babel/cli": "^7.12.8",
+    "@babel/core": "^7.12.3",
+    "@babel/eslint-parser": "^7.12.1",
+    "@babel/node": "^7.12.6",
+    "@babel/plugin-proposal-class-properties": "^7.12.1",
+    "@babel/plugin-proposal-decorators": "^7.12.1",
+    "babel-plugin-module-resolver": "^4.0.0",
+    "concurrently": "^5.3.0",
     "eslint": "^7.13.0",
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-config-prettier": "^6.15.0",

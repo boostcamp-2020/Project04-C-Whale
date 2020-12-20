@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DatePickerButtonView" customModule="HalgoraeDO" customModuleProvider="target">
+            <connections>
+                <outlet property="contentView" destination="iN0-l3-epB" id="JsC-11-xCE"/>
+                <outlet property="dateButton" destination="yNM-kt-DqB" id="n9s-td-wsJ"/>
+                <outlet property="datePicker" destination="55J-Lv-lhK" id="kHF-Je-6eX"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="276" height="199"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="500" horizontalCompressionResistancePriority="800" verticalCompressionResistancePriority="755" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yNM-kt-DqB">
+                    <rect key="frame" x="8" y="0.0" width="155" height="199"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="155" id="rhY-Zf-j8g"/>
+                    </constraints>
+                    <color key="tintColor" name="halgoraedoDarkBlue"/>
+                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="4" maxY="0.0"/>
+                    <state key="normal" title="2020년" image="calendar" catalog="system">
+                        <color key="titleColor" name="halgoraedoDarkBlue"/>
+                    </state>
+                </button>
+                <datePicker opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="300" horizontalCompressionResistancePriority="800" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="55J-Lv-lhK">
+                    <rect key="frame" x="8" y="0.0" width="155" height="199"/>
+                    <connections>
+                        <action selector="valueChangedDatePicker:" destination="-1" eventType="valueChanged" id="x5D-M0-YPJ"/>
+                    </connections>
+                </datePicker>
+            </subviews>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="55J-Lv-lhK" firstAttribute="trailing" secondItem="yNM-kt-DqB" secondAttribute="trailing" id="26L-KM-tpT"/>
+                <constraint firstItem="yNM-kt-DqB" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="36H-z0-2Fm"/>
+                <constraint firstAttribute="trailing" secondItem="yNM-kt-DqB" secondAttribute="trailing" constant="8" id="4NR-Wo-bIw"/>
+                <constraint firstItem="55J-Lv-lhK" firstAttribute="bottom" secondItem="yNM-kt-DqB" secondAttribute="bottom" id="B6Q-Uk-V0i"/>
+                <constraint firstItem="yNM-kt-DqB" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="Qab-GH-e6b"/>
+                <constraint firstItem="yNM-kt-DqB" firstAttribute="bottom" secondItem="iN0-l3-epB" secondAttribute="bottom" id="oRe-Bc-LoU"/>
+                <constraint firstItem="55J-Lv-lhK" firstAttribute="leading" secondItem="yNM-kt-DqB" secondAttribute="leading" id="pWz-D5-Il8"/>
+                <constraint firstItem="55J-Lv-lhK" firstAttribute="top" secondItem="yNM-kt-DqB" secondAttribute="top" id="zdG-Ih-OkR"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="266.66666666666669" y="-355.91517857142856"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="calendar" catalog="system" width="128" height="106"/>
+        <namedColor name="halgoraedoDarkBlue">
+            <color red="0.10980392156862745" green="0.16862745098039217" blue="0.50980392156862742" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

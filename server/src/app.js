@@ -7,7 +7,8 @@ const loader = require('@root/loaders');
 const startServer = () => {
   const app = express();
   loader(app);
-  app.listen(process.env.PORT);
+  const port = process.env.NODE_ENV === 'test' ? process.env.TEST_PORT : process.env.PORT;
+  app.listen(port);
   return app;
 };
 
