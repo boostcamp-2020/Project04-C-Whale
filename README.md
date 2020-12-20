@@ -17,10 +17,13 @@ http://halgoraedo.kro.kr
 ### 🎬 데모 영상 
 
 #### WEB
+
 <p align="center">
 <a href="https://www.youtube.com/embed/2HkyKg3PHXI"><img width="500" alt="스크린샷 2020-12-20 17 07 15" src="https://user-images.githubusercontent.com/18397630/102718854-ec2ea000-432d-11eb-90cb-334e8b033ae8.png"></a>
 </p>
+
 #### iOS
+
 <p align="center">
 <a href="https://www.youtube.com/embed/TzzpcT47xBk"><img width="500" alt="스크린샷 2020-12-20 17 07 15" src="https://user-images.githubusercontent.com/18397630/102708423-663b3680-42e6-11eb-8e7a-7f734f543fc9.png"></a>
 </p>
