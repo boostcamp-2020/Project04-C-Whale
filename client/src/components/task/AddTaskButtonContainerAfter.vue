@@ -24,5 +24,6 @@ export default {
 .add-button-container {
   display: flex;
   margin-top: 6px;
+  flex-wrap: wrap;
 }
 </style>

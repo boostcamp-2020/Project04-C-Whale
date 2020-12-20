@@ -1,11 +1,13 @@
 <template>
-  <v-col cols="12" sm="12" lg="10" md="10">
-    <project-container
-      v-if="projectList[$route.params.projectId]"
-      :project="projectList[$route.params.projectId]"
-      :sections="projectList[$route.params.projectId].sections"
-    />
-  </v-col>
+  <v-container fluid>
+    <v-col class="px-sm-0 py-sm-0" cols="12" sm="12" lg="10" md="8">
+      <project-container
+        v-if="projectList[$route.params.projectId]"
+        :project="projectList[$route.params.projectId]"
+        :sections="projectList[$route.params.projectId].sections"
+      />
+    </v-col>
+  </v-container>
 </template>
 
 <script>
