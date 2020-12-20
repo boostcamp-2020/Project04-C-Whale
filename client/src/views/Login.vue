@@ -1,14 +1,15 @@
 <template>
   <v-app>
-    <v-layout class="whaleGreen" fill-height d-flex align-center justify-center flex-column>
-      <div class="login-layout white d-flex flex-column justify-space-around align-center py-10">
+    <v-layout class="grey lighten-5" fill-height d-flex align-center justify-center flex-column>
+      <div class="login-layout d-flex flex-column justify-space-around align-center py-10">
         <img width="200" src="../assets/halgoraedo.png" />
-        <a :href="OAuthURL">
+        <!-- <a :href="OAuthURL">
           <img width="200" src="../assets/naverlogin.png" />
-        </a>
+        </a> -->
         <a :href="OAuthGoogleURL">
           <img width="200" src="../assets/googlelogin.png" />
         </a>
+        <p>네이버 로그인은 준비중입니다</p>
       </div>
       <alert></alert>
     </v-layout>
@@ -37,5 +38,7 @@ export default {
   width: 360px;
   height: 360px;
   border-radius: 0.5rem;
+  background-color: white;
+  border: 1px solid #dbdbdb !important;
 }
 </style>
