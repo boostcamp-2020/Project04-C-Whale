@@ -16,9 +16,11 @@ http://halgoraedo.kro.kr
 
 ### 🎬 데모 영상 
 
-WEB
+#### WEB
 
-iOS
+#### iOS
+
+<a href="https://www.youtube.com/embed/TzzpcT47xBk"><img width="500" alt="스크린샷 2020-12-20 17 07 15" src="https://user-images.githubusercontent.com/18397630/102708423-663b3680-42e6-11eb-8e7a-7f734f543fc9.png"></a>
 
 <details> 
 <summary>🐳 웨일브라우저 연동</summary>
