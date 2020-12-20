@@ -1,9 +1,9 @@
 {
   "manifest_version": 2, 
-  "name": "안녕 웨일",
+  "name": "할고래DO",
   "version": "1.0.0",
 
-  "description": "확장앱 설명",
+  "description": "스마트한 할일관리 서비스",
 
   "sidebar_action": {
     "default_icon": {               
@@ -19,10 +19,14 @@
 
   "permissions": [
     "tabs",
-    "contextMenus"
+    "alarms",
+    "contextMenus",
+    "notifications",
+    "storage",
+    "bookmarks"
   ],
 
   "externally_connectable": {
-    "matches": ["http://localhost/*"]
+    "matches": ["http://localhost/*", "http://115.85.183.106/*", "http://halgoraedo.kro.kr/*"]
   }
 }

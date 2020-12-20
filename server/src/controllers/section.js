@@ -1,52 +1,65 @@
 const SectionDto = require('@models/dto/section');
+const PositionDto = require('@models/dto/position');
 const sectionService = require('@services/section');
-const { validator, getErrorMsg } = require('@utils/validator');
+const { validator, getTypeError } = require('@utils/validator');
 const { responseHandler } = require('@utils/handler');
 const { asyncTryCatch } = require('@utils/async-try-catch');
+const ParamsValidator = require('@utils/params-validator');
 
 const createSection = asyncTryCatch(async (req, res) => {
-  const { projectId } = req.params;
   try {
-    await validator(SectionDto, req.body, { groups: ['create'] });
+    await validator(ParamsValidator, req.params);
+    await validator(SectionDto, req.body);
   } catch (errs) {
-    const message = getErrorMsg(errs);
-    const err = new Error(message);
-    err.status = 400;
-    throw err;
+    const validationError = getTypeError(errs);
+    throw validationError;
   }
-
-  // TODO projectId를 따로 빼야 하나 ?
-  await sectionService.create({ projectId, ...req.body });
+  const { id: userId } = req.user;
+  await sectionService.create({ ...req.body, ...req.params, userId });
 
   responseHandler(res, 201, { message: 'ok' });
 });
 
 const updateTaskPositions = asyncTryCatch(async (req, res) => {
-  await sectionService.updateTaskPositions(req.body.orderedTasks);
+  try {
+    await validator(ParamsValidator, req.params);
+    await validator(PositionDto, req.body);
+  } catch (errs) {
+    const validationError = getTypeError(errs);
+    throw validationError;
+  }
+
+  const { id: userId } = req.user;
+  await sectionService.updateTaskPositions({ ...req.body, ...req.params, userId });
 
   responseHandler(res, 200, { message: 'ok' });
 });
 
 const updateSection = asyncTryCatch(async (req, res) => {
-  const { sectionId } = req.params;
-
   try {
-    await validator(SectionDto, req.body, { groups: ['update'] });
+    await validator(ParamsValidator, req.params);
+    await validator(SectionDto, req.body);
   } catch (errs) {
-    const message = getErrorMsg(errs);
-    const err = new Error(message);
-    err.status = 400;
-    throw err;
+    const validationError = getTypeError(errs);
+    throw validationError;
   }
 
-  // TODO sectionId를 따로 빼야 하나 ?
-  await sectionService.update({ id: sectionId, ...req.body });
+  const { id: userId } = req.user;
+  await sectionService.update({ ...req.body, ...req.params, userId });
 
   responseHandler(res, 200, { message: 'ok' });
 });
 
 const deleteSection = asyncTryCatch(async (req, res) => {
-  await sectionService.remove(req.params.sectionId);
+  try {
+    await validator(ParamsValidator, req.params);
+  } catch (errs) {
+    const validationError = getTypeError(errs);
+    throw validationError;
+  }
+
+  const { id: userId } = req.user;
+  await sectionService.remove({ ...req.params, userId });
 
   responseHandler(res, 200, { message: 'ok' });
 });

@@ -9,121 +9,129 @@ import UIKit
 
 class TaskBoardViewController: UIViewController {
     
-    typealias TaskVM = TaskListModels.DisplayedTask
+    typealias TaskVM = TaskListModels.TaskVM
     
     // MARK: - Properties
     
+    private var project: Project
     private var interactor: TaskListBusinessLogic?
     private var router: (TaskListRoutingLogic & TaskListDataPassing)?
     private var dataSource: UICollectionViewDiffableDataSource<String, TaskVM>! = nil
-    private var lineView: UIView = UIView()
-    private var startIndex: IndexPath?
-    private var startPoint: CGPoint?
-    private let visualEffectView = UIVisualEffectView()
     private var taskAddViewController: TaskAddViewController = TaskAddViewController()
+    private var sectionVM: [TaskListModels.SectionVM] = []
     
     // MARK: - Views
     
     @IBOutlet weak private var taskBoardCollectionView: UICollectionView!
+    private var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.tintColor = .halgoraedoMint
+        refreshControl.addTarget(self, action: #selector(didChangeRefersh(_:)), for: .valueChanged)
+        
+        return refreshControl
+    }()
     
     // MARK: - View Life Cycle
     
+    init?(coder: NSCoder, project: Project) {
+        self.project = project
+        super.init(coder: coder)
+        title = project.title
+    }
+    
+    required init?(coder: NSCoder) {
+        self.project = Project(context: Storage().childContext)
+        super.init(coder: coder)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        addObservers()
         configureLogic()
         configureCollectionView()
-        configureDataSource()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        interactor?.fetchTasks(request: .init(showCompleted: false))
+        interactor?.fetchTasks(request: .init(projectId: project.id ))
     }
     
     // MARK: - Initialize
     
     private func configureLogic() {
         let presenter = TaskListPresenter(viewController: self)
-        let interactor = TaskListInteractor(presenter: presenter, worker: TaskListWorker())
+        let interactor = TaskListInteractor(presenter: presenter, worker: TaskListWorker(sessionManager: SessionManager(configuration: .default)))
         self.interactor = interactor
+        self.router = TaskListRouter(boardViewController: self, dataStore: interactor)
     }
     
-    func showAddTaskView() {
-        visualEffectView.frame = self.view.frame
-        self.view.addSubview(visualEffectView)
-        taskAddViewController = TaskAddViewController()
-        self.addChild(taskAddViewController)
-        self.view.addSubview(taskAddViewController.view)
-        taskAddViewController.view.backgroundColor = .white
-        taskAddViewController.view.frame = CGRect(x: 0, y: self.view.bounds.height - 130, width: self.view.bounds.width, height: 130)
-        visualEffectView.backgroundColor = .gray
-        visualEffectView.alpha = 0.4
-        visualEffectView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleViewTap(recognizer:))))
+    private func addObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(displayAddTask), name: NSNotification.Name(rawValue: "displayAddTask"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(addSection), name: NSNotification.Name(rawValue: "addSection"), object: nil)
     }
     
-    @objc
-    func handleViewTap (recognizer: UITapGestureRecognizer) {
-        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        let selectTaskAction = UIAlertAction(title: "삭제", style: .destructive) { (action) in
-            self.taskAddViewController.view.removeFromSuperview()
-            self.visualEffectView.removeFromSuperview()
+    //MARK: - Helper Method
+    
+    @objc private func displayAddTask(_ notification: Notification) {
+        guard let object = notification.object as? Int
+        else { return }
+        showAddTaskView(sectionNum: object)
+    }
+    
+    @objc private func addSection(_ notification: Notification) {
+        addSectionAlert()
+    }
+    
+    @objc func didChangeRefersh(_ sender: UIRefreshControl) {
+        interactor?.fetchTasks(request: .init(projectId: project.id))
+        sender.endRefreshing()
+    }
+    
+    private func addSectionAlert() {
+        let alert = SimpleAlertController(title: "섹션 추가", message: "예. 3주차 할일", preferredStyle: .alert)
+        alert.configureActions([
+            UIAlertAction(title: "OK", style: .default) { (ok) in
+                guard let sectionName = alert.textFields?[0].text,
+                      sectionName != ""
+                else { return }
+                let sectionFields = TaskListModels.SectionFields(title: sectionName)
+                self.interactor?.createSection(request: .init(projectId: self.project.id, sectionFields: sectionFields))
+            },
+            UIAlertAction(title: "cancel", style: .cancel)
+        ])
+        alert.addTextField { (textField) in
+            textField.placeholder = "섹션 이름을 입력해주세요."
         }
-        let cancelAction = UIAlertAction(title: "계속 편집", style: .default) { (action) in
-        }
-        [selectTaskAction, cancelAction].forEach { alert.addAction($0) }
-        present(alert, animated: true, completion: nil)
-    }
-    
-    // MARK:  IBActions
-    @IBAction func didTapMoreButton(_ sender: UIBarButtonItem) {
         
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    // MARK: IBActions
+    
+    @IBAction private func didTapMoreButton(_ sender: UIBarButtonItem) {
         guard !isEditing else {
             setEditing(false, animated: true)
             return
         }
         
-        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        let showBoardAction = UIAlertAction(title: "목록으로 보기", style: .default) { [weak self] (_: UIAlertAction) in
-            guard let vc = self?.storyboard?.instantiateViewController(identifier: String(describing: TaskListViewController.self), creator: { coder -> TaskListViewController? in
-                return TaskListViewController(coder: coder)
-            }) else { return }
-            
-            let nav = self?.navigationController
-            nav?.popViewController(animated: false)
-            nav?.pushViewController(vc, animated: false)
-        }
+        let alert = SimpleAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        alert.configureActions([
+            UIAlertAction(title: "목록으로 보기", style: .default, handler: { _ in
+                self.router?.routeToList(project: self.project)
+            }),
+            UIAlertAction(title: "섹션 추가", style: .default, handler: { _ in
+                self.addSectionAlert()
+            }),
+            UIAlertAction(title: "작업 추가", style: .default) { (_: UIAlertAction) in
+                self.showAddTaskView(sectionNum: 0)
+            },
+            UIAlertAction(title: "작업 선택", style: .default, handler: { _ in
+                self.setEditing(true, animated: true)
+            }),
+            UIAlertAction(title: "취소", style: .cancel, handler: nil)
+        ])
         
-        let addSectionAction = UIAlertAction(title: "섹션 추가", style: .default) { (_: UIAlertAction) in
-            
-        }
-        
-        let addTaskAction = UIAlertAction(title: "작업 추가", style: .default) { [weak self] (_: UIAlertAction) in
-            self?.showAddTaskView()
-        }
-        
-        let selectTaskAction = UIAlertAction(title: "작업 선택", style: .default) { [weak self] (_: UIAlertAction) in
-            self?.setEditing(true, animated: true)
-        }
-        
-        let cancelAction = UIAlertAction(title: "취소", style: .cancel) { (_: UIAlertAction) in
-            
-        }
-        
-        [showBoardAction, addSectionAction, addTaskAction, selectTaskAction, cancelAction].forEach { alert.addAction($0) }
         present(alert, animated: true, completion: nil)
-    }
-}
-
-// MARK: - TaskList Display Logic
-
-extension TaskBoardViewController: TaskListDisplayLogic {
-    func displayFetchTasks(viewModel: TaskListModels.FetchTasks.ViewModel) {
-        let snapShot = snapshot(taskItems: viewModel.displayedTasks)
-        dataSource.apply(snapShot, animatingDifferences: false)
-    }
-    
-    func displayDetail(of task: Task) {
-        
     }
 }
 
@@ -131,193 +139,140 @@ extension TaskBoardViewController: TaskListDisplayLogic {
 
 private extension TaskBoardViewController {
     
-    private func configureCollectionView() {
-        taskBoardCollectionView.dragDelegate = self
-        taskBoardCollectionView.dropDelegate = self
-        taskBoardCollectionView.dragInteractionEnabled = true
-        taskBoardCollectionView.collectionViewLayout = generateLayout()
+    func configureCollectionView() {
+        taskBoardCollectionView.dataSource = self
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        taskBoardCollectionView.collectionViewLayout = createCompositionalLayout()
+        taskBoardCollectionView.register(TaskSectionViewCell.self, forCellWithReuseIdentifier: "section-reuse-identifier")
+        taskBoardCollectionView.register(AddSectionViewCell.self, forCellWithReuseIdentifier: "section-add-reuse-identifier")
         taskBoardCollectionView.isPagingEnabled = true
+        taskBoardCollectionView.refreshControl = refreshControl
     }
     
-    private func generateLayout() -> UICollectionViewLayout {
-        
+    func createCompositionalLayout() -> UICollectionViewCompositionalLayout {
         let config = UICollectionViewCompositionalLayoutConfiguration()
-        config.interSectionSpacing = 10
+        config.interSectionSpacing = 0
         config.scrollDirection = .horizontal
         
         let sectionProvider = { (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
             let section: NSCollectionLayoutSection
-            let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(100))
+            let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
             let item = NSCollectionLayoutItem(layoutSize: itemSize)
-            let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.9), heightDimension: .estimated(100))
+            let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
             let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
             section = NSCollectionLayoutSection(group: group)
-            section.interGroupSpacing = 15
             section.orthogonalScrollingBehavior = .paging
-            section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10)
+            section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10)
             return section
         }
         
         return UICollectionViewCompositionalLayout(sectionProvider: sectionProvider, configuration: config)
-        
     }
 }
 
-// MARK: - Configure CollectionView Data Source
+// MARK: - Add Task View Login
 
 private extension TaskBoardViewController {
     
-    private func configureDataSource() {
-        let cellRegistration = UICollectionView.CellRegistration<TaskCollectionViewListCell, TaskVM> { [weak self] (cell, indexPath, taskItem) in
+    func showAddTaskView(sectionNum: Int) {
+        let taskAddViewController = TaskAddViewController()
+        taskAddViewController.delegate = self
+        taskAddViewController.sectionNum = sectionNum
+        taskAddViewController.modalPresentationStyle = .overCurrentContext
+        present(taskAddViewController, animated: true, completion: nil)
+    }
+}
+
+// MARK: - TaskAddViewController Delegate
+
+extension TaskBoardViewController: TaskAddViewControllerDelegate {
+    
+    func taskAddViewControllerDidDone(_ taskAddViewController: TaskAddViewController) {
+        guard let sectionNum = taskAddViewController.sectionNum else { return }
+        let projectId = project.id
+        let sectionId = sectionVM[sectionNum].id
+        let taskFields = TaskListModels.TaskFields(title: taskAddViewController.text,
+                                                   date: taskAddViewController.date,
+                                                   priority: "\(taskAddViewController.priority.rawValue)")
+        
+        interactor?.createTask(request: .init(projectId: projectId, sectionId: sectionId, taskFields: taskFields))
+        taskAddViewController.dismiss(animated: false, completion: nil)
+    }
+}
+
+
+// MARK: - UICollectionView DataSource
+
+extension TaskBoardViewController: UICollectionViewDataSource {
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        let addSectionCell = 1
+        return sectionVM.count + addSectionCell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        if indexPath.section < sectionVM.count {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "section-reuse-identifier", for: indexPath) as! TaskSectionViewCell
+            cell.configure(section: sectionVM[indexPath.section])
+            cell.taskSectionViewCellDelegate = self
+            return cell
+        } else {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "section-add-reuse-identifier", for: indexPath) as! AddSectionViewCell
+            cell.configCollectionViewCell()
             
-            cell.taskViewModel = taskItem
-            cell.finishHandler = { [weak self] task in
-                guard let self = self,
-                      let task = task
-                else {
-                    return
-                }
-                
-                var currentSnapshot = self.dataSource.snapshot()
-                if task.isCompleted {
-                    currentSnapshot.deleteItems([task])
-                } else {
-                }
-                self.dataSource.apply(currentSnapshot)
-            }
-            
-            var background = UIBackgroundConfiguration.listPlainCell()
-            background.cornerRadius = 8
-            background.strokeColor = .systemGray3
-            cell.layer.shadowColor = UIColor.black.cgColor
-            cell.layer.shadowOffset = CGSize(width: 0, height: 5)
-            cell.layer.shadowRadius = 7.0
-            cell.layer.shadowOpacity = 0.2
-            cell.layer.masksToBounds = false
-            cell.backgroundConfiguration = background
+            return cell
         }
-        
-        self.dataSource = UICollectionViewDiffableDataSource<String, TaskVM>(collectionView: taskBoardCollectionView, cellProvider: { (collectionview, indexPath, task) -> UICollectionViewCell? in
-            return collectionview.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: task)
-        })
-        
-    }
-    
-    private func snapshot(taskItems: [TaskVM]) -> NSDiffableDataSourceSnapshot<String, TaskVM> {
-        
-        var snapshot = NSDiffableDataSourceSnapshot<String, TaskVM>()
-        for i in 0..<2 {
-            snapshot.appendSections(["\(i)"])
-            // TODO: 뷰 테스트를 위한 Task배열을 바로 만들어 넣어주는데 이 배열을 taskItems로 변경하기
-//            snapshot.appendItems([TaskVM(section: "123", title: "123", isCompleted: false, depth: 0, parent: nil, subTasks: []),TaskVM(section: "123", title: "123", isCompleted: false, depth: 0, parent: nil, subTasks: []),TaskVM(section: "123", title: "123", isCompleted: false, depth: 0, parent: nil, subTasks: []),TaskVM(section: "123", title: "123", isCompleted: false, depth: 0, parent: nil, subTasks: []),TaskVM(section: "123", title: "123", isCompleted: false, depth: 0, parent: nil, subTasks: [])], toSection: "\(i)")
-        }
-        
-        return snapshot
-        
     }
 }
 
-// MARK: - UICollectionViewDragDelegate
-extension TaskBoardViewController: UICollectionViewDragDelegate {
-    
-    /* Drag가 시작되었을 때 start point 기록*/
-    func collectionView(_ collectionView: UICollectionView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
-        session.localContext = collectionView
-        startPoint = session.location(in: collectionView)
-        collectionView.performUsingPresentationValues {
-            startIndex = collectionView.indexPathForItem(at: session.location(in: collectionView))
-        }
-        return dragItems(at: indexPath)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, dragSessionIsRestrictedToDraggingApplication session: UIDragSession) -> Bool {
-        return true
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, itemsForAddingTo session: UIDragSession, at indexPath: IndexPath, point: CGPoint) -> [UIDragItem] {
-        return dragItems(at: indexPath)
-    }
-    
-    private func dragItems(at indexPath: IndexPath) -> [UIDragItem] {
-        let cell = taskBoardCollectionView.cellForItem(at: indexPath)
-        let taskObject = NSString(string: "_")
-        let provider = NSItemProvider(object: taskObject)
-        let dragItem = UIDragItem(itemProvider: provider)
-        dragItem.localObject = cell
-        return [dragItem]
-    }
-}
+// MARK: - TaskList Display Logic
 
-// MARK: - UICollectionViewDropDelegate
-extension TaskBoardViewController: UICollectionViewDropDelegate {
-    func collectionView(_ collectionView: UICollectionView, canHandle session: UIDropSession) -> Bool {
-        return session.canLoadObjects(ofClass: NSAttributedString.self)
-    }
+extension TaskBoardViewController: TaskListDisplayLogic {
     
-    func collectionView(_ collectionView: UICollectionView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UICollectionViewDropProposal {
-        let location = session.location(in: collectionView)
-        var correctDestination: IndexPath?
-        collectionView.performUsingPresentationValues {
-            correctDestination = collectionView.indexPathForItem(at: location)
+    func displayFetchTasks(viewModel: TaskListModels.FetchTasks.ViewModel) {
+        self.sectionVM = viewModel.sectionVMs
+        DispatchQueue.main.async {
+            self.taskBoardCollectionView.reloadData()
         }
-        guard let destination = correctDestination else {
-            return UICollectionViewDropProposal(
-                operation: .cancel, intent: .unspecified
-            )
-        }
-        setLocation(session.location(in: collectionView), destination)
-        let isSelf = (session.localDragSession?.localContext as? UICollectionView) == collectionView
-        return UICollectionViewDropProposal(operation: isSelf ? .move : .copy, intent: .insertAtDestinationIndexPath)
     }
     
-    func collectionView(_ collectionView: UICollectionView, dragSessionDidEnd session: UIDragSession) {
-        lineView.removeFromSuperview()
-    }
-    
-    func collectionView(
-        _ collectionView: UICollectionView,
-        performDropWith coordinator: UICollectionViewDropCoordinator
-    ) {
-        lineView.removeFromSuperview()
-        print("destination path:", coordinator.destinationIndexPath)
-    }
-    
-}
-
-private extension TaskBoardViewController {
-    func setLocation(_ location: CGPoint, _ destination: IndexPath?) {
-        lineView.removeFromSuperview()
-        guard let destination = destination, let startIndex = startIndex, let startPoint = startPoint  else{
+    func displayFinishDragDrop(viewModel: TaskListModels.DragDropTask.ViewModel) {
+        guard let sectionIndex = viewModel.sectionIndex,
+              let tasks = viewModel.tasks,
+              let newSectionVM = viewModel.sectionVMs
+        else { return }
+        self.sectionVM = newSectionVM
+        guard let sectionCell = taskBoardCollectionView.cellForItem(at: IndexPath(row: 0, section: sectionIndex)) as? TaskSectionViewCell else {
+            taskBoardCollectionView.reloadItems(at: [IndexPath(row: 0, section: sectionIndex)])
             return
         }
-        if destination.row == 0 {
-            return
-        }
-        print("location:", location)
-        print("start:", startPoint)
+        sectionCell.reloadSnapshot(taskItems: tasks, sectionVM: newSectionVM[sectionIndex])
+    }
+
+    func displayFinishChanged(viewModel: TaskListModels.FinishTask.ViewModel) {
         
-        /*
-         나보다 아래인지 위인지에 따라 destination index를 다르게 설정
-         */
-        var tempIndex: IndexPath
-        if destination.section == startIndex.section && destination.row > startIndex.row {
-            tempIndex = IndexPath(row: destination.row, section: destination.section)
-        }else {
-            tempIndex = IndexPath(row: destination.row - 1, section: destination.section)
-        }
-        /*
-         터치 위치에 따라 같은level 혹은 한단계 하위 level에 line 표시
-         */
-        
-        if let cell = self.taskBoardCollectionView.cellForItem(at: tempIndex) as? UICollectionViewListCell {
-            lineView = UIView(frame: CGRect(x: 10, y: cell.frame.height - 2, width: cell.frame.width - 20, height: 5))
-            lineView.backgroundColor = .blue
-            lineView.layer.cornerRadius = 5;
-            lineView.layer.masksToBounds = true;
-            cell.addSubview(lineView)
-        }
     }
 }
 
+// MARK: - Move Cell Delegate Logic
 
+extension TaskBoardViewController: TaskSectionViewCellDelegate {
+    
+    func taskSectionViewCell(_ taskSectionViewCell: TaskSectionViewCell, didSelectedTask task: TaskListModels.TaskVM, at section: Int) {
+        router?.routeToTaskDetailFromBoard(for: task, at: .init(item: 0, section: section))
+    }
+    
+    func taskSectionViewCellDidPullToRefresh(_ taskSectionViewCell: TaskSectionViewCell) {
+        interactor?.fetchTasks(request: .init(projectId: project.id))
+    }
+    
+    func taskSectionViewCell(_ taskSectionViewCell: TaskSectionViewCell, _ sourceSection: TaskListModels.SectionVM, _ destinationSection: TaskListModels.SectionVM, _ sourceTask: TaskListModels.TaskVM, _ destinationTask: TaskListModels.TaskVM?) {
+        interactor?.dragDropForBoard(requset: .init(projectId: project.id, sectionViewModel: sectionVM, sourceSection: sourceSection, destinationSection: destinationSection, sourceTask: sourceTask, destinationTask: destinationTask))
+    }
+}
 

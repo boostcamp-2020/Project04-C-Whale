@@ -8,17 +8,45 @@
 import Foundation
 
 class TaskListWorker {
-    var tasks = [Task]()
     
-    func getTasks() -> [Task] {
-        return [
-            Task(title: "할고래두", subTasks: [
-                    Task(title: "hihi"),
-                    Task(title: "hihi2"),
-                    Task(title: "hehehe3"),
-                ]),
-            Task(title: "당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지당연하지"),
-            Task(title: "두 말하면 섭함"),
-        ]
+    let networkManager: NetworkDispatcher
+    
+    init(sessionManager: SessionManagerProtocol) {
+        networkManager = NetworkManager(sessionManager: sessionManager)
+    }
+    
+    func request<T: Decodable>(endPoint: EndPointType, completion: @escaping ((T?) -> Void)) {
+        networkManager.fetchData(endPoint) { (response: T?, error: NetworkError?) in
+            guard error == nil else {
+                #if DEBUG
+                print(error ?? "error is null")
+                #endif
+                completion(nil)
+                return
+            }
+            completion(response)
+        }
+    }
+    
+    func requestAndRequest<T: Decodable>(endPoint patchEndPoint: EndPointType, endPoint: EndPointType, completion: @escaping (T?) -> Void) {
+        networkManager.fetchData(patchEndPoint) { [weak self] (message: Response<String>?, error) in
+            guard error == nil else {
+                #if DEBUG
+                print(error ?? "error is null")
+                #endif
+                completion(nil)
+                return
+            }
+            self?.networkManager.fetchData(endPoint) { (response: T?, error: NetworkError?) in
+                guard error == nil else {
+                    #if DEBUG
+                    print(error ?? "error is null")
+                    #endif
+                    completion(nil)
+                    return
+                }
+                completion(response)
+            }
+        }
     }
 }

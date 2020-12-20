@@ -29,7 +29,9 @@ const mutations = {
 const actions = {
   async checkUser({ commit }) {
     try {
-      const { data: user } = await userAPI.authorize();
+      const {
+        data: { user },
+      } = await userAPI.authorize();
       commit("SET_USER", user);
 
       if (location.pathname === "/" || location.pathname === "/login") {
@@ -53,6 +55,6 @@ const actions = {
 
 export default {
   state,
-  actions,
   mutations,
+  actions,
 };

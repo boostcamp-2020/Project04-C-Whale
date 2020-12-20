@@ -12,19 +12,16 @@ class TaskContentView: UIView, UIContentView {
     // MARK: - Properties
     
     private var currentConfiguration: TaskContentConfiguration!
+    var completeHandler: ((Bool) -> Void)?
     var configuration: UIContentConfiguration {
         get {
             currentConfiguration
         }
         set {
-            guard let newConfiguration = newValue as? TaskContentConfiguration else {
-                return
-            }
-            
+            guard let newConfiguration = newValue as? TaskContentConfiguration else { return }
             apply(configuration: newConfiguration)
         }
     }
-    var completeHandler: ((Bool) -> Void)?
     
     // MARK: - Views
     
@@ -41,11 +38,13 @@ class TaskContentView: UIView, UIContentView {
     private let completeButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setImage(UIImage(named: "check_empty"), for: .normal)
-        button.setImage(UIImage(named: "check"), for: .selected)
+        let checkEmptyImage = UIImage(named: "check_empty")?.withRenderingMode(.alwaysTemplate)
+        let checkImage = UIImage(named: "check")?.withRenderingMode(.alwaysTemplate)
+        button.setImage(checkEmptyImage, for: .normal)
+        button.setImage(checkImage, for: .selected)
         button.addTarget(self, action: #selector(didTapCompleteButton(_:)), for: .touchUpInside)
         button.imageView?.contentMode = .scaleAspectFit
-        button.layer.masksToBounds = false
+        
         return button
     }()
     
@@ -87,7 +86,7 @@ class TaskContentView: UIView, UIContentView {
 
 private extension TaskContentView {
     
-    private func setupViews() {
+    func setupViews() {
         addSubview(stackView)
         stackView.addArrangedSubview(completeButton)
         stackView.addArrangedSubview(titleContentView)
@@ -96,13 +95,12 @@ private extension TaskContentView {
         let completeButtonHeight = completeButton.heightAnchor.constraint(equalToConstant: 30)
         completeButtonHeight.priority = UILayoutPriority(rawValue: 750)
         NSLayoutConstraint.activate([
-            
             stackView.topAnchor.constraint(equalTo: layoutMarginsGuide.topAnchor),
             stackView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor, constant: 10),
             stackView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor, constant: -10),
             stackView.bottomAnchor.constraint(equalTo: layoutMarginsGuide.bottomAnchor),
             completeButtonHeight,
-             completeButton.widthAnchor.constraint(equalToConstant: 30),
+            completeButton.widthAnchor.constraint(equalToConstant: 30),
 
             titleLabel.topAnchor.constraint(equalTo: titleContentView.topAnchor),
             titleLabel.leadingAnchor.constraint(equalTo: titleContentView.leadingAnchor),
@@ -112,14 +110,12 @@ private extension TaskContentView {
     }
     
     private func apply(configuration: TaskContentConfiguration) {
-        guard currentConfiguration != configuration else {
-            return
-        }
-        
+        guard currentConfiguration != configuration else { return }
         titleLabel.text = configuration.title
         completeButton.isSelected = configuration.isCompleted ?? false
         completeButton.isUserInteractionEnabled = !configuration.isEditing
-        currentConfiguration = configuration
+        completeButton.tintColor = configuration.tintColor
         
+        currentConfiguration = configuration
     }
 }

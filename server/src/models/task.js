@@ -18,14 +18,17 @@ module.exports = sequelize => {
       },
       position: {
         allowNull: false,
-        type: DataTypes.FLOAT,
+        type: DataTypes.INTEGER,
       },
       isDone: {
         allowNull: false,
         type: DataTypes.BOOLEAN,
         defaultValue: false,
       },
+      priority: {
+        type: DataTypes.ENUM(['1', '2', '3', '4']),
+      },
     },
-    { tableName: 'task' },
+    { charset: 'utf8', collate: 'utf8_unicode_ci', tableName: 'task' },
   );
 };

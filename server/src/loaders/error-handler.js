@@ -1,7 +1,7 @@
 const { errorHandler } = require('@utils/handler');
+const { customError } = require('@utils/custom-error');
 
 const NOT_FOUND_ERROR = 404;
-const INTERNAL_ERROR = 500;
 
 const lastErrorHandler = app => {
   app.use((req, res, next) => {
@@ -11,7 +11,12 @@ const lastErrorHandler = app => {
   });
 
   app.use((err, req, res, next) => {
-    errorHandler(res, err.status || INTERNAL_ERROR, err.message);
+    if (err.status) {
+      errorHandler(res, err);
+    } else {
+      const internalServerError = customError.INTERNAL_SERVER_ERROR();
+      errorHandler(res, internalServerError);
+    }
   });
 };
 

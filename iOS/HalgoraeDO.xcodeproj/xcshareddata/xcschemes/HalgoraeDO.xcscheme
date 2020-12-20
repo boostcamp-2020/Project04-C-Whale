@@ -26,16 +26,15 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      shouldUseLaunchSchemeArgsEnv = "YES"
-      codeCoverageEnabled = "YES">
+      shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
          <TestableReference
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "4C0CA5ED256E9AF100E66045"
-               BuildableName = "TaskListWorkerTests.xctest"
-               BlueprintName = "TaskListWorkerTests"
+               BlueprintIdentifier = "4C1AA3A4258B3A9D001E1E13"
+               BuildableName = "ServiceTests.xctest"
+               BlueprintName = "ServiceTests"
                ReferencedContainer = "container:HalgoraeDO.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -43,27 +42,7 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "4C0CA609256EAA7300E66045"
-               BuildableName = "TaskListInteractorTests.xctest"
-               BlueprintName = "TaskListInteractorTests"
-               ReferencedContainer = "container:HalgoraeDO.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "4C0CA626256EABF700E66045"
-               BuildableName = "TaskListPresenterTests.xctest"
-               BlueprintName = "TaskListPresenterTests"
-               ReferencedContainer = "container:HalgoraeDO.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "4CCD31D8256EBC0000A46D10"
+               BlueprintIdentifier = "4C1AA3DA258B3B37001E1E13"
                BuildableName = "TaskListTests.xctest"
                BlueprintName = "TaskListTests"
                ReferencedContainer = "container:HalgoraeDO.xcodeproj">

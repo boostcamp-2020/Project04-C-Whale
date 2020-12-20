@@ -1,57 +1,85 @@
 <template>
-  <v-dialog v-model="dialog" :retain-focus="false" @click:outside="hideTaskModal()">
-    <task-detail-container
-      v-if="this.projectTitle"
-      @hideTaskModal="hideTaskModal"
-      :task="currentTask"
-      :comments="comments"
-      :projectTitle="projectTitle"
-    ></task-detail-container>
-    <div v-else v-ripple="{ center: true }" class="text-center elevation-2 pa-12 headline">
-      데이터를 불러오는 중입니다
-    </div>
-    <Alert />
+  <v-dialog
+    class="task-detail"
+    v-show="dialog"
+    v-model="dialog"
+    max-width="800"
+    :retain-focus="false"
+    @click:outside="hideTaskModal()"
+  >
+    <keep-alive>
+      <TaskDetailContainer
+        v-if="tasks && tasks.length !== 0"
+        @hideTaskModal="hideTaskModal"
+        :task="task"
+        :key="$route.params.taskId"
+      />
+    </keep-alive>
   </v-dialog>
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapActions, mapState } from "vuex";
 import TaskDetailContainer from "@/components/task/TaskDetailContainer.vue";
-import Alert from "@/components/common/Alert";
+import SpinnerMixin from "@/mixins/SpinnerMixins.js";
+import taskAPI from "@/api/task";
+import bus from "@/utils/bus";
 
 export default {
   name: "Task",
   data() {
     return {
       dialog: true,
-      projectTitle: undefined,
+      task: {},
+      comments: [],
     };
   },
-  components: { TaskDetailContainer, Alert },
+  computed: {
+    ...mapState({ tasks: (state) => state.task.tasks }),
+  },
+  components: { TaskDetailContainer },
   methods: {
-    ...mapActions(["fetchCurrentTask", "fetchComments"]),
+    ...mapActions(["fetchCurrentTask", "fetchComments", "fetchBookmarks"]),
     hideTaskModal() {
       this.$router.go(-1);
     },
   },
-  computed: {
-    ...mapGetters(["currentTask", "namedProjectInfos", "comments"]),
+  watch: {
+    tasks() {
+      this.task = this.tasks.find((task) => task.id === this.$route.params.taskId);
+    },
   },
-
-  async created() {
-    Promise.all([
-      await this.fetchCurrentTask(this.$route.params.taskId),
-      await this.fetchComments(this.$route.params.taskId),
-    ]);
-
-    this.projectTitle = this.namedProjectInfos.find(
-      (project) => project.id === this.currentTask.projectId
-    ).title;
+  activated() {
+    this.dialog = true;
   },
+  deactivated() {
+    this.dialog = false;
+  },
+  created: async function () {
+    // 루트 할일 일 경우
+    this.task = this.tasks.find((task) => task.id === this.$route.params.taskId);
+
+    // let targetTask;
+    if (this.task === undefined) {
+      const result = await taskAPI.getTaskById(this.$route.params.taskId);
+      this.task = result.data.task;
+    }
+    await this.fetchComments(this.$route.params.taskId);
+    await this.fetchBookmarks(this.$route.params.taskId);
+  },
+  mixins: [SpinnerMixin],
 };
 </script>
 <style>
-.v-dialog {
-  max-height: 80% !important;
+@media screen and (max-width: 720px) {
+  .v-dialog {
+    width: 80%;
+  }
+}
+
+@media screen and(max-width: 512px) {
+  .v-dialog {
+    width: 100%;
+  }
 }
 </style>

@@ -9,6 +9,7 @@ export default new Vuetify({
       light: {
         whaleGreen: "#07C4A3",
         whaleBlue: "#1C2B82",
+        primary: "#07C4A3",
       },
     },
   },

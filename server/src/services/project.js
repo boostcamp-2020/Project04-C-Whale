@@ -1,79 +1,59 @@
-const Op = require('sequelize');
+/* eslint-disable no-return-await */
 const sequelize = require('@models');
-const getTodayStartEnd = require('@utils/today-start-end');
+const { isProjectOwner } = require('@services/authority-check');
+const { customError } = require('../utils/custom-error');
 
 const { models } = sequelize;
 const projectModel = models.project;
 
-const retrieveProjects = async () => {
+const retrieveProjects = async userId => {
   const projects = await projectModel.findAll({
-    raw: true,
     attributes: [
       'id',
       'title',
       'color',
       'isFavorite',
       'isList',
-      [sequelize.fn('COUNT', sequelize.col('tasks.id')), 'taskCount'],
+      [sequelize.fn('COUNT', sequelize.col('sections.tasks.id')), 'taskCount'],
       [sequelize.col('sections.id'), 'defaultSectionId'],
     ],
     include: [
       {
-        model: models.task,
-        attributes: [],
-      },
-      {
         model: models.section,
         required: false,
-        where: { position: 0 },
         attributes: [],
+        include: [
+          {
+            model: models.task,
+            attributes: [],
+            where: { isDone: false, parentId: null },
+            required: false,
+          },
+        ],
       },
     ],
-    group: ['project.id', 'sections.id'],
+    where: { creatorId: userId },
+    group: ['project.id'],
+    order: [
+      ['createdAt', 'ASC'],
+      [models.section, 'position', 'ASC'],
+    ],
   });
 
   return projects;
 };
 
-const retrieveTodayProject = async () => {
-  const TODAY = '오늘';
-
-  const { todayStart, todayEnd } = getTodayStartEnd();
-
-  const todayProject = {
-    title: TODAY,
-  };
-
-  todayProject.taskCount = await models.task.count({
-    where: {
-      dueDate: {
-        [Op.and]: {
-          [Op.gt]: todayStart,
-          [Op.lt]: todayEnd,
-        },
-      },
-    },
-  });
-
-  return todayProject;
-};
-
-const retrieveById = async id => {
-  const project = await projectModel.findByPk(id, {
+const retrieveById = async ({ projectId, userId }) => {
+  const project = await projectModel.findByPk(projectId, {
     attributes: ['id', 'title', 'isList'],
     include: {
       model: models.section,
       include: {
         model: models.task,
-        where: { isDone: false, parentId: null },
+        where: { parentId: null },
         include: [
-          'priority',
-          'labels',
-          'alarm',
           {
             model: models.task,
-            where: { isDone: false },
-            required: false,
           },
         ],
         required: false,
@@ -85,6 +65,15 @@ const retrieveById = async id => {
       [models.section, models.task, models.task, 'position', 'ASC'],
     ],
   });
+
+  if (!project) {
+    throw customError.NOT_FOUND_ERROR('project');
+  }
+
+  if (!(await isProjectOwner({ id: projectId, userId }))) {
+    throw customError.FORBIDDEN_ERROR();
+  }
+
   return project;
 };
 
@@ -112,27 +101,70 @@ const findOrCreate = async data => {
   const [result] = await projectModel.findAll({ where: data });
   if (result) return true;
 
-  return await create(data);
+  const createResult = await create(data);
+  return createResult;
 };
 
-const update = async ({ id, ...data }) => {
-  const result = await projectModel.update(data, { where: { id } });
+const update = async ({ projectId, userId, ...data }) => {
+  const project = await projectModel.findByPk(projectId);
+  if (!project) {
+    throw customError.NOT_FOUND_ERROR('project');
+  }
+  if (project.creatorId !== userId) {
+    throw customError.FORBIDDEN_ERROR();
+  }
 
-  return result === 1;
+  project.update(data, { where: { id: projectId } });
+  project.save();
+
+  return true;
 };
 
-const remove = async ({ id }) => {
-  const result = await projectModel.destroy({ where: { id } });
+const remove = async ({ projectId, userId }) => {
+  const project = await projectModel.findByPk(projectId);
+  if (!project) {
+    throw customError.NOT_FOUND_ERROR('project');
+  }
+  if (project.creatorId !== userId) {
+    throw customError.FORBIDDEN_ERROR();
+  }
 
-  return result === 1;
+  project.destroy();
+  project.save();
+
+  return true;
 };
 
+const updateSectionPositions = async ({ projectId, userId, ...data }) => {
+  const { orderedSections } = data;
+  const project = await projectModel.findByPk(projectId);
+  if (!project) {
+    throw customError.NOT_FOUND_ERROR('task');
+  }
+  if (project.creatorId !== userId) {
+    throw customError.FORBIDDEN_ERROR();
+  }
+
+  await sequelize.transaction(async t => {
+    return await Promise.all(
+      orderedSections.map(async (sectionId, position) => {
+        return await models.section.update(
+          { position },
+          { where: { id: sectionId } },
+          { transaction: t },
+        );
+      }),
+    );
+  });
+
+  return true;
+};
 module.exports = {
   retrieveProjects,
-  retrieveTodayProject,
   retrieveById,
   create,
   findOrCreate,
   update,
   remove,
+  updateSectionPositions,
 };

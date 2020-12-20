@@ -4,7 +4,7 @@
     indeterminate
     :size="70"
     :width="7"
-    color="red"
+    color="whaleGreen"
     class="spinner-container"
   ></v-progress-circular>
 </template>
@@ -23,5 +23,9 @@ export default {
   top: 45%;
   left: 50%;
   transform: translateX(-50%);
+  z-index: 1000;
+}
+.v-progress-circular__overlay {
+  stroke: #07c4a3 !important;
 }
 </style>

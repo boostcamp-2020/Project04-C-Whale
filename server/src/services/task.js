@@ -1,74 +1,106 @@
+/* eslint-disable no-return-await */
 const sequelize = require('@models');
+const { isTaskOwner, isProjectOwner } = require('@services/authority-check');
+const { customError } = require('@utils/custom-error');
 
 const { models } = sequelize;
 const taskModel = models.task;
 
-const retrieveById = async id => {
+const retrieveById = async ({ id, userId }) => {
   const task = await taskModel.findByPk(id, {
     include: [
-      'labels',
-      'priority',
-      'alarm',
-      'bookmarks',
+      'tasks',
       {
-        model: taskModel,
-        include: ['labels', 'priority', 'alarm', 'bookmarks'],
+        model: models.section,
+        attribute: [],
+        include: [
+          {
+            model: models.project,
+            attributes: ['creatorId', 'title', 'id'],
+          },
+        ],
       },
     ],
     order: [[taskModel, 'position', 'ASC']],
   });
+
+  if (!task) {
+    const error = customError.NOT_FOUND_ERROR('task');
+    throw error;
+  }
+  if (!(await isTaskOwner({ id, userId }))) {
+    const error = customError.FORBIDDEN_ERROR();
+    throw error;
+  }
   return task;
 };
 
 const retrieveAll = async userId => {
-  // const tasks = await taskModel.findAll({
-  //   attributes: ['id', 'title'],
-  //   include: {
-  //     model: models.project,
-  //     attributes: [],
-  //     where: { creatorId: userId },
-  //   },
-  //   // order: [['title', 'ASC']],
-  // });
-
-  const task = await taskModel.findAll({
-    where: { isDone: false },
+  const tasks = await taskModel.findAll({
     include: [
-      'labels',
-      'priority',
-      'alarm',
-      'bookmarks',
       {
         model: taskModel,
-        include: ['labels', 'priority', 'alarm', 'bookmarks'],
+        include: ['bookmarks', 'comments'],
+        required: false,
       },
       {
-        model: models.project,
-        attributes: [],
-        where: { creatorId: userId },
+        model: models.bookmark,
+        required: false,
+        order: [['createdAt', 'ASC']],
+      },
+      {
+        model: models.comment,
+        required: false,
+        order: [['createdAt', 'ASC']],
+      },
+      {
+        model: models.section,
+        attribute: ['id', 'title', 'projectId', 'position'],
+        include: [
+          {
+            model: models.project,
+            attributes: ['creatorId', 'title', 'color'],
+            where: { creatorId: userId },
+          },
+        ],
       },
     ],
+    where: { parentId: null },
+    having: { 'section.project.creatorId': userId },
     order: [[taskModel, 'position', 'ASC']],
   });
-  return task;
+
+  return tasks;
 };
 
-const create = async ({ projectId, sectionId, ...taskData }) => {
-  const { labelIdList, dueDate, ...rest } = taskData;
+const create = async ({ projectId, sectionId, userId, ...taskData }) => {
+  const { dueDate, ...rest } = taskData;
+
+  const project = await models.project.findByPk(projectId);
+  if (!project) {
+    const error = customError.NOT_FOUND_ERROR('project');
+    throw error;
+  }
+  if (!(await isProjectOwner({ id: projectId, userId }))) {
+    const error = customError.FORBIDDEN_ERROR('');
+    throw error;
+  }
+
   const result = await sequelize.transaction(async t => {
-    const section = await models.section.findByPk(sectionId, { include: 'tasks' });
+    const [section] = await project.getSections({ include: 'tasks', where: { id: sectionId } });
+    if (!section) {
+      const error = customError.NOT_FOUND_ERROR('section');
+      throw error;
+    }
 
     const maxPosition = section.toJSON().tasks.reduce((max, task) => {
       return Math.max(max, task.position);
     }, 0);
 
     const task = await models.task.create(
-      { projectId, sectionId, dueDate, position: maxPosition + 1, ...rest },
+      { sectionId, dueDate, position: maxPosition + 1, ...rest },
       { transaction: t },
     );
-    if (labelIdList) {
-      await task.setLabels(JSON.parse(labelIdList), { transaction: t });
-    }
 
     return task;
   });
@@ -77,27 +109,58 @@ const create = async ({ projectId, sectionId, ...taskData }) => {
 };
 
 const update = async taskData => {
-  const { id, labelIdList, dueDate, ...rest } = taskData;
-  const result = await sequelize.transaction(async t => {
-    await taskModel.update(
-      { dueDate, ...rest },
-      {
-        where: { id },
-      },
-      { transaction: t },
-    );
+  const { id, dueDate, userId, ...rest } = taskData;
 
-    const task = await taskModel.findByPk(id, { transaction: t });
-    if (labelIdList) {
-      await task.setLabels(JSON.parse(labelIdList), { transaction: t });
+  const result = await sequelize.transaction(async t => {
+    const task = await taskModel.findByPk(id);
+    if (!task) {
+      throw customError.NOT_FOUND_ERROR('task');
     }
+
+    if (!(await isTaskOwner({ id, userId }))) {
+      throw customError.FORBIDDEN_ERROR();
+    }
+
+    await task.update({ dueDate, ...rest }, { transaction: t });
+
     return true;
   });
 
   return result;
 };
 
+const updateChildTaskPositions = async ({ parentId, userId, ...rest }) => {
+  const { orderedTasks } = rest;
+  const task = await taskModel.findByPk(parentId);
+
+  if (!task) {
+    throw customError.NOT_FOUND_ERROR('task');
+  }
+  if (!(await isTaskOwner({ id: parentId, userId }))) {
+    throw customError.FORBIDDEN_ERROR();
+  }
+
+  await sequelize.transaction(async t => {
+    return await Promise.all(
+      orderedTasks.map(async (taskId, position) => {
+        return await taskModel.update(
+          { position, parentId },
+          { where: { id: taskId } },
+          { transaction: t },
+        );
+      }),
+    );
+  });
+
+  return true;
+};
+
 const remove = async id => {
+  const task = await taskModel.findByPk(id);
+  if (!task) {
+    const error = customError.NOT_FOUND_ERROR('task');
+    throw error;
+  }
   const result = await taskModel.destroy({
     where: {
       id,
@@ -107,4 +170,11 @@ const remove = async id => {
   return result;
 };
 
-module.exports = { retrieveById, retrieveAll, create, update, remove };
+module.exports = {
+  retrieveById,
+  retrieveAll,
+  create,
+  update,
+  remove,
+  updateChildTaskPositions,
+};

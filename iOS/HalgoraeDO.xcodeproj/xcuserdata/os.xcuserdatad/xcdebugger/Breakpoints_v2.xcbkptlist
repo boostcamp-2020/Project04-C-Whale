@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   uuid = "C3F6328B-74BA-40AF-9E02-AB34BF0D98A1"
+   type = "1"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "9BAEFF33-CEBA-4F9D-9F75-64E2DEB1B593"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "HalgoraeDO/Sources/Storage/Models/Project+CoreDataClass.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "30"
+            endingLineNumber = "30"
+            landmarkName = "init(from:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "9BAEFF33-CEBA-4F9D-9F75-64E2DEB1B593 - 19d6293693dd6bc5"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "HalgoraeDO.Project.__allocating_init(from: Swift.Decoder) throws -&gt; HalgoraeDO.Project"
+                  moduleName = "HalgoraeDO"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/os/woong/iOS/Boostcamp2020/group_final/Project04-C-Whale/iOS/HalgoraeDO/Sources/Storage/Models/Project+CoreDataClass.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "30"
+                  endingLineNumber = "30"
+                  offsetFromSymbolStart = "147">
+               </Location>
+               <Location
+                  uuid = "9BAEFF33-CEBA-4F9D-9F75-64E2DEB1B593 - 665c6134c836a528"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "TaskListTests.Project.__allocating_init(from: Swift.Decoder) throws -&gt; TaskListTests.Project"
+                  moduleName = "TaskListTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/os/woong/iOS/Boostcamp2020/group_final/Project04-C-Whale/iOS/HalgoraeDO/Sources/Storage/Models/Project+CoreDataClass.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "30"
+                  endingLineNumber = "30"
+                  offsetFromSymbolStart = "147">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "67D348B6-3BFC-4B1C-8A68-D1360AAB8F84"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "HalgoraeDO/Sources/Scenes/SignIn/SignInViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "23"
+            endingLineNumber = "23"
+            landmarkName = "didTapNaverLogicButton(_:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "67D348B6-3BFC-4B1C-8A68-D1360AAB8F84 - 67bb1a62ae18ae1d"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "HalgoraeDO.SignInViewController.(didTapNaverLogicButton in _7486119F18EBD5FAF3BADFCF27685D8C)(__C.UIButton) -&gt; ()"
+                  moduleName = "HalgoraeDO"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/os/woong/iOS/Boostcamp2020/group_final/Project04-C-Whale/iOS/HalgoraeDO/Sources/Scenes/SignIn/SignInViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "23"
+                  endingLineNumber = "23"
+                  offsetFromSymbolStart = "660">
+               </Location>
+               <Location
+                  uuid = "67D348B6-3BFC-4B1C-8A68-D1360AAB8F84 - b61a845d6da5ab67"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Optional&lt;Foundation.URL&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in HalgoraeDO.SignInViewController.(didTapNaverLogicButton in _7486119F18EBD5FAF3BADFCF27685D8C)(__C.UIButton) -&gt; ()"
+                  moduleName = "HalgoraeDO"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/os/woong/iOS/Boostcamp2020/group_final/Project04-C-Whale/iOS/HalgoraeDO/Sources/Scenes/SignIn/SignInViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "23"
+                  endingLineNumber = "23"
+                  offsetFromSymbolStart = "316">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "B606B50E-831D-4234-B87D-A7A3C0E2EABE"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "HalgoraeDO/Sources/Scenes/SignIn/SignInViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "34"
+            endingLineNumber = "34"
+            landmarkName = "didTapNaverLogicButton(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>

@@ -14,6 +14,6 @@ module.exports = sequelize => {
         type: DataTypes.STRING,
       },
     },
-    { tableName: 'comment' },
+    { charset: 'utf8', collate: 'utf8_unicode_ci', tableName: 'comment' },
   );
 };

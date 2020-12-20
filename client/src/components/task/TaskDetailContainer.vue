@@ -1,68 +1,75 @@
 <template>
-  <v-flex>
-    <v-list-item class="flex-column">
-      <v-list-item-group class="d-flex">
-        <v-list-item-title>
-          <div class="task_detail-project_title">{{ projectTitle }}</div>
+  <v-card v-if="task">
+    <v-list-item>
+      <v-list-item-icon class="mr-1 py-3">
+        <v-icon small :color="task.section.project.color">mdi-circle</v-icon>
+      </v-list-item-icon>
+      <v-list-item-content>
+        <v-list-item-title class="font-14 white-space-normal" v-text="task.section.project.title">
         </v-list-item-title>
+      </v-list-item-content>
+      <v-list-item-action>
         <v-btn icon @click="hideTaskModal()">
           <v-icon>mdi-close</v-icon>
         </v-btn>
-      </v-list-item-group>
-
-      <div class="task_container mr-10">
-        <TaskItem :task="task" />
-      </div>
-      <TaskDetailTabs
-        :tasks="this.task.tasks"
-        :tabList="this.tabList"
-        :comments="this.comments"
-        :projectId="this.task.projectId"
-        :sectionId="this.task.sectionId"
-      />
+      </v-list-item-action>
     </v-list-item>
-  </v-flex>
+
+    <div class="task_container mr-10">
+      <TaskItem :task="task" />
+    </div>
+    <div class="px-4 task-detail-tabs">
+      <TaskDetailTabs
+        :parentTask="task"
+        :comments="commentsMap[this.$route.params.taskId]"
+        :bookmarks="bookmarkMap[this.$route.params.taskId]"
+        :projectId="$route.params.projectId"
+        :sectionId="task.sectionId"
+        :isParent="task.parentId === null"
+      />
+    </div>
+  </v-card>
 </template>
 
 <script>
-import TaskItem from "@/components/project/TaskItem";
+import TaskItem from "@/components/task/TaskItem";
 import TaskDetailTabs from "@/components/task/TaskDetailTabs";
+import SpinnerMixin from "@/mixins/SpinnerMixins";
+import { mapState } from "vuex";
 
 export default {
-  data() {
-    return {
-      tabList: {
-        childTask: { title: "하위 작업", count: 0 },
-        comment: { title: "댓글", count: 0 },
-        bookmark: { title: "북마크", count: 0 },
-      },
-    };
-  },
+  components: { TaskItem, TaskDetailTabs },
+  mixins: [SpinnerMixin],
   props: {
     task: Object,
-    comments: Array,
-    projectTitle: String,
   },
-
-  components: { TaskItem, TaskDetailTabs },
-
+  data() {
+    return {
+      comments: [],
+    };
+  },
+  computed: {
+    ...mapState({
+      commentsMap: (state) => state.comment.commentsMap,
+      bookmarkMap: (state) => state.bookmark.bookmarkMap,
+    }),
+  },
   methods: {
     hideTaskModal() {
       this.$emit("hideTaskModal");
     },
   },
-  computed: {},
-  created() {
-    this.tabList.childTask.count = this.task.tasks.length;
-    this.tabList.comment.count = this.comments.length;
-    this.tabList.bookmark.count = 3;
-  },
-  mounted() {},
 };
 </script>
 
-<style>
-.v-list-item {
-  align-items: initial;
+<style lang="scss">
+.task-detail-tabs {
+  height: 50vw;
+}
+
+@media screen and (max-width: 512px) {
+  .task-detail-tabs {
+    height: 100vw;
+  }
 }
 </style>
