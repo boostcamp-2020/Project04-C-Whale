@@ -70,10 +70,11 @@ http://halgoraedo.kro.kr
 
 ## Documents
 - 제품 백로그 ([iOS](https://docs.google.com/spreadsheets/d/12ZqJbL0UhTdVH2FqpjqCzbunYzUg2QyLpx30rjz6T7Y/edit#gid=336470392), [WEB](https://docs.google.com/spreadsheets/d/12ZqJbL0UhTdVH2FqpjqCzbunYzUg2QyLpx30rjz6T7Y/edit#gid=0))
-- [API 명세](https://github.com/boostcamp-2020/Project04-C-Whale/wiki/API-Documents), 에러 명세
+- [API 명세](https://github.com/boostcamp-2020/Project04-C-Whale/wiki/API-Documents)
 - 기술 공유
-  - 공유 1
-  - 공유 2
+  - [CI/CD](https://github.com/boostcamp-2020/Project04-C-Whale/wiki/%EB%AC%B4%EC%A4%91%EB%8B%A8-CI-&-CD-(Jenkins-&-Nginx-&-Docker))
+  - [TDD](https://github.com/boostcamp-2020/Project04-C-Whale/wiki/TDD(Test-Driven-Development))
+  - [Custom Alert 구현](https://github.com/boostcamp-2020/Project04-C-Whale/wiki/Custom-Alert-%EA%B5%AC%ED%98%84)
 - [👉 할고래두 WIKI보러가기](https://github.com/boostcamp-2020/Project04-C-Whale/wiki)
 
 
