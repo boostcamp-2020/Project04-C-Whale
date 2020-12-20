@@ -1,6 +1,24 @@
 # client
 
-## Project setup
+## Folder Structure
+```
+├─src
+    ├───api
+    ├───assets
+    ├───components
+    ├───composables
+    ├───mixins
+    ├───plugins
+    ├───router
+    ├───store
+    ├───utils
+    │   └───whaleApi
+    ├───views
+    ├───App.vue
+    └───main.js
+```
+
+## Project Setup
 ```
 npm install
 ```
@@ -14,16 +32,3 @@ npm run serve
 ```
 npm run build
 ```
-
-### Run your unit tests
-```
-npm run test:unit
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
