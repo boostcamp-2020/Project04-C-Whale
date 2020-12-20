@@ -105,7 +105,6 @@ const actions = {
       commit("SET_ERROR_ALERT", err.response);
     }
   },
-
   async changeChildTaskPosition({ rootState, dispatch, commit }, { orderedTasks }) {
     const { draggingTask, dropTargetContainer } = rootState.dragAndDrop;
 
@@ -118,6 +117,18 @@ const actions = {
       await dispatch("fetchAllTasks");
 
       commit("SET_SUCCESS_ALERT", "작업 위치가 변경되었습니다.");
+    } catch (err) {
+      commit("SET_ERROR_ALERT", err.response);
+    }
+  },
+  async deleteTask({ dispatch, commit }, { task }) {
+    try {
+      await taskAPI.deleteTask(task.id);
+      await dispatch("fetchCurrentProject", task.projectId);
+      await dispatch("fetchAllTasks");
+      commit("SUBTRACT_TASK_COUNT", task.projectId);
+
+      commit("SET_SUCCESS_ALERT", "작업이 삭제되었습니다.");
     } catch (err) {
       commit("SET_ERROR_ALERT", err.response);
     }
