@@ -13,7 +13,7 @@ class TaskBoardViewController: UIViewController {
     
     // MARK: - Properties
     
-    var project: Project
+    private var project: Project
     private var interactor: TaskListBusinessLogic?
     private var router: (TaskListRoutingLogic & TaskListDataPassing)?
     private var dataSource: UICollectionViewDiffableDataSource<String, TaskVM>! = nil
@@ -36,6 +36,7 @@ class TaskBoardViewController: UIViewController {
     init?(coder: NSCoder, project: Project) {
         self.project = project
         super.init(coder: coder)
+        title = project.title
     }
     
     required init?(coder: NSCoder) {
@@ -45,21 +46,14 @@ class TaskBoardViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        NotificationCenter.default.addObserver(self, selector: #selector(displayAddTask), name: NSNotification.Name(rawValue: "displayAddTask"), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(addSection), name: NSNotification.Name(rawValue: "addSection"), object: nil)
+        addObservers()
         configureLogic()
         configureCollectionView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.navigationBar.prefersLargeTitles = false
         interactor?.fetchTasks(request: .init(projectId: project.id ))
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        navigationController?.navigationBar.prefersLargeTitles = true
     }
     
     // MARK: - Initialize
@@ -68,8 +62,12 @@ class TaskBoardViewController: UIViewController {
         let presenter = TaskListPresenter(viewController: self)
         let interactor = TaskListInteractor(presenter: presenter, worker: TaskListWorker(sessionManager: SessionManager(configuration: .default)))
         self.interactor = interactor
-        self.router = TaskListRouter(viewController: nil, boardViewController: self, dataStore: interactor)
-        
+        self.router = TaskListRouter(boardViewController: self, dataStore: interactor)
+    }
+    
+    private func addObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(displayAddTask), name: NSNotification.Name(rawValue: "displayAddTask"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(addSection), name: NSNotification.Name(rawValue: "addSection"), object: nil)
     }
     
     //MARK: - Helper Method
@@ -90,23 +88,21 @@ class TaskBoardViewController: UIViewController {
     }
     
     private func addSectionAlert() {
-        let alert = UIAlertController(title: "섹션 추가", message: "예. 3주차 할일", preferredStyle: .alert)
-        let ok = UIAlertAction(title: "OK", style: .default) { (ok) in
-            guard let sectionName = alert.textFields?[0].text,
-                  sectionName != ""
-            else {
-                return
-            }
-            let projectId = self.project.id
-            let sectionFields = TaskListModels.SectionFields(title: sectionName)
-            self.interactor?.createSection(request: .init(projectId: projectId, sectionFields: sectionFields))
-        }
-        let cancel = UIAlertAction(title: "cancel", style: .cancel)
+        let alert = SimpleAlertController(title: "섹션 추가", message: "예. 3주차 할일", preferredStyle: .alert)
+        alert.configureActions([
+            UIAlertAction(title: "OK", style: .default) { (ok) in
+                guard let sectionName = alert.textFields?[0].text,
+                      sectionName != ""
+                else { return }
+                let sectionFields = TaskListModels.SectionFields(title: sectionName)
+                self.interactor?.createSection(request: .init(projectId: self.project.id, sectionFields: sectionFields))
+            },
+            UIAlertAction(title: "cancel", style: .cancel)
+        ])
         alert.addTextField { (textField) in
             textField.placeholder = "섹션 이름을 입력해주세요."
         }
-        alert.addAction(cancel)
-        alert.addAction(ok)
+        
         self.present(alert, animated: true, completion: nil)
     }
     
@@ -118,36 +114,23 @@ class TaskBoardViewController: UIViewController {
             return
         }
         
-        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        let showBoardAction = UIAlertAction(title: "목록으로 보기", style: .default) { (_: UIAlertAction) in
-            guard let vc = self.storyboard?.instantiateViewController(identifier: String(describing: TaskListViewController.self), creator: { coder -> TaskListViewController? in
-                return TaskListViewController(coder: coder)
-            }) else {
-                return
-            }
-            vc.project = self.project
-            let nav = self.navigationController
-            nav?.popViewController(animated: false)
-            nav?.pushViewController(vc, animated: false)
-        }
+        let alert = SimpleAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        alert.configureActions([
+            UIAlertAction(title: "목록으로 보기", style: .default, handler: { _ in
+                self.router?.routeToList(project: self.project)
+            }),
+            UIAlertAction(title: "섹션 추가", style: .default, handler: { _ in
+                self.addSectionAlert()
+            }),
+            UIAlertAction(title: "작업 추가", style: .default) { (_: UIAlertAction) in
+                self.showAddTaskView(sectionNum: 0)
+            },
+            UIAlertAction(title: "작업 선택", style: .default, handler: { _ in
+                self.setEditing(true, animated: true)
+            }),
+            UIAlertAction(title: "취소", style: .cancel, handler: nil)
+        ])
         
-        let addSectionAction = UIAlertAction(title: "섹션 추가", style: .default) { (_: UIAlertAction) in
-            self.addSectionAlert()
-        }
-        
-        let addTaskAction = UIAlertAction(title: "작업 추가", style: .default) { (_: UIAlertAction) in
-            self.showAddTaskView(sectionNum: 0)
-        }
-        
-        let selectTaskAction = UIAlertAction(title: "작업 선택", style: .default) { (_: UIAlertAction) in
-            self.setEditing(true, animated: true)
-        }
-        
-        let cancelAction = UIAlertAction(title: "취소", style: .cancel) { (_: UIAlertAction) in
-            
-        }
-        
-        [showBoardAction, addSectionAction, addTaskAction, selectTaskAction, cancelAction].forEach { alert.addAction($0) }
         present(alert, animated: true, completion: nil)
     }
 }

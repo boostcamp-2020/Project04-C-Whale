@@ -8,20 +8,25 @@ import UIKit
 
 class AddSectionViewCell: UICollectionViewCell {
     
+    var addSectionButton: UIButton = {
+        let addSectionImage = UIImage(systemName: "rectangle.badge.plus", withConfiguration: UIImage.SymbolConfiguration(pointSize: 22, weight: .light, scale: .small))
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(addSectionImage, for: .normal)
+        button.setTitle(" 섹션 추가", for: .normal)
+        button.setTitleColor(.black, for: .normal)
+        button.tintColor = .black
+        button.backgroundColor = .systemGray5
+        button.layer.cornerRadius = 10
+        button.contentEdgeInsets = UIEdgeInsets(top: 10, left: 6, bottom: 10, right: 6)
+        button.addTarget(self, action: #selector(tabAddSection), for: .touchUpInside)
+        
+        return button
+    }()
+    
     // MARK: - Initialize
     
     func configCollectionViewCell() {
-        let addSectionButton: UIButton = UIButton()
-        let addSectionImage = UIImage(systemName: "rectangle.badge.plus", withConfiguration: UIImage.SymbolConfiguration(pointSize: 22, weight: .light, scale: .small))
-        addSectionButton.setImage(addSectionImage, for: .normal)
-        addSectionButton.setTitle(" 섹션 추가", for: .normal)
-        addSectionButton.setTitleColor(.black, for: .normal)
-        addSectionButton.tintColor = .black
-        addSectionButton.backgroundColor = .systemGray5
-        addSectionButton.layer.cornerRadius = 10
-        addSectionButton.contentEdgeInsets = UIEdgeInsets(top: 10, left: 6, bottom: 10, right: 6)
-        addSectionButton.addTarget(self, action: #selector(tabAddSection), for: .touchUpInside)
-        
         contentView.addSubview(addSectionButton)
         addSectionButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([

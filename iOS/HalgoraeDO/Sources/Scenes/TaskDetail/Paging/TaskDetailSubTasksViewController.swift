@@ -71,7 +71,7 @@ private extension TaskDetailSubTasksViewController {
     func configureDataSource() {
         let cellRegistration = UICollectionView.CellRegistration<TaskCollectionViewListCell, TaskListModels.TaskVM> { (cell, _: IndexPath, taskItem) in
             cell.taskViewModel = taskItem
-            cell.finishHandler = { [weak self] task in
+            cell.doneHandler = { [weak self] cell, task in
                 guard let self = self else { return }
                 // self.interactor?.changeFinish(request: .init(displayedTasks: [task]))
             }

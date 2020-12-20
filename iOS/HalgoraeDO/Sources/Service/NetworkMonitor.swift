@@ -20,7 +20,7 @@ class NetworkMonitor {
     let monitor: NWPathMonitor
     let queue: DispatchQueue
     let networkManager: NetworkDispatcher
-    var connectionType: ConnectionType = .wifi
+    var connectionType: ConnectionType = .unknown
     var isAvailable: Bool {
         return monitor.currentPath.status == .satisfied
     }
@@ -36,23 +36,12 @@ class NetworkMonitor {
     }
  
     func startMonitoring() {
-        self.monitor.pathUpdateHandler = { path in
+        self.monitor.pathUpdateHandler = { [weak self] path in
+            guard let self = self else { return }
             self.connectionType = self.checkConnectionTypeForPath(path)
             
             guard self.isAvailable else { return }
-            self.storage.fetchEndPoints { [weak self] (endPoints, error) in
-                for endPoint in endPoints {
-                    self?.networkManager.fetchData(endPoint.endPoint) { (response: Response<String>?, error) in
-                        guard error == nil else {
-                            #if DEBUG
-                            print("Fail request endPoint: \(error!)")
-                            #endif
-                            return
-                        }
-                    }
-                    self?.storage.deleteEndPoint(endPoint)
-                }
-            }
+            self.requestEndPointsInStorage()
         }
     }
  
@@ -69,5 +58,21 @@ class NetworkMonitor {
             return .cellular
         }
         return .unknown
+    }
+    
+    private func requestEndPointsInStorage() {
+        storage.fetchEndPoints { [weak self] (endPoints, error) in
+            for endPoint in endPoints {
+                self?.networkManager.fetchData(endPoint.endPoint) { (response: Response<String>?, error) in
+                    guard error == nil else {
+                        #if DEBUG
+                        print("Fail request endPoint: \(error!)")
+                        #endif
+                        return
+                    }
+                }
+                self?.storage.deleteEndPoint(endPoint)
+            }
+        }
     }
 }
