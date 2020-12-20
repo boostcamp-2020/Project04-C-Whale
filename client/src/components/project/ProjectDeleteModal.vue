@@ -1,12 +1,6 @@
 <template>
   <v-row justify="center">
-    <v-dialog
-      v-model="dialog"
-      persistent
-      max-width="600"
-      class="add-project-dialog"
-      @click:outside="$emit('closeModal')"
-    >
+    <v-dialog v-model="dialog" persistent max-width="600" @click:outside="$emit('closeModal')">
       <v-card>
         <v-card-title> 프로젝트 삭제 </v-card-title>
         <v-card-text> {{ projectInfo.title }}을 삭제하시겠습니까? </v-card-text>

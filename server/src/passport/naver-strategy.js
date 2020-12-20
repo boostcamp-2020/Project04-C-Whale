@@ -1,6 +1,6 @@
 const NaverStrategy = require('passport-naver').Strategy;
 const userService = require('@services/user');
-const projectServire = require('@services/project');
+const projectService = require('@services/project');
 
 const data = {
   clientID: process.env.NAVER_CLIENT_ID,
@@ -13,7 +13,7 @@ const getNaverUser = async (accessToken, refreshToken, profile, done) => {
   try {
     const { email, nickname: name } = profile._json;
     const [user] = await userService.retrieveOrCreate({ email, name, provider: NAVER });
-    await projectServire.findOrCreate({ creatorId: user.id, title: '관리함', isList: true });
+    await projectService.findOrCreate({ creatorId: user.id, title: '관리함', isList: true });
 
     return done(null, user.toJSON());
   } catch (err) {
