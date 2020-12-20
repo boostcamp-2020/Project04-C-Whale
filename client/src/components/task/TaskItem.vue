@@ -1,38 +1,46 @@
 <template>
-  <v-list-item
-    draggable="true"
-    @dragstart="handleDragStart"
-    @dragover.prevent="handleDragOver"
-    @drop.prevent="handleDrop"
-    :class="{ dragging: task.dragging }"
-    class="task-item text-subtitle"
-  >
-    <v-list-item-action>
-      <v-checkbox v-model="checkBox" @click="updateTaskStatus"></v-checkbox>
-    </v-list-item-action>
+  <v-hover v-slot="{ hover }">
+    <v-list-item
+      draggable="true"
+      @dragstart="handleDragStart"
+      @dragover.prevent="handleDragOver"
+      @drop.prevent="handleDrop"
+      :class="{ dragging: task.dragging }"
+      class="task-item text-subtitle"
+    >
+      <v-list-item-action>
+        <v-checkbox v-model="checkBox" @click="updateTaskStatus"></v-checkbox>
+      </v-list-item-action>
 
-    <v-flex class="task-div d-flex" @click.prevent="moveToTaskDetail()">
-      <v-list-item-content class="d-flex">
-        <v-list-item-title class="d-flex">
-          <vue-mark-down
-            :class="task.isDone ? 'mark-down text-decoration-line-through' : 'mark-down'"
-          >
-            {{ task.title }}
-          </vue-mark-down>
-          <span
-            v-if="showDate === undefined ? true : showDate"
-            class="d-inline-block font-10 ml-3 align-self-end primary--text"
-          >
-            {{ dateString }}
-          </span>
-          <span v-if="task.section" class="d-inline-block font-12 ml-3 align-self-end">
-            <v-icon x-small :color="task.section.project.color">mdi-circle</v-icon>
-            {{ task.section.project.title }}
-          </span>
-        </v-list-item-title>
-      </v-list-item-content>
-    </v-flex>
-  </v-list-item>
+      <v-flex class="task-div d-flex" @click.prevent="moveToTaskDetail()">
+        <v-list-item-content class="d-flex">
+          <v-list-item-title class="d-flex">
+            <vue-mark-down
+              :class="task.isDone ? 'mark-down text-decoration-line-through' : 'mark-down'"
+            >
+              {{ task.title }}
+            </vue-mark-down>
+            <span
+              v-if="showDate === undefined ? true : showDate"
+              class="d-inline-block font-10 ml-3 align-self-end primary--text"
+            >
+              {{ dateString }}
+            </span>
+            <span v-if="task.section" class="d-inline-block font-12 ml-3 align-self-end">
+              <v-icon x-small :color="task.section.project.color">mdi-circle</v-icon>
+              {{ task.section.project.title }}
+            </span>
+          </v-list-item-title>
+        </v-list-item-content>
+      </v-flex>
+
+      <v-list-item-action @click="confirmDeleteTask" :class="{ noHover: !hover }">
+        <v-btn icon>
+          <v-icon color="grey lighten-1">mdi-trash-can</v-icon>
+        </v-btn>
+      </v-list-item-action>
+    </v-list-item>
+  </v-hover>
 </template>
 
 <script>
@@ -70,7 +78,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions(["updateTaskToDone"]),
+    ...mapActions(["updateTaskToDone", "deleteTask"]),
     ...mapMutations(["SET_DRAGGING_TASK", "SET_DROP_TARGET_CONTAINER"]),
     updateTaskStatus() {
       this.updateTaskToDone({
@@ -78,6 +86,13 @@ export default {
         taskId: this.task.id,
         isDone: !this.task.isDone,
       });
+    },
+    confirmDeleteTask() {
+      if (window.confirm("삭제하시겠습니까?")) {
+        this.deleteTask({
+          task: { ...this.task, projectId: this.section.projectId },
+        });
+      }
     },
     moveToTaskDetail() {
       const destinationInfo = this.$route.params.projectId
@@ -88,11 +103,9 @@ export default {
         : { name: "TodayTaskDetail", params: { taskId: this.task.id } };
       bus.$emit("moveToTaskDetail", destinationInfo);
     },
-
     handleDragStart() {
       this.SET_DRAGGING_TASK(this.task);
     },
-
     handleDragOver(e) {
       if (this.task.id === this.draggingTask.id) {
         return;
@@ -117,7 +130,6 @@ export default {
         position: offset > 0 ? this.position : this.position + 1,
       });
     },
-
     handleDrop() {
       this.$emit("taskDrop");
     },
@@ -161,5 +173,9 @@ export default {
 
 .flex-initial {
   flex: initial !important;
+}
+
+.noHover {
+  display: none !important;
 }
 </style>

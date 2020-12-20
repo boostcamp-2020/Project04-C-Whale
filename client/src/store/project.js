@@ -45,6 +45,11 @@ const mutations = {
     copyed.find((projectInfo) => projectInfo.id === projectId).taskCount += 1;
     state.projectInfos = [...copyed];
   },
+  SUBTRACT_TASK_COUNT: (state, projectId) => {
+    const copyed = [...state.projectInfos];
+    copyed.find((projectInfo) => projectInfo.id === projectId).taskCount -= 1;
+    state.projectInfos = [...copyed];
+  },
 };
 
 const actions = {

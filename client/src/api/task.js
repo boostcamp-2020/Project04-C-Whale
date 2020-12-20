@@ -16,6 +16,9 @@ const taskAPI = {
   updateChildTaskPosition(taskId, data) {
     return myAxios.patch(`/task/${taskId}/position`, data);
   },
+  deleteTask(taskId) {
+    return myAxios.delete(`/task/${taskId}`);
+  },
 };
 
 export default taskAPI;
