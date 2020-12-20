@@ -17,13 +17,13 @@ http://halgoraedo.kro.kr
 ### 🎬 데모 영상 
 
 #### WEB
-
+<p align="center">
 <a href="https://www.youtube.com/embed/2HkyKg3PHXI"><img width="500" alt="스크린샷 2020-12-20 17 07 15" src="https://user-images.githubusercontent.com/18397630/102718854-ec2ea000-432d-11eb-90cb-334e8b033ae8.png"></a>
-
+</p>
 #### iOS
-
+<p align="center">
 <a href="https://www.youtube.com/embed/TzzpcT47xBk"><img width="500" alt="스크린샷 2020-12-20 17 07 15" src="https://user-images.githubusercontent.com/18397630/102708423-663b3680-42e6-11eb-8e7a-7f734f543fc9.png"></a>
-
+</p>
 <details> 
 <summary>🐳 웨일브라우저 연동</summary>
 
@@ -59,14 +59,7 @@ http://halgoraedo.kro.kr
 
 ## 🖥 기술 스택
 <p align="center">
-  <img src="https://img.shields.io/badge/swift-v5.3-orange?logo=swift">
-  <img src="https://img.shields.io/badge/xcode-v12.1-blue?logo=xcode">
-</p>
-<p align="center">
-  <img src="https://img.shields.io/badge/javascript-ES6+-yellow?logo=javascript">
-  <img src="https://img.shields.io/badge/node.js-v14.15.0-green?logo=node.js">
-  <img src="https://img.shields.io/badge/vue-2.6.11-9cf?logo=vue.js">
-  <img src="https://img.shields.io/badge/mysql-v5.7.32-blue?logo=mysql" />
+  <img src="https://user-images.githubusercontent.com/59331444/102723999-89e69700-434f-11eb-9e43-b8a8cf49459d.png">  
 </p>
 
 ## Documents
