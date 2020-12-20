@@ -26,7 +26,7 @@ npm install
 npm run dev
 ```
 
-### Compiles and 
+### Compiles and build and run production
 ```
 npm run build
 npm start
