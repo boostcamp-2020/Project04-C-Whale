@@ -71,11 +71,17 @@ http://halgoraedo.kro.kr
 ## Documents
 - 제품 백로그 ([iOS](https://docs.google.com/spreadsheets/d/12ZqJbL0UhTdVH2FqpjqCzbunYzUg2QyLpx30rjz6T7Y/edit#gid=336470392), [WEB](https://docs.google.com/spreadsheets/d/12ZqJbL0UhTdVH2FqpjqCzbunYzUg2QyLpx30rjz6T7Y/edit#gid=0))
 - [API 명세](https://github.com/boostcamp-2020/Project04-C-Whale/wiki/API-Documents)
-- 기술 공유
+- [WEB] 기술 공유 
   - [CI/CD](https://github.com/boostcamp-2020/Project04-C-Whale/wiki/%EB%AC%B4%EC%A4%91%EB%8B%A8-CI-&-CD-(Jenkins-&-Nginx-&-Docker))
   - [TDD](https://github.com/boostcamp-2020/Project04-C-Whale/wiki/TDD(Test-Driven-Development))
   - [Custom Alert 구현](https://github.com/boostcamp-2020/Project04-C-Whale/wiki/Custom-Alert-%EA%B5%AC%ED%98%84)
   - [동적 컴포넌트 캐싱](https://github.com/boostcamp-2020/Project04-C-Whale/wiki/Vue-Router)
+ - [iOS] 기술 공유 
+    - [프로젝트 구조 설계(VIP)](https://github.com/boostcamp-2020/Project04-C-Whale/wiki/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EA%B5%AC%EC%A1%B0-%EC%84%A4%EA%B3%84(VIP---Service---Storage))
+    - [테스트 가능한 네트워크 레이어](https://github.com/boostcamp-2020/Project04-C-Whale/wiki/%ED%85%8C%EC%8A%A4%ED%8A%B8-%EA%B0%80%EB%8A%A5%ED%95%9C-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC-%EB%A0%88%EC%9D%B4%EC%96%B4)
+    - [오프라인 모드](https://github.com/boostcamp-2020/Project04-C-Whale/wiki/%EC%98%A8-%EC%98%A4%ED%94%84%EB%9D%BC%EC%9D%B8-%EB%AA%A8%EB%93%9C)
+</details>
+
 - [👉 할고래두 WIKI보러가기](https://github.com/boostcamp-2020/Project04-C-Whale/wiki)
 
 
