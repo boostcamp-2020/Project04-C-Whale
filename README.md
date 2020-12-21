@@ -75,6 +75,7 @@ http://halgoraedo.kro.kr
   - [CI/CD](https://github.com/boostcamp-2020/Project04-C-Whale/wiki/%EB%AC%B4%EC%A4%91%EB%8B%A8-CI-&-CD-(Jenkins-&-Nginx-&-Docker))
   - [TDD](https://github.com/boostcamp-2020/Project04-C-Whale/wiki/TDD(Test-Driven-Development))
   - [Custom Alert 구현](https://github.com/boostcamp-2020/Project04-C-Whale/wiki/Custom-Alert-%EA%B5%AC%ED%98%84)
+  - [동적 컴포넌트 캐싱](https://github.com/boostcamp-2020/Project04-C-Whale/wiki/Vue-Router)
 - [👉 할고래두 WIKI보러가기](https://github.com/boostcamp-2020/Project04-C-Whale/wiki)
 
 
