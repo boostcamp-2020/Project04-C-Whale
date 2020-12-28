@@ -9,7 +9,7 @@
       class="task-item text-subtitle"
     >
       <v-list-item-action>
-        <v-checkbox v-model="checkBox" @click="updateTaskStatus"></v-checkbox>
+        <v-checkbox v-model="checkBox" @click="update"></v-checkbox>
       </v-list-item-action>
 
       <v-flex class="task-div d-flex" @click.prevent="moveToTaskDetail()">
@@ -78,10 +78,10 @@ export default {
     },
   },
   methods: {
-    ...mapActions(["updateTaskToDone", "deleteTask"]),
+    ...mapActions(["updateTaskStatus", "deleteTask"]),
     ...mapMutations(["SET_DRAGGING_TASK", "SET_DROP_TARGET_CONTAINER"]),
-    updateTaskStatus() {
-      this.updateTaskToDone({
+    update() {
+      this.updateTaskStatus({
         projectId: this.section.projectId,
         taskId: this.task.id,
         isDone: !this.task.isDone,
