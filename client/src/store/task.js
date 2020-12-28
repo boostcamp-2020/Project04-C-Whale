@@ -60,9 +60,9 @@ const actions = {
       commit("SET_ERROR_ALERT", err.response);
     }
   },
-  async updateTaskToDone({ dispatch, commit }, { projectId, taskId, isDone }) {
+  async updateTaskStatus({ dispatch, commit }, { projectId, taskId, isDone }) {
     try {
-      await taskAPI.updateTask(taskId, { isDone: true });
+      await taskAPI.updateTask(taskId, { isDone });
 
       // '오늘' 화면에서 호출되었을 경우
       if (projectId !== undefined) {
