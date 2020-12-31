@@ -124,11 +124,13 @@ describe('post task', () => {
     const expectedProjectId = seeder.projects[0].id;
     const expectedSectionId = seeder.sections[0].id;
 
+    const today = new Date(Date.now());
+
     const newTask = {
       title: '할일',
       projectId: seeder.projects[1].id,
       priority: priorities[1].id,
-      dueDate: new Date('2021-1-1'),
+      dueDate: new Date(`${today.getFullYear() + 1}-${today.getMonth() + 1}-${today.getDate()}`),
       parentId: seeder.tasks[0].id,
       position: 1,
     };
@@ -150,11 +152,13 @@ describe('post task', () => {
     const expectedProjectId = seeder.projects[0].id;
     const expectedSectionId = seeder.sections[0].id;
 
+    const today = new Date(Date.now());
+
     const newTask = {
       title: '할일',
       projectId: seeder.projects[1].id,
       priority: priorities[1].id,
-      dueDate: new Date('2021-2-1'),
+      dueDate: new Date(`${today.getFullYear()}-${today.getMonth() + 2}-${today.getDate()}`),
       parentId: seeder.tasks[0].id,
       position: 1,
     };
