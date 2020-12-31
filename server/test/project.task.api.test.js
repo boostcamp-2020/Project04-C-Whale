@@ -118,6 +118,59 @@ describe('post task', () => {
     expect(res.body.message).toBe(expectedError.message);
     done();
   });
+
+  it('duedate를 내년으로 설정', async done => {
+    // given
+    const expectedProjectId = seeder.projects[0].id;
+    const expectedSectionId = seeder.sections[0].id;
+
+    const newTask = {
+      title: '할일',
+      projectId: seeder.projects[1].id,
+      priority: priorities[1].id,
+      dueDate: new Date('2021-1-1'),
+      parentId: seeder.tasks[0].id,
+      position: 1,
+    };
+
+    // when
+    const res = await request(app)
+      .post(`/api/project/${expectedProjectId}/section/${expectedSectionId}/task`)
+      .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
+      .send(newTask);
+
+    // then
+    expect(res.status).toBe(status.SUCCESS.POST.CODE);
+    expect(res.body.message).toBe(status.SUCCESS.MSG);
+    done();
+  });
+
+  it('duedate를 다음달로 설정', async done => {
+    // given
+    const expectedProjectId = seeder.projects[0].id;
+    const expectedSectionId = seeder.sections[0].id;
+
+    const newTask = {
+      title: '할일',
+      projectId: seeder.projects[1].id,
+      priority: priorities[1].id,
+      dueDate: new Date('2021-2-1'),
+      parentId: seeder.tasks[0].id,
+      position: 1,
+    };
+
+    // when
+    const res = await request(app)
+      .post(`/api/project/${expectedProjectId}/section/${expectedSectionId}/task`)
+      .set('Authorization', `Bearer ${createJWT(seeder.users[0])}`)
+      .send(newTask);
+
+    // then
+    expect(res.status).toBe(status.SUCCESS.POST.CODE);
+    expect(res.body.message).toBe(status.SUCCESS.MSG);
+    done();
+  });
+
   it('잘못된 parentId 생성', async done => {
     // given
     const expectedProjectId = seeder.projects[0].id;
