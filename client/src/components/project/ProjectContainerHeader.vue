@@ -12,7 +12,7 @@
 
       <v-menu :offset-y="true">
         <template v-slot:activator="{ on }">
-          <v-list-item-action class="mr-6">
+          <v-list-item-action>
             <v-btn icon v-on="on">
               <v-icon>mdi-dots-horizontal</v-icon>
             </v-btn>
