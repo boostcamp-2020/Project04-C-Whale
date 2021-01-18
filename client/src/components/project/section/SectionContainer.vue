@@ -1,5 +1,5 @@
 <template>
-  <v-list class="mr-10" draggable="false">
+  <v-list draggable="false">
     <v-list-item class="font-weight-black text-h6">
       <UpdatableTitle :originalTitle="section.title" :parent="section" type="section" />
     </v-list-item>

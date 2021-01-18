@@ -85,12 +85,11 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .project-container {
   height: 100%;
   display: flex;
   flex-direction: column;
-  /* align-items: flex-start; */
   overflow-x: scroll;
 }
 
@@ -99,6 +98,7 @@ export default {
     width: 90vw;
   }
 }
+
 .v-dialog {
   max-width: 80%;
   min-height: 80%;
@@ -112,7 +112,5 @@ export default {
     flex: 1 1 0;
     width: 0;
   }
-  /* flex-wrap: nowrap;
-  overflow-x: auto; */
 }
 </style>

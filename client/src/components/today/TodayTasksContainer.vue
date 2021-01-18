@@ -1,5 +1,5 @@
 <template>
-  <div class="project-container">
+  <div class="today-container">
     <TaskGroupPerDate key="expired" :tasks="expiredTasks" type="expired" />
     <TaskGroupPerDate key="today" :tasks="todayTasks" type="today" />
     <div v-show="isEmpty">
@@ -48,3 +48,18 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.today-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow-x: scroll;
+}
+
+@media screen and (max-width: 512px) {
+  .today-container {
+    width: 90vw;
+  }
+}
+</style>
