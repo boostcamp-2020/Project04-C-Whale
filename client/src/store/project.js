@@ -1,8 +1,6 @@
 import projectAPI from "@/api/project";
 import router from "@/router";
 
-const DEFAULT_PROJECT_TITLE = "관리함";
-
 const state = {
   currentProject: {
     id: "",
@@ -20,15 +18,23 @@ const getters = {
   projectInfoById: (state) => (id) => {
     return state.projectInfos.find((project) => project.id === id);
   },
-  namedProjectInfos: (state) =>
-    state.projectInfos.filter(
-      (project) => project.title !== DEFAULT_PROJECT_TITLE && !project.isFavorite
-    ),
+  namedProjectInfos: (state) => {
+    const managedProject = [...state.projectInfos].sort(
+      (projectA, projectB) => new Date(projectA.createdAt) - new Date(projectB.createdAt)
+    )[0];
+    return state.projectInfos.filter(
+      (project) => project.id !== managedProject.id && !project.isFavorite
+    );
+  },
   favoriteProjectInfos: (state) => {
     return state.projectInfos.filter((project) => project.isFavorite);
   },
-  managedProject: (state) =>
-    state.projectInfos.find((project) => project.title === DEFAULT_PROJECT_TITLE),
+  managedProject: (state) => {
+    const projectInfoSorted = [...state.projectInfos].sort(
+      (projectA, projectB) => new Date(projectA.createdAt) - new Date(projectB.createdAt)
+    );
+    return projectInfoSorted[0];
+  },
   projectList: (state) => state.projectList,
 };
 
@@ -68,6 +74,7 @@ const actions = {
     try {
       await projectAPI.updateProject(projectId, { title });
       await dispatch("fetchCurrentProject", projectId);
+      await dispatch("fetchProjectInfos");
       await dispatch("fetchAllTasks");
     } catch (err) {
       commit("SET_ERROR_ALERT", err.response);

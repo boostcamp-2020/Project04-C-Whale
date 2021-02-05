@@ -7,7 +7,7 @@
         >
         <v-list-item-content class="px-3" :key="managedProject.id">
           <v-list-item-title class="font-14">
-            관리함 <span>{{ managedProject.taskCount }}</span>
+            {{ managedProject.title }} <span>{{ managedProject.taskCount }}</span>
           </v-list-item-title>
         </v-list-item-content>
       </v-list-item>
