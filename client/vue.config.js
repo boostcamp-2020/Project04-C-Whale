@@ -6,5 +6,6 @@ module.exports = {
       args[0].title = "할고래DO";
       return args;
     });
+    config.plugins.delete("webpack-bundle-analyzer");
   },
 };
