@@ -27,7 +27,12 @@ const getters = {
     );
   },
   favoriteProjectInfos: (state) => {
-    return state.projectInfos.filter((project) => project.isFavorite);
+    const managedProject = [...state.projectInfos].sort(
+      (projectA, projectB) => new Date(projectA.createdAt) - new Date(projectB.createdAt)
+    )[0];
+    return state.projectInfos.filter(
+      (project) => project.isFavorite && project.id !== managedProject.id
+    );
   },
   managedProject: (state) => {
     const projectInfoSorted = [...state.projectInfos].sort(
