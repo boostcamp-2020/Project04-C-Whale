@@ -1,6 +1,5 @@
 <template>
   <div>
-    test
     <Spinner :loading="isLoading" />
     <router-view></router-view>
   </div>
