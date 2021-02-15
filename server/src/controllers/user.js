@@ -32,7 +32,7 @@ const googleLogin = asyncTryCatch(async (req, res) => {
 
 const getOwnInfo = asyncTryCatch(async (req, res) => {
   const { user } = req;
-  responseHandler(res, 200, { user, test: false });
+  responseHandler(res, 200, { user });
 });
 
 module.exports = { naverLogin, googleLogin, getOwnInfo };
