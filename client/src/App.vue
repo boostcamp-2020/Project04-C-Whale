@@ -1,6 +1,5 @@
 <template>
   <div>
-    citest
     <Spinner :loading="isLoading" />
     <router-view></router-view>
   </div>
