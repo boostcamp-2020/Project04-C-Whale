@@ -1,6 +1,6 @@
 <template>
   <div>
-    test
+    citest
     <Spinner :loading="isLoading" />
     <router-view></router-view>
   </div>
