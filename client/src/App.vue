@@ -62,7 +62,7 @@ export default {
 </script>
 
 <style>
-@import url(http://cdn.jsdelivr.net/font-nanum/1.0/nanumbarungothic/nanumbarungothic.css);
+@import url(https://cdn.jsdelivr.net/font-nanum/1.0/nanumbarungothic/nanumbarungothic.css);
 
 * {
   font-family: "Nanum Barun Gothic", sans-serif;
