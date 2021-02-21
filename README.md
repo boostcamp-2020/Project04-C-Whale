@@ -10,7 +10,7 @@
 
 ### 배포 주소
 
-http://halgoraedo.kro.kr
+https://halgoraedo.kro.kr
 
 [웨일 스토어에서 다운받기](https://store.whale.naver.com/detail/ajhijpmeecbneeignejgmlagajfbfhke)
 
