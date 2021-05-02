@@ -27,6 +27,6 @@
   ],
 
   "externally_connectable": {
-    "matches": ["http://localhost/*", "http://115.85.183.106/*", "http://halgoraedo.kro.kr/*"]
+    "matches": ["http://localhost/*", "http://115.85.183.106/*", "http://halgoraedo.kro.kr/*", "https://halgoraedo.kro.kr/*"]
   }
 }
