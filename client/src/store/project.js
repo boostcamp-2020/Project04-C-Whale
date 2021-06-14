@@ -148,7 +148,7 @@ const actions = {
       await dispatch("fetchProjectInfos");
 
       commit("SET_SUCCESS_ALERT", "프로젝트가 생성되었습니다.");
-      router.push("/project/" + response.data.projectId);
+      router.push("/project/" + response.data.id);
     } catch (err) {
       commit("SET_ERROR_ALERT", err.response);
     }
