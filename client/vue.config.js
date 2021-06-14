@@ -8,4 +8,7 @@ module.exports = {
     });
     config.plugins.delete("webpack-bundle-analyzer");
   },
+  devServer: {
+    proxy: 'http://localhost:3000'
+  }
 };

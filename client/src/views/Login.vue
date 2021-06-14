@@ -26,7 +26,7 @@ export default {
   data() {
     return {
       OAuthURL: process.env.VUE_APP_SERVER_URL + "/api/user/oauth/naver",
-      OAuthGoogleURL: process.env.VUE_APP_SERVER_URL + "/api/user/oauth/google",
+      OAuthGoogleURL: process.env.VUE_APP_SERVER_URL + "/api/auth/google",
     };
   },
   mixins: [SpinnerMixin],

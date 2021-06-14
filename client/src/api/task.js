@@ -1,8 +1,8 @@
 import myAxios from "./myAxios";
 
 const taskAPI = {
-  createTask({ projectId, sectionId, ...data }) {
-    return myAxios.post(`/project/${projectId}/section/${sectionId}/task`, data);
+  createTask(data) {
+    return myAxios.post(`/task`, data)
   },
   getAllTasks() {
     return myAxios.get("/task");
