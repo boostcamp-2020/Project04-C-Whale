@@ -8,6 +8,7 @@
             hide-details
             type="text"
             v-model="task.title"
+            autofocus
             placeholder="할일을 입력하세요"
           />
 

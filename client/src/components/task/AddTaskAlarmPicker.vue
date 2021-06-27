@@ -1,15 +1,28 @@
 <template>
-  <v-btn depressed color="normal">
-    <v-icon color="red"> mdi-alarm </v-icon>
-    <VueTimepicker
-      @input="$emit('input', $event)"
-      :value="value"
-      :format="timePickerFormat"
-      :minute-interval="10"
-      :second-interval="10"
-      class="my-time-picker"
-    />
-  </v-btn>
+  
+    <v-menu :offset-y="true" :close-on-content-click="false" :allow-overflow="true">
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn depressed color="normal" v-bind="attrs" v-on="on">
+          <v-icon :color="iconColor" > mdi-alarm </v-icon>
+        </v-btn>
+      </template>
+      <v-list min-height="230">
+        <v-list-item>
+           <VueTimepicker
+              @input="$emit('input', $event)"
+              :value="value"
+              format="HH시간 mm분 ss초"
+              :minute-interval="10"
+              :second-interval="10"
+              class="my-time-picker"
+            />
+            후에 알람
+        </v-list-item>
+      </v-list>  
+    </v-menu>
+    
+   
+  
 </template>
 
 <script>
@@ -22,11 +35,13 @@ export default {
   props: {
     value: Object,
   },
-  data() {
-    return {
-      timePickerFormat: "HH시간 mm분 ss초",
-    };
-  },
+  computed: {
+    iconColor: function() {
+      return this.value.HH === "00" & this.value.mm === "00" && this.value.ss === "00" 
+        ? "grey" 
+        : "red"
+    }
+  }
 };
 </script>
 

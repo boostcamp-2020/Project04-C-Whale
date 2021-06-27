@@ -16,7 +16,14 @@
     </v-list-item>
 
     <div class="task_container mr-10">
-      <TaskItem :task="task" />
+      <div style="padding-left:30px;">
+        <vue-mark-down 
+        :class="task.isDone ? 'mark-down text-decoration-line-through' : 'mark-down'"
+       >
+        {{ task.title }}
+       </vue-mark-down>
+      </div>
+       
     </div>
     <div class="px-4 task-detail-tabs">
       <TaskDetailTabs
@@ -35,10 +42,11 @@
 import TaskItem from "@/components/task/TaskItem";
 import TaskDetailTabs from "@/components/task/TaskDetailTabs";
 import SpinnerMixin from "@/mixins/SpinnerMixins";
+import VueMarkDown from "vue-markdown"
 import { mapState } from "vuex";
 
 export default {
-  components: { TaskItem, TaskDetailTabs },
+  components: { TaskItem, TaskDetailTabs, VueMarkDown },
   mixins: [SpinnerMixin],
   props: {
     task: Object,

@@ -20,7 +20,7 @@ const projectAPI = {
     return myAxios.post(`/project/${projectId}/section`, data);
   },
   updateSection(projectId, sectionId, data) {
-    return myAxios.put(`/project/${projectId}/section/${sectionId}`, data);
+    return myAxios.patch(`/project/${projectId}/section/${sectionId}`, data);
   },
   updateSectionPosition(projectId, data) {
     return myAxios.patch(`/project/${projectId}/section/position`, data);
